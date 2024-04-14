@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    
+    <title>Auto Generated Subtitles for Clips</title>
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <meta name="description" content="Dynamic captions for clips without watermark">
+    <meta name="robots" content="index,follow">
+    
+    
+    
+    
+    <link rel="stylesheet" href="container_style2.css">
+
+
+    <link rel="stylesheet" href="choose_file.css">
+
+    <link rel="stylesheet" href="card_captions.css">
+    <link rel="stylesheet" href="card_video.css">
+
+    <link rel="stylesheet" href="loading_upload.css">
+
+    <link rel="stylesheet" href="modal.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Passion+One&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+
+    <script src="https://cdn.jsdelivr.net/npm/typo-js@1.2.4/typo.min.js"></script>
+
+
+    <!-- 
+    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/video.js/dist/video.min.js"></script>
+    -->
+
+</head>
+<body>
+    
+
+
+    <div id="principal-container" class="container">
+    <nav>
+      <h3 translate="no">CAPTIONS</h3>
+    </nav>
+
+    <div class="card-container">
+        
+        <div class="responsive-font-container">
+            <div class="responsive-font-0">
+                <div class="destacado">
+                    DYNAMIC
+                </div>
+                
+                CAPTIONS
+                
+            </div>
+            <div id="responsive-font" class="responsive-font">
+                Auto Generated Subtitles for Clips
+            </div>
+        </div>
+        
+    
+    
+        <div class="sub-card-container">
+            <div class="card">
+
+
+        
+
+                <div class="chooseFile-container">
+                    <button class="cloud-button">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                    </button>
+        
+                    <input type="file" id="file" accept="video/mp4" hidden>
+                    <button id="chooseFile" class="btn-upload"><i class="fas fa-folder-open"></i> Choose video</button>
+                    <div class="max-size">Max size 20MB (Free version)</div>
+                    <div class="error-dimension">The aspect ratio must be 9:16 (only clips)</div>
+                </div>
+        
+        
+        
+                
+                <!-- 
+                <div class="video-container" style="position: relative; width: 100%; height: 250px; overflow: hidden; border-radius: 10px;">
+                    <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="100%" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" oncontextmenu="return false;">
+                        <source src="video_1280x720.mp4" type="video/mp4">
+                    </video>
+                </div>
+                -->
+        
+                <div class="video-container" style="position: relative; width: 100%; height: 250px; overflow: hidden; border-radius: 10px;">
+                    <video id="my-video-2" controls preload="auto" width="100%" height="100%" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" oncontextmenu="return false;" controls controlsList="nodownload">
+                        <source src="" type="video/mp4">
+                        Your browser does not support the video tag
+                    </video>
+                </div>
+                
+        
+                
+                <div class="loader-container">
+                    <div class="loader">
+                        <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="path-white" cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="5"/>
+              
+                        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke="rgb(119, 0, 255)" stroke-width="5" stroke-dasharray="80 200" stroke-dashoffset="0"/>
+                        </svg>
+                        <div class="percentage" style="font-size: 20px;">0%</div>
+                    </div>
+                </div>
+        
+                <div class="loader-description">
+                    Uploading video . . .
+                </div>
+                
+        
+                <div class="buttons-container">
+                    <button id="editCaptions" name="click_download" class="btn" onclick="desplazarHaciaSeccion()"><i class="fas fa-pencil-alt"></i> Edit captions</button>
+                    <button id="createVideo" name="click_download" class="btn" onclick="check_edited_captions()"><i class="fas fa-film"></i> Create video</button>
+                </div>
+        
+                <!-- 
+                <div class="dropdown">
+                    <button onclick="toggleDropdown()" id="dropdown-btn">Language                 ( Select )   &#x025BE;</button>
+                    <div id="dropdown-content" class="dropdown-content">
+                        <div onclick="selectOption('English')" class="dropdown-item">English</div>
+                        <div onclick="selectOption('Spanish')" class="dropdown-item">Spanish</div>
+                        <div onclick="selectOption('Portuguese')" class="dropdown-item">Portuguese</div>
+                    </div>
+                </div>
+                -->
+                
+              </div>
+              <div class="card-captions">
+                
+        
+                <div id="sub-container" class="sub-container">
+                    <button  id="editButton" class="custom-button" onclick="toggleEditability(1)"><i class="fas fa-pencil-alt"></i> Edit</button>
+                    <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"><i class="fas fa-check"></i> Save</button>
+                    
+                    <div id="form-container" class="form-container">
+                    </div>
+                    
+        
+        
+                </div>
+              </div>
+        </div>
+
+      
+
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <p>The subtitles have not been edited. Do you want to continue?</p>
+                <span class="close-yes">Yes</span>
+                <span class="close-no">No</span>
+            </div>
+        </div>
+
+
+
+
+
+        <br>
+        <br>
+        <br>
+        <br>
+
+
+
+    
+
+  
+  
+
+    
+
+      
+      
+
+    
+    
+
+
+  </div>
+
+
+ <!---
+  <div class="card-container">
+
+    <div class="responsive-font-container">
+        <div id="responsive-font-2" class="responsive-font-2">
+            Video Compressor
+        </div>
+        <div class="responsive-font-3">
+            without losing quality
+        </div>
+    </div>
+
+
+
+
+
+    
+
+
+    <div class="sub-card-container">
+        
+
+
+        <div class="card-compress"> 
+
+        
+
+    
+
+            <div class="chooseFile-container-2">
+                <input type="file" id="file-2" accept="video/mp4" hidden>
+                <button id="chooseFile-2" class="btn-upload-2"><i class="fas fa-folder-open"></i> Choose video</button>
+                <div class="max-size">Max size 50MB</div>
+            </div>
+    
+    
+    
+            
+    
+            
+            <div class="loader-container-2">
+                <div class="loader">
+                    <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path-white" cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="5"/>
+          
+                    <circle class="path-2" cx="50" cy="50" r="20" fill="none" stroke="rgb(119, 0, 255)" stroke-width="5" stroke-dasharray="80 200" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="percentage-2" style="font-size: 20px;">0%</div>
+                </div>
+            </div>
+            <div class="loader-description-2">
+                Uploading video . . .
+            </div>
+
+    
+        </div>
+            
+           
+        
+          
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <br>
+
+</div>
+--> 
+
+
+
+
+  <div class="full-width-card-2">
+    © Copyright 2024. All rights reserved
+</div>
+
+    <script src="variables.js"></script>
+    <script src="steps.js"></script>
+
+    <script src="get_time_video.js"></script>
+
+    
+
+    <script src="loading_upload.js"></script>
+
+    <script src="send_mp4.js"></script>
+    <script src="captions.js"></script>
+    <script src="websocket_client_mp4_mejorado.js"></script>
+
+    <script src="modal.js"></script>
+    
+</body>
+</html>

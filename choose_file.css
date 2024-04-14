@@ -1,0 +1,145 @@
+.error-dimension{
+    display:none;
+    color:rgba(255, 0, 0, 0.726);
+    font-family: 'Roboto';/*change*/
+    font-weight: bold;
+    margin:10px;
+}
+
+.card-compress{
+    justify-content: center; 
+    align-items: center;   
+}
+
+.chooseFile-container-2{
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;     
+    height: 100%;           
+    padding-top:10px;
+    padding-bottom:10px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    width:auto;
+    font-family: 'Roboto';/*change*/
+}
+
+.chooseFile-container{
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;     
+    height: 100%;           
+    padding-top:10px;
+    padding-bottom:10px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    width:auto;
+    font-family: 'Roboto';/*change*/
+}
+
+.cloud-button {
+    color:#7c55e6;
+    background-color: rgba(240, 248, 255, 0);
+    border:none;
+    padding: 10px 20px;
+    font-size: 20px;
+}
+
+#chooseFile{
+    border-radius: 10px;
+    width:50%;
+    padding:15px;
+    margin-top:20px; 
+    margin-bottom:20px; 
+}
+
+#chooseFile-2{
+    border-radius: 10px;
+    padding:10px 40px;
+    width: auto;
+    margin-top:20px; 
+    margin-bottom:20px; 
+}
+
+.btn-upload {
+    display:block;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-right:5px;
+    margin-left:5px;
+    border: none;
+    background-color:#7c55e6;
+    border: 1px solid rgba(177, 177, 177, 0.4); 
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Segoe UI'; 
+    font-size:15px;
+    font-weight: bold;
+    
+    width: 100%;
+    max-width:200px;
+    box-sizing: border-box;
+  }
+
+  .btn-upload:hover {
+    background-color: #6740d1;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 40px #5e34d4;
+  
+  }
+
+
+  .btn-upload-2 {
+    display:block;
+    margin-top:10px;
+    margin-bottom:10px;
+    margin-right:5px;
+    margin-left:5px;
+    border: none;
+    background-color:#7c55e6;
+    border: 1px solid rgba(177, 177, 177, 0.4); 
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: 'Segoe UI'; 
+    font-size:15px;
+    font-weight: bold;
+    
+    width: 100%;
+    max-width:250px;
+    box-sizing: border-box;
+  }
+
+  .btn-upload-2:hover {
+    background-color: #6740d1;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5), 0 0 40px #5e34d4;
+  
+  }
+
+  
+  .max-size{
+    color:rgba(0, 0, 0, 0.788);
+    font-family: 'Roboto';
+    font-weight: bold;
+    margin:10px;
+  }
+    
+
+
+@media only screen and (max-width: 1000px) {
+
+    .cloud-button {
+        font-size: 15px;
+    }
+
+    #chooseFile{
+      width:90%;
+  }
+
+  }
