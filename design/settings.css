@@ -1,0 +1,103 @@
+.settings-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.settings-modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80%; /* Altura máxima del modal */
+    overflow-x: hidden;
+    overflow-y: auto; /* Añadir scroll cuando el contenido excede la altura */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+.settings-close-btn {
+    font-family: 'Arial';
+    color:rgb(40, 40, 40);
+    cursor: pointer;
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#settingsList {
+    color:black;
+    font-family: 'Arial';
+    list-style-type: none;
+    padding: 0px;
+    margin:0px;
+}
+
+
+
+.settings-font-block {
+    display: inline-block;
+    font-size: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin: 2px 0px;
+    padding:18px 0px;
+}
+
+.settings-font-block:hover {
+    transform: scale(1.1);
+    color: #ffffff;
+    background-color: #7c55e6;
+}
+
+.settings-font-block.clicked {
+    transform: scale(1.1);
+    color: #ffffff;
+    background-color: #7c55e6;
+}
+
+
+.icon-large {
+    font-size: 14px; /* ajusta el tamaño según tus preferencias */
+}
+#settings-openModalBtn {
+    background-color: transparent;
+    color: black;
+    
+    padding:10px 20px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #7c55e6; 
+    background-color: rgba(119, 0, 255, 0);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#settings-openModalBtn:hover {
+    color: #ffffff; 
+    background-color: #6745d1;
+}
+
+
+
+.settings-title{
+    color:black;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin: 9px 0px;
+    padding:18px 0px;
+}
+
