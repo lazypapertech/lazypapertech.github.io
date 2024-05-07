@@ -94,7 +94,7 @@ body {
     max-width: 1400px;
     margin: 0 auto; /*quitar*/
     /*width: 99%;*/
-    margin: 20px auto;
+    /*margin: 20px auto;*/
     /*padding: 0 20px;*/
     box-sizing: border-box;
   }
@@ -103,7 +103,7 @@ body {
     background-color: #33333300;
     color: rgb(0, 0, 0);
     padding: 0px;
-    margin:0px;
+    margin:20px;
     user-select: none;
 
     display: flex;
