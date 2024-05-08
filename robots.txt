@@ -1,7 +1,13 @@
 User-agent: *
-Disallow: /   
+Disallow: 
 
-User-agent: *
-Allow: /index.html   
+User-agent: Googlebot
+Disallow: 
+
+User-agent: Yandex
+Disallow:
+
+User-agent: Bingbot
+Disallow:
 
 Sitemap: https://manycaptions.com/sitemap.xml
