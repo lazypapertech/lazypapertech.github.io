@@ -10,4 +10,7 @@ Disallow:
 User-agent: Bingbot
 Disallow:
 
+User-agent: *
+Disallow: /*.mp4$
+
 Sitemap: https://manycaptions.com/sitemap.xml
