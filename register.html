@@ -20,12 +20,14 @@
 </head>
 <body>
     <div class="loader">
-       <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/transparent_image.jpg" alt="transparent image" class="transparent_image">
-       <div class="progress-bar"></div>
+        <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/transparent_image.jpg" alt="transparent image" class="transparent_image">
+        <div class="progress-bar"></div>
     </div>
 
-    let urlParams = new URLSearchParams(window.location.search);
-    let ref = urlParams.get('ref');
-    console.log("Valor: ", ref);
+    <script>
+        let urlParams = new URLSearchParams(window.location.search);
+        let ref = urlParams.get('ref');
+        console.log("Valor: ", ref);
+    </script>
 </body>
 </html>
