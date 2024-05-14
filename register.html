@@ -2,32 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="4; url=/" />
-    <title>Enter with my link to claim a FREE gift</title>
+    <meta http-equiv="refresh" content="5; url=/" />
+    <title>Claim a FREE gift with my link</title>
 
-    <meta name="description" content="Get a FREE premium gift">
+    <meta name="description" content="Get a FREE gift of Premium features">
     
-    <meta property="og:site_name" content="Enter with my link to claim a FREE gift">
+    <meta property="og:site_name" content="Claim a FREE gift with my link">
     <meta property="og:url" content="https://manycaptions.com/register.html">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Enter with my link to claim a FREE gift">
-    <meta property="og:description" content="Get a FREE premium gift">
-    <meta property="og:image" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/og-image.png">
-
-    <link rel="stylesheet" href="./design/register.css"> 
-    
+    <meta property="og:title" content="Claim a FREE gift with my link">
+    <meta property="og:description" content="Get a FREE gift of Premium features">
+    <meta property="og:image" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/jpg_image_2/og-image.jpg">
+    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/jpg_image_2/og-image.jpg">
+    <meta property="og:image:type" content="image/jpeg">
 
 </head>
 <body>
-    <div class="loader">
-        <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/transparent_image.jpg" alt="transparent image" class="transparent_image">
-        <div class="progress-bar"></div>
-    </div>
+    <p>Redireccionando a la página de error...</p>
+    <p>Intentaste acceder a: <span id="redirectedUrl"></span></p>
 
     <script>
-        let urlParams = new URLSearchParams(window.location.search);
-        let ref = urlParams.get('ref');
-        console.log("Valor: ", ref);
+        var redirectedUrl = window.location.href;
+        document.getElementById("redirectedUrl").textContent = redirectedUrl;
     </script>
 </body>
 </html>
