@@ -60,6 +60,8 @@
     <link rel="stylesheet" href="./design/settings.css">
     <link rel="stylesheet" href="./design/settings-font.css">
     <link rel="stylesheet" href="./design/settings-color.css">
+
+    <link rel="stylesheet" href="./design/select_options.css">
     
 
 
@@ -90,7 +92,9 @@
             <div id="responsive-font" class="responsive-font">
                 Auto Generated Subtitles for Clips
             </div>
+            
         </div>
+        
         
     
     
@@ -107,14 +111,33 @@
         
                     <input type="file" id="file" accept="video/mp4" hidden>
                     
-                    <button id="chooseFile" class="btn-upload"><i class="fas fa-folder-open"></i><p style="display:inline-block;margin: 0px 10px;font-size:15px;">Choose video</p></button>
-                    <div class="max-size">Max size 20MB</div>
+                    <button id="chooseFile" class="btn-upload"><i class="fas fa-folder-open"></i><p id="choose_video_p" style="display:inline-block;margin: 0px 10px;font-size:15px;"></p></button>
+                    
+                    <div class="checkbox-container-global">
+                        <div class="checkbox-container">
+                            
+                            <input type="checkbox" class="checkbox-input" id="option_1" name="option1" checked>
+                            <label class="checkbox-custom" for="option_1"></label>
+                            <label id="short_captions" class="checkbox-label" for="option_1"></label>
+
+                        </div>
+                    
+                        <div class="checkbox-container">
+                            
+                            <input type="checkbox" class="checkbox-input" id="option_2" name="option2">
+                            <label class="checkbox-custom" for="option_2"></label>
+                            <label id="long_captions" class="checkbox-label" for="option_2"></label>
+
+                        </div>
+                    </div>
+
+                    <div class="max-size"></div>
                     <div class="container-lang">
-                        <div id="selected-language">Language</div> 
-                        <span id="change-language"><a id="change-language-a" href="#"></a></span>
+                        <div id="selected-language"></div> 
+                        <span id="change-language"><a id="change-language-a"></a></span>
                     </div>
                     
-                    <div class="error-dimension">Only MP4 files are allowed. Try it again</div>
+                    <div class="error-dimension"></div>
                 </div>
         
         
@@ -125,7 +148,6 @@
                 <div class="video-container" style="position: relative; width: 100%; height: 250px; overflow: hidden; border-radius: 10px;">
                     <video id="my-video-2" controls preload="auto" width="100%" height="100%" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" oncontextmenu="return false;" controls controlsList="nodownload">
                         <source src="" type="video/mp4">
-                        Your browser does not support the video tag
                     </video>
                 </div>
                 
@@ -138,20 +160,19 @@
               
                         <circle class="path" cx="50" cy="50" r="20" fill="none" stroke="rgb(119, 0, 255)" stroke-width="5" stroke-dasharray="80 200" stroke-dashoffset="0"/>
                         </svg>
-                        <div class="percentage" style="font-size: 20px;">0%</div>
+                        <div class="percentage" style="font-size: 20px;"></div>
                     </div>
                 </div>
         
                 <div class="loader-description">
-                    Loading . . .
                 </div>
                 
         
                 <div class="buttons-container">
-                    <button id="editCaptions" name="click_download" class="btn" onclick="desplazarHaciaSeccion()"><i class="fas fa-pencil-alt"></i> Edit captions</button>
-                    <button id="createVideo" name="click_download" class="btn" onclick="check_edited_captions()"><i class="fas fa-film"></i> Create video</button>
+                    <button id="editCaptions" name="click_download" class="btn" onclick="desplazarHaciaSeccion()"></button>
+                    <button id="createVideo" name="click_download" class="btn" onclick="check_edited_captions()"></button>
                 </div>
-                <div class="error-creation">Bad connection. Try it again</div>
+                <div class="error-creation"></div>
         
                 
                 
@@ -160,10 +181,10 @@
                 
         
                 <div id="sub-container" class="sub-container">
-                    <button  id="editButton" class="custom-button" onclick="toggleEditability(1)"><i class="fas fa-pencil-alt"></i> Edit</button>
-                    <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"><i class="fas fa-check"></i> Save</button>
+                    <button  id="editButton" class="custom-button" onclick="toggleEditability(1)"></button>
+                    <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"></button>
                     <button id="settings-openModalBtn"><i class="fas fa-sliders-h icon-large"></i> </button>
-                    <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()"><i class="fas fa-file"></i> Export</button>
+                    <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()"></button>
                     <div id="form-container" class="form-container">
                 </div>
                     
@@ -173,13 +194,17 @@
               </div>
         </div>
 
+        <div id="description_captions">
+            Dynamic captions for clips without watermark
+        </div>
+
       
 
         <div id="myModal" class="modal">
             <div class="modal-content">
-                <p>The subtitles have not been edited. Do you want to continue?</p>
-                <span class="close-yes">Yes</span>
-                <span class="close-no">No</span>
+                <p></p>
+                <span class="close-yes"></span>
+                <span class="close-no"></span>
             </div>
         </div>
 
@@ -203,19 +228,16 @@
         <div class="sub-container-clip">
             <video autoplay muted loop>
                 <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip1.mp4" type="video/mp4">
-                Tu navegador no soporta el elemento de video.
             </video>
         </div>
         <div class="sub-container-clip">
             <video autoplay muted loop>
                 <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip2.mp4" type="video/mp4">
-                Tu navegador no soporta el elemento de video.
             </video>
         </div>
         <div id="clip3" class="sub-container-clip">
             <video autoplay muted loop>
                 <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip3.mp4" type="video/mp4">
-                Tu navegador no soporta el elemento de video.
             </video>
         </div>
         
@@ -229,29 +251,29 @@
             <p>manycaptions</p>
         </div>
         <div class="sub-container-footer">
-            <h4>Pages</h4>
+            <h4 id="pages"></h4>
             <ul class="links">
                 <li><a href="./index.html">Dynamic captions</a></li>
             </ul>
         </div>
         <div class="sub-container-footer">
-            <h4>Support</h4>
+            <h4 id="support"></h4>
             <ul class="links">
-                <li><a href="./index.html">Support Center</a></li>
-                <li><a href="./index.html">Contact</a></li>
-                <li><a href="./index.html">Privacy Policy</a></li>
+                <li><a id="support_center" href="./index.html"></a></li>
+                <li><a id="contact" href="./index.html"></a></li>
+                <li><a id="privacy_policy" href="./index.html"></a></li>
             </ul>
         </div>
         <div class="sub-container-footer">
-            <h4>Company</h4>
+            <h4 id="company"></h4>
             <ul class="links">
-                <li><a href="./index.html">About Us</a></li>
-                <li><a href="./index.html">Terms & Conditions</a></li>
+                <li><a id="about_us" href="./index.html"></a></li>
+                <li><a id="terms_conditions" href="./index.html"></a></li>
             </ul>
         </div>
         <div class="divider"></div>
         <div class="copyright">
-            © 2024 manycaptions.com. All rights reserved
+            
         </div>
     </div>
     </footer>
@@ -261,14 +283,14 @@
     <div id="settingsModal" class="settings-modal">
         <div class="settings-modal-content">
             <span class="settings-close-btn">&times;</span>
-            <div class="settings-title"> Settings</div>
+            <div class="settings-title"></div>
             <div>
                 <ul id="settingsList">
                     <li>
-                        <div id="settings-font" class="settings-font-block">Font</div>
+                        <div id="settings-font" class="settings-font-block"></div>
                     </li>
                     <li>
-                        <div id="settings-color" class="settings-font-block">Color</div>
+                        <div id="settings-color" class="settings-font-block"></div>
                     </li>
                 </ul>
             </div>
@@ -287,23 +309,23 @@
         <div class="color-modal-content">
             <span id="closeModalColor" class="color-close-btn">&times;</span>
             <div>
-                <button id="monoColor" class="change-color-btn">Monocolor</button>
-                <button id="multiColor" class="change-color-btn">Multicolor</button>
+                <button id="monoColor" class="change-color-btn"></button>
+                <button id="multiColor" class="change-color-btn"></button>
                 
             </div>
             <div id="colorOptions">
                 
             </div>
             <p id="colorCount"></p>
-            <button id="saveColor" class="change-color-btn">Save</button>
+            <button id="saveColor" class="change-color-btn"></button>
         </div>
     </div>
 
     <div id="languageModal" class="languageModal">
         <div class="language-modal-content">
-            <button id="save-lang">Save</button>
+            <button id="save-lang"></button>
             <span class="language-close-btn">&times;</span>
-            <div class="ask-lang">Select video language</div>
+            <div class="ask-lang"></div>
             <div>
                 <ul id="languageList">
                 </ul>
@@ -314,7 +336,7 @@
 
 </div>
 
-    <script src="./design/general_of_2.js"></script>
+    <script src="./design/general_of_3.js"></script>
     
 </body>
 </html>
