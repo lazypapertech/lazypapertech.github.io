@@ -1,4 +1,4 @@
-#change_button{
+#change-language-a{
   color:#7c55e6;
   font-size: 16px;
   font-weight: bold;
@@ -6,7 +6,7 @@
   transition: font-size 0.2s;
 }
 
-#change_button:hover{
+#change-language-a:hover{
   font-size: 110%;
 }
 
