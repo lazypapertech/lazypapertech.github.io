@@ -1,3 +1,15 @@
+#change_button{
+  color:#7c55e6;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: font-size 0.2s;
+}
+
+#change_button:hover{
+  font-size: 110%;
+}
+
 #description_captions{
   color:rgba(0, 0, 0, 0.7);
   justify-content: center;
