@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="5; url=/" />
+    <meta http-equiv="refresh" content="4; url=/" />
     <title>Enter with my link to claim a FREE gift</title>
 
     <meta name="description" content="Get a FREE gift of Premium features">
@@ -16,14 +16,13 @@
     <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/jpg_image_2/og-image.jpg">
     <meta property="og:image:type" content="image/jpeg">
 
+    <link rel="stylesheet" href="./design/register.css"> 
+
 </head>
 <body>
-    <p>Redireccionando a la página de error...</p>
-    <p>Intentaste acceder a: <span id="redirectedUrl"></span></p>
-
-    <script>
-        var redirectedUrl = window.location.href;
-        document.getElementById("redirectedUrl").textContent = redirectedUrl;
-    </script>
+    <div class="loader">
+       <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/transparent_image.jpg" alt="transparent image" class="transparent_image">
+       <div class="progress-bar"></div>
+    </div>
 </body>
 </html>
