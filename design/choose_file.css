@@ -168,6 +168,11 @@
 
 @media only screen and (max-width: 1000px) {
 
+  #description_captions{
+    margin:20px 30px;
+    font-size:15px;
+  }
+
     .cloud-button {
         font-size: 15px;
     }
