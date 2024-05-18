@@ -376,6 +376,10 @@ body {
       display:none;
   }
 
+#support-container{
+    display:flex;
+}
+
 
   @media only screen and (max-width: 1000px) {
     /*
@@ -464,6 +468,10 @@ body {
       margin: 0 auto; 
     }
     */
+
+    #support-container{
+        display:none;
+    }
 
     .card {
       width: 100%;
