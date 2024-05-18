@@ -31,10 +31,12 @@
     justify-content: center;
     align-items: center;
   }
-  
+
+/*
   .loader img {
     animation: zoom 2s infinite ease-in-out;
   }
+*/
   
   .progress-bar {
     position: relative;
