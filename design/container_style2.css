@@ -115,13 +115,11 @@ body {
   .destacado {
     background-color: #7c55e6;  
     color:white;
-    padding-top:3px;
-    padding-left:10px;    
-    padding-right:10px;           
+    padding:0px 15px;          
     border-radius: 8px;         
     display: flex;              
     align-items: center;        
-    height: auto;    
+    height: 35px;    
     margin: 0px 5px;
 }
   
@@ -154,7 +152,7 @@ body {
   
 
   .responsive-font-0 {
-    font-size: 140%;  
+    font-size: 120%;  
     white-space: nowrap;  
     overflow: hidden;  
     text-overflow: ellipsis;  
@@ -167,11 +165,12 @@ body {
     color:#7c55e6;
     
     margin-top:70px;
-    font-family: 'Lalezar';
+    font-family: 'Arial Black';
+    font-weight: bolder;
 }
 
   .responsive-font {
-    font-size: 360%;  
+    font-size: 260%;  
     white-space: nowrap;  
     overflow: hidden;  
     text-overflow: ellipsis;  
@@ -181,12 +180,13 @@ body {
     align-items: center;     
     height: 100%;  
 
-    margin:0px;
+    margin-top:20px;
     padding:0px;
 
     color:rgba(0, 0, 0, 0.781);
     
-    font-family: 'Lalezar';
+    font-family: 'Arial Black';
+    font-weight: bolder;
 }
 
 
@@ -404,10 +404,10 @@ body {
       */
 
       .responsive-font-0 {
-        font-size: 3vw;
+        font-size: 20px;
     }
       .responsive-font {
-        font-size: 5.5vw;
+        font-size: 4.2vw;
         margin-bottom: 30px;
     }
 
@@ -447,9 +447,10 @@ body {
     .responsive-font-0 {
       margin-top:50px;
       margin-bottom: 20px;
-      font-size: 4.5vw;
+      font-size: 14px;
   }
   .responsive-font {
+      font-size: 4.5vw;
     margin-top:0px;
     margin-bottom: 30px;
 }
