@@ -483,6 +483,9 @@ body {
     }
     */
 
+    .description-container{
+        margin-bottom: 60px;
+    }
     .description-container-2 {
         justify-content: left;
         text-align:left;
@@ -490,7 +493,6 @@ body {
     .description-container-4 {
         font-size: 1rem;
     }
-
     h1 {
         font-size: 1.8em;
     }
