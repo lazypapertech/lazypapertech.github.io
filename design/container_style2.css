@@ -388,8 +388,12 @@ body {
     font-weight: bold;
     font-size: 1.2rem;
 }
-  h1{
+h1{
     font-size: 1.8em;
+    margin-bottom:0px;
+  }
+h2{
+    font-size: 1em;
     margin-bottom:0px;
   }
 
