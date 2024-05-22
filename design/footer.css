@@ -18,11 +18,18 @@
     overflow: hidden;
     user-select: none;
 }
+.sub-container-footer-title{
+    flex: 1;
+    padding: 0px;
+    margin: 0px 20px;
+    text-align: left;
+    white-space: nowrap;
+}
 .sub-container-footer {
     flex: 1;
     padding: 10px;
     border-radius: 10px;
-    margin: 10px 10px;
+    margin: 0px 10px;
     text-align: left;
     white-space: nowrap;
     transition: background-color 0.3s;
@@ -35,6 +42,7 @@
 .links {
     list-style-type: none;
     padding: 0;
+    font-size: 15px;
 }
 .links li {
     margin-bottom: 8px;
@@ -71,7 +79,7 @@
         align-items: center;
     }
     .sub-container-footer {
-        margin: 10px 0;
+        margin: 0px 0px;
         text-align: center;
     }
     .dropdown {
