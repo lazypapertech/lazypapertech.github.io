@@ -1,26 +1,29 @@
 
 .features-container {
     display: flex;
-    justify-content: space-between;
-    color:black;
+    justify-content: center;
+    text-align: center;
+    color:rgb(39, 39, 39);
     background-color: rgba(243, 245, 247, 1.0);
-    padding: 100px 120px;
+    padding: 20px 20px;
     border-radius: 10px;
-    margin-top: 80px;
-    margin-bottom: 100px;
+    margin-top: 0px;
+    margin-bottom: 50px;
     overflow: hidden;
     flex-wrap: wrap; 
     user-select: none;
 }
 
+
 .sub-container-features {
     flex: 0 0 270px; 
-    height:190px;
-    padding: 5px 20px;
-    border-radius: 10px;
-    margin: 10px 20px;
-    text-align: left;
-    box-shadow: 0 0 5px #5f2ee4a4;
+    background: linear-gradient(135deg, #ffffff 0%, #9277da33 100%);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 10px 20px;
+    margin:20px 10px;
+    width: 300px;
+    text-align: center;
 }
 
 .affiliates {
@@ -101,13 +104,13 @@
     border-radius: 10px;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ajustar el video al tamaño del contenedor */
+    object-fit: cover;
     top: 0;
     left: 0;
-    z-index: -1; /* Enviar el video al fondo */
+    z-index: -1;
 }
 .sub-container-clip:hover video {
-    filter: brightness(0.8); /* Reducir el brillo al 80% */
+    filter: brightness(0.8); 
 }
 
 
@@ -116,10 +119,7 @@
     box-shadow: 0 0 20px #5f2ee4;
 }
 
-.sub-container-clip h4 {
-    font-weight: bold;
-    margin-bottom: 10px;
-}
+
 
 @media (max-width: 1125px) {
     .clip-container {
@@ -143,7 +143,7 @@
     
     .sub-container-features {
         max-width:270px;
-        margin: 10px auto;
+        margin: 10px 20px;
     }
 
     #clip3{
@@ -169,14 +169,10 @@
 
     .features-container {
         display: flex;
-        justify-content: center;
-        background-color: rgba(243, 245, 247, 1.0);
-        
+        justify-content: center;        
         padding: 60px 60px;
-        border-radius: 10px;
-        margin-top: 40px;
-        margin-bottom: 60px;
-        overflow: hidden;
+        margin-top: 0px;
+        margin-bottom: 0px;
         flex-wrap: wrap; 
     }
 
