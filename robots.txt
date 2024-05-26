@@ -2,25 +2,35 @@ User-agent: *
 Disallow: 
 Disallow: /404.html
 Disallow: /register.html
+Disallow: /affiliates.html
+Disallow: /pricing.html
 
 User-agent: Googlebot
 Disallow: 
 Disallow: /404.html
 Disallow: /register.html
+Disallow: /affiliates.html
+Disallow: /pricing.html
 
 User-agent: Yandex
 Disallow:
 Disallow: /404.html
 Disallow: /register.html
+Disallow: /affiliates.html
+Disallow: /pricing.html
 
 User-agent: Bingbot
 Disallow:
 Disallow: /404.html
 Disallow: /register.html
+Disallow: /affiliates.html
+Disallow: /pricing.html
 
 User-agent: *
 Disallow: /*.mp4$
 Disallow: /404.html
 Disallow: /register.html
+Disallow: /affiliates.html
+Disallow: /pricing.html
 
 Sitemap: https://manycaptions.com/sitemap.xml
