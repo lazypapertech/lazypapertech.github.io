@@ -1,0 +1,110 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial';
+    color: black;
+    background: rgb(255, 255, 255);
+  }
+    
+.pricing-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color:rgb(39, 39, 39);
+    background-color: rgba(243, 245, 247, 1.0);
+    padding: 20px 20px;
+    border-radius: 10px;
+    margin-top: 0px;
+    margin-bottom: 50px;
+    overflow: hidden;
+    flex-wrap: wrap; 
+    user-select: none;
+}
+.pricing-card {
+    flex: 0 0 270px; 
+    background: linear-gradient(135deg, #fff 0%, #e0c3fc 100%);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 40px 20px;
+    margin:20px 10px;
+    width: 300px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+.pricing-card h2 {
+    margin-top: 0;
+    color: #7c55e6;
+}
+.pricing-card p {
+    margin: 10px 0;
+    color: #333;
+}
+.pricing-features {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+    color: #555;
+    margin:20px;
+}
+.pricing-features li {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+.pricing-features li::before {
+    content: '✔️';
+    margin-right: 8px;
+    color: #7c55e6;
+}
+.pricing-price {
+    font-size: 24px;
+    margin: 20px 0;
+    color: #7c55e6;
+}
+#pricing-btn-premium {
+    background-color: #7c55e6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+#pricing-btn-premium:hover {
+    background-color: #5a0cad;
+}
+
+#pricing-btn-premium-plus {
+    background-color: #7c55e6;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease;
+}
+#pricing-btn-premium-plus:hover {
+    background-color: #5a0cad;
+}
+
+
+#network-not-found{
+    display:block;
+    margin:20px 0px;
+    font-size:15px;
+    font-weight: bold;
+    color:#7c55e6;
+}
+#network-not-found-2{
+    display:block;
+    margin:20px 0px;
+    font-size:15px;
+    font-weight: bold;
+    color:#7c55e6;
+}
