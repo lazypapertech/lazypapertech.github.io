@@ -397,6 +397,11 @@ h2{
     margin-bottom:0px;
   }
 
+.title-container {
+    text-align: center;
+    flex-grow: 1; 
+    cursor: pointer;
+}
 
   @media only screen and (max-width: 1000px) {
     /*
