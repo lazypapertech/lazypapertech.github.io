@@ -74,14 +74,14 @@
     <nav>
         <div id="titulo">
             <div class="transparent-container">
-                <span id="premium"><a href="./pricing.html">Premium</a></span>
-                <span id="affiliates"><a href="./affiliates.html">Affiliates</a></span>
+                <span id="premium"><a id="premium-a" href="./pricing.html"></a></span>
+                <span id="affiliates"><a id="affiliates-a" href="./affiliates.html"></a></span>
             </div>
             <div class="title-container" onclick="title_redirect()">
                 <h3 translate="no">MANYCAPTIONS</h3>
             </div>
             <div class="login-container">
-                <button id="login-btn" class="openLoginModalBtn">Log In</button>
+                <button id="login-btn" class="openLoginModalBtn"></button>
             </div>
         </div>
     </nav>
@@ -89,11 +89,11 @@
     <div class="card-container">
         
         <div class="principal-pages-responsive">
-            <span id="premium-responsive"><a href="./pricing.html">Premium</a></span>
+            <span id="premium-responsive"><a id="premium-responsive-a" href="./pricing.html"></a></span>
             <span class="separator-responsive">|</span>
-            <span id="affiliates-responsive"><a href="./affiliates.html">Affiliates</a></span>
+            <span id="affiliates-responsive"><a id="affiliates-responsive-a" href="./affiliates.html"></a></span>
             <span class="separator-responsive">|</span>
-            <button id="login-btn-responsive" class="openLoginModalBtn">Log In</button>
+            <button id="login-btn-responsive" class="openLoginModalBtn"></button>
         </div>
         
         <div translate="no" class="responsive-font-container">
@@ -402,17 +402,17 @@
     <div id="loginModal" class="loginModal">
         <div class="login-modal-content">
             <span class="login-close-btn">&times;</span>
-            <div class="titleLoginModal">Metamask</div> 
+            <div id="metamask-title" class="titleLoginModal"></div> 
             <div class="metamask-image">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" alt="MetaMask Logo" width="100">
             </div>
             <div class="descriptionLoginModal">
-                <p>Metamask is not installed, install the extension.</p>
+                <p id="install-metamask"></p>
             </div> 
             <div class="descriptionLoginModal">
                 <button class="install-wallet">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Google_Chrome_icon_%282011%29.png" alt="Chrome Logo" class="chrome-logo">
-                    Install on Chrome
+                    <span id="install-on-chrome"></span>
                 </button>
             </div> 
         </div>
