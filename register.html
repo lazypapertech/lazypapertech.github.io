@@ -7,10 +7,10 @@
 
     <meta name="description" content="Get a FREE gift of Premium features">
     
-    <meta property="og:site_name" content="Claim a FREE gift with my link">
+    <meta property="og:site_name" content="Claim a FREE gift with my referral link">
     <meta property="og:url" content="https://manycaptions.com/register.html">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Claim a FREE gift with my link">
+    <meta property="og:title" content="Claim a FREE gift with my referral link">
     <meta property="og:description" content="Get a FREE gift of Premium features">
     <meta property="og:image" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/jpg_image_2/og-image.jpg">
     <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/jpg_image_2/og-image.jpg">
@@ -25,5 +25,11 @@
        <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/transparent_image.jpg" alt="transparent image" class="transparent_image">
        <div class="progress-bar"></div>
     </div>
+    <script type="text/javascript">
+        let urlParams = new URLSearchParams(window.location.search);
+        let ref = urlParams.get('referralCode');
+        localStorage.setItem('referralCode', ref);
+        console.log("Valor: ", ref);
+    </script>
 </body>
 </html>
