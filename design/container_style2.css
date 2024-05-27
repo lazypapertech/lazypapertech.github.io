@@ -401,6 +401,7 @@ h2{
     text-align: center;
     flex-grow: 1; 
     cursor: pointer;
+    user-select: none;
 }
 
   @media only screen and (max-width: 1000px) {
