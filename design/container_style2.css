@@ -131,7 +131,8 @@ body {
   }
 
   .card-container {
-    margin: 20px 0px;
+    margin-top: 20px;
+    margin-bottom: 50px;
     border: 1px solid rgba(67, 245, 13, 0); 
     background-color: rgba(243, 245, 247, 1.0);
     /*border-radius: 20px;change*/ 
@@ -363,8 +364,8 @@ body {
     background-color: rgba(243, 245, 247, 1.0);
     padding: 20px 20px;
     border-radius: 10px;
-    margin-top: 80px;
-    margin-bottom: 100px;
+    margin-top: 50px;
+    margin-bottom: 50px;
     overflow: hidden;
     flex-wrap: wrap; 
     user-select: none;
@@ -496,9 +497,7 @@ h2{
     }
     */
 
-    .description-container{
-        margin-bottom: 60px;
-    }
+    
     .description-container-2 {
         justify-content: left;
         text-align:left;
