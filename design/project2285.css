@@ -1,0 +1,8 @@
+.rugido-logo{
+    width: 200px; /* Ancho de 50px */
+    height: 200px; /* Alto de 50px */
+    border-radius: 50%; /* Radio del borde al 50% para hacerla circular */
+    object-fit: cover;
+    margin-top:50px;
+    margin-bottom: 20px;
+}
