@@ -1,8 +1,32 @@
 .rugido-logo{
-    width: 200px; /* Ancho de 50px */
-    height: 200px; /* Alto de 50px */
-    border-radius: 50%; /* Radio del borde al 50% para hacerla circular */
+    width: 200px; 
+    height: 200px; 
+    border-radius: 50%; 
     object-fit: cover;
     margin-top:50px;
     margin-bottom: 20px;
 }
+
+.subtitle-description-container {
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    width: 400px; 
+    padding: 20px;
+    box-sizing: border-box; 
+  }
+  
+  .subtitle-description-container img {
+    width: calc(100% - 40px); 
+    height: auto; 
+    display: block; 
+    border-radius: 20px;
+  }
+
+  @media (max-width: 600px) {
+
+    .subtitle-description-container {
+        justify-content:left; 
+      }
+  }
+  
