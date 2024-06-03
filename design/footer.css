@@ -1,6 +1,6 @@
 
 #footer-name{
-    margin-top:0px;
+    margin:0px 100px;
     align-items: center;
     font-family: 'Bungee';
 }
@@ -74,7 +74,7 @@
 @media (max-width: 768px) {
 
     #footer-name{
-        margin-top:0px;
+        margin:0px;
     }
     #footer-name p{
         font-size: 16px;
