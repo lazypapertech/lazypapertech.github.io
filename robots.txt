@@ -36,6 +36,7 @@ Disallow: /project2285.html
 
 User-agent: *
 Disallow: /*.mp4$
+Disallow: /*.txt$
 Disallow: /404.html
 Disallow: /register.html
 Disallow: /affiliates.html
