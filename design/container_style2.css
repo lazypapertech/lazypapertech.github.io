@@ -601,7 +601,8 @@ h2{
     }
 
     nav h3 {
-      font-size:1.2rem;
+      font-size:20px;
+      margin:5px 0px;
     }
 }
 
