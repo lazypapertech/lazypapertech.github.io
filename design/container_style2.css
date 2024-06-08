@@ -125,6 +125,7 @@ body {
   
   nav h3 {
     display: inline-block;
+    color:rgba(0, 0, 0, 0.7);
     margin: 0px;
     font-size:1.5rem;
     font-family: 'Bungee';
@@ -597,6 +598,10 @@ h2{
     .modal-content-limit-size {
       max-width: 200px; 
       min-width: 100px; 
+    }
+
+    nav h3 {
+      font-size:1.2rem;
     }
 }
 
