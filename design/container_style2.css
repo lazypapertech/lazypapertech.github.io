@@ -122,6 +122,20 @@ body {
     height: 35px;    
     margin: 0px 5px;
 }
+
+.logo-container{
+  display:inline-block;
+  margin:0px 5px;
+  padding:0px;
+}
+.logo_title{
+  width: 30px; 
+  height: 30px;
+  border-radius: 50%; 
+  object-fit: cover;
+}
+
+
   
   nav h3 {
     display: inline-block;
@@ -130,6 +144,8 @@ body {
     font-size:1.5rem;
     font-family: 'Bungee';
   }
+  
+  
 
   .card-container {
     margin-top: 20px;
@@ -402,11 +418,13 @@ h2{
     margin-bottom:0px;
   }
 
+
 .title-container {
-    text-align: center;
+    display:flex;
+    align-items: center;
+    justify-content: center;
     flex-grow: 1; 
     cursor: pointer;
-    user-select: none;
 }
 
 
@@ -603,6 +621,11 @@ h2{
     nav h3 {
       font-size:20px;
       margin:5px 0px;
+    }
+
+    .logo_title{
+      width: 25px; 
+      height: 25px;
     }
 }
 
