@@ -1,5 +1,5 @@
 .checkbox-container-global {
-    display: flex;
+    display: none;
     align-items: center;
     margin-bottom: 10px;
 }
