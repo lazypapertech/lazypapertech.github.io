@@ -63,6 +63,8 @@
     <link rel="stylesheet" href="./design/affiliates_page.css"> 
     <link rel="stylesheet" href="./design/login_modal.css"> 
 
+    <link rel="stylesheet" href="./design/menu_languages.css"> 
+
 
 
 </head>
@@ -211,6 +213,14 @@
                     <button  id="editButton" class="custom-button" onclick="toggleEditability(1)"></button>
                     <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"></button>
                     <button id="settings-openModalBtn"><i class="fas fa-sliders-h icon-large"></i> </button>
+                    <div class="dropdown">
+                        <button onclick="toggleDropdown()" id="dropdown-btn">Output  &#x025BE;</button>
+                        <div id="dropdown-content" class="dropdown-content">
+                            <div onclick="selectOption('English')" class="dropdown-item">English</div>
+                            <div onclick="selectOption('Spanish')" class="dropdown-item">Spanish</div>
+                            <div onclick="selectOption('Portuguese')" class="dropdown-item">Portuguese</div>
+                        </div>
+                    </div>
                     <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()"></button>
                     <div id="form-container" class="form-container">
                 </div>
@@ -449,9 +459,10 @@
 
 </div>
 
-    <script src="./design/general_of_4.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js" type="text/javascript"></script>
-    <script src="./design/wallet_of.js" type="text/javascript"></script>
+    <script src="./design/general_of_4.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
+    <script src="./design/wallet_of.js"></script>
+    <script src="./design/menu_languages.js"></script>
     
 </body>
 </html>
