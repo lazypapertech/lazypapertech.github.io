@@ -6,6 +6,7 @@ Disallow: /affiliates.html
 Disallow: /pricing.html
 Disallow: /airdrop.html
 Disallow: /project2285.html
+Disallow: /design/images/title.jpg
 
 User-agent: Googlebot
 Disallow: 
@@ -15,6 +16,7 @@ Disallow: /affiliates.html
 Disallow: /pricing.html
 Disallow: /airdrop.html
 Disallow: /project2285.html
+Disallow: /design/images/title.jpg
 
 User-agent: Yandex
 Disallow:
@@ -24,6 +26,7 @@ Disallow: /affiliates.html
 Disallow: /pricing.html
 Disallow: /airdrop.html
 Disallow: /project2285.html
+Disallow: /design/images/title.jpg
 
 User-agent: Bingbot
 Disallow:
@@ -33,6 +36,7 @@ Disallow: /affiliates.html
 Disallow: /pricing.html
 Disallow: /airdrop.html
 Disallow: /project2285.html
+Disallow: /design/images/title.jpg
 
 User-agent: *
 Disallow: /*.mp4$
@@ -43,5 +47,6 @@ Disallow: /affiliates.html
 Disallow: /pricing.html
 Disallow: /airdrop.html
 Disallow: /project2285.html
+Disallow: /design/images/title.jpg
 
 Sitemap: https://manycaptions.com/sitemap.xml
