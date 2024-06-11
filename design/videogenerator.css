@@ -1,0 +1,234 @@
+body {
+    background: radial-gradient(circle, #1b2735, #090a0f);
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+nav{
+    color:#00ff00;
+}
+
+#principal-container {
+    position: relative;
+    width: 100%;
+    height: 1000px;
+    background-color: #1b273500; 
+    overflow: hidden;
+}
+
+.blob {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
+    filter: blur(100px);
+    opacity: 0.7;
+    z-index: -1;
+}
+
+
+#container {
+    display: block;
+    text-align: center;
+    margin:30px 0px;
+
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#container2 {
+    display: block;
+    text-align: center;
+    margin:30px 0px;
+
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#image-upload-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 10px;
+}
+
+.image-box {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #00ff00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.plus-symbol {
+    font-size: 24px;
+    color: #00ff00;
+}
+
+#text-container {
+    margin: 20px auto;
+}
+#text-container textarea{
+    font-family: "Segoe UI";
+    height:180px;
+    max-width:600px;
+}
+#text-input {
+    width: 80%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #666;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    resize: none;
+    font-size:16px;
+}
+
+#submit-button {
+    display:inline-block;
+    padding: 10px 20px;
+    border: none;
+    background-color: rgba(0, 128, 0, 0.5);
+    color: #ffffff;
+    cursor: not-allowed;
+}
+
+#submit-button:enabled {
+    background-color: #00ff00;
+    cursor: pointer;
+}
+
+#loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+.loader {
+    border: 8px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 8px solid #3498db;
+    width: 70px;
+    height: 70px;
+    animation: spin 2s linear infinite;
+}
+
+.progress {
+    margin:5px;
+    display:flex;
+    width:100%;
+    color: #ffffff;
+    font-size: 18px;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+
+
+.title-container {
+    display:flex;
+    margin-top:20px;
+    margin-bottom: 5px;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; 
+    cursor: pointer;
+}
+
+#card-video{
+    display:none;
+    margin:20px auto;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    max-width:500px;
+    height:auto;
+}
+
+.description-input{
+    font-size:14px;
+    margin:10px 30px;
+}
+
+#description-input-2{
+    display:none;
+    font-size:14px;
+    margin:10px 30px;
+}
+#description-input-2 a{
+    color:#00ca11;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: font-size 0.2s;
+}
+#description-input-2 a:hover{
+    color:#ffffff;
+}
+
+#description-loading{
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    display:none;
+}
+
+#downloadVideo{
+    display:none;
+    background-color: transparent;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    border:0px;
+    padding:10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    background-color: #00920c;
+    border-radius: 5pxrgb(0, 226, 57);
+    cursor: pointer;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .card-video{
+        margin:20px;
+    }
+}
