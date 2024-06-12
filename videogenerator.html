@@ -23,7 +23,7 @@
 
 </head>
 <body>
-    <div id="principal-container">
+   <div id="principal-container">
 
     
         <nav>
@@ -72,25 +72,30 @@
 
             <div class="description-input">
                 <p>El boton "Crear video" se habilitará cuando se hayan subido 6 imagenes y escrito entre 350 y 650 caracteres</p>
+                <p id="error-creation">Bad connection. Try it again</p>
             </div>
             <div id="description-input-2">
                 <p>Los subtitulos dinamicos se añaden en <a href="https://manycaptions.com">manycaptions.com</a></p>
-                <p id="error-creation">Bad connection. Try it again</p>
             </div>
+
 
             <div id="text-container">
                 <textarea id="text-input" maxlength="650" minlength="350" placeholder="Escribe tu guión..."></textarea>
             </div>
             <button id="submit-button" disabled>Crear video</button>
             
-            <div id="loading-container" style="display: none;">
+            <div id="loader-container">
                 <div class="loader">
-                    
+                    <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path-white" cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="5"/>
+          
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke="rgb(0, 235, 20)" stroke-width="5" stroke-dasharray="80 200" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="percentage" style="font-size: 18px;">0%</div>
                 </div>
             </div>
 
             <div id="description-loading">
-                <div class="progress">0%</div>
                 <p>Tiempo estimado: 2 minutos</p>
             </div>
 
