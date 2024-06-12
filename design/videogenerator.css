@@ -221,6 +221,11 @@ nav{
     border-radius: 5pxrgb(0, 226, 57);
     cursor: pointer;
 }
+#error-creation{
+    display:none;
+    font-weight: bold;
+    color:rgb(0, 255, 42);
+}
 
 @keyframes spin {
     0% { transform: rotate(0deg); }
