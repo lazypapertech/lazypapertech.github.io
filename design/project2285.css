@@ -1,3 +1,22 @@
+.telegram-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #0088cc;
+            color: white;
+            border: none;
+            border-radius: 10px; /* Para bordes redondeados */
+            text-decoration: none;
+            font-size: 24px;
+            transition: background-color 0.3s ease;
+        }
+
+        .telegram-button:hover {
+            background-color: #007bb5;
+        }
+
 .rugido-logo{
     width: 200px; 
     height: 200px; 
