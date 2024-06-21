@@ -16,9 +16,10 @@ nav{
 #principal-container {
     position: relative;
     width: 100%;
-    height: 1000px;
+    /*height: 1000px;*/
+    height: 100%;
     background-color: #1b273500; 
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .blob {
