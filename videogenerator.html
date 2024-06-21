@@ -32,7 +32,7 @@
                 
                 <div class="title-container">
                     
-                    <h3 translate="no">MANYCAPTIONS</h3>
+                    <h3 translate="no">BUILDERCAT</h3>
                 
                 </div>
             </div>
@@ -40,8 +40,34 @@
 
         
         <div id="container">
+            <div>
+                <img src="images/buildercat.png" class="rugido-logo">
+            </div>
             <div class="description-input">
-                <p>We are creating a platform so people can make money creating monetizable videos. Try our demo.</p>
+                <p>All of us in some way are builders, because by creating tokens or buying we are contributing to the construction of the future and this token represents all of us who are involved in the world of cryptocurrencies, trying to build a future.</p>
+            </div>
+            <div id="roadmap">
+                <p class="title-section">Roadmap</p>
+                
+                <p class="roadmap-list">1. Create incentives to generate liquidity in the pool</p>
+                <p class="roadmap-list">2. Reward holders</p>
+                <p class="roadmap-list">3. Reach 60k liquidity</p>
+                <p class="roadmap-list">4. Listing on Raydium</p>
+                <p class="roadmap-list">6. Reach 120k liquidity</p>
+                <p class="roadmap-list">7. Listing on centralized exchanges</p>
+                
+            </div>
+            
+            <p class="title-section">Tokenomics</p>
+            <div id="tokenomics">
+                <div class="subtitle-description-container">
+                    <img src="images/tokenomics.png" class="subtitle-description">
+                </div>
+            </div>
+
+            <p class="title-section">MVP</p>
+            <div class="description-input">
+                <p>To give importance to this token we have created a video generator with artificial intelligence, you can give it the utility you want, the objective of the token will be based on creating useful things for all of us. Try our demo.</p>
             </div>
 
             <div id="image-upload-container">
@@ -111,7 +137,17 @@
             </div>
 
             <div id="container2">
-                <p>Colaboration with $RugidoAI</p>
+                <p>I hope this token is useful to you.</p>
+
+                <a href="https://t.me/+wYRJZakl6OM4Nzg0" class="telegram-button" target="_blank">
+                    <i class="fab fa-telegram-plane"></i>
+                </a>
+
+                <!--
+                <a href="https://x.com/symphoniousAI" class="telegram-button" target="_blank">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                -->
             
             </div>
 
@@ -131,36 +167,6 @@
         
             
     <script src="./design/videogenerator_of.js"></script>
-    <script>
-        const container = document.getElementById("principal-container");
-        const numBlobs = 5;
-
-        function createBlob() {
-            const blob = document.createElement("div");
-            blob.classList.add("blob");
-            blob.style.top = Math.random() * (container.clientHeight - 300) + "px";
-            blob.style.left = Math.random() * (container.clientWidth - 300) + "px";
-            container.appendChild(blob);
-
-            moveBlob(blob);
-        }
-
-        function moveBlob(blob) {
-            const duration = Math.random() * 3000 + 3000; // Duración entre 3 y 6 segundos
-            const targetX = Math.random() * (container.clientWidth - 300);
-            const targetY = Math.random() * (container.clientHeight - 300);
-
-            blob.style.transition = `transform ${duration}ms ease-in-out`;
-            blob.style.transform = `translate(${targetX}px, ${targetY}px) scale(${Math.random() * 2 + 0.5})`;
-
-            setTimeout(() => {
-                moveBlob(blob);
-            }, duration);
-        }
-
-        for (let i = 0; i < numBlobs; i++) {
-            createBlob();
-        }
-    </script>
+    
 </body>
 </html>
