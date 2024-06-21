@@ -213,6 +213,9 @@ nav{
     font-size:14px;
     margin:10px 30px;
 }
+.description-input p{
+    max-width:500px;
+}
 
 #description-input-2{
     display:none;
