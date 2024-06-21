@@ -1,19 +1,191 @@
 body {
-    background: radial-gradient(circle, #1b2735, #090a0f);
     background: radial-gradient(circle, #341b35, #33293f);
     color: #ffffff;
     font-family: Arial, sans-serif;
     justify-content: center;
-@@ -25,7 +25,7 @@ nav{
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+
+nav{
+    color:#00ff00;
+}
+
+#principal-container {
+    position: relative;
+    width: 100%;
+    height: 1000vh;
+    overflow: hidden;
+    background-color: #1b273500; 
+}
+
+.blob {
     position: absolute;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0));
     background: radial-gradient(circle, #7c55e6, rgba(255, 255, 255, 0));
     filter: blur(100px);
     opacity: 0.7;
     z-index: -1;
-@@ -189,6 +189,12 @@ nav{
+}
+
+
+#container {
+    display: block;
+    text-align: center;
+    margin:30px 0px;
+
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#container2 {
+    display: block;
+    text-align: center;
+    margin:30px 0px;
+
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#image-upload-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 10px;
+}
+
+.image-box {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border: 2px dashed #00ff00;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.plus-symbol {
+    font-size: 24px;
+    color: #00ff00;
+}
+
+#text-container {
+    margin: 20px auto;
+}
+#text-container textarea{
+    font-family: "Segoe UI";
+    height:180px;
+    max-width:600px;
+}
+#text-input {
+    width: 80%;
+    height: 100px;
+    padding: 10px;
+    border: 1px solid #666;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    resize: none;
+    font-size:16px;
+}
+
+#submit-button {
+    display:inline-block;
+    padding: 10px 20px;
+    border: none;
+    background-color: rgba(0, 128, 0, 0.5);
+    color: #ffffff;
+    cursor: not-allowed;
+}
+
+#submit-button:enabled {
+    background-color: #00ff00;
+    cursor: pointer;
+}
+
+#loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+}
+
+
+
+#loader-container {
+    font-family: 'Arial Black';
+    display: none;/*flex*/
+    justify-content: center;
+    align-items: center;
+    margin-top:70px;
+    margin-bottom:20px;
+    color:rgba(0, 0, 0, 0.781);
+  }
+  
+  
+  .loader {
+    position: relative;
+    width: 120px;
+    height: 120px;
+  }
+  
+  
+  .circular {
+    animation: rotate 2s linear infinite;
+    
+    transform-origin: center center;
+    width: 100%;
+  }
+
+  .path {
+    stroke-dasharray: 80, 200;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 0.9s ease-in-out;
+  }
+
+  .percentage {
+    display:flex;
+    position: absolute;
+    color:white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 18px;
+  }
+
+
+
+
+
+
+.title-container {
+    display:flex;
+    margin-top:20px;
+    margin-bottom: 5px;
+    align-items: center;
+    justify-content: center;
     flex-grow: 1; 
     cursor: pointer;
 }
@@ -35,10 +207,12 @@ body {
     max-width:500px;
     height:auto;
 }
+
 .description-input{
     font-size:14px;
     margin:10px 30px;
 }
+
 #description-input-2{
     display:none;
     font-size:14px;
@@ -55,6 +229,7 @@ body {
 #description-input-2 a:hover{
     color:#ffffff;
 }
+
 #description-loading{
     display:none;
     justify-items: center;
@@ -62,6 +237,7 @@ body {
     align-items: center;
     align-content: center;
 }
+
 #downloadVideo{
     display:none;
     background-color: transparent;
@@ -75,16 +251,71 @@ body {
     border-radius: 5pxrgb(0, 226, 57);
     cursor: pointer;
 }
+
 #error-creation{
     display:none;
     font-weight: bold;
     color:rgb(0, 255, 42);
 }
+
+
+
+
+
+
+
+.carousel-container {
+    position: relative;
+    width: 200px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 30px;
+    user-select: none;
+}
+.carousel {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+.slide {
+    flex: 0 0 200px; 
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1em;
+    color:white;
+    background-color: #7c55e6;
+}
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px; 
+    height: 30px; 
+    background-color: #7c55e6; 
+    color: white;
+    border: none;
+    cursor: pointer;
+    z-index: 2; 
+    font-size: 16px;
+    font-weight: bold;
+}
+.prev {
+    left: 0;
+}
+.next {
+    right: 0;
+}
+
+
 @keyframes rotate {
     100% {
       transform: rotate(360deg);
     }
   }
+
+
 @media only screen and (max-width: 600px) {
     .card-video{
         margin:20px;
