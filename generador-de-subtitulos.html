@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Generador de subtitulos automaticos gratis</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <meta name="description" content="Añade subtitulos automaticos a tus videos para tus redes sociales. Generador de subtitulos gratis online sin marca de agua y sin limites">
+    <meta name="robots" content="index,follow">
+
+    <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
+    
+    <link href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/apple-touch-icon/apple-touch-icon.png" rel="apple-touch-icon">
+
+    
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta property="og:site_name" content="ManyCaptions">
+    <meta property="og:url" content="https://manycaptions.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Añade subtitulos animados a tus videos">
+    <meta property="og:description" content="Generador de subtitulos online gratis y sin marca de agua">
+    <meta property="og:image" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og-image.png">
+
+    
+    
+    
+    
+
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&display=swap">
+
+
+    
+
+
+    
+
+    <link rel="stylesheet" href="./design/card_captions.css">
+    <link rel="stylesheet" href="./design/card_video.css">
+    <link rel="stylesheet" href="./design/choose_file.css">
+    <link rel="stylesheet" href="./design/clips.css">
+    <link rel="stylesheet" href="./design/container_style2.css">
+    <link rel="stylesheet" href="./design/customFonts.css">
+
+    <link rel="stylesheet" href="./design/footer.css">
+
+    <link rel="stylesheet" href="./design/language_video.css">
+    <link rel="stylesheet" href="./design/loading_upload.css">
+
+    <link rel="stylesheet" href="./design/modal.css">
+
+    <link rel="stylesheet" href="./design/settings.css">
+    <link rel="stylesheet" href="./design/settings-font.css">
+    <link rel="stylesheet" href="./design/settings-color.css">
+
+    <link rel="stylesheet" href="./design/select_options.css">
+
+    <link rel="stylesheet" href="./design/affiliates_page.css"> 
+    <link rel="stylesheet" href="./design/login_modal.css"> 
+
+    <link rel="stylesheet" href="./design/menu_languages.css"> 
+
+
+
+</head>
+<body>
+    
+
+
+    <div id="principal-container" class="container">
+    <nav>
+        <div translate="no" id="titulo">
+            <!--
+            <div class="transparent-container">
+                <span id="premium"><a id="premium-a" href="./pricing.html"></a></span>
+                <span id="affiliates"><a id="affiliates-a" href="./affiliates"></a></span>
+            </div>
+            -->
+            <div class="title-container">
+                <div class="logo-container">
+                    <img src="design/images/title.jpg" class="logo_title">
+                </div>
+                <h3 translate="no">MANYCAPTIONS</h3>
+            </div>
+            <!--
+            <div class="login-container">
+                <button id="login-btn" class="openLoginModalBtn"></button>
+            </div>
+            -->
+        </div>
+    </nav>
+
+    <!--
+    <div translate="no" class="principal-pages-responsive">
+            <span id="premium-responsive"><a id="premium-responsive-a" href="./pricing.html"></a></span>
+            <span class="separator-responsive">|</span>
+            <span id="affiliates-responsive"><a id="affiliates-responsive-a" href="./affiliates"></a></span>
+            <span class="separator-responsive">|</span>
+            <button id="login-btn-responsive" class="openLoginModalBtn"></button>
+    </div>
+    -->
+
+    <div class="card-container">
+        
+        
+        
+        <div translate="no" class="responsive-font-container">
+            <div class="responsive-font-0">
+                <div class="destacado">
+                    DYNAMIC
+                </div>
+                
+                CAPTIONS
+                
+            </div>
+            <div id="responsive-font" class="responsive-font">
+                <h4>Generador de Subtitulos Animados Gratis</h4>
+            </div>
+            
+        </div>
+        
+        
+    
+    
+        <div class="sub-card-container">
+            <div class="card">
+
+
+        
+
+                <div class="chooseFile-container">
+                    <button class="cloud-button">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                    </button>
+        
+                    <input type="file" id="file" accept="video/mp4" hidden>
+                    
+                    <button id="chooseFile" class="btn-upload"><i class="fas fa-folder-open"></i><span id="choose_video_p"></span></button>
+                    
+                    <div class="checkbox-container-global">
+                        <div class="checkbox-container">
+                            
+                            <input type="checkbox" class="checkbox-input" id="option_1" name="option1">
+                            <label class="checkbox-custom" for="option_1"></label>
+                            <label id="short_captions" class="checkbox-label" for="option_1"></label>
+
+                        </div>
+                    
+                        <div class="checkbox-container">
+                            
+                            <input type="checkbox" class="checkbox-input" id="option_2" name="option2" checked>
+                            <label class="checkbox-custom" for="option_2"></label>
+                            <label id="long_captions" class="checkbox-label" for="option_2"></label>
+
+                        </div>
+                    </div>
+
+                    <div class="max-size"></div>
+                    <div class="container-lang">
+                        <div id="selected-language"></div> 
+                        <span id="change-language"><a id="change-language-a"></a></span>
+                    </div>
+                    
+                    <div class="error-dimension"></div>
+                </div>
+        
+        
+        
+                
+                
+        
+                <div class="video-container" style="position: relative; width: 100%; height: 250px; overflow: hidden; border-radius: 10px;">
+                    <video id="my-video-2" controls preload="auto" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" oncontextmenu="return false;">
+                        <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/videocontainer.mp4" type="video/mp4">
+                    </video>
+                </div>
+                
+        
+                
+                <div class="loader-container">
+                    <div class="loader">
+                        <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="path-white" cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="5"/>
+              
+                        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke="rgb(119, 0, 255)" stroke-width="5" stroke-dasharray="80 200" stroke-dashoffset="0"/>
+                        </svg>
+                        <div class="percentage" style="font-size: 18px;"></div>
+                    </div>
+                </div>
+        
+                <div class="loader-description">
+                </div>
+                
+        
+                <div class="buttons-container">
+                    <button id="editCaptions" name="click_download" class="btn" onclick="desplazarHaciaSeccion()"></button>
+                    <button id="createVideo" name="click_download" class="btn" onclick="check_edited_captions()"></button>
+                </div>
+                <div class="error-creation"></div>
+        
+                
+                
+              </div>
+              <div class="card-captions">
+                
+        
+                <div id="sub-container" class="sub-container">
+                    <button  id="editButton" class="custom-button" onclick="toggleEditability(1)"></button>
+                    <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"></button>
+                    <button id="settings-openModalBtn"><i class="fas fa-sliders-h icon-large"></i> </button>
+                    <div class="dropdown">
+                        <button onclick="toggleDropdown()" id="dropdown-btn">Output  &#x025BE;</button>
+                        <div id="dropdown-content" class="dropdown-content">
+                            <div onclick="selectOption('English')" class="dropdown-item">English</div>
+                            <div onclick="selectOption('Spanish')" class="dropdown-item">Spanish</div>
+                            <div onclick="selectOption('Portuguese')" class="dropdown-item">Portuguese</div>
+                        </div>
+                    </div>
+                    <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()"></button>
+                    <div id="form-container" class="form-container">
+                </div>
+                    
+        
+        
+                </div>
+              </div>
+        </div>
+
+        <div id="description_captions">
+            <article>
+                <h2>Añade subtitulos a tus videos gratis sin marca de agua y sin registrarse</h2>
+            </article>
+        </div>
+
+      
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <p></p>
+                <span class="close-yes"></span>
+                <span class="close-no"></span>
+            </div>
+        </div>
+
+
+
+
+
+        <br>
+        <br>
+        <br>
+        
+    </div>
+        
+
+    <div id="discountMessage"></div>
+
+
+    <div class="description-container">
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Expande tu alcance en redes sociales</p>
+                <h1>Añade subtitulos animados a tus videos sin marca de agua</h1>
+            </header>
+
+            <article>
+                <p class="description-container-3">
+                    Al crear subtítulos dinámicos podrás crear vídeos más atractivos y con mayor probabilidad de tener más visualizaciones.
+                    La mayoría de los espectadores ven vídeos de redes sociales sin volumen, lo que hace que el uso de subtítulos sea más útil.
+                </p>
+            </article>
+        </div>
+
+        <div class="features-container">
+            <div class="sub-container-features">
+                <article>
+                    <p class="description-container-4">Subtitulos editables</p>
+                    <p class="description-container-3">
+                        Genera subtítulos automáticos y luego edítalos a tu gusto.
+                    </p>
+                </article>
+            </div>
+            <div class="sub-container-features">
+                <article>
+                    <p class="description-container-4">Crea vídeos de alta calidad</p>
+                    <p class="description-container-3">
+                        Crea vídeos con subtítulos dinámicos sin perder la calidad inicial.
+                    </p>
+                </article>
+            </div>
+            <div class="sub-container-features">
+                <article>
+                    <p class="description-container-4">Creador de vídeos para redes sociales</p>
+                    <p class="description-container-3">
+                        Ahorra tiempo creando subtítulos automáticos para crear vídeos cautivadores para tus redes sociales.
+                    </p>
+                </article>
+            </div>
+        </div>
+
+        <div class="description-container-2">
+            <article>
+                <p class="description-container-3">
+                    Usando manycaptions es posible crear subtítulos animados para retener más audiencia en sus publicaciones en las redes sociales. Agregue subtítulos animados a sus videos sin marca de agua creando una apariencia profesional.
+                </p>
+            </article>
+        </div>
+    </div>
+
+    
+
+
+    <div class="clip-container">
+        <div class="sub-container-clip">
+            <video autoplay muted loop>
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip1.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="sub-container-clip">
+            <video autoplay muted loop>
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip2.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div id="clip3" class="sub-container-clip">
+            <video autoplay muted loop>
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip3.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+    </div>
+
+    <div class="description-container">
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Herramienta para subtitular vídeos sin límites de carga</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Con tecnología de inteligencia artificial, ManyCaptions ofrece intentos ilimitados para una sincronización rápida y precisa. No se requiere tarjeta de crédito ni registro.
+                </p>
+            </article>
+        </div>
+        
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Cómo puedo agregar subtítulos animados a mis videos en línea de forma gratuita?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Simplemente cargue su video y manycaptions se encargará del resto generando subtítulos animados automáticamente. No es necesario descargar software adicional.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Puedo agregar subtítulos a tantos videos como quiera cada día de forma gratuita?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Sí, manycaptions no tiene límite en la cantidad de videos que puedes subtitular diariamente. Es posible subir y subtitular tantos vídeos como desees sin restricciones.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Es posible descargar un vídeo subtitulado sin registrarse?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Sí, es posible descargar un vídeo subtitulado de forma gratuita y sin registrarse en ManyCaptions. Se pretende que el proceso sea lo más sencillo y accesible posible para todos los usuarios.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Se puede exportar el vídeo subtitulado de forma gratuita?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Sí, exportar el vídeo subtitulado de manycaptions es completamente gratuito. El archivo subtitulado se puede obtener sin incurrir en ningún coste adicional.
+                </p>
+            </article>
+        </div>
+
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Cómo agrego subtítulos a videos sin marca de agua de forma gratuita?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    ManyCaptions permite agregar subtítulos a videos sin marcas de agua y sin costo, asegurando una apariencia limpia y profesional para los videos.
+                </p>
+            </article>
+        </div>
+
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Cómo puedo agregar subtítulos a mis videos para enganchar a mi audiencia?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Para agregar subtítulos a sus videos e involucrar efectivamente a su audiencia, use ManyCaptions para generar subtítulos personalizados diseñados para captar la atención.
+                </p>
+            </article>
+        </div>
+
+        
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Cómo traduzco vídeos online gratis?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Traduce videos largos y cortos en línea de forma gratuita usando ManyCaptions. Sube tu vídeo y selecciona el idioma de destino para recibir subtítulos traducidos automáticamente.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">¿Cómo traduzco vídeos en línea para llegar a una audiencia más amplia?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    ManyCaptions facilita la traducción de vídeos en línea para llegar a un público más amplio. Los usuarios pueden cargar videos y seleccionar el idioma deseado para una generación de subtítulos precisa y eficiente.
+                </p>
+            </article>
+        </div>
+
+        
+
+
+    </div>
+
+
+
+    <footer>
+    <div translate="no" class="footer-container">
+        <div id="footer-name" class="sub-container-footer">
+            <p>manycaptions</p>
+        </div>
+        <div class="sub-container-footer">
+            <p id="pages" class="footer-section"></p>
+            <ul class="links">
+                <li><a href="./index.html">Dynamic captions</a></li>
+            </ul>
+        </div>
+        <!--
+        <div id="support-container" class="sub-container-footer">
+            <p id="support" class="footer-section"></p>
+            <ul class="links">
+                <li><a id="contact" href="./index.html"></a></li>
+                <li><a id="about_us" href="./index.html"></a></li>
+            </ul>
+        </div>
+        -->
+        <div class="sub-container-footer">
+            <p id="company" class="footer-section"></p>
+            <ul class="links">
+                <li><a id="privacy_policy" href="https://raw.githubusercontent.com/manyresources/resources/main/privacy.txt"></a></li>
+                <li><a id="terms_conditions" href="https://raw.githubusercontent.com/manyresources/resources/main/terms.txt"></a></li>
+            </ul>
+        </div>
+        <div class="divider"></div>
+        <div class="copyright">
+            
+        </div>
+    </div>
+    </footer>
+
+
+
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-modal-content">
+            <span class="settings-close-btn">&times;</span>
+            <div class="settings-title"></div>
+            <div>
+                <ul id="settingsList">
+                    <li>
+                        <div id="settings-font" class="settings-font-block"></div>
+                    </li>
+                    <li>
+                        <div id="settings-color" class="settings-font-block"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="fontModal" class="fontModal">
+        <div class="font-modal-content">
+            <span class="font-close-btn">&times;</span>
+            <ul id="fontList">
+            </ul>
+        </div>
+    </div>
+
+    <div class="colorModal" id="colorModal">
+        <div class="color-modal-content">
+            <span id="closeModalColor" class="color-close-btn">&times;</span>
+            <div>
+                <button id="monoColor" class="change-color-btn"></button>
+                <button id="multiColor" class="change-color-btn"></button>
+                
+            </div>
+            <div id="colorOptions">
+                
+            </div>
+            <p id="colorCount"></p>
+            <button id="saveColor" class="change-color-btn"></button>
+        </div>
+    </div>
+
+    <div id="languageModal" class="languageModal">
+        <div class="language-modal-content">
+            <button id="save-lang"></button>
+            <span class="language-close-btn">&times;</span>
+            <div class="ask-lang"></div>
+            <div>
+                <ul id="languageList">
+                </ul>
+            </div>  
+        </div>
+    </div>
+
+    <div id="loginModal" class="loginModal">
+        <div class="login-modal-content">
+            <span class="login-close-btn">&times;</span>
+            <div id="metamask-title" class="titleLoginModal"></div> 
+            <div class="metamask-image">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" alt="MetaMask Logo" width="100">
+            </div>
+            <div class="descriptionLoginModal">
+                <p id="install-metamask"></p>
+            </div> 
+            <div class="descriptionLoginModal">
+                <button id="install-wallet" class="install-wallet">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Google_Chrome_icon_%282011%29.png" alt="Chrome Logo" class="chrome-logo">
+                    <span id="install-on-chrome"></span>
+                </button>
+            </div> 
+        </div>
+    </div>
+
+    <div id="myModal_limit_size" class="modal_limit_size">
+        <div class="modal-content-limit-size">
+            
+            <div id="x_limit_size">
+                <span class="close_limit_size">&times;</span>
+            </div>
+            <div>
+                <p id="limit_size_message"></p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+    <script src="./design/general_of_5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
+    <script src="./design/wallet_of.js"></script>
+    
+    
+</body>
+</html>
