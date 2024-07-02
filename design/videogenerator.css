@@ -16,7 +16,8 @@ nav{
 #principal-container {
     position: relative;
     width: 100%;
-    height: 150vh;
+    height: 100%;
+    /*height: 150vh;*/
     overflow: hidden;
     background-color: #1b273500; 
 }
