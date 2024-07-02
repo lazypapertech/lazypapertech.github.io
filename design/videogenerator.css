@@ -1,5 +1,5 @@
 body {
-    background: radial-gradient(circle, #341b35, #33293f);
+    background: radial-gradient(circle, #5f477e, #3e37a1);
     color: #ffffff;
     font-family: Arial, sans-serif;
     justify-content: center;
@@ -59,13 +59,13 @@ nav{
     flex-wrap: wrap;
     justify-content: center;
     gap: 10px;
-    margin: 20px 10px;
+    margin: 20px 30px;
 }
 
 .image-box {
     position: relative;
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border: 2px dashed #00ff00;
     display: flex;
     justify-content: center;
@@ -99,6 +99,8 @@ nav{
     font-family: "Segoe UI";
     height:180px;
     max-width:600px;
+    color:rgba(0, 0, 0, 1);
+    background-color: rgba(243, 245, 247, 1.0);
 }
 #text-input {
     width: 80%;
