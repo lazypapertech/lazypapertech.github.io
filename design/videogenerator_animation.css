@@ -1,0 +1,31 @@
+
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(10, 10%);
+    grid-template-rows: repeat(10, 10%);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  .emoji {
+    font-size: 24px;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .show-emoji {
+    animation: fadeChange 3s infinite;
+  }
+  
+  @keyframes fadeChange {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 0.4; }
+  }
+  
+  
+  
