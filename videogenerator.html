@@ -21,9 +21,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&display=swap">
     
     <link rel="stylesheet" href="./design/videogenerator.css">
+    <link rel="stylesheet" href="./videogenerator_animation.css">
 
 </head>
 <body>
+    <div id="grid-container" class="grid-container"></div>
    <div id="principal-container">
 
     
@@ -41,8 +43,8 @@
         
         <div id="container">
             <div class="description-input">
-                <p>We are creating a platform so people can make money creating monetizable videos.</p>
-                <p>This platform collaborates with the token team $RRCAT. Try our demo.</p>
+                <p>Video creator with AI</p>
+                <p>This platform collaborates with the token team $RRCAT.</p>
             </div>
 
             <div id="image-upload-container">
@@ -132,36 +134,6 @@
         
             
     <script src="./design/videogenerator_of.js"></script>
-    <script>
-        const container = document.getElementById("principal-container");
-        const numBlobs = 5;
-
-        function createBlob() {
-            const blob = document.createElement("div");
-            blob.classList.add("blob");
-            blob.style.top = Math.random() * (container.clientHeight - 300) + "px";
-            blob.style.left = Math.random() * (container.clientWidth - 300) + "px";
-            container.appendChild(blob);
-
-            moveBlob(blob);
-        }
-
-        function moveBlob(blob) {
-            const duration = Math.random() * 3000 + 3000; // Duración entre 3 y 6 segundos
-            const targetX = Math.random() * (container.clientWidth - 300);
-            const targetY = Math.random() * (container.clientHeight - 300);
-
-            blob.style.transition = `transform ${duration}ms ease-in-out`;
-            blob.style.transform = `translate(${targetX}px, ${targetY}px) scale(${Math.random() * 2 + 0.5})`;
-
-            setTimeout(() => {
-                moveBlob(blob);
-            }, duration);
-        }
-
-        for (let i = 0; i < numBlobs; i++) {
-            createBlob();
-        }
-    </script>
+    <script src="./videogenerator_animation.js"></script>
 </body>
 </html>
