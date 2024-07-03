@@ -14,9 +14,8 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background-color: #444;
+    background-color: #6643c9;
     padding: 20px;
-    margin-top: 20px;
     overflow: hidden;
     user-select: none;
 }
