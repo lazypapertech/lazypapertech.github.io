@@ -1,5 +1,6 @@
+
 body {
-    background: radial-gradient(circle, #5f477e, #3e37a1);
+    background-color: #6643c9;
     color: #ffffff;
     font-family: Arial, sans-serif;
     justify-content: center;
@@ -9,16 +10,54 @@ body {
 }
 
 
-nav{
-    color:#00ff00;
+nav {
+    background-color: #f8f8f8;
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    margin:0px;
+    user-select: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  nav h3 {
+    display: inline-block;
+    color:rgba(0, 0, 0, 0.7);
+    margin: 0px;
+    font-size:1.5rem;
+    font-family: 'Bungee';
+  }
+
+  .title-container {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1; 
+    cursor: pointer;
 }
+
+
+.logo-container{
+    display:inline-block;
+    margin:0px 5px;
+    padding:0px;
+  }
+  .logo_title{
+    width: 30px; 
+    height: 30px;
+    border-radius: 50%; 
+    object-fit: cover;
+  }
+  
+  
+  
 
 #principal-container {
     position: relative;
     width: 100%;
     height: 100%;
-    /*height: 150vh;*/
-    overflow: hidden;
     background-color: #1b273500; 
 }
 
@@ -67,11 +106,12 @@ nav{
     position: relative;
     width: 80px;
     height: 80px;
-    border: 2px dashed #00ff00;
+    border: 2px dashed #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    border-radius: 10px;
 }
 
 .image-box img {
@@ -90,7 +130,7 @@ nav{
 
 .plus-symbol {
     font-size: 24px;
-    color: #00ff00;
+    color: #ffffff;
 }
 
 #text-container {
@@ -106,18 +146,20 @@ nav{
 #text-input {
     width: 80%;
     height: 100px;
-    padding: 10px;
+    padding: 20px;
     border: 1px solid #666;
     background-color: #1e1e1e;
     color: #ffffff;
     resize: none;
     font-size:16px;
+    border-radius: 20px;
 }
 
 #submit-button {
     display:inline-block;
     padding: 10px 20px;
     border: none;
+    border-radius: 5px;
     background-color: rgba(0, 128, 0, 0.5);
     color: #ffffff;
     cursor: not-allowed;
@@ -183,20 +225,9 @@ nav{
 
 
 
-.title-container {
-    display:flex;
-    margin-top:20px;
-    margin-bottom: 5px;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1; 
-    cursor: pointer;
-}
-.title-container h3{
-    margin: 0px;
-    font-size:25px;
-    font-family: 'Bungee';
-}
+  
+    
+    
 
 
 #card-video{
@@ -257,8 +288,12 @@ nav{
 
 #error-creation{
     display:none;
+    font-size:12px;
+    padding:5px;
+    border-radius: 10px;
+    background-color:white;
     font-weight: bold;
-    color:rgb(0, 255, 42);
+    color:rgb(255, 0, 0);
 }
 
 
@@ -312,6 +347,32 @@ nav{
 }
 
 
+.responsive-font {
+    font-size: 30px;  
+    white-space: nowrap;  
+    overflow: hidden;  
+    text-overflow: ellipsis;  
+
+    display: flex;
+    justify-content: center;  
+    align-items: center;     
+    height: 100%;  
+
+    margin-top:20px;
+    margin-bottom:40px;
+    padding:0px;
+
+    color:rgba(255, 255, 255, 0.9);
+    
+    font-family: 'Arial';
+    font-weight: bold;
+}
+
+.responsive-font h4 {
+  margin:0px;
+}
+
+
 @keyframes rotate {
     100% {
       transform: rotate(360deg);
@@ -322,5 +383,18 @@ nav{
 @media only screen and (max-width: 600px) {
     .card-video{
         margin:20px;
+    }
+}
+
+
+@media only screen and (max-width: 1000px) {
+    .responsive-font{
+        font-size:25px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .responsive-font{
+        font-size:20px;
     }
 }
