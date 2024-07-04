@@ -1,0 +1,51 @@
+
+.card-container {
+    display:flex;
+    margin:0;
+    border: 1px solid rgba(67, 245, 13, 0); 
+    background-color: rgba(243, 245, 247, 1.0);
+    display: block;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+.description-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    color:rgb(39, 39, 39);
+    background-color: rgba(243, 245, 247, 1.0);
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    overflow: hidden;
+    flex-wrap: wrap; 
+}
+.description-container-2 {
+    display: flex;
+    justify-content: center;
+    text-align:center;
+    color:rgb(39, 39, 39);
+    background-color: rgba(243, 245, 247, 1.0);
+    padding: 20px 20px;
+    overflow: hidden;
+    flex-wrap: wrap; 
+    max-width:600px;
+}
+
+.description-container-3 {
+    font-family: "Segoe UI";
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+.description-container-4 {
+    color:#7c55e6;
+    font-family: "Segoe UI";
+    font-size:1em;
+    font-weight: bold;
+}
+
+#upload-description{
+    font-size:16px;
+}
