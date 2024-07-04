@@ -14,8 +14,15 @@
 </url>
 
 <url>
+    <loc>https://manycaptions.com/videogenerator</loc>
+    <lastmod>2024-07-04T02:00:00+00:00</lastmod> 
+    <changefreq>daily</changefreq> 
+    <priority>0.90</priority>
+</url>
+
+<url>
     <loc>https://manycaptions.com/generador-de-subtitulos</loc>
-    <lastmod>2024-06-27T20:00:00+00:00</lastmod> 
+    <lastmod>2024-07-04T02:00:00+00:00</lastmod> 
     <changefreq>daily</changefreq> 
     <priority>0.80</priority>
 </url>
