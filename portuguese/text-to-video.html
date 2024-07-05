@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Reels grátis sem marca d'água</title>
+
+    <meta name="description" content="Crear reels gratis sin marca de agua sin saber editar">
+    <meta name="robots" content="index,follow">
+    
+    <meta property="og:site_name" content="Gerador de vídeo de IA">
+    <meta property="og:url" content="https://manycaptions.com/videogenerator.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Gerador de vídeo de IA">
+    <meta property="og:description" content="Gerador de vídeo de IA">
+    <meta property="og:image" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/jpg_image_2/og-image.jpg">
+    <meta property="og:image:secure_url" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og_image_2/jpg_image_2/og-image.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    
+    <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
+
+    <link href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/apple-touch-icon/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&display=swap">
+    
+    <link rel="stylesheet" href="./design/videogenerator.css">
+    <link rel="stylesheet" href="./design/videogenerator_animation.css">
+    <link rel="stylesheet" href="./design/videogenerator_description.css">
+    <link rel="stylesheet" href="./design/footer.css">
+
+
+</head>
+<body>
+    <div id="grid-container" class="grid-container"></div>
+
+    <div id="principal-container">
+
+    
+        <nav>
+            <div id="titulo">
+                <div class="title-container">
+                    <div class="logo-container">
+                        <img src="design/images/title.jpg" class="logo_title">
+                    </div>
+                    
+                    <h3 translate="no">MANYCAPTIONS</h3>
+                    
+                    
+                </div>
+            </div>
+        </nav>
+
+        
+        <div id="container">
+            <div class="description-input">
+                <div id="responsive-font" class="responsive-font">
+                    <h4>Gerador de vídeo de IA</h4>
+                </div>
+            </div>
+
+            <div id="image-upload-container">
+                <div class="image-box" data-index="0">
+                    <input type="file" accept="image/*" onchange="handleFileChange(event, 0)" class="file-input">
+                    <span class="plus-symbol">+</span>
+                </div>
+                <div class="image-box" data-index="1">
+                    <input type="file" accept="image/*" onchange="handleFileChange(event, 1)" class="file-input">
+                    <span class="plus-symbol">+</span>
+                </div>
+                <div class="image-box" data-index="2">
+                    <input type="file" accept="image/*" onchange="handleFileChange(event, 2)" class="file-input">
+                    <span class="plus-symbol">+</span>
+                </div>
+                <div class="image-box" data-index="3">
+                    <input type="file" accept="image/*" onchange="handleFileChange(event, 3)" class="file-input">
+                    <span class="plus-symbol">+</span>
+                </div>
+                <div class="image-box" data-index="4">
+                    <input type="file" accept="image/*" onchange="handleFileChange(event, 4)" class="file-input">
+                    <span class="plus-symbol">+</span>
+                </div>
+                <div class="image-box" data-index="5">
+                    <input type="file" accept="image/*" onchange="handleFileChange(event, 5)" class="file-input">
+                    <span class="plus-symbol">+</span>
+                </div>
+            </div>
+
+            
+
+            <div class="description-input">
+                <p id="upload-description"></p>
+                <p id="error-creation"></p>
+            </div>
+            <div id="description-input-2">
+                <p id="createdvideo-description"></p>
+                <!--
+                <span><a href="./index.html" style="color: blue; background-color: white; padding: 10px; border-radius: 10px; text-decoration: none; font-weight: bold;">Discord</a></span>
+                -->
+            </div>
+
+
+            <div id="text-container">
+                <textarea id="text-input" maxlength="650" minlength="0" placeholder="Enter custom text..."></textarea>
+            </div>
+            <button id="submit-button" disabled>Criar vídeo</button>
+            
+            <div id="loader-container">
+                <div class="loader">
+                    <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path-white" cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="5"/>
+          
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke="rgb(0, 235, 20)" stroke-width="5" stroke-dasharray="80 200" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="percentage" style="font-size: 18px;">0%</div>
+                </div>
+            </div>
+
+            <div id="description-loading">
+                <p id="time-description"></p>
+            </div>
+
+            
+
+            <div id="card-video">
+                <div class="video-container" style="display:flex;position: relative; width: 100%; height: 250px; overflow: hidden; border-radius: 10px;">
+                    <video id="my-video-2" controls preload="auto" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" oncontextmenu="return false;">
+                        <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/videocontainer.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+
+            <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()">Exportar vídeo</button>
+
+            
+        </div>
+
+
+        <div class="card-container">
+            <div class="description-container">
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Crie reels ilimitados</p>
+                        <h1>Criador de reels AI</h1>
+                    </header>
+        
+                    <article>
+                        <p class="description-container-3">
+                            Manycaptions é uma ferramenta de inteligência artificial para criar vídeos curtos a partir de texto totalmente grátis para redes sociais, sem saber editar.
+                        </p>
+                    </article>
+                </div>
+                
+        
+            </div>
+
+
+            <div class="description-container">
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Ferramenta de IA gratuita para criar vídeos sem limites</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            ManyCaptions oferece tentativas ilimitadas de criação de vídeos automatizados. Não é necessário cartão de crédito ou registro.
+                        </p>
+                    </article>
+                </div>
+                
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Como posso criar vídeos de IA online gratuitamente?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            Basta fazer upload de imagens personalizadas e inserir seu texto, e o ManyCaptions cuidará do resto, gerando vídeos automatizados com inteligência artificial e habilitados para voz. Não há necessidade de baixar software adicional.
+                        </p>
+                    </article>
+                </div>
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Posso criar quantos vídeos quiser todos os dias gratuitamente?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            Sim, ManyCaptions não tem limite para o número de vídeos que você pode criar diariamente. É possível criar quantos vídeos quiser sem nenhuma restrição.
+                        </p>
+                    </article>
+                </div>
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">É possível baixar os vídeos resultantes sem se cadastrar?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            Sim, é possível baixar todos os vídeos que você gera gratuitamente e sem se cadastrar no ManyCaptions. O processo pretende ser o mais simples e acessível possível para todos os usuários.
+                        </p>
+                    </article>
+                </div>
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Os vídeos automatizados podem ser exportados gratuitamente?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            Sim, a exportação de vídeos automatizados do ManyCaptions é totalmente gratuita.
+                        </p>
+                    </article>
+                </div>
+        
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Como faço para criar vídeos automatizados sem marca d'água gratuitamente?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            ManyCaptions permite criar vídeos sem marcas d'água e sem nenhum custo, garantindo uma aparência profissional.
+                        </p>
+                    </article>
+                </div>
+        
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Como posso criar vídeos automatizados para envolver meu público?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            Para criar vídeos automatizados e atrair mais público, use ManyCaptions para gerar vídeos personalizados projetados para chamar a atenção.
+                        </p>
+                    </article>
+                </div>
+        
+                
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Como editar vídeos sem saber editar?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            ManyCaptions permite criar vídeos automaticamente sem a necessidade de editá-los.
+                        </p>
+                    </article>
+                </div>
+        
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Posso editar os vídeos gerados com ManyCaptions?</p>
+                    </header>
+                    <article>
+                        <p class="description-container-3">
+                            Sim, depois de criar os vídeos você pode editá-los ao seu gosto adicionando efeitos e detalhes personalizados.
+                        </p>
+                    </article>
+                </div>
+        
+                
+        
+        
+            </div>
+
+            <br>
+            <br>
+            <br>
+            <br>
+
+        </div>
+
+        
+
+        <footer>
+            <div translate="no" class="footer-container">
+                <div id="footer-name" class="sub-container-footer">
+                    <p>manycaptions</p>
+                </div>
+                <div class="sub-container-footer">
+                    <p id="pages"></p>
+                    <ul class="links">
+                        <li><a href="./index.html">Dynamic captions</a></li>
+                    </ul>
+                    <ul class="links">
+                        <li><a href="./videogenerator">Text to video</a></li>
+                    </ul>
+                    
+                </div>
+                
+                
+                <div class="sub-container-footer">
+                    <p id="company"></p>
+                    <ul class="links">
+                        <li><a id="privacy_policy" href="./index.html"></a></li>
+                        <li><a id="terms_conditions" href="./index.html"></a></li>
+                    </ul>
+                </div>
+                <div class="divider"></div>
+                <div class="copyright">
+                    
+                </div>
+            </div>
+            </footer>
+
+        
+
+        
+    </div>
+
+   
+
+    
+            
+        
+            
+    <script src="./design/videogenerator_of_2.js"></script>
+    <script src="./design/videogenerator_animation.js"></script>
+    
+</body>
+</html>
