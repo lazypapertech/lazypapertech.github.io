@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerador de legendas grátis sem marca d'água</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    
+    <meta name="description" content="Este site adiciona legendas automáticas aos vídeos para redes sociais. Gerador de legendas online gratuito, sem marca d'água e sem limites">
+    <meta name="robots" content="index,follow">
+
+    <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
+    
+    <link href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/apple-touch-icon/apple-touch-icon.png" rel="apple-touch-icon">
+
+    
+    <meta name="twitter:card" content="summary_large_image">
+
+    <meta property="og:site_name" content="Manycaptions">
+    <meta property="og:url" content="https://manycaptions.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Adicione legendas animadas aos vídeos">
+    <meta property="og:description" content="Gerador de legendas online gratuito sem marca d'água">
+    <meta property="og:image" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og-image.png">
+
+    
+    
+    
+    
+
+    
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&display=swap">
+
+
+    
+
+
+    
+
+    <link rel="stylesheet" href="../design/card_captions.css">
+    <link rel="stylesheet" href="../design/card_video.css">
+    <link rel="stylesheet" href="../design/choose_file.css">
+    <link rel="stylesheet" href="../design/clips.css">
+    <link rel="stylesheet" href="../design/container_style2.css">
+    <link rel="stylesheet" href="../design/customFonts.css">
+
+    <link rel="stylesheet" href="../design/footer.css">
+
+    <link rel="stylesheet" href="../design/language_video.css">
+    <link rel="stylesheet" href="../design/loading_upload.css">
+
+    <link rel="stylesheet" href="../design/modal.css">
+
+    <link rel="stylesheet" href="../design/settings.css">
+    <link rel="stylesheet" href="../design/settings-font.css">
+    <link rel="stylesheet" href="../design/settings-color.css">
+
+    <link rel="stylesheet" href="../design/select_options.css">
+
+    <link rel="stylesheet" href="../design/affiliates_page.css"> 
+    <link rel="stylesheet" href="../design/login_modal.css"> 
+
+    <link rel="stylesheet" href="../design/menu_languages.css"> 
+
+
+
+</head>
+<body>
+    
+
+
+    <div id="principal-container" class="container">
+    <nav>
+        <div translate="no" id="titulo">
+            
+            <div class="title-container">
+                <div class="logo-container">
+                    <img src="../design/images/title.jpg" class="logo_title">
+                </div>
+                <h3 translate="no">MANYCAPTIONS</h3>
+            </div>
+            
+        </div>
+    </nav>
+
+    
+
+    <div class="card-container">
+        
+        
+        
+        <div translate="no" class="responsive-font-container">
+            <div class="responsive-font-0">
+                <div class="destacado">
+                    DYNAMIC
+                </div>
+                
+                CAPTIONS
+                
+            </div>
+            <div id="responsive-font" class="responsive-font">
+                <h4>Gerador de legendas animadas grátis</h4>
+            </div>
+            
+        </div>
+        
+        
+    
+    
+        <div class="sub-card-container">
+            <div class="card">
+
+
+        
+
+                <div class="chooseFile-container">
+                    <button class="cloud-button">
+                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                    </button>
+        
+                    <input type="file" id="file" accept="video/mp4" hidden>
+                    
+                    <button id="chooseFile" class="btn-upload"><i class="fas fa-folder-open"></i><span id="choose_video_p"></span></button>
+                    
+                    <div class="checkbox-container-global">
+                        <div class="checkbox-container">
+                            
+                            <input type="checkbox" class="checkbox-input" id="option_1" name="option1">
+                            <label class="checkbox-custom" for="option_1"></label>
+                            <label id="short_captions" class="checkbox-label" for="option_1"></label>
+
+                        </div>
+                    
+                        <div class="checkbox-container">
+                            
+                            <input type="checkbox" class="checkbox-input" id="option_2" name="option2" checked>
+                            <label class="checkbox-custom" for="option_2"></label>
+                            <label id="long_captions" class="checkbox-label" for="option_2"></label>
+
+                        </div>
+                    </div>
+
+                    <div class="max-size"></div>
+                    <div class="container-lang">
+                        <div id="selected-language"></div> 
+                        <span id="change-language"><a id="change-language-a"></a></span>
+                    </div>
+                    
+                    <div class="error-dimension"></div>
+                </div>
+        
+        
+        
+                
+                
+        
+                <div class="video-container" style="position: relative; width: 100%; height: 250px; overflow: hidden; border-radius: 10px;">
+                    <video id="my-video-2" controls preload="auto" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain;" oncontextmenu="return false;">
+                        <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/videocontainer.mp4" type="video/mp4">
+                    </video>
+                </div>
+                
+        
+                
+                <div class="loader-container">
+                    <div class="loader">
+                        <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="path-white" cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="5"/>
+              
+                        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke="rgb(119, 0, 255)" stroke-width="5" stroke-dasharray="80 200" stroke-dashoffset="0"/>
+                        </svg>
+                        <div class="percentage" style="font-size: 18px;"></div>
+                    </div>
+                </div>
+        
+                <div class="loader-description">
+                </div>
+                
+        
+                <div class="buttons-container">
+                    <button id="editCaptions" name="click_download" class="btn" onclick="desplazarHaciaSeccion()"></button>
+                    <button id="createVideo" name="click_download" class="btn" onclick="check_edited_captions()"></button>
+                </div>
+                <div class="error-creation"></div>
+        
+                
+                
+              </div>
+              <div class="card-captions">
+                
+        
+                <div id="sub-container" class="sub-container">
+                    <button  id="editButton" class="custom-button" onclick="toggleEditability(1)"></button>
+                    <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"></button>
+                    <button id="settings-openModalBtn"><i class="fas fa-sliders-h icon-large"></i> </button>
+                    <div class="dropdown">
+                        <button onclick="toggleDropdown()" id="dropdown-btn">Output  &#x025BE;</button>
+                        <div id="dropdown-content" class="dropdown-content">
+                            <div onclick="selectOption('English')" class="dropdown-item">English</div>
+                            <div onclick="selectOption('Spanish')" class="dropdown-item">Spanish</div>
+                            <div onclick="selectOption('Portuguese')" class="dropdown-item">Portuguese</div>
+                        </div>
+                    </div>
+                    <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()"></button>
+                    <div id="form-container" class="form-container">
+                </div>
+                    
+        
+        
+                </div>
+              </div>
+        </div>
+
+        <div id="description_captions">
+            <article>
+                <h2>Adicione legendas aos seus vídeos gratuitamente, sem marca d'água e sem registro</h2>
+            </article>
+        </div>
+
+      
+
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <p></p>
+                <span class="close-yes"></span>
+                <span class="close-no"></span>
+            </div>
+        </div>
+
+
+
+
+
+        <br>
+        <br>
+        <br>
+        
+    </div>
+        
+
+    <div id="discountMessage"></div>
+
+
+    <div class="description-container">
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Expanda seu alcance nas redes sociais</p>
+                <h1>Adicione legendas animadas aos seus vídeos sem marca d'água</h1>
+            </header>
+
+            <article>
+                <p class="description-container-3">
+                    Manycaptions utiliza inteligência artificial para legendar vídeos, oferecendo sincronização precisa com o áudio sem limite de tempo.
+                </p>
+            </article>
+        </div>
+
+        <div class="features-container">
+            <div class="sub-container-features">
+                <article>
+                    <p class="description-container-4">Subtitulos editables</p>
+                    <p class="description-container-3">
+                        Crie legendas automáticas e edite-as ao seu gosto.
+                    </p>
+                </article>
+            </div>
+            <div class="sub-container-features">
+                <article>
+                    <p class="description-container-4">Crea vídeos de alta calidad</p>
+                    <p class="description-container-3">
+                        Crie vídeos com legendas dinâmicas sem perder a qualidade inicial e sem limite de tempo.
+                    </p>
+                </article>
+            </div>
+            <div class="sub-container-features">
+                <article>
+                    <p class="description-container-4">Creador de vídeos para redes sociales</p>
+                    <p class="description-container-3">
+                        Economize tempo criando legendas automáticas para criar vídeos cativantes para suas redes sociais.
+                    </p>
+                </article>
+            </div>
+        </div>
+
+        <div class="description-container-2">
+            <article>
+                <p class="description-container-3">
+                    Usando o Manycaptions é possível criar legendas animadas para reter mais audiência para suas postagens nas redes sociais. Adicione legendas animadas aos seus vídeos sem marca d'água, criando uma aparência profissional.
+                </p>
+            </article>
+        </div>
+    </div>
+
+    
+
+
+    <div class="clip-container">
+        <div class="sub-container-clip">
+            <video autoplay muted loop>
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip5.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div class="sub-container-clip">
+            <video autoplay muted loop>
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip2.mp4" type="video/mp4">
+            </video>
+        </div>
+        <div id="clip3" class="sub-container-clip">
+            <video autoplay muted loop>
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip3.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+    </div>
+
+    <div class="description-container">
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Ferramenta para legendar vídeos sem limite de tempo</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    ManyCaptions oferece tentativas ilimitadas para sincronização rápida e precisa. Não é necessário cartão de crédito ou registro.
+                </p>
+            </article>
+        </div>
+        
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Como adicionar legendas animadas aos meus vídeos gratuitamente e sem limite de tempo?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Basta enviar seu vídeo e o Manycaptions cuidará do resto, gerando legendas animadas automaticamente. Não há necessidade de baixar software adicional.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Posso adicionar legendas a quantos vídeos quiser todos os dias gratuitamente?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Sim, o Manycaptions não tem limite para o número de vídeos que você pode legendar diariamente. É possível enviar e legendar quantos vídeos quiser sem restrições.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">É possível baixar vídeos legendados sem se cadastrar?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Sim, é possível baixar vídeos legendados gratuitamente e sem cadastro no Manycaptions. O processo pretende ser o mais simples e acessível possível para todos os usuários.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Os vídeos legendados podem ser exportados gratuitamente?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Sí, exportar los vídeos subtitulados de Manycaptions es completamente gratis.
+                </p>
+            </article>
+        </div>
+
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Como adiciono legendas a vídeos sem marca d'água gratuitamente?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Manycaptions permite adicionar legendas a vídeos sem marcas d'água e sem nenhum custo, garantindo uma aparência limpa e profissional aos seus vídeos.
+                </p>
+            </article>
+        </div>
+
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Como posso adicionar legendas aos meus vídeos para envolver meu público?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Para adicionar legendas aos seus vídeos e envolver o seu público, use Manycaptions para gerar legendas personalizadas projetadas para chamar a atenção.
+                </p>
+            </article>
+        </div>
+
+        
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Como posso traduzir vídeos online gratuitamente?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    Traduza vídeos longos online gratuitamente usando Manycaptions. Envie seu vídeo e selecione o idioma de destino para receber legendas traduzidas automaticamente.
+                </p>
+            </article>
+        </div>
+
+        <div class="description-container-2">
+            <header>
+                <p class="description-container-4">Como posso traduzir vídeos online para alcançar um público mais amplo?</p>
+            </header>
+            <article>
+                <p class="description-container-3">
+                    O Manycaptions facilita a tradução de vídeos on-line para atingir um público mais amplo. Os usuários podem enviar vídeos e selecionar o idioma desejado para geração de legendas precisa e eficiente.
+                </p>
+            </article>
+        </div>
+
+        
+
+
+    </div>
+
+
+
+    <footer>
+    <div translate="no" class="footer-container">
+        <div id="footer-name" class="sub-container-footer">
+            <p>manycaptions</p>
+        </div>
+        <div class="sub-container-footer">
+            <p id="pages" class="footer-section"></p>
+            <ul class="links">
+                <li><a href="./subtitle-generator">Dynamic captions</a></li>
+                <li><a id="videogenerator" href="./text-to-video"></a></li>
+            </ul>
+        </div>
+        
+        <div class="sub-container-footer">
+            <p id="company" class="footer-section"></p>
+            <ul class="links">
+                <li><a id="privacy_policy" href="https://raw.githubusercontent.com/manyresources/resources/main/privacy.txt"></a></li>
+                <li><a id="terms_conditions" href="https://raw.githubusercontent.com/manyresources/resources/main/terms.txt"></a></li>
+            </ul>
+        </div>
+        <div class="divider"></div>
+        <div class="copyright">
+            
+        </div>
+    </div>
+    </footer>
+
+
+
+    <div id="settingsModal" class="settings-modal">
+        <div class="settings-modal-content">
+            <span class="settings-close-btn">&times;</span>
+            <div class="settings-title"></div>
+            <div>
+                <ul id="settingsList">
+                    <li>
+                        <div id="settings-font" class="settings-font-block"></div>
+                    </li>
+                    <li>
+                        <div id="settings-color" class="settings-font-block"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div id="fontModal" class="fontModal">
+        <div class="font-modal-content">
+            <span class="font-close-btn">&times;</span>
+            <ul id="fontList">
+            </ul>
+        </div>
+    </div>
+
+    <div class="colorModal" id="colorModal">
+        <div class="color-modal-content">
+            <span id="closeModalColor" class="color-close-btn">&times;</span>
+            <div>
+                <button id="monoColor" class="change-color-btn"></button>
+                <button id="multiColor" class="change-color-btn"></button>
+                
+            </div>
+            <div id="colorOptions">
+                
+            </div>
+            <p id="colorCount"></p>
+            <button id="saveColor" class="change-color-btn"></button>
+        </div>
+    </div>
+
+    <div id="languageModal" class="languageModal">
+        <div class="language-modal-content">
+            <button id="save-lang"></button>
+            <span class="language-close-btn">&times;</span>
+            <div class="ask-lang"></div>
+            <div>
+                <ul id="languageList">
+                </ul>
+            </div>  
+        </div>
+    </div>
+
+    <div id="loginModal" class="loginModal">
+        <div class="login-modal-content">
+            <span class="login-close-btn">&times;</span>
+            <div id="metamask-title" class="titleLoginModal"></div> 
+            <div class="metamask-image">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" alt="MetaMask Logo" width="100">
+            </div>
+            <div class="descriptionLoginModal">
+                <p id="install-metamask"></p>
+            </div> 
+            <div class="descriptionLoginModal">
+                <button id="install-wallet" class="install-wallet">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Google_Chrome_icon_%282011%29.png" alt="Chrome Logo" class="chrome-logo">
+                    <span id="install-on-chrome"></span>
+                </button>
+            </div> 
+        </div>
+    </div>
+
+    <div id="myModal_limit_size" class="modal_limit_size">
+        <div class="modal-content-limit-size">
+            
+            <div id="x_limit_size">
+                <span class="close_limit_size">&times;</span>
+            </div>
+            <div>
+                <p id="limit_size_message"></p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+    <script src="../design/general_of_5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
+    <script src="../design/wallet_of.js"></script>
+    
+    
+</body>
+</html>
