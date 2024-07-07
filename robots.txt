@@ -5,7 +5,7 @@ Disallow: /affiliates.html
 Disallow: /pricing.html
 Disallow: /airdrop.html
 Disallow: /project2285.html
-Disallow: /design/images/title.jpg
+Disallow: /design/
 Disallow: /*.mp4$
 Disallow: /*.txt$
 
