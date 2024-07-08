@@ -385,11 +385,23 @@ form{
   }
 
 
+@media only screen and (max-width: 1000px) {
+    .responsive-font{
+        font-size:25px;
+    }
+}
+
+
 @media only screen and (max-width: 600px) {
     nav h3 {
         font-size:20px;
         margin:5px 0px;
       }
+
+    .logo_title{
+        width: 25px; 
+        height: 25px;
+    }
 
     .card-video{
         margin:20px;
@@ -401,9 +413,4 @@ form{
 }
 
 
-@media only screen and (max-width: 1000px) {
-    .responsive-font{
-        font-size:25px;
-    }
-}
 
