@@ -372,6 +372,11 @@ nav {
   margin:0px;
 }
 
+form{
+    display: flex;
+    align-items: flex-start;
+}
+
 
 @keyframes rotate {
     100% {
@@ -381,8 +386,17 @@ nav {
 
 
 @media only screen and (max-width: 600px) {
+    nav h3 {
+        font-size:20px;
+        margin:5px 0px;
+      }
+
     .card-video{
         margin:20px;
+    }
+
+    .responsive-font{
+        font-size:20px;
     }
 }
 
@@ -393,8 +407,3 @@ nav {
     }
 }
 
-@media only screen and (max-width: 600px) {
-    .responsive-font{
-        font-size:20px;
-    }
-}
