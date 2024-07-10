@@ -2,8 +2,8 @@
   
   .grid-container {
     display: grid;
-    grid-template-columns: repeat(20, 20%);
-    grid-template-rows: repeat(20, 20%);
+    grid-template-columns: repeat(5, 20%);
+    grid-template-rows: repeat(5, 20%);
     width: 100%;
     height: 100%;
     position: absolute;
