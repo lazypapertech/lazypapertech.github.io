@@ -135,6 +135,11 @@ body {
   object-fit: cover;
 }
 
+#cloud_transparent{
+  width:75px;
+  height:55px;
+}
+
 
   
   nav h3 {
