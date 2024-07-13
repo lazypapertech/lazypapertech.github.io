@@ -5,6 +5,9 @@ Disallow: /affiliates.html
 Disallow: /pricing.html
 Disallow: /airdrop.html
 Disallow: /project2285.html
+Disallow: /videogenerator.html
+Disallow: /generador-de-videos.html
+Disallow: /portuguese/text-to-video.html
 Disallow: /design/
 Disallow: /*.mp4$
 Disallow: /*.txt$
