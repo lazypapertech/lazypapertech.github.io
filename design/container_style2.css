@@ -112,6 +112,7 @@ body {
     
   }
 
+/*
   .destacado {
     background-color: #7c55e6;  
     color:white;
@@ -120,6 +121,19 @@ body {
     display: flex;              
     align-items: center;        
     height: 35px;    
+    margin: 0px 5px;
+}*/
+
+  .destacado {
+    display: flex;              
+    align-items: center;  
+    justify-content: center;   
+
+    background-color: #7c55e6;  
+    color:white;
+    padding:5px 15px;          
+    border-radius: 8px;         
+    height: auto;    
     margin: 0px 5px;
 }
 
@@ -175,7 +189,7 @@ body {
   
 
   .responsive-font-0 {
-    font-size: 25px;  
+    font-size: 22px;  
     white-space: nowrap;  
     overflow: hidden;  
     text-overflow: ellipsis;  
