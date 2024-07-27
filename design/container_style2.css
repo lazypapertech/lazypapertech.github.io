@@ -139,21 +139,13 @@ body {
 }
 */
   .destacado {
-    display: flex;              
-    align-items: center;  
-    justify-content: center;   
- 
-    color:rgb(255, 255, 255);  
-    margin: 0px 5px;
-
-    text-shadow: 
-      -1px -1px 0 #7c55e6,  
-       1px -1px 0 #7c55e6,
-      -1px  1px 0 #7c55e6,
-       1px  1px 0 #7c55e6,
-       2px 2px 5px #5010ff;
-    
-}
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #7c55e6; 
+    border-radius: 10px;
+    color: white;
+    margin:0px 5px;
+  }
 
 .logo-container{
   display:inline-block;
