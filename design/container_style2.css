@@ -124,6 +124,11 @@ body {
     margin: 0px 5px;
 }*/
 
+.responsive-font-container{
+    display: block;              
+    align-items: center;  
+    justify-content:center;  
+  }
   .destacado {
     display: flex;              
     align-items: center;  
