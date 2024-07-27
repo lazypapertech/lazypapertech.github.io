@@ -560,6 +560,9 @@ h2{
       */
 
       .responsive-font-0 {
+        display: flex;
+        justify-content: center;  
+        align-items: center; 
         font-size: 20px;
     }
       .responsive-font {
@@ -614,6 +617,9 @@ h2{
     }
 
     .responsive-font-0 {
+        display: flex;
+        justify-content: center;  
+        align-items: center; 
       margin-top:50px;
       margin-bottom: 20px;
       font-size: 18px;
