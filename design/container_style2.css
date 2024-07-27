@@ -175,7 +175,7 @@ body {
   
 
   .responsive-font-0 {
-    font-size: 120%;  
+    font-size: 25px;  
     white-space: nowrap;  
     overflow: hidden;  
     text-overflow: ellipsis;  
@@ -188,7 +188,7 @@ body {
     color:#7c55e6;
     
     margin-top:70px;
-    font-family: 'Arial Black';
+    font-family: 'Luckiest Guy';
     font-weight: bolder;
 }
 
@@ -602,7 +602,7 @@ h2{
     .responsive-font-0 {
       margin-top:50px;
       margin-bottom: 20px;
-      font-size: 14px;
+      font-size: 18px;
   }
   .responsive-font {
       font-size: 18px;
