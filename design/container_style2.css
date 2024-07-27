@@ -124,11 +124,7 @@ body {
     margin: 0px 5px;
 }*/
 
-.responsive-font-container{
-    display: block;              
-    align-items: center;  
-    justify-content:center;  
-  }
+/*
   .destacado {
     display: flex;              
     align-items: center;  
@@ -140,6 +136,23 @@ body {
     border-radius: 8px;         
     height: auto;    
     margin: 0px 5px;
+}
+*/
+  .destacado {
+    display: flex;              
+    align-items: center;  
+    justify-content: center;   
+ 
+    color:rgb(255, 255, 255);  
+    margin: 0px 5px;
+
+    text-shadow: 
+      -1px -1px 0 #7c55e6,  
+       1px -1px 0 #7c55e6,
+      -1px  1px 0 #7c55e6,
+       1px  1px 0 #7c55e6,
+       2px 2px 5px #5010ff;
+    
 }
 
 .logo-container{
