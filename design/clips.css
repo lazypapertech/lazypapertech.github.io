@@ -80,6 +80,8 @@
     left: 0;
     z-index: -1;
 }
+
+/*
 .sub-container-clip:hover video {
     filter: brightness(0.8); 
 }
@@ -89,6 +91,7 @@
     background-color: #7c55e6;
     box-shadow: 0 0 20px #5f2ee4;
 }
+*/
 
 
 
