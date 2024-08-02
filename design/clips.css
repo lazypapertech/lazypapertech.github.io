@@ -15,10 +15,11 @@
 }
 
 
+
 .sub-container-features {
     flex: 0 0 270px; 
-    background: linear-gradient(135deg, #ffffff 0%, #9277da33 100%);
-    border-radius: 15px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 10px 20px;
     margin:20px 10px;
