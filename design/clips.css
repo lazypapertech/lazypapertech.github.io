@@ -64,11 +64,12 @@
 .sub-container-clip {
     flex: 0 0 270px; 
     height: 480px;
-    padding: 0px;
+    padding: 5px;
+    background-color: white;
     border-radius: 10px;
     margin: 0 10px 20px;
     text-align: center;
-    transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .sub-container-clip video {
@@ -81,17 +82,7 @@
     z-index: -1;
 }
 
-/*
-.sub-container-clip:hover video {
-    filter: brightness(0.8); 
-}
 
-
-.sub-container-clip:hover {
-    background-color: #7c55e6;
-    box-shadow: 0 0 20px #5f2ee4;
-}
-*/
 
 
 
