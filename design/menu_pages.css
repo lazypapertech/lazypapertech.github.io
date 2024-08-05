@@ -1,0 +1,126 @@
+
+
+.header-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    color: #333;
+    padding: 10px 40px;
+    position: fixed;
+    width: 100%;
+    height:70px;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.logo-container-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-container-menu p{
+    margin: auto;
+    font-family: 'Bungee';
+    font-size:20px;
+    color:rgba(0, 0, 0, 0.7);
+}
+
+.logo-menu {
+    height: 30px;
+    margin-right: 10px;
+    border-radius: 50%; 
+    object-fit: cover;
+}
+
+.hamburger {
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.side-menu {
+    position: fixed;
+    top: 68px;
+    left: -100%;
+    width: 150px;
+    height: 100%;
+    background-color: white;
+    color: #444;
+    padding: 20px 40px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: left 0.3s;
+    z-index: 999;
+}
+
+.side-menu.active {
+    left: 0;
+}
+
+.side-menu nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+.side-menu nav ul li {
+    margin: 20px 0;
+    padding: 10px 5px;
+}
+
+.side-menu nav ul li a {
+    color: #444;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.content-enhanced {
+    margin-top: 70px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .logo-container-menu p{
+        font-size:18px;
+    }
+    .hamburger {
+        font-size: 25px;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .header-menu {
+        height:60px;
+        padding: 10px 20px;
+    }
+    
+    .logo-container-menu p{
+        font-size:16px;
+    }
+    
+    .logo-menu {
+        height: 25px;
+    }
+    
+    .hamburger {
+        font-size: 22px;
+        font-weight: bold;
+        color:#444;
+    }
+    
+    .side-menu {
+        top: 55px;
+        padding: 20px 20px;
+    }
+
+    .side-menu nav ul li a {
+        font-size: 16px;
+    }
+
+    .content-enhanced {
+        margin-top: 60px;
+    }
+    
+}
