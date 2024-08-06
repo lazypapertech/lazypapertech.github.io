@@ -39,3 +39,51 @@
     color:white;
     background-color: #7c55e6;
 }
+
+
+/*dropdown export*/
+
+
+.exportDropdown{
+    display: none;
+    width:auto;
+    border-radius: 5px;
+    font-size:15px;
+    margin-right:10px;
+}
+
+#exportDropdown-button {
+    color:black;
+    border: 1px solid #66f88b; 
+    background-color: #66f88b;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+#exportDropdown-button:hover{
+    color:white;
+    background-color: #7c55e6;
+}
+
+.exportDropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(243, 245, 247, 1.0);
+    width: auto;
+    border: 1px solid #7c55e6; 
+    box-shadow: 0px 8px 20px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.exportDropdown-content .exportDropdown-item {
+    color:black;
+    padding: 12px 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.exportDropdown-content .exportDropdown-item:hover {
+    color:white;
+    background-color: #7c55e6;
+}
