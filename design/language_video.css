@@ -51,6 +51,7 @@
     overflow-y: auto; /* Añadir scroll cuando el contenido excede la altura */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
+    border-radius: 10px;
 }
 
 .language-close-btn {
