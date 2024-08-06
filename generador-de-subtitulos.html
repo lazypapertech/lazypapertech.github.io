@@ -1,27 +1,26 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Subtitulos dinámicos gratis sin marca de agua</title>
+    <title>Animated Subtitles Without Watermark</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     
-    <meta name="description" content="Añadir subtitulos animados gratis sin marca de agua. Generador de subtitulos gratis sin marca de agua sin limite de tiempo">
+    <meta name="description" content="Free animated subtitles without watermark. Free online subtitle generator no credit card required">
     <meta name="robots" content="index,follow">
 
     <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
-    
-    <link href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/apple-touch-icon/apple-touch-icon.png" rel="apple-touch-icon">
 
+    <link href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/apple-touch-icon/apple-touch-icon.png" rel="apple-touch-icon">
     
     <meta name="twitter:card" content="summary_large_image">
 
     <meta property="og:site_name" content="ManyCaptions">
     <meta property="og:url" content="https://manycaptions.com/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Añade subtitulos animados a tus videos">
-    <meta property="og:description" content="Generador de subtitulos online gratis y sin marca de agua">
+    <meta property="og:title" content="Add Subtitles to Video">
+    <meta property="og:description" content="Auto Generated Subtitles for Clips">
     <meta property="og:image" content="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/image/og-image.png">
 
     
@@ -39,7 +38,6 @@
     
 
 
-
     
 
 
@@ -49,7 +47,7 @@
     <link rel="stylesheet" href="./design/card_video.css">
     <link rel="stylesheet" href="./design/choose_file.css">
     <link rel="stylesheet" href="./design/clips.css">
-    <link rel="stylesheet" href="./design/container_style2.css">
+    <link rel="stylesheet" href="./design/container_style2_menu.css">
     <link rel="stylesheet" href="./design/customFonts.css">
 
     <link rel="stylesheet" href="./design/footer.css">
@@ -69,48 +67,45 @@
     <link rel="stylesheet" href="./design/login_modal.css"> 
 
     <link rel="stylesheet" href="./design/menu_languages.css"> 
-
     <link rel="stylesheet" href="./design/questions.css"> 
 
+    <link rel="stylesheet" href="./design/menu_pages.css">
 
 
 </head>
 <body>
     
+    <div class="header-menu">
+        <div class="logo-container-menu">
+            <img src="design/images/title.jpg" alt="Logo" class="logo-menu">
+            <p>Manycaptions</p>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            &#9776;
+        </div>
+    </div>
+    
+    <div class="side-menu" id="sideMenu">
+            <nav>
+                <ul>
+                    <li><a href="./">Home</a></li>
+                    <li><a href="#description-container">Features</a></li>
+                    <li><a href="#clip-container">How to use</a></li>
+                    <li><a href="#description-container-questions">FAQ</a></li>
+                </ul>
+            </nav>
+    </div>
+
+    <div id="content-enhanced" class="content-enhanced">
+
+    
 
 
     <div id="principal-container" class="container">
-    <nav>
-        <div translate="no" id="titulo">
-            <!--
-            <div class="transparent-container">
-                <span id="premium"><a id="premium-a" href="./generador-de-videos.html"></a></span>
-            </div>
-            -->
+    
 
-            <div class="title-container">
-                <div class="logo-container">
-                    <img src="design/images/title.jpg" class="logo_title">
-                </div>
-                <h3 translate="no">MANYCAPTIONS</h3>
-            </div>
-
-            <!--
-            <div class="login-container">
-                <button id="login-btn"></button>
-            </div>
-            -->
-
-        </div>
-    </nav>
-
-    <!--
-    <div translate="no" class="principal-pages-responsive">
-        <span id="premium-responsive"><a id="premium-responsive-a" href="./generador-de-videos.html"></a></span>
-        <span class="separator-responsive">|</span>
-        <button id="login-btn-responsive"></button>
-    </div>
-    -->
+    
+    
 
     <div class="card-container">
         
@@ -118,15 +113,10 @@
         
         <div translate="no" class="responsive-font-container">
             <div class="responsive-font-0">
-                <div class="destacado">
-                    DYNAMIC
-                </div>
-                
-                CAPTIONS
-                
+                <h3>Dynamic Captions</h3>
             </div>
             <div id="responsive-font" class="responsive-font">
-                <h4>Generador de Subtitulos Animados Gratis</h4>
+                <h4>Add Animated Subtitles to videos</h4>
             </div>
             
         </div>
@@ -140,9 +130,10 @@
 
         
 
-                <div class="chooseFile-container">
+                <div class="chooseFile-container" id="dropZone">
                     <button class="cloud-button">
-                        <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                        <!--<i class="fas fa-cloud-upload-alt fa-3x"></i>-->
+                        <img src="design/images/cloud_transparent.png" id="cloud_transparent">
                     </button>
         
                     <input type="file" id="file" accept="video/mp4" hidden>
@@ -221,7 +212,7 @@
                     <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"></button>
                     <button id="settings-openModalBtn"><i class="fas fa-sliders-h icon-large"></i> </button>
                     <div class="dropdown">
-                        <button onclick="toggleDropdown()" id="dropdown-btn">Traducir  &#x025BE;</button>
+                        <button onclick="toggleDropdown()" id="dropdown-btn">Translate  &#x025BE;</button>
                         <div id="dropdown-content" class="dropdown-content">
                             <div onclick="selectOption('Reset')" class="dropdown-item">Reset</div>
                             <div onclick="selectOption('English')" class="dropdown-item">English</div>
@@ -232,7 +223,17 @@
                             <div onclick="selectOption('Italian')" class="dropdown-item">Italian</div>
                         </div>
                     </div>
+                    <button id="downloadSRT" class="downloadSRT" onclick="downloadSRT()"></button>
                     <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()"></button>
+
+                    <div class="exportDropdown">
+                        <button id="exportDropdown-button" class="exportDropdown-button" onclick="toggleExportDropdown()"></button>
+                        <div id="exportDropdown-content" class="exportDropdown-content">
+                            <div onclick="downloadVideo()" class="exportDropdown-item">mp4</div>
+                            <div onclick="downloadSRT()" class="exportDropdown-item">SRT</div>
+                        </div>
+                    </div>
+                    
                     <div id="form-container" class="form-container">
                 </div>
                     
@@ -244,7 +245,7 @@
 
         <div id="description_captions">
             <article>
-                <h2>Añadir subtitulos automáticos gratis sin marca de agua y sin limite de tiempo</h2>
+                <h2>Dynamic Captions without watermark or time limit</h2>
             </article>
         </div>
 
@@ -272,17 +273,17 @@
     <div id="discountMessage"></div>
 
 
-    <div class="description-container">
+    <div id="description-container" class="description-container">
         <div class="description-container-2">
             <header>
-                <p class="description-container-4">Traducir videos largos sin marca de agua</p>
-                <h1>Añade subtitulos animados a tus videos sin marca de agua</h1>
+                <p class="description-container-4">Grow on social media</p>
+                <h1>Unlimited Dynamic Subtitles without Watermark</h1>
             </header>
 
             <article>
                 <p class="description-container-3">
-                    Al crear subtítulos dinámicos podrás crear vídeos más atractivos y con mayor probabilidad de tener más visualizaciones.
-                    La mayoría de los espectadores ven vídeos de redes sociales sin volumen, lo que hace que el uso de subtítulos sea más útil.
+                    By creating dynamic subtitles you can create more attractive videos with a greater probability of having more views.
+                    The most viewers watch social media videos without volume, which makes the use of subtitles more useful.
                 </p>
             </article>
         </div>
@@ -290,25 +291,25 @@
         <div class="features-container">
             <div class="sub-container-features">
                 <article>
-                    <p class="description-container-4"><i class="fas fa-pencil-alt"></i> Subtitulos editables</p>
+                    <p class="description-container-4"><i class="fas fa-pencil-alt"></i> Editable subtitles</p>
                     <p class="description-container-3">
-                        Genera subtítulos automáticos y luego edítalos a tu gusto.
+                        Generate automatic subtitles and then edit them to your liking.
                     </p>
                 </article>
             </div>
             <div class="sub-container-features">
                 <article>
-                    <p class="description-container-4"><i class="fas fa-film"></i> Vídeos de alta calidad</p>
+                    <p class="description-container-4"><i class="fas fa-film"></i> High quality videos</p>
                     <p class="description-container-3">
-                        Crea vídeos con subtítulos dinámicos sin perder la calidad inicial.
+                        Create videos with dynamic subtitles without losing the initial quality.
                     </p>
                 </article>
             </div>
             <div class="sub-container-features">
                 <article>
-                    <p class="description-container-4"><i class="fas fa-globe"></i> Traducción de videos</p>
+                    <p class="description-container-4"><i class="fas fa-globe"></i> Video translation</p>
                     <p class="description-container-3">
-                        Traducción automática de vídeos para llegar a un público más amplio.
+                        Translate videos automatically to reach a wider audience.
                     </p>
                 </article>
             </div>
@@ -317,7 +318,7 @@
         <div class="description-container-2">
             <article>
                 <p class="description-container-3">
-                    Usando manycaptions es posible crear subtítulos animados para retener más audiencia en sus publicaciones en las redes sociales. Agregue subtítulos animados a sus videos sin marca de agua creando una apariencia profesional.
+                    Using manycaptions it is possible to create animated captions to retain more audience in your social media posts. Add animated subtitles to your videos without watermark creating a professional look.
                 </p>
             </article>
         </div>
@@ -326,10 +327,10 @@
     
 
 
-    <div class="clip-container">
+    <div id="clip-container" class="clip-container">
         <div class="sub-container-clip">
             <video autoplay muted loop>
-                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip5.mp4" type="video/mp4">
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip6.mp4" type="video/mp4">
             </video>
         </div>
         <div class="sub-container-clip">
@@ -345,134 +346,137 @@
         
     </div>
 
-    <div class="description-container">
+    <div id="description-container-questions" class="description-container">
         <div class="faq-container">
             <div class="faq-item">
                 <div class="faq-question">
                     <header>
-                        <p>Herramienta para subtitular vídeos sin límite de tiempo</p>
+                        <p>Tool for Subtitling Videos without Upload Limits</p>
                     </header>
                     <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
                 </div>
                 <div class="faq-answer">
                     <article>
-                        <p>Con tecnología de inteligencia artificial, Manycaptions ofrece intentos ilimitados para una sincronización rápida y precisa. No se requiere tarjeta de crédito ni registro.</p>
+                        <p>Powered by AI, manycaptions offers unlimited attempts for fast, precise synchronization. No credit card or registration required.</p>
                     </article>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
                     <header>
-                        <p>¿Cómo agregar subtítulos animados a mis videos de forma gratuita sin límite de tiempo?</p>
+                        <p>How can I add animated subtitles to my videos online for free?</p>
                     </header>
                     <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
                 </div>
                 <div class="faq-answer">
                     <article>
-                        <p>Cargue su video y Manycaptions se encargará del resto generando subtítulos animados automáticamente. No es necesario descargar software adicional.</p>
+                        <p>Upload your video and Manycaptions will generate animated subtitles automatically. There's no need to download additional software.</p>
                     </article>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
                     <header>
-                        <p>¿Puedo agregar subtítulos a tantos videos como quiera cada día de forma gratuita?</p>
+                        <p>Can I add captions to as many videos as I want each day for free?</p>
                     </header>
                     <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
                 </div>
                 <div class="faq-answer">
                     <article>
-                        <p>Sí, manycaptions no tiene límite en la cantidad de videos que puedes subtitular diariamente. Es posible subir y subtitular tantos vídeos como desees sin restricciones.</p>
-                    </article>
-                </div>
-            </div>
-
-
-
-            <div class="faq-item">
-                <div class="faq-question">
-                    <header>
-                        <p>¿Se pueden descargar los vídeos subtitulados sin registrarse?</p>
-                    </header>
-                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="faq-answer">
-                    <article>
-                        <p>Sí, se pueden descargar los vídeos subtitulados de forma gratuita y sin registrarse en Manycaptions. Se pretende que el proceso sea lo más sencillo y accesible posible para todos los usuarios.</p>
-                    </article>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">
-                    <header>
-                        <p>¿Se pueden exportar los vídeos subtitulados de forma gratuita?</p>
-                    </header>
-                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="faq-answer">
-                    <article>
-                        <p>Sí, exportar los vídeos subtitulados de Manycaptions es completamente gratis.</p>
-                    </article>
-                </div>
-            </div>
-            <div class="faq-item">
-                <div class="faq-question">
-                    <header>
-                        <p>¿Cómo agrego subtítulos a videos sin marca de agua de forma gratuita?</p>
-                    </header>
-                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
-                </div>
-                <div class="faq-answer">
-                    <article>
-                        <p>Manycaptions permite agregar subtítulos a videos sin marcas de agua y sin costo, asegurando una apariencia limpia y profesional para los videos.</p>
+                        <p>Yes, Manycaptions has no limit on the number of videos you can subtitle daily. It is possible to upload and subtitle as many videos as you wish without any restrictions.</p>
                     </article>
                 </div>
             </div>
 
 
 
+            <div class="faq-item">
+                <div class="faq-question">
+                    <header>
+                        <p>Is it possible to download a subtitled video without registering?</p>
+                    </header>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <article>
+                        <p>Yes, it is possible to download a subtitled video for free and without registering on Manycaptions. The process is intended to be as simple and accessible as possible for all users.</p>
+                    </article>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <header>
+                        <p>Can the subtitled video be exported for free?</p>
+                    </header>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <article>
+                        <p>Yes, exporting the subtitled video from Manycaptions is completely free. The subtitled file can be obtained without incurring any additional costs.</p>
+                    </article>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <header>
+                        <p>How do I add subtitles to videos without watermark for free?</p>
+                    </header>
+                    <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <article>
+                        <p>ManyCaptions allows adding subtitles to videos without watermarks and at no cost, ensuring a professional and clean appearance for videos.</p>
+                    </article>
+                </div>
+            </div>
+
+
+
 
             <div class="faq-item">
                 <div class="faq-question">
                     <header>
-                        <p>¿Cómo puedo agregar subtítulos a mis videos para enganchar a mi audiencia?</p>
+                        <p>How can I add subtitles to my videos to hook my audience?</p>
                     </header>
                     <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
                 </div>
                 <div class="faq-answer">
                     <article>
-                        <p>Para agregar subtítulos a sus videos y atraer a su audiencia, use Manycaptions para generar subtítulos personalizados diseñados para captar la atención.</p>
+                        <p>To add subtitles to your videos and effectively engage your audience, use Manycaptions to generate custom subtitles that are designed to capture attention.</p>
                     </article>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
                     <header>
-                        <p>¿Cómo traduzco vídeos largos gratis?</p>
+                        <p>How do I translate videos online for free?</p>
                     </header>
                     <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
                 </div>
                 <div class="faq-answer">
                     <article>
-                        <p>Traduce videos largos de forma gratuita usando Manycaptions. Sube tu vídeo y selecciona el idioma de destino para recibir subtítulos traducidos automáticamente.</p>
+                        <p>Translate long videos online for free using Manycaptions. Upload your video and select the target language to receive automatically translated subtitles.</p>
                     </article>
                 </div>
             </div>
             <div class="faq-item">
                 <div class="faq-question">
                     <header>
-                        <p>¿Cómo traduzco vídeos para llegar a una audiencia más amplia?</p>
+                        <p>How do I translate videos online to reach a wider audience?</p>
                     </header>
                     <span class="faq-toggle"><i class="fas fa-chevron-down"></i></span>
                 </div>
                 <div class="faq-answer">
                     <article>
-                        <p>Manycaptions facilita la traducción de vídeos en línea para llegar a un público más amplio. Los usuarios pueden cargar videos y seleccionar el idioma deseado para una generación de subtítulos precisa y eficiente.</p>
+                        <p>Translating videos online to reach a wider audience is facilitated by Manycaptions. Users can upload videos and select the desired language for precise and efficient subtitle generation.</p>
                     </article>  
                 </div>
             </div>
-            
+
         </div>
+        
+
+
 
         
 
@@ -481,7 +485,7 @@
 
 
 
-     <footer>
+    <footer>
     <div translate="no" class="footer-container">
         <div id="footer-name" class="sub-container-footer">
             <p>manycaptions</p>
@@ -491,9 +495,7 @@
             <ul class="links">
                 <li><a href="./">Dynamic captions</a></li>
                 <li><a id="videogenerator" href="./"></a></li>
-                <!--
-                <li><a id="videogenerator" href="./generador-de-videos"></a></li>
-                -->
+                
             </ul>
         </div>
         
@@ -600,9 +602,10 @@
 
 </div>
 
-    <script src="./design/general_8_of.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js"></script>
-    <script src="./design/wallet_of.js"></script>
+</div>
+
+    <script src="./design/general_9_of.js"></script>
+    <script src="./design/menu_pages.js"></script>
     
     
 </body>
