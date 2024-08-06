@@ -1,17 +1,23 @@
 
-/*
-.card-captions {
-    flex: 0 0 calc(50% - 10px);
-    box-sizing: border-box;
-    border: 1px solid #7c55e600; 
-    box-shadow: 0 0 20px #7c55e6;
-    border-radius: 15px;
-    margin: 40px 14vw;
-    padding: 15px;
-    min-width:200px;
-    height: auto;
-  }
-*/
+.downloadSRT {
+    display:none;
+    background-color: transparent;
+    color: rgb(41, 41, 41);
+    font-weight: bold;
+    
+    padding:10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #7c55e6; 
+    background-color: #66f88b00;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.downloadSRT:hover{
+    border: 1px solid #66f88b; 
+    background-color: #66f88b;
+}
+
 
 .downloadVideo {
     display:none;
@@ -28,7 +34,8 @@
     cursor: pointer;
 }
 .downloadVideo:hover{
-    box-shadow: 0 0 10px #24b91f;
+    background-color: #66f88b00;
+    border: 1px solid #7c55e6; 
 }
 
   
@@ -149,63 +156,26 @@
 
 
 @media only screen and (max-width: 1000px) {
-
-    /*
-    .card-captions {
-        flex: 0 0 calc(50% - 10px);
-        box-sizing: border-box;
-        border: 1px solid rgba(177, 177, 177, 0.4); 
-        border-radius: 15px;
-        margin: 10px 10px;
-        padding: 0px;
-        min-width:200px;
-        height: auto;
-      }*/
-
-      .card-captions{
+    .card-captions{
         width: 600px;
     }
-      
-
-      
-
-    
     .sub-container{
-      box-sizing: border-box;
-      margin:0px;
-      padding: 20px; 
-      background-color: #f9f9f900; 
-      border-radius: 15px; 
-      
-  }
-
-
-  }
-
-
-
-  @media only screen and (max-width: 600px) {
-
-    /*
-    .card-captions {
-        flex: 0 0 calc(50% - 10px);
         box-sizing: border-box;
-        border: 1px solid rgba(177, 177, 177, 0.4); 
-        border-radius: 15px;
-        margin: 10px 10px;
-        padding: 0px;
-        min-width:200px;
-        height: auto;
-      }
-      */
+        margin:0px;
+        padding: 20px; 
+        background-color: #f9f9f900; 
+        border-radius: 15px; 
+    }
+}
 
 
-      .card-captions{
+
+@media only screen and (max-width: 600px) {
+    .card-captions{
         display: none;
         justify-content: center;
         box-shadow: 0 0 20px #7c55e6;
         border-radius: 15px;
         width:100%;
     }
-
 }
