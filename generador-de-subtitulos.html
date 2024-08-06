@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="./design/card_video.css">
     <link rel="stylesheet" href="./design/choose_file.css">
     <link rel="stylesheet" href="./design/clips.css">
-    <link rel="stylesheet" href="./design/container_style2_menu.css">
+    <link rel="stylesheet" href="./design/container_style2.css">
     <link rel="stylesheet" href="./design/customFonts.css">
 
     <link rel="stylesheet" href="./design/footer.css">
@@ -69,40 +69,31 @@
     <link rel="stylesheet" href="./design/menu_languages.css"> 
     <link rel="stylesheet" href="./design/questions.css"> 
 
-    <link rel="stylesheet" href="./design/menu_pages.css">
 
 
 </head>
 <body>
     
-    <div class="header-menu">
-        <div class="logo-container-menu">
-            <img src="design/images/title.jpg" alt="Logo" class="logo-menu">
-            <p>Manycaptions</p>
-        </div>
-        <div class="hamburger" onclick="toggleMenu()">
-            &#9776;
-        </div>
-    </div>
-    
-    <div class="side-menu" id="sideMenu">
-            <nav>
-                <ul>
-                    <li><a href="./">Home</a></li>
-                    <li><a href="#description-container">Features</a></li>
-                    <li><a href="#clip-container">How to use</a></li>
-                    <li><a href="#description-container-questions">FAQ</a></li>
-                </ul>
-            </nav>
-    </div>
-
-    <div id="content-enhanced" class="content-enhanced">
-
-    
 
 
     <div id="principal-container" class="container">
-    
+    <nav>
+        <div translate="no" id="titulo">
+            
+
+            
+            
+            <div class="title-container">
+                <div class="logo-container">
+                    <img src="design/images/title.jpg" class="logo_title">
+                </div>
+                <h3 translate="no">MANYCAPTIONS</h3>
+            </div>
+
+            
+            
+        </div>
+    </nav>
 
     
     
@@ -113,7 +104,12 @@
         
         <div translate="no" class="responsive-font-container">
             <div class="responsive-font-0">
-                <h3>Dynamic Captions</h3>
+                <div class="destacado">
+                    DYNAMIC
+                </div>
+                
+                CAPTIONS
+                
             </div>
             <div id="responsive-font" class="responsive-font">
                 <h4>Add Animated Subtitles to videos</h4>
@@ -130,7 +126,7 @@
 
         
 
-                <div class="chooseFile-container" id="dropZone">
+                <div class="chooseFile-container">
                     <button class="cloud-button">
                         <!--<i class="fas fa-cloud-upload-alt fa-3x"></i>-->
                         <img src="design/images/cloud_transparent.png" id="cloud_transparent">
@@ -223,17 +219,7 @@
                             <div onclick="selectOption('Italian')" class="dropdown-item">Italian</div>
                         </div>
                     </div>
-                    <button id="downloadSRT" class="downloadSRT" onclick="downloadSRT()"></button>
                     <button id="downloadVideo" class="downloadVideo" onclick="downloadVideo()"></button>
-
-                    <div class="exportDropdown">
-                        <button id="exportDropdown-button" class="exportDropdown-button" onclick="toggleExportDropdown()"></button>
-                        <div id="exportDropdown-content" class="exportDropdown-content">
-                            <div onclick="downloadVideo()" class="exportDropdown-item">mp4</div>
-                            <div onclick="downloadSRT()" class="exportDropdown-item">SRT</div>
-                        </div>
-                    </div>
-                    
                     <div id="form-container" class="form-container">
                 </div>
                     
@@ -273,7 +259,7 @@
     <div id="discountMessage"></div>
 
 
-    <div id="description-container" class="description-container">
+    <div class="description-container">
         <div class="description-container-2">
             <header>
                 <p class="description-container-4">Grow on social media</p>
@@ -327,7 +313,7 @@
     
 
 
-    <div id="clip-container" class="clip-container">
+    <div class="clip-container">
         <div class="sub-container-clip">
             <video autoplay muted loop>
                 <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip6.mp4" type="video/mp4">
@@ -346,7 +332,7 @@
         
     </div>
 
-    <div id="description-container-questions" class="description-container">
+    <div class="description-container">
         <div class="faq-container">
             <div class="faq-item">
                 <div class="faq-question">
@@ -602,12 +588,8 @@
 
 </div>
 
-</div>
-
-    <script src="./design/general_9_of.js"></script>
-    <script src="./design/menu_pages.js"></script>
+    <script src="./design/general_8_of.js"></script>
     
     
 </body>
 </html>
-
