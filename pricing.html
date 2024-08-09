@@ -14,10 +14,12 @@
 
 
     <link rel="stylesheet" href="./design/affiliates_page.css"> 
-    <link rel="stylesheet" href="./design/container_style2.css">
+    <link rel="stylesheet" href="./design/container_style2_menu.css">
     <link rel="stylesheet" href="./design/footer.css">
     <link rel="stylesheet" href="./design/login_modal.css"> 
     <link rel="stylesheet" href="./design/pricing.css"> 
+
+    <link rel="stylesheet" href="./design/menu_pages.css">
 
     
 
@@ -25,147 +27,152 @@
 </head>
 <body>
 
-
-    
-
-    <div id="principal-container" class="container">
-        
-        <nav>
-            <div translate="no" id="titulo">
-                <div class="transparent-container">
-                    <span id="premium"><a href="./pricing.html">Premium</a></span>
-                    <span id="affiliates"><a href="./affiliates">Affiliates</a></span>
-                </div>
-                <div class="title-container" onclick="title_redirect()">
-                    <h3 translate="no">MANYCAPTIONS</h3>
-                </div>
-                <div class="login-container">
-                    <button id="login-btn" class="openLoginModalBtn">Login</button>
-                </div>
-            </div>
-        </nav>
-
-        <div translate="no" class="principal-pages-responsive">
-            <span id="premium-responsive"><a href="./pricing.html">Premium</a></span>
-            <span class="separator-responsive">|</span>
-            <span id="affiliates-responsive"><a href="./affiliates">Affiliates</a></span>
-            <span class="separator-responsive">|</span>
-            <button id="login-btn-responsive" class="openLoginModalBtn">Login</button>
+    <div class="header-menu">
+        <div class="logo-container-menu">
+            <img src="design/images/title.jpg" alt="Logo" class="logo-menu">
+            <p>Manycaptions</p>
         </div>
-
-        <div class="description-affiliates">
-            <div class="description-container-2">
-                <header>
-                    <p class="description-container-4">Grow on social networks</p>
-                    <h1>Improve your reels and tiktoks with dynamic subtitles</h1>
-                </header>
-    
-                <article>
-                    <p class="description-container-3">
-                        By adding captivating subtitles to your videos you will generate more audience retention in your posts
-                        
-                    </p>
-                </article>
-            </div>
-
-            <div class="pricing-container">
-                <div class="pricing-card">
-                    <h2>Free</h2>
-                    <p class="pricing-price">$0/month</p>
-                    <ul class="pricing-features">
-                        <li>Unlimited videos per day</li>
-                        <li>Max size 20MB</li>
-                        <li>Without watermak</li>
-                    </ul>
-                </div>
-                
-                <div class="pricing-card">
-                    <h2>Premium</h2>
-                    <p id="price-premium" class="pricing-price">$25/month</p>
-                    <ul class="pricing-features">
-                        <li>Unlimited videos per day</li>
-                        <li>Max size 50MB</li>
-                        <li>Without watermak</li>
-                        <li>No ads</li>
-                    </ul>
-                    <!--<p id="network-not-found">Polygon Network</p>-->
-                    <button id="pricing-btn-premium" class="openLoginModalBtn">Choose</button>
-                </div>
-                
-                <div class="pricing-card">
-                    <h2>Premium Plus</h2>
-                    <p id="price-premium-plus" class="pricing-price">$50/month</p>
-                    <ul class="pricing-features">
-                        <li>Unlimited videos per day</li>
-                        <li>Max size 100MB</li>
-                        <li>Without watermak</li>
-                        <li>No ads</li>
-                    </ul>
-                    <!--<p id="network-not-found-2">Polygon Network</p>-->
-                    <button id="pricing-btn-premium-plus" class="openLoginModalBtn">Choose</button>
-                </div>
-            </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            &#9776;
         </div>
-        
-
+    </div>
+    
+    <div class="side-menu" id="sideMenu">
+            <nav>
+                <ul>
+                    <li><a href="./">Home</a></li>
+                    <li><a href="./affiliates.html">Afilliates</a></li>
+                    <li><a href="../#description-container">Features</a></li>
+                    <li><a href="../#clip-container">How to use</a></li>
+                    <li><a href="../#description-container-questions">FAQ</a></li>
+                </ul>
+            </nav>
     </div>
 
-    <footer>
-        <div translate="no" class="footer-container">
-            <div id="footer-name" class="sub-container-footer">
-                <p>manycaptions</p>
+    <div id="content-enhanced" class="content-enhanced">
+    
+        <div id="principal-container" class="container">
+            
+            <div class="description-affiliates">
+                <div class="description-container-2">
+                    <header>
+                        <p class="description-container-4">Subtitle long videos</p>
+                        <h1>Improve videos and reels adding dynamic subtitles</h1>
+                    </header>
+        
+                    <article>
+                        <p class="description-container-3">
+                            The premium plan allows subtitling and translating long videos without daily limits.
+                            
+                        </p>
+                    </article>
+                </div>
+
+                <div class="pricing-container">
+                    <div class="pricing-card">
+                        <h2>Free</h2>
+                        <p class="pricing-price">$0/month</p>
+                        <ul class="pricing-features">
+                            <li>Unlimited videos per day</li>
+                            <li>No time limit</li>
+                            <li id="size-free"></li>
+                            <li>Without watermak</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h2>Premium</h2>
+                        <p id="price-premium" class="pricing-price">$5/month</p>
+                        <ul class="pricing-features">
+                            <li>Unlimited videos per day</li>
+                            <li>No time limit</li>
+                            <li id="size-premium"></li>
+                            <li>Without watermak</li>
+                            <li>No ads</li>
+                        </ul>
+                        <!--<p id="network-not-found">Polygon Network</p>-->
+                        <button id="pricing-btn-premium" class="openLoginModalBtn">Choose</button>
+                    </div>
+                    
+                    <div class="pricing-card">
+                        <h2>Premium Plus</h2>
+                        <p id="price-premium-plus" class="pricing-price">$10/month</p>
+                        <ul class="pricing-features">
+                            <li>Unlimited videos per day</li>
+                            <li>No time limit</li>
+                            <li id="size-premium-plus"></li>
+                            <li>Without watermak</li>
+                            <li>No ads</li>
+                        </ul>
+                        <!--<p id="network-not-found-2">Polygon Network</p>-->
+                        <button id="pricing-btn-premium-plus" class="openLoginModalBtn">Choose</button>
+                    </div>
+                </div>
             </div>
-            <div class="sub-container-footer">
-                <p id="pages">Pages</p>
-                <ul class="links">
-                    <li><a href="/">Dynamic captions</a></li>
-                </ul>
-            </div>
-            <!--
-            <div id="support-container" class="sub-container-footer">
-                <p id="support">Support</p>
-                <ul class="links">
-                    <li><a id="contact" href="/">Contact</a></li>
-                    <li><a id="about_us" href="/">About Us</a></li>
-                </ul>
-            </div>
-            -->
-            <div class="sub-container-footer">
-                <p id="company">Company</p>
-                <ul class="links">
-                    <li><a id="privacy_policy" href="https://raw.githubusercontent.com/manyresources/resources/main/privacy.txt">Privacy Policy</a></li>
-                    <li><a id="terms_conditions" href="https://raw.githubusercontent.com/manyresources/resources/main/terms.txt">Terms & Conditions</a></li>
-                </ul>
-            </div>
-            <div class="divider"></div>
-            <div class="copyright">
-                © 2024 manycaptions.com. All rights reserved
-            </div>
-        </div>
-    </footer>
 
 
-    <div id="loginModal" class="loginModal">
-        <div class="login-modal-content">
-            <span class="login-close-btn">&times;</span>
-            <div class="titleLoginModal">Metamask</div> 
-            <div class="metamask-image">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" alt="MetaMask Logo" width="100">
+
+            <footer>
+                <div translate="no" class="footer-container">
+                    <div id="footer-name" class="sub-container-footer">
+                        <p>manycaptions</p>
+                    </div>
+                    <div class="sub-container-footer">
+                        <p id="pages" class="footer-section"></p>
+                        <ul class="links">
+                            <li><a href="./">Dynamic captions</a></li>
+                            <li><a id="videogenerator" href="./">Video translator</a></li>
+                            
+                        </ul>
+                    </div>
+                    
+                    <div class="sub-container-footer">
+                        <p id="company" class="footer-section"></p>
+                        <ul class="links">
+                            <li><a id="privacy_policy" href="https://raw.githubusercontent.com/manyresources/resources/main/privacy.txt"></a></li>
+                            <li><a id="terms_conditions" href="https://raw.githubusercontent.com/manyresources/resources/main/terms.txt"></a></li>
+                        </ul>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="copyright">
+                        
+                    </div>
+                </div>
+            </footer>
+
+
+            
+        
+        
+            <div id="loginModal" class="loginModal">
+                <div class="login-modal-content">
+                    <span class="login-close-btn">&times;</span>
+                    <div id="titleLoginModal" class="titleLoginModal"></div>
+                    <p id="cryptocurrency-payment"></p>
+                    <div class="metamask-image">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" alt="MetaMask Logo" width="100">
+                    </div>
+                    <div class="descriptionLoginModal">
+                        <p id="install-metamask"></p>
+                    </div> 
+                    <div class="descriptionLoginModal">
+                        <button id="install-wallet" class="install-wallet">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Google_Chrome_icon_%282011%29.png" alt="Chrome Logo" class="chrome-logo">
+                            Install on Chrome
+                        </button>
+                    </div> 
+                </div>
             </div>
-            <div class="descriptionLoginModal">
-                <p id="install-metamask">Metamask is not installed, install the extension.</p>
-            </div> 
-            <div class="descriptionLoginModal">
-                <button id="install-wallet" class="install-wallet">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Google_Chrome_icon_%282011%29.png" alt="Chrome Logo" class="chrome-logo">
-                    Install on Chrome
-                </button>
-            </div> 
+            
+            
+
         </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/web3@1.7.5/dist/web3.min.js" type="text/javascript"></script>
-    <script src="./design/wallet_of.js" type="text/javascript"></script>
+    <script src="./wallet2_of.js"></script>
+    <script src="./design/menu_pages.js"></script>
 
 </body>
 </html>
