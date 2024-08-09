@@ -34,6 +34,7 @@
     overflow-y: auto; /* Añadir scroll cuando el contenido excede la altura */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
+    text-align: center;
 }
 
 .login-close-btn {
@@ -94,4 +95,8 @@
     width: 24px;
     height: 24px;
     margin-right: 10px;
+}
+
+#cryptocurrency-payment{
+    font-size:16px;
 }
