@@ -1,6 +1,6 @@
 const videoUrls = [
-    "https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip6.mp4",
-    "https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip8.mp4",
+    "https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip9.mp4",
+    "https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip10.mp4",
     "https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/clip3.mp4"
 ];
 
