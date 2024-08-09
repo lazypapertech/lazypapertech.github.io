@@ -205,8 +205,8 @@ body {
     color:#7c55e6;
     
     margin:10px 20px 0px 20px;
-    font-family: 'Arial Black';
-    /*font-weight: bolder;*/
+    font-family: 'Arial';
+    font-weight: bolder;
 }
 
 .responsive-font-0 h3{
