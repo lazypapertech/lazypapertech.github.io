@@ -82,6 +82,11 @@
     margin-top: 70px;
 }
 
+#login-btn-li{
+    margin:0px;
+    padding:0px;
+}
+
 @media only screen and (max-width: 1000px) {
     .logo-container-menu p{
         font-size:18px;
