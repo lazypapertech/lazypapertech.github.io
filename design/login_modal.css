@@ -19,6 +19,7 @@
 }
 
 .login-modal-content {
+    display:block;
     color:black;
     position: absolute;
     top: 50%;
