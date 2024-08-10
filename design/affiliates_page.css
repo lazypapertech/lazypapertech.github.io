@@ -56,36 +56,6 @@
 
 /*etiqueta nav*/
 
-#premium{
-    background-color: rgba(255, 255, 255, 0);
-    margin:0px 10px;
-    font-family: "Arial";
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#premium a{
-    color:rgba(0, 0, 0, 0.7);
-    text-decoration: none;
-    transition: font-size 0.2s;
-}
-
-
-#affiliates{
-    display:flex;/*temporal*/
-    background-color: rgba(255, 255, 255, 0);
-    margin:0px 10px;
-    font-family: "Arial";
-    font-size: 16px;
-    font-weight: bold;
-}
-
-#affiliates a{
-    color:rgba(0, 0, 0, 0.7);
-    text-decoration: none;
-    transition: font-size 0.2s;
-}
-
 #login-btn {
     display:block;
     height:40px;
@@ -123,42 +93,9 @@
     justify-content:center;
     font-size: 15px;
 }
-#premium-responsive{
-    background-color: rgba(255, 255, 255, 0);
-    margin:0px 10px;
-    font-family: "Arial";
-    font-size: 14px;
-    font-weight: bold;
-}
-#premium-responsive a{
-    color:rgba(0, 0, 0, 0.7);
-    text-decoration: none;
-    transition: font-size 0.2s;
-}
-#affiliates-responsive{
-    display:flex;/*temporal*/
-    background-color: rgba(255, 255, 255, 0);
-    margin:0px 10px;
-    font-family: "Arial";
-    font-size: 14px;
-    font-weight: bold;
-}
-#affiliates-responsive a{
-    color:rgba(0, 0, 0, 0.7);
-    text-decoration: none;
-    transition: font-size 0.2s;
-}
-#login-btn-responsive{
-    color:rgba(0, 0, 0, 0.7);
-    background-color: rgba(255, 255, 255, 0);
-    margin:0px 8px;
-    padding:0px;
-    border:0px;
-    font-family: "Arial";
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-}
+
+
+
 
 
 
