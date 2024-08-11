@@ -1,0 +1,51 @@
+
+.affiliates {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width:100%;
+    margin-top:5px;
+    margin-bottom: 10px;
+  }
+  .affiliates p{
+    font-size:16px;
+    font-weight: bold;
+  }
+  
+  .input-field {
+    padding: 10px;
+    border: 1px solid #7c55e6;
+    border-radius: 5px;
+    width: 150px;
+    transition: border-color 0.3s;
+  }
+  .input-field:hover,
+  .input-field:focus {
+    border-color: #7c55e6;
+  }
+  
+  .send_code {
+    width:100px;
+    padding: 10px 20px;
+    background-color: #7c55e6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin:5px;
+    font-size: 15px;
+    transition: background-color 0.3s;
+  }
+  .send_code:hover {
+    background-color: #4f2caf;
+  }
+  
+  .confirmation-msg {
+    margin-top: 10px;
+    color: #000000af;
+    display: none; 
+    margin:10px 20px;
+  }
+  
+  
