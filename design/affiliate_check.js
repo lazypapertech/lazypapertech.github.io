@@ -41,18 +41,18 @@ function sendMessage() {
 
                 const aff_message_check=message_result_check.split(":")[1];
                 const aff_code_check=message_result_check.split(":")[2];
-                if (message_result_check.includes("20% discount applied")){
-                    document.getElementById("confirmationMessage").innerHTML = aff_message_check;
-                    document.getElementById("confirmationMessage").style.display = "block";
-                    document.getElementById("username").disabled = true;
-                    document.querySelector(".send_code").disabled = true;
-                    localStorage.setItem('referralCode', aff_code_check);
-                }
+        
                 if (message_result_check.includes("This discount code does not exist")){
                     document.getElementById("confirmationMessage").innerHTML = aff_message_check;
                     document.getElementById("confirmationMessage").style.display = "block";
                     localStorage.setItem('referralCode', '');
                     websocketClient.close(1000, 'Message sent');
+                }else{
+                    document.getElementById("confirmationMessage").innerHTML = aff_message_check;
+                    document.getElementById("confirmationMessage").style.display = "block";
+                    document.getElementById("username").disabled = true;
+                    document.querySelector(".send_code").disabled = true;
+                    localStorage.setItem('referralCode', aff_code_check);
                 }
             }
             
@@ -64,3 +64,4 @@ function sendMessage() {
     }
     
   }
+
