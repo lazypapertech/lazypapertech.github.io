@@ -559,8 +559,14 @@ O0OO0O00O0OO0OOO00OOO00000OOO0O0O0OOO0O000O000OO00OO0O00O0OO0OO000OO00O0O.addEve
     
     
     
+
+    var normal_size=100000000;
+    const user_id_size=localStorage.getItem('userid');
+    if (user_id_size.includes("0x")){
+        normal_size=500000000;
+    }
     
-	if(video_file.size < 100000000) {
+	if(video_file.size < normal_size) {
 
         
         O0OO0O0000OO0O00O0OO00O000OO00O0O0O0OOOOO0OO000OO0OO0O0000OO0OOOO0OO0OOOO0OOO00OO0OO00O0O0O0OOOOO0OO00OO00OO0O00O0OO0OO000OO00O0O();
