@@ -228,7 +228,8 @@ document.getElementById('saveColor').innerHTML = 'Save';
 document.getElementById('save-lang').innerHTML = 'Save';
 document.querySelector('.ask-lang').innerHTML = 'Select video language';
 
-document.getElementById('metamask-title').innerHTML = 'Metamask';
+
+document.getElementById('metamaskTitle').innerHTML = 'Login with Metamask';
 document.getElementById('install-metamask').innerHTML = 'Metamask is not installed, install the extension.';
 document.getElementById('install-on-chrome').innerHTML = 'Install on Chrome';
 
@@ -1196,7 +1197,9 @@ function O0OO000OO0OO0OOOO0OO0OOO00OO0OOO00OO00O0O0OO000OO0OOO0O00() {
             O0OO0O00O0OO0OOO00OOO00000OOO0O0O0OOO0O000O000OO00OO0O00O0OO0OO000OO00O0O.value='';
             
             
-            document.querySelector('.loader-description').innerHTML = 'Uploading video . . .';
+            
+            
+            
 
             O0OO00OO00OO0O00O0OO0OOO00OO0000O0OO0OO000O0OOOOO0OO0OO000OO0000O0OO0OOO00OO00OOO="";
             document.querySelector('.error-dimension').innerHTML = 'Bad connection. Try it again'; 
@@ -1708,3 +1711,13 @@ O0OO0O00O0OO0OOO00OOO00000OOO0O0O0OOO0O000O000OO00OO0O00O0OO0OO000OO00O0O0O0OOOO
                 }
             }
         });
+
+
+
+
+
+
+
+
+
+
