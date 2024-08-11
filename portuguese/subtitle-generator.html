@@ -88,10 +88,13 @@
     <div class="side-menu" id="sideMenu">
             <nav>
                 <ul>
-                    <li><a href="./">Home</a></li>
-                    <li><a href="#description-container">Features</a></li>
-                    <li><a href="#clip-container">How to use</a></li>
-                    <li><a href="#description-container-questions">FAQ</a></li>
+                    <li id="login-btn-li"><p id="login-btn" class="openLoginModalBtn"></p></li>
+                    <li><a id="li-home" href="./"></a></li>
+                    <li><a id="li-affiliates" href="./affiliates"></a></li>
+                    <li><a id="li-pricing" href="./pricing"></a></li>
+                    <li><a id="li-features" href="#description-container"></a></li>
+                    <li><a id="li-tutorial" href="#clip-container"></a></li>
+                    <li><a id="li-questions" href="#description-container-questions"></a></li>
                 </ul>
             </nav>
     </div>
@@ -570,7 +573,7 @@
     <div id="loginModal" class="loginModal">
         <div class="login-modal-content">
             <span class="login-close-btn">&times;</span>
-            <div id="metamask-title" class="titleLoginModal"></div> 
+            <div class="titleLoginModal"><p id="metamaskTitle"></p></div> 
             <div class="metamask-image">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/MetaMask_Fox.svg/2048px-MetaMask_Fox.svg.png" alt="MetaMask Logo" width="100">
             </div>
