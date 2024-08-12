@@ -751,7 +751,7 @@ function O0OOO00000OO0000O0OO00O000O00OO0O0OO0O00O0OO0OO000OO0OO000OO0O00O0OOO00
     var filename_srt="manycaptions"+randomstring+".txt";
     var content_srt = O0OO00OOO0OO00O0O0OO0OOO00OO00O0O0OOO00O00OO0000O0OOO0O000OO00O0O0O0O00OO0O0O00O00O0O0O00(phrases_list_str);
 
-    const blob_str = new Blob([content_srt], { type: 'text/plain' });
+    const blob_str = new Blob([content_srt], { type: 'text/plain;charset=utf-8' });
     const url_str = URL.createObjectURL(blob_str);
 
     const a_str = document.createElement('a');
