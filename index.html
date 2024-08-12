@@ -215,15 +215,15 @@
                     <button id="saveButton" class="custom-button" onclick="toggleEditability(0)"></button>
                     <button id="settings-openModalBtn"><i class="fas fa-sliders-h icon-large"></i> </button>
                     <div class="dropdown">
-                        <button onclick="toggleDropdown()" id="dropdown-btn">Translate  &#x025BE;</button>
+                        <button onclick="toggleDropdown()" id="dropdown-btn"></button>
                         <div id="dropdown-content" class="dropdown-content">
-                            <div onclick="selectOption('Reset')" class="dropdown-item">Reset</div>
-                            <div onclick="selectOption('English')" class="dropdown-item">English</div>
-                            <div onclick="selectOption('Spanish')" class="dropdown-item">Spanish</div>
-                            <div onclick="selectOption('Portuguese')" class="dropdown-item">Portuguese</div>
-                            <div onclick="selectOption('French')" class="dropdown-item">French</div>
-                            <div onclick="selectOption('German')" class="dropdown-item">German</div>
-                            <div onclick="selectOption('Italian')" class="dropdown-item">Italian</div>
+                            <div onclick="selectOption('Reset')" id="reset-dropdown" class="dropdown-item"></div>
+                            <div onclick="selectOption('English')" id="english-dropdown" class="dropdown-item"></div>
+                            <div onclick="selectOption('Spanish')" id="spanish-dropdown" class="dropdown-item"></div>
+                            <div onclick="selectOption('Portuguese')" id="portuguese-dropdown" class="dropdown-item"></div>
+                            <div onclick="selectOption('French')" id="french-dropdown" class="dropdown-item"></div>
+                            <div onclick="selectOption('German')" id="german-dropdown" class="dropdown-item"></div>
+                            <div onclick="selectOption('Italian')" id="italian-dropdown" class="dropdown-item"></div>
                         </div>
                     </div>
                     <button id="downloadSRT" class="downloadSRT" onclick="downloadSRT()"></button>
@@ -232,8 +232,8 @@
                     <div class="exportDropdown">
                         <button id="exportDropdown-button" class="exportDropdown-button" onclick="toggleExportDropdown()"></button>
                         <div id="exportDropdown-content" class="exportDropdown-content">
-                            <div onclick="downloadVideo()" class="exportDropdown-item">mp4</div>
-                            <div onclick="downloadSRT()" class="exportDropdown-item">SRT</div>
+                            <div onclick="downloadVideo()" id="exportDropdown-mp4" class="exportDropdown-item"></div>
+                            <div onclick="downloadSRT()" id="exportDropdown-srt" class="exportDropdown-item"></div>
                         </div>
                     </div>
                     
