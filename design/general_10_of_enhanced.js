@@ -743,12 +743,23 @@ function O0OOO00000OO0000O0OO00O000O00OO0O0OO0O00O0OO0OO000OO0OO000OO0O00O0OOO00
     return num.toString().padStart(3, '0');
 };
 
-function O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O000O000OO000OOO000(str) {
+function O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O000O000OO000OOO0000O0OOOOO00OO0000(str) {
     const encoder = new TextEncoder('iso-8859-1');
     const encodedBytes = encoder.encode(str);
     const utf8Text = new TextDecoder('utf-8').decode(encodedBytes);
     return utf8Text;
 }
+
+function O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O000O000OO000OOO000(str) {
+    const latin1Bytes = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) {
+        latin1Bytes[i] = str.charCodeAt(i);
+    }
+    const utf8Text = new TextDecoder('utf-8').decode(latin1Bytes);
+    return utf8Text;
+}
+
+
 
   function downloadSRT() {
     var current_captions_str=O0OO00OOO0OO00O0O0OOO0O000O0O0O000OO00O0O0OOOO0000OOO0O000OO0000O0OOO00O00OO00O0O0OO0000O0O0O0OO00OO0000O0OO0OO000OOO0O0O0OO00O0O();
