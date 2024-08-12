@@ -91,6 +91,13 @@
     display:none;
 }
 
+#li-affiliates-0{
+    display:none;
+}
+#login-btn-li{
+    display:none;
+}
+
 @media only screen and (max-width: 1000px) {
     .logo-container-menu p{
         font-size:18px;
