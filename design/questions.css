@@ -30,7 +30,10 @@
     align-items: center;
 }
 .faq-question p{
-    font-size:18px;
+    font-size:16px;
+}
+.faq-question h4{
+    font-size:16px;
 }
 .faq-question:hover {
     background-color: #e0e0e0;
