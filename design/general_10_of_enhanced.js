@@ -761,6 +761,7 @@ function O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O
 
 
 
+
   function downloadSRT() {
     var current_captions_str=O0OO00OOO0OO00O0O0OOO0O000O0O0O000OO00O0O0OOOO0000OOO0O000OO0000O0OOO00O00OO00O0O0OO0000O0O0O0OO00OO0000O0OO0OO000OOO0O0O0OO00O0O();
     var phrases_list_str = current_captions_str.split("-o-");
@@ -768,9 +769,9 @@ function O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O
     var randomstring = randomdownload.toString();
     var filename_srt="manycaptions"+randomstring+".txt";
     var content_srt = O0OO00OOO0OO00O0O0OO0OOO00OO00O0O0OOO00O00OO0000O0OOO0O000OO00O0O0O0O00OO0O0O00O00O0O0O00(phrases_list_str);
-    const correctStr = O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O000O000OO000OOO000(content_srt);
+    
 
-    const blob_str = new Blob([correctStr], { type: 'text/plain;charset=utf-8' });
+    const blob_str = new Blob([content_srt], { type: 'text/plain;charset=iso-8859-1' });
     const url_str = URL.createObjectURL(blob_str);
 
     const a_str = document.createElement('a');
