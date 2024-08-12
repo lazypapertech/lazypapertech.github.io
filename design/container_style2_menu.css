@@ -615,6 +615,14 @@ h2{
     }
     */
 
+    #editCaptions{
+      font-size:14px;
+      padding:10px;
+    }
+    #createVideo{
+      font-size:14px;
+      padding:10px;
+    }
     
     .description-container-2 {
         justify-content: left;
@@ -670,7 +678,14 @@ h2{
 }
 
 @media only screen and (max-width: 400px) {
-  
+
+  #editCaptions{
+    font-size:12px;
+  }
+  #createVideo{
+    font-size:12px;
+  }
+    
   .responsive-font {
     font-size: 16px;
 }
