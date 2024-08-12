@@ -240,11 +240,12 @@ body {
   .card {
     box-shadow: 0 0 20px #7c55e6;
     border-radius: 15px;
-   /* margin: 40px 14vw;*/
-   margin: 40px 10px;  
+    /* margin: 40px 14vw;*/
+    margin: 40px 10px;  
     padding: 15px;
     width:600px;
     height:auto;
+    text-align: center;
   }
 
   .full-width-card {
@@ -508,6 +509,16 @@ h2{
   font-weight: bold;
   cursor: pointer;
 }
+
+#waiting-long-video {
+  display: none;
+  font-family: 'Arial';
+  font-size: 14px;
+  color:#7c55e6; 
+  font-weight: bold;
+  margin:5px 10px;
+}
+
 
   @media only screen and (max-width: 1000px) {
     /*
