@@ -217,7 +217,7 @@ document.querySelector('.error-dimension').innerHTML = 'Something went wrong. Tr
 
 document.querySelector('.percentage').innerHTML = '0%';
 
-document.querySelector('.loader-description').innerHTML = 'Out of order, check back later';
+document.querySelector('.loader-description').innerHTML = 'In maintenance, check back later';
 
 document.getElementById('editCaptions').innerHTML = `<i class="fas fa-pencil-alt"></i> Edit captions`;
 document.getElementById('createVideo').innerHTML =  `<i class="fas fa-film"></i> Create video`;
