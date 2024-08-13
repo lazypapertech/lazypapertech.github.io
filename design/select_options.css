@@ -1,6 +1,6 @@
 .checkbox-container-global {
-    /*display: flex;*/
-    display: none;
+    /*display: none;*/
+    display: flex;
     align-items: center;
     margin-bottom: 10px;
 }
@@ -53,7 +53,7 @@
 @media screen and (max-width: 600px) {
     
     .checkbox-container-global {
-        /*display: block;*/
-        display: none;
+        /*display: none;*/
+        display: block;
     }
 }
