@@ -259,7 +259,7 @@ document.getElementById('metamaskTitle').innerHTML = 'Login with Metamask';
 document.getElementById('install-metamask').innerHTML = 'Metamask is not installed, install the extension.';
 document.getElementById('install-on-chrome').innerHTML = 'Install on Chrome';
 
-document.getElementById('limit_size_message').innerHTML = 'This video exceeds 100MB of free plan. Use an online video compressor';
+document.getElementById('limit_size_message').innerHTML = 'This video exceeds 150MB of free plan. Use an online video compressor';
 
 
 
@@ -574,7 +574,7 @@ O0OO0O00O0OO0OOO00OOO00000OOO0O0O0OOO0O000O000OO00OO0O00O0OO0OO000OO00O0O.addEve
     
     
 
-    var normal_size=100000000;
+    var normal_size=150000000;
     const user_id_size=localStorage.getItem('userid');
     if (user_id_size.includes("0x")){
         normal_size=500000000;
