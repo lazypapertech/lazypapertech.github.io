@@ -4,6 +4,11 @@
     align-items: center;
     margin-bottom: 10px;
 }
+.checkbox-container-global-2 {
+    display: none;
+    align-items: center;
+    margin-bottom: 10px;
+}
 .checkbox-container {
     display: flex;
     margin:5px 5px;
