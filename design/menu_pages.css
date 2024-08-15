@@ -88,14 +88,14 @@
 }
 
 #li-pricing-0{
-    display:block;
+    display:none;
 }
 
 #li-affiliates-0{
-    display:block;
+    display:none;
 }
 #login-btn-li{
-    display:block;
+    display:none;
 }
 
 @media only screen and (max-width: 1000px) {
