@@ -9,6 +9,66 @@
 </url>
 
 <url>
+    <loc>https://manycaptions.com/automatic-subtitles</loc>
+    <lastmod>2024-08-18T02:00:00+00:00</lastmod> 
+    <changefreq>daily</changefreq> 
+    <priority>0.90</priority>
+</url>
+
+<url>
+    <loc>https://manycaptions.com/video-transcription</loc>
+    <lastmod>2024-08-18T02:00:00+00:00</lastmod> 
+    <changefreq>daily</changefreq> 
+    <priority>0.90</priority>
+</url>
+
+<url>
+  <loc>https://manycaptions.com/es</loc>
+  <lastmod>2024-08-18T02:20:50+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1</priority>
+</url>
+
+<url>
+  <loc>https://manycaptions.com/pt</loc>
+  <lastmod>2024-08-18T02:20:50+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1</priority>
+</url>
+
+
+<url>
+  <loc>https://manycaptions.com/es/subtitulos-automaticos</loc>
+  <lastmod>2024-08-18T02:20:50+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1</priority>
+</url>
+      
+<url>
+  <loc>https://manycaptions.com/es/transcripcion-de-videos</loc>
+  <lastmod>2024-08-18T02:20:50+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1</priority>
+</url>
+
+<url>
+  <loc>https://manycaptions.com/es/generador-de-subtitulos-automaticos</loc>
+  <lastmod>2024-08-18T02:20:50+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1</priority>
+</url>
+
+<url>
+  <loc>https://manycaptions.com/pt/gerador-de-legendas</loc>
+  <lastmod>2024-08-18T02:20:50+00:00</lastmod>
+  <changefreq>daily</changefreq>
+  <priority>1</priority>
+</url>
+
+
+      
+
+<url>
     <loc>https://manycaptions.com/generador-de-subtitulos</loc>
     <lastmod>2024-08-15T02:00:00+00:00</lastmod> 
     <changefreq>daily</changefreq> 
