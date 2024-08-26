@@ -187,6 +187,7 @@ body {
     justify-content: center;
     
     width:auto;
+    padding:40px 0px;
     /*justify-content: space-between;*/
   }
 
@@ -241,7 +242,7 @@ body {
     box-shadow: 0 0 20px #7c55e6;
     border-radius: 15px;
     /* margin: 40px 14vw;*/
-    margin: 40px 10px;  
+    margin: 0px 10px;   
     padding: 15px;
     width:600px;
     height:auto;
@@ -383,6 +384,7 @@ body {
   .video-container{
     display:none;/*borrar linea*/
     padding-top:30px;
+    height:250px;
   }
 
   #desktop{
@@ -675,6 +677,9 @@ h2{
       width: 25px; 
       height: 25px;
     }
+    .video-container{
+      height:200px;
+    }
 }
 
 @media only screen and (max-width: 400px) {
@@ -689,4 +694,7 @@ h2{
   .responsive-font {
     font-size: 16px;
 }
+    .video-container{
+      height:150px;
+    }
 }
