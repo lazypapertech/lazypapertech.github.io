@@ -219,7 +219,7 @@ document.querySelector('.percentage').innerHTML = '0%';
 
 document.querySelector('.loader-description').innerHTML = 'Loading . . .';
 
-document.getElementById('settings-openModalBtn').innerHTML = `<i class="fas fa-pencil-alt"></i> Edit captions`;
+document.getElementById('settings-openModalBtn').innerHTML = `<i class="fas fa-cog"></i> Customize`;
 document.getElementById('createVideo').innerHTML =  `<i class="fas fa-film"></i> Add captions`;
 document.querySelector('.error-creation').innerHTML = 'Bad connection. Try it again';
 
