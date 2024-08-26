@@ -835,9 +835,7 @@ function toggleEditability(option) {
         editButton.classList.add("lila-button");
         saveButton.classList.remove("lila-button");
         saveButton.classList.add("red-button");
-	if (width_window<=1000){
-            document.getElementById("sub-container").scrollIntoView({ behavior: "smooth" });
-        }
+	
     }
 
     
