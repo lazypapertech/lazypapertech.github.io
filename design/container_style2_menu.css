@@ -617,7 +617,7 @@ h2{
     }
     */
 
-    #editCaptions{
+    #settings-openModalBtn{
       font-size:14px;
       padding:10px;
     }
@@ -687,7 +687,7 @@ h2{
 
 @media only screen and (max-width: 400px) {
 
-  #editCaptions{
+  #settings-openModalBtn{
     font-size:12px;
   }
   #createVideo{
