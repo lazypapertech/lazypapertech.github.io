@@ -16,13 +16,14 @@
     background-color: #fff;
     padding: 20px;
     width: 80%;
-    max-width: 600px;
+    max-width: 400px;
     max-height: 80%; /* Altura máxima del modal */
     overflow-x: hidden;
     overflow-y: auto; /* Añadir scroll cuando el contenido excede la altura */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     box-sizing: border-box;
     justify-content: center;
+    border-radius: 20px;
 }
 
 .settings-close-btn {
