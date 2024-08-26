@@ -825,7 +825,7 @@ function toggleEditability(option) {
         saveButton.classList.add("lila-button");
         editButton.classList.remove("lila-button");
         editButton.classList.add("red-button");
-        document.getElementById("responsive-font").scrollIntoView({ behavior: "smooth" });
+        
         
     } else if (option === 1) {
         saveButton.style.color = "black";
@@ -835,6 +835,9 @@ function toggleEditability(option) {
         editButton.classList.add("lila-button");
         saveButton.classList.remove("lila-button");
         saveButton.classList.add("red-button");
+	if (width_window<=1000){
+            document.getElementById("sub-container").scrollIntoView({ behavior: "smooth" });
+        }
     }
 
     
