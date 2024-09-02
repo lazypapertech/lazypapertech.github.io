@@ -28,49 +28,45 @@
     <link rel="stylesheet" href="./design/footer.css">
 
     <link rel="stylesheet" href="./design/affiliates_page.css">
+    <link rel="stylesheet" href="./design/menu_pages.css">
+
 
 
 </head>
 <body>
-    <div id="grid-container" class="grid-container"></div>
 
-    <div id="principal-container">
+    <div class="header-menu">
+        <div class="logo-container-menu">
+            <img src="design/images/title.jpg" alt="Logo" class="logo-menu">
+            <p>Manycaptions</p>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+            &#9776;
+        </div>
+    </div>
+    
+    <div class="side-menu" id="sideMenu">
+            <nav>
+                <ul>
+                    <li id="login-btn-li"><p id="login-btn" class="openLoginModalBtn"></p></li>
+                    <li><a id="li-home" href="./"></a></li>
+                    <li id="li-affiliates-0"><a id="li-affiliates" href="./affiliates"></a></li>
+                    <li id="li-pricing-0"><a id="li-pricing" href="./pricing"></a></li>
+                    <li><a id="li-features" href="#description-container"></a></li>
+                    <li><a id="li-tutorial" href="#clip-container"></a></li>
+                    <li><a id="li-questions" href="#description-container-questions"></a></li>
+                    <li><a id="li-" href="#description-container-questions"></a></li>
+                </ul>
+            </nav>
+    </div>
+
+
+    <div id="content-enhanced" class="content-enhanced">
 
     
-        <nav>
-            <div id="titulo">
+    <div id="principal-container">
 
-                <div class="transparent-container">
-                    <span id="premium"><a id="premium-a" href="./index.html"></a></span>
-                </div>
-
-                <div class="title-container">
-                    <div class="logo-container">
-                        <img src="design/images/title.jpg" class="logo_title">
-                    </div>
-                    
-                    <h3 translate="no">MANYCAPTIONS</h3>
-                    
-                    
-                </div>
-
-                <div class="login-container">
-                    <form>
-                        <button id="login-btn" type="submit" formaction="./index.html"></button>
-                    </form>
-                </div>
-
-            </div>
-        </nav>
-
-        <div translate="no" class="principal-pages-responsive">
-            <span id="premium-responsive"><a id="premium-responsive-a" href="./index.html"></a></span>
-            <span id="separator-responsive" class="separator-responsive">|</span>
-            <form>
-                <button id="login-btn-responsive" type="submit" formaction="./index.html"></button>
-            </form>
-        </div>
-
+        
         
         <div id="container">
             <div class="description-input">
@@ -125,7 +121,7 @@
             </div>
             <button id="submit-button" disabled>Create video</button>
             
-            <div id="loader-container">
+            <div translate="no" id="loader-container">
                 <div class="loader">
                     <svg class="circular" viewBox="25 25 50 50">
                     <circle class="path-white" cx="50" cy="50" r="20" fill="none" stroke="white" stroke-width="5"/>
@@ -330,6 +326,8 @@
         
     </div>
 
+</div>
+
    
 
     
@@ -337,6 +335,8 @@
         
             
     <script src="./design/videogenerator_of_2.js"></script>
+    <script src="./design/menu_pages.js"></script>
+    <script src="./design/videogenerator_menu.js"></script>
     
 </body>
 </html>
