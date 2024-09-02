@@ -10,25 +10,7 @@ body {
 }
 
 
-nav {
-    background-color: #f8f8f8;
-    color: rgb(0, 0, 0);
-    padding: 20px;
-    margin:0px;
-    user-select: none;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-  }
-  nav h3 {
-    display: inline-block;
-    color:rgba(0, 0, 0, 0.7);
-    margin: 0px;
-    font-size:1.5rem;
-    font-family: 'Bungee';
-  }
 
   .title-container {
     display:flex;
@@ -358,7 +340,7 @@ nav {
     align-items: center;     
     height: 100%;  
 
-    margin-top:20px;
+    margin-top:40px;
     margin-bottom:40px;
     padding:0px;
 
@@ -378,6 +360,17 @@ form{
 }
 
 
+#li-features{
+    display:none;
+}
+#li-tutorial{
+    display:none;
+}
+#li-questions{
+    display:none;
+}
+
+
 @keyframes rotate {
     100% {
       transform: rotate(360deg);
@@ -393,10 +386,7 @@ form{
 
 
 @media only screen and (max-width: 600px) {
-    nav h3 {
-        font-size:20px;
-        margin:5px 0px;
-      }
+    
 
     .logo_title{
         width: 25px; 
@@ -411,6 +401,8 @@ form{
         font-size:20px;
     }
 }
+
+
 
 
 
