@@ -668,7 +668,7 @@ function O0OO0O00O0OOO00OO0O0O0OO00OO0000O0OO0OO000OO0O00O0OO00O000O0O0O0O0O0O00
 
   function O0OO00O000OO0OOOO0OOO0OOO0OO0OOO00OO0OO000OO0OOOO0OO0000O0OO00O000O0O0OO00OO0O00O0OO00O000OO00O0O0OO0OOOO0O0OOOOO0OOO00OO0OOO0O000OOO00O00OO00O0O0OO0000O0OO0OO0O() {
     const downloadLink = document.createElement('a');
-      downloadLink.href = 'https://symphonious20.glitch.me/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/export'; 
+      downloadLink.href = 'https://symp200.onrender.com/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/export'; 
       var randomdownload = Math.floor(1000 + Math.random() * 9000);
       var randomstring = randomdownload.toString();
       downloadLink.download = 'clip_manycaptions'+randomstring+'.mp4'; 
@@ -681,7 +681,7 @@ function O0OO0O00O0OOO00OO0O0O0OO00OO0000O0OO0OO000OO0O00O0OO00O000O0O0O0O0O0O00
     if (O0OOO0O000OOOO00O0OOO00000OO00O0O0O0OOOOO0OO00O000OO0OOOO0OOO0OOO0OO0OOO00OO0OO000OO0OOOO0OO0000O0OO00O00==0){
         console.log("download type 0");
         const downloadLink = document.createElement('a');
-        downloadLink.href = 'https://symphonious20.glitch.me/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/export'; 
+        downloadLink.href = 'https://symp200.onrender.com/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/export'; 
         var randomdownload = Math.floor(1000 + Math.random() * 9000);
         var randomstring = randomdownload.toString();
         downloadLink.download = 'clip_manycaptions'+randomstring+'.mp4'; 
@@ -787,7 +787,7 @@ function O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O
     const sourceElement = O0OOO0OO00OO0O00O0OO00O000OO00O0O0OO0OOOO0O000O0O0OO0OO000OO00O0O0OO0OO0O0OO00O0O0OO0OOO00OOO0O00.querySelector('source');
 
     if (sourceElement) {
-        sourceElement.src = 'https://symphonious20.glitch.me/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/watch'; 
+        sourceElement.src = 'https://symp200.onrender.com/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/watch'; 
         O0OOO0OO00OO0O00O0OO00O000OO00O0O0OO0OOOO0O000O0O0OO0OO000OO00O0O0OO0OO0O0OO00O0O0OO0OOO00OOO0O00.load(); 
     } else {
         console.error('No se encontró el elemento source.');
