@@ -717,7 +717,7 @@ function O0OO0O00O0OOO00OO0O0O0OO00OO0000O0OO0OO000OO0O00O0OO00O000O0O0O0O0O0O00
     let startTime = 0;
 
     phrases.forEach((phrase, index) => {
-        let endTime = startTime + 2;
+        let endTime = startTime + 1;
         srt += `${index + 1}\n`;
         srt += `${O0OO00OO00OO0OOOO0OOO00O00OO0OO0O0OO0000O0OOO0O000O0O0O000OO0O00O0OO0OO0O0OO00O0O(startTime)} --> ${O0OO00OO00OO0OOOO0OOO00O00OO0OO0O0OO0000O0OOO0O000O0O0O000OO0O00O0OO0OO0O0OO00O0O(endTime)}\n`;
         srt += `${phrase}\n\n`;
