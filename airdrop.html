@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lalezar&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&display=swap">
 
+    <script src="https://cdn.jsdelivr.net/npm/tonweb@0.0.45/dist/tonweb.min.js"></script>
 
     <link rel="stylesheet" href="./design/affiliates_page.css"> 
     <link rel="stylesheet" href="./design/container_style2.css">
@@ -132,6 +133,32 @@
             -->
         </div>
 
+
+        <button id="connect">Conectar TON Wallet</button>
+    <script>
+        const connectButton = document.getElementById("connect");
+
+        connectButton.addEventListener('click', async () => {
+            if (!window.ton) {
+                alert("TON Wallet no detectada, por favor instala una extensión compatible.");
+                return;
+            }
+
+            try {
+                // Solicitar conexión a la wallet TON
+                await window.ton.send('ton_requestAccounts');
+                const accounts = await window.ton.send('ton_accounts');
+
+                if (accounts.length > 0) {
+                    alert(`Wallet conectada: ${accounts[0]}`);
+                } else {
+                    alert("Conexión rechazada por el usuario.");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+    </script>
         
 
 
