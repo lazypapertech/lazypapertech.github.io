@@ -819,8 +819,8 @@ function request_video_mp4() {
 
         
         sourceElement.src = 'https://symphonious20.glitch.me/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/watch'; 
-        sourceElement.load(); 
-        sourceElement.addEventListener('loadeddata', () => {
+        O0OOO0OO00OO0O00O0OO00O000OO00O0O0OO0OOOO0O000O0O0OO0OO000OO00O0O0OO0OO0O0OO00O0O0OO0OOO00OOO0O00.load(); 
+        O0OOO0OO00OO0O00O0OO00O000OO00O0O0OO0OOOO0O000O0O0OO0OO000OO00O0O0OO0OO0O0OO00O0O0OO0OOO00OOO0O00.addEventListener('loadeddata', () => {
             isLoading_mp4 = false;
         });
 
