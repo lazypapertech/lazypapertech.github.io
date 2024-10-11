@@ -21,6 +21,7 @@ let O0OOO0OOO0OO0000O0OO0O00O0OOO0O000OO0O00O0OO0OOO00OO00OOO0O0OOOOO0OO000OO0OO
 let O0OO000OO0OOO0O0O0OOO00O00OOO00O00OO00O0O0OO0OOO00OOO0O000O0OOOOO0OO0OOOO0OOO0O0O0OOO0O000OOO00000OOO0O0O0OOO0O000O0OOOOO0OO0OO000OO0000O0OO0OOO00OO00OOO0OOO0O0O0OO0000O0OO00OOO0OO00O0O="Translate";
 
 let O0OOO0O000OOOO00O0OOO00000OO00O0O0O0OOOOO0OO00O000OO0OOOO0OOO0OOO0OO0OOO00OO0OO000OO0OOOO0OO0000O0OO00O00=0;
+let isLoading = false;
 
 localStorage.setItem('selected-font', '4');
 localStorage.setItem('selected-color', '15ED64-FFFF00-FF951C');
@@ -795,7 +796,7 @@ function O0OO000OO0OO0OOOO0OOO00O00OOO00O00OO00O0O0OO000OO0OOO0O000O0O0O0O0O0O0O
     }
 
 };
-let isLoading = false;
+
 function request_video_mp4() {
     
     if (isLoading_mp4) {
@@ -817,7 +818,7 @@ function request_video_mp4() {
         }
 
         
-        sourceElement.src = `https://symphonious20.glitch.me/download/${userId}/watch`;
+        sourceElement.src = 'https://symphonious20.glitch.me/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/watch'; 
         sourceElement.load(); 
         sourceElement.addEventListener('loadeddata', () => {
             isLoading_mp4 = false;
