@@ -843,8 +843,7 @@ function request_video_mp4_2() {
 
             if (sourceElement) {
                 sourceElement.src = 'https://symphonious20.glitch.me/download/'+O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OO00O00+'/watch'; 
-                videoElement.load(); 
-                videoElement.play(); 
+                videoElement.load();
             }
         };
 
