@@ -387,8 +387,9 @@ document.addEventListener("DOMContentLoaded", function() {
   </dialog>`;
 
   const footer = document.querySelector('footer');
-  if (footer) {
-      footer.insertAdjacentHTML('beforeend', modalHTML);
+  const principalContainer = document.getElementById('principal-container');
+  if (principalContainer) {
+        principalContainer.insertAdjacentHTML('beforeend', modalHTML);
         O0OO0OO0O0OO0OOOO0OO00O000OO0000O0OO0OO000O0OOOOO0OOO00OO0OO0O00O0OO00OOO0OO0OOO00OOO0O0O0OOO00000O0OOOOO0OO00O0O0OOOO0000OOO0O000OO00O0O0OOO00O00OO0OOO0 = document.getElementById('login-modal');
         O0OOO00OO0OOO0O0O0OO000O00OOO00OO0OO000OO0OOO00O00OO0O00O0OOO00000OOO0O000OO0O00O0OO0OOOO0OO0OOO00O0OOOOO0OO0OO0O0OO0OOOO0OO00O000OO0000O0OO0OO00 = document.getElementById('subscription-modal');
         O0OO0OOOO0OOO0O0O0OOO0O000O0OOOOO0OO0OOOO0OO00OO00O0OOOOO0OO000OO0OOO00O00OO00O0O0OO00O000OO0O00O0OOO0O000OOO00OO0O0OOOOO0OO0OO0O0OO0OOOO0OO00O000OO0000O0OO0OO00 = document.getElementById('out-of-credits-modal');
@@ -408,7 +409,7 @@ document.addEventListener("DOMContentLoaded", function() {
     O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O0OOOOO0OO0OO0O0OO0OOOO0OO00O000OO0000O0OO0OO00.addEventListener('click', (event) => { if (event.target === O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O0OOOOO0OO0OO0O0OO0OOOO0OO00O000OO0000O0OO0OO00) O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O0OOOOO0OO0OO0O0OO0OOOO0OO00O000OO0000O0OO0OO00.close('cancelled'); });
     
   } else {
-      console.log("Footer not found.");
+      console.log("principal container not found.");
   }
 });
 
@@ -421,6 +422,8 @@ document.querySelectorAll('.openLoginModalBtn').forEach(element => {
         openSignup();
     })
 });
+
+
 
 
 
