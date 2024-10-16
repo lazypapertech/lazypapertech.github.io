@@ -337,7 +337,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <button id="close" class="close" type="button">×</button>
     </dialog>
 
-    <dialog id="login-modal" class="login-container">
+    <dialog id="login-modal-extern" class="login-container-extern">
         <div id="close-login" type="button" class="login-exit">
             x
         </div>
@@ -422,10 +422,4 @@ document.querySelectorAll('.openLoginModalBtn').forEach(element => {
         openSignup();
     })
 });
-
-
-
-
-
-
 
