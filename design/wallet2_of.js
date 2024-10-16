@@ -20,6 +20,7 @@ let O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O0
 let O0OO000OO0OO0OO000OO0OOOO0OOO00OO0OO00O0O0O0OOOOO0OO0OO0O0OO0OOOO0OO00O000OO0000O0OO0OO000O0OOOOO0OOO00OO0OO0O00O0OO00OOO0OO0OOO00OOO0O0O0OOO0000;
 let O0OO000OO0OO0OO000OO0OOOO0OOO00OO0OO00O0O0O00OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO0;
 
+
 let islogged=localStorage.getItem('islogged');
 if (islogged=="1"){
     const login_button = document.getElementById("login-btn-li");
@@ -27,6 +28,10 @@ if (islogged=="1"){
         login_button.style.display = "none"; 
     }
 }
+
+
+localStorage.setItem('userid', '123');
+
 function O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O00O00O0OOO00OO0O00OO000OO0OOOO0OO00OOO0OO00OOO0OO00O0O0OO00O000O00O00O0OO0OOO0(){return false}
     
 let O0OO0000O0OO00OO00OOO0O000OO00O0O0OOO00O00O00OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000OO00OOO0O0O0OO0OOO00OO000OO0OOO0O000OO0O00O0OO0OOOO0OO0OOO0 = null;
@@ -117,6 +122,11 @@ function toggleAuthOption(toggle) {
     document.getElementById('user-email').focus();
     O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O0.style.display = "none"; 
 
+    var user_id_register = localStorage.getItem('userid');
+    if (!user_id_register){
+        user_id_register="123";
+    }
+
     
 
     if (toggle === "login") {
@@ -152,7 +162,7 @@ function toggleAuthOption(toggle) {
                 const dataform = JSON.stringify(datainput);
                 
 
-                fetch('https://symphonious20.glitch.me/login', {
+                fetch('https://symphonious20.glitch.me/login/'+user_id_register, {
                     method: 'POST', 
                     headers: {
                         'Content-Type': 'text/plain'
@@ -176,7 +186,8 @@ function toggleAuthOption(toggle) {
                         O0OOO00000OO0000O0OOO00OO0OOO00OO0OOO0OOO0OO0OOOO0OOO00O00OO00O000O00O00O0OO0OOO00OOO00000OOO0O0O0OOO0O00.disabled = false;
                         O0OOO00OO0OO00O0O0OO000OO0OO0OOOO0OO0OOO00OO00O000OOO00000OO0000O0OOO00OO0OOO00OO0OOO0OOO0OO0OOOO0OOO00O00OO00O000O00O00O0OO0OOO00OOO00000OOO0O0O0OOO0O00.disabled = false;
 
-                    }else{
+                    }
+                    if (data=="good_login"){
                         localStorage.setItem('islogged', '1');
                         O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.innerHTML = "Login";
                         const login_button = document.getElementById("login-btn-li");
@@ -243,7 +254,7 @@ function toggleAuthOption(toggle) {
 
                         
 
-                    fetch('https://symphonious20.glitch.me/signup', {
+                    fetch('https://symphonious20.glitch.me/signup/'+user_id_register, {
                         method: 'POST', 
                         headers: {
                             'Content-Type': 'text/plain'
@@ -258,11 +269,27 @@ function toggleAuthOption(toggle) {
                       })
                     .then(data => {
                         O0OOO00OO0OO0O0000OO0OOOO0OOO0OOO0O000O0O0OO0OO000OO00O0O0OO0OO0O0OO00O0O0OO0OOO00OOO0O000OOO00OO0O0000O00OOOO00O0O00O00O0OO00O00(['user-email-error']);
-                        if (O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O00O0OOOOO0OO000OO0OO0OO000OO0000O0OOO00OO0OOO00OO) {
-                            O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O0.style.color = "green";
+                        if (data=="bad_signup"){
+                            O0OOO00OO0OO0O0000OO0OOOO0OOO0OOO0O000O0O0OO0OO000OO00O0O0OO0OO0O0OO00O0O0OO0OOO00OOO0O000OOO00OO0O0000O00OOOO00O0O00O00O0OO00O00(['user-email-error']);
+                            O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O0.innerText = "This account already exists";
+                            O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.innerHTML = "Signup";
+                            O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.disabled = false;
+                            O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.style.opacity = "1";
+                            O0OO00O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O00O00O0OO0OOO00OOO00000OOO0O0O0OOO0O00.disabled = false;
+                            O0OOO00000OO0000O0OOO00OO0OOO00OO0OOO0OOO0OO0OOOO0OOO00O00OO00O000O00O00O0OO0OOO00OOO00000OOO0O0O0OOO0O00.disabled = false;
+                            O0OOO00OO0OO00O0O0OO000OO0OO0OOOO0OO0OOO00OO00O000OOO00000OO0000O0OOO00OO0OOO00OO0OOO0OOO0OO0OOOO0OOO00O00OO00O000O00O00O0OO0OOO00OOO00000OOO0O0O0OOO0O00.disabled = false;
+    
                         }
-                        O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O0.innerText = "The account has been successfully registered";
-                        O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.innerHTML = "Signup";
+                        if (data=="good_signup"){
+                            if (O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O00O0OOOOO0OO000OO0OO0OO000OO0000O0OOO00OO0OOO00OO) {
+                                O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O0.style.color = "green";
+                            }
+                            O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O0.innerText = "The account has been successfully registered";
+                            O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.innerHTML = "Signup";
+                            
+                        }
+                        
+                        
                         
                     })
                     .catch(error => {
@@ -423,6 +450,5 @@ document.querySelectorAll('.openLoginModalBtn').forEach(element => {
         openSignup();
     })
 });
-
 
 
