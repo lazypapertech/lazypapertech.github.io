@@ -225,7 +225,8 @@ function toggleAuthOption(toggle) {
                 if (passwordValue!=secondpasswordValue){
                     O0OOO00OO0OO0O0000OO0OOOO0OOO0OOO0O000O0O0OO0OO000OO00O0O0OO0OO0O0OO00O0O0OO0OOO00OOO0O000OOO00OO0O0000O00OOOO00O0O00O00O0OO00O00(['user-email-error']);
                     O0OOO0O0O0OOO00OO0OO00O0O0OOO00O00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO000O000O0O0OOO00O00OOO00O00OO0OOOO0OOO00O0.innerText = "The two passwords dont't match";
-                }else{
+                }
+                if (passwordValue.length>=6 && passwordValue==secondpasswordValue){
                     O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.innerText = "Loading...";
                     O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.disabled = true;
                     O0OO0OO000OO0OOOO0OO00OOO0OO0O00O0OO0OOO00O000O0O0OO0OO0O0OO0000O0OO0O00O0OO0OO00.style.opacity = "0.7";
@@ -361,7 +362,7 @@ document.addEventListener("DOMContentLoaded", function() {
                   <path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z" fill="#7D7D7D"></path>
                 </svg>
     
-                <input class="input-email" id="user-email" type="text" placeholder="Enter email address" name="email">
+                <input class="input-email" id="user-email" type="text" placeholder="Enter email address" name="email" style="text-transform: lowercase;" autocomplete="off">
             </div>
             <div class="password-container" id="password-container-id">
                 <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" width="27" height="24" viewBox="0 0 24 24" fill="none">
@@ -422,5 +423,6 @@ document.querySelectorAll('.openLoginModalBtn').forEach(element => {
         openSignup();
     })
 });
+
 
 
