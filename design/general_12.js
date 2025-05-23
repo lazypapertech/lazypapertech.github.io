@@ -1167,7 +1167,7 @@ function connect() {
             }
 
 
-            if (message_result==="watch_video" && captions_video!="" && current_step==2){
+            if (message_result==="watch_video" && captions_video!="" && current_step==1){
 
                 type_download=0;
                 
