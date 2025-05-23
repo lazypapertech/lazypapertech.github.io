@@ -23,8 +23,9 @@ let current_output_language="Translate";
 let type_download=0;
 let isLoading_mp4 = false;
 let current_duration=1;
+let current_step=0;
 
-localStorage.setItem('selected-font', '4');
+localStorage.setItem('selected-font', '9');
 localStorage.setItem('selected-color', 'FFFFFF');
 
 const currentPath = window.location.pathname;
@@ -37,8 +38,7 @@ function generateRandomUserId() {
     for (let i = 0; i < 10; i++) {
       const randomIndex = Math.floor(Math.random() * digits.length);
       userId += digits[randomIndex];
-    }
-    console.log(userId);
+    } 
     return userId;
   };
   
@@ -643,8 +643,7 @@ function isValidURL(url) {
       var randomdownload = Math.floor(1000 + Math.random() * 9000);
       var randomstring = randomdownload.toString();
       downloadLink.download = 'clip_manycaptions'+randomstring+'.mp4'; 
-      downloadLink.click();
-      console.log("exported");
+      downloadLink.click(); 
   };
 
   function downloadVideo() {
@@ -1070,6 +1069,8 @@ function connect() {
 
             if (message_result.split("_client_")[0]=="enviar"){
 
+                current_step=1;
+
                 waiting_video=0;
 
                 waiting_caption=0;
@@ -1166,7 +1167,7 @@ function connect() {
             }
 
 
-            if (message_result==="watch_video" && captions_video!=""){
+            if (message_result==="watch_video" && captions_video!="" && current_step==2){
 
                 type_download=0;
                 
@@ -1175,8 +1176,7 @@ function connect() {
                 waiting_video=0;
 
                 clearInterval(interval);
-                reset_percentage();
-                console.log("captions_video 2:", captions_video);
+                reset_percentage(); 
                 show_card_captions();
                 generarInputs_captions(captions_video);
                 toggleEditability(1);
@@ -1209,15 +1209,16 @@ function connect() {
         
 
         
-        if (typeof message_result==="object" && waiting_video==1){
+        if (typeof message_result==="object" && captions_video!=""){
+
+            current_step==2;
 
             type_download=1;
 
             bad_connection_choose_file=0;
             bad_connection_create_video=0;
             waiting_video=0;
-
-            console.log("captions_video:", captions_video);
+ 
             generarInputs_captions(captions_video);
             show_card_captions();
 
