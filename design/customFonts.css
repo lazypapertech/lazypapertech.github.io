@@ -1,6 +1,6 @@
 @font-face {
     font-family: 'font1';
-    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font1.ttf') format('truetype');
+    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font1_2.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -12,7 +12,7 @@
 }
 @font-face {
     font-family: 'font3';
-    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font3_2.ttf') format('truetype');
+    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font3_3.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -48,13 +48,13 @@
 }
 @font-face {
     font-family: 'font9';
-    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font9_2.ttf') format('truetype');
+    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font9_3.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
 @font-face {
     font-family: 'font10';
-    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font10_2.ttf') format('truetype');
+    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/font1_2.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
