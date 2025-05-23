@@ -911,6 +911,9 @@ function check_edited_captions_next() {
             bad_connection_create_video=0;
         }else{
             if (true){
+
+                show_export_mp4();
+
                 document.querySelector('.error-creation').style.display = 'none';
                 
                 let sendFont = localStorage.getItem('selected-font');
@@ -1167,7 +1170,7 @@ function connect() {
             }
 
 
-            if (message_result==="watch_video" && captions_video!="" && current_step==1){
+            if (message_result==="watch_video" && current_step==1){
 
                 type_download=0;
                 
@@ -1185,7 +1188,7 @@ function connect() {
                 show_video_buttons();
                 show_video_container();
     
-                show_export_mp4();
+                 
 
 		        request_video_mp4_2();
                 
@@ -1209,9 +1212,9 @@ function connect() {
         
 
         
-        if (typeof message_result==="object" && captions_video!=""){
+        if (typeof message_result==="object" && current_step==1){
 
-            current_step==2;
+            current_step=2;
 
             type_download=1;
 
@@ -1237,8 +1240,7 @@ function connect() {
             hide_circle();
             show_video_buttons();
             show_video_container();
- 
-            show_export_mp4();
+  
             
 
             websocketClient.send("video_received_good:"+userId);
@@ -1785,8 +1787,3 @@ inputFile_drag.addEventListener('change', (event) => {
         
     
         
-
-
-
-
- 
