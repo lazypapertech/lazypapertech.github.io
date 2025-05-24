@@ -1170,7 +1170,7 @@ function connect() {
             }
 
 
-            if (message_result==="watch_video" && current_step==1){
+            if (message_result==="watch_video" && current_step>0){
 
                 type_download=0;
                 
@@ -1212,7 +1212,7 @@ function connect() {
         
 
         
-        if (typeof message_result==="object" && current_step==1){
+        if (typeof message_result==="object" && current_step>0){
 
             current_step=2;
 
@@ -1787,3 +1787,8 @@ inputFile_drag.addEventListener('change', (event) => {
         
     
         
+
+
+
+
+ 
