@@ -1,5 +1,5 @@
 let lastPressedButton=0;
-let caption_length=1;
+let caption_length=0.5;
 let interval;
 let interval_2;
 let captions_video="";
@@ -25,11 +25,60 @@ let isLoading_mp4 = false;
 let current_duration=1;
 let current_step=0;
 
+let selectedPositionSub=1;
+
+ (function () {
+
+     localStorage.clear();
+
+     if ('caches' in window) {
+        caches.keys().then(keys => {
+            keys.forEach(key => caches.delete(key));
+        });
+    } 
+ 
+})();
+
 localStorage.setItem('selected-font', '9');
 localStorage.setItem('selected-color', 'FFFFFF');
 
+  
 const currentPath = window.location.pathname;
   
+
+const settingsList = document.getElementById('settingsList');
+
+if (settingsList) {
+    const nuevoItem = `
+        <li>
+            <div id="settings-position-sub" class="settings-font-block"></div>
+        </li>
+    `;
+    settingsList.insertAdjacentHTML('beforeend', nuevoItem);
+}
+
+const div_text=`<div id="positionModalSub" class="positionModalSub">
+        <div class="position-modal-content-sub">
+            <span class="position-close-btn-sub">&times;</span>
+            <div id="position-sub-title"></div>
+            <div id="bar-position-container"> 
+                 
+                 <div class="labels">
+                    <div id="position-down" class="label"></div>
+                    <div id="position-center" class="label"></div>
+                    <div id="position-up" class="label"></div>
+                </div>
+                <div class="bar"></div>
+                <div class="circle" id="circle"></div>
+                 
+                 
+            </div>
+        </div>
+    </div>` ;
+const principalContainer = document.querySelector('.card-container');
+  if (principalContainer) {
+        principalContainer.insertAdjacentHTML('beforeend', div_text);
+  }
 
 
 function generateRandomUserId() {
@@ -166,7 +215,7 @@ let xx15=".me";
 
 
 const start_elements = [ 
-    { id: 'login-btn', content: 'Login' }, 
+    { id: 'login-btn', content: 'Get started' }, 
     { id: 'li-home', content: 'Home' }, 
     { id: 'li-affiliates', content: 'Affiliates' },
     { id: 'li-features', content: 'Features' },
@@ -213,6 +262,11 @@ const start_elements = [
 
     { id: 'settings-font', content: 'Font' },
     { id: 'settings-color', content: 'Color' },
+    { id: 'position-down', content: 'Down' },
+    { id: 'position-center', content: 'Center' },
+    { id: 'position-up', content: 'Up' },
+    { id: 'position-sub-title', content: 'Position of subtitles' },
+    { id: 'settings-position-sub', content: 'Position' }, 
     { id: 'monoColor', content: 'Monocolor' },
     { id: 'multiColor', content: 'Multicolor' },
     { id: 'saveColor', content: 'Save' },
@@ -347,20 +401,35 @@ videoElement.setAttribute('controlsList', 'nodownload');
 
     function write_captions(indice) {
         const textareas = document.querySelectorAll('.flexible-captions');
-        
-        if (indice<textareas.length){
-            scrollToElement(textareas[indice]);
-            textareas[indice].style.border = '2px solid rgb(119, 0, 255)';
-            let suma=0;
-            textareas.forEach(textarea => {
-                if (suma!=indice){
-                    textarea.style.border = '1px solid rgb(177, 177, 177,0.5)';
-                }
-                suma=suma+1
-            });
-
-            
+        if (caption_length==1){ 
+            if (indice<textareas.length){
+                scrollToElement(textareas[indice]);
+                textareas[indice].style.border = '2px solid rgb(119, 0, 255)';
+                let suma=0;
+                textareas.forEach(textarea => {
+                    if (suma!=indice){
+                        textarea.style.border = '1px solid rgb(177, 177, 177,0.5)';
+                    }
+                    suma=suma+1
+                }); 
+            } 
         }
+
+        if (caption_length<0.9){
+            if (indice < textareas.length) {
+                 scrollToElement(textareas[indice]);
+                textareas.forEach((textarea, i) => {
+                    if (i === indice || i === indice + 1) {
+                        textarea.style.border = '2px solid rgb(119, 0, 255)';
+                    } else {
+                        textarea.style.border = '1px solid rgba(177, 177, 177, 0.5)';
+                    }
+                });
+            } 
+        }
+
+             
+
         if (indice==textareas.length-1){
             textareas[indice].style.border = '1px solid rgb(177, 177, 177,0.5)';
         }
@@ -584,14 +653,79 @@ inputFile.addEventListener('change', (event) => {
 });
 
 
+function generarInputs_captions(frases){
+    if (caption_length==1){
+        return generarInputs_captions_1seg(frases);
+    }
+    if (caption_length<0.9){
+        return generarInputs_captions_05seg(frases);
+    }
+}
+
+
+ function generarInputs_captions_05seg(frases) {
+    var form = document.getElementById("form-container");
+    form.innerHTML = "";
+
+    var arrayFrases = frases.split("-o-");
+    while (arrayFrases.length > 0 && arrayFrases[arrayFrases.length - 1] === '') {
+        arrayFrases.pop();
+    }
+
+    for (let i = 0; i < arrayFrases.length; i += 2) {
+        var rowDiv = document.createElement("div");
+        rowDiv.style.display = "flex";
+        rowDiv.style.marginBottom = "4px"; 
+        rowDiv.style.marginRight = "4px";
+        rowDiv.style.marginLeft = "4px";
+        rowDiv.style.gap = "4px";
+
+         
+        var textarea1 = document.createElement("textarea");
+        textarea1.classList.add("flexible-captions");
+        textarea1.setAttribute("rows", "1");
+        textarea1.setAttribute("cols", "50");
+        textarea1.setAttribute("oninput", "autoResize(this)");
+        textarea1.textContent = arrayFrases[i];
+        textarea1.id = "text_" + i;
+        textarea1.style.flex = "1";
+
+        rowDiv.appendChild(textarea1);
+
+        let textarea2 = null;
+
+         
+        if (i + 1 < arrayFrases.length) {
+            textarea2 = document.createElement("textarea");
+            textarea2.classList.add("flexible-captions");
+            textarea2.setAttribute("rows", "1");
+            textarea2.setAttribute("cols", "50");
+            textarea2.setAttribute("oninput", "autoResize(this)");
+            textarea2.textContent = arrayFrases[i + 1];
+            textarea2.id = "text_" + (i + 1);
+            textarea2.style.flex = "1";
+
+            rowDiv.appendChild(textarea2);
+        } else {
+             
+            textarea1.style.flex = "1 1 100%";
+        }
+
+         
+        form.appendChild(rowDiv);
+
+         
+        autoResize(textarea1);
+        if (textarea2) {
+            autoResize(textarea2);
+        }
+    }
+}
 
 
 
 
-
-
-
-function generarInputs_captions(frases) {
+function generarInputs_captions_1seg(frases) {
     var form = document.getElementById("form-container");
     
     form.innerHTML = "";
@@ -916,13 +1050,13 @@ function check_edited_captions_next() {
 
                 document.querySelector('.error-creation').style.display = 'none';
                 
-                let sendFont = localStorage.getItem('selected-font');
-                let sendColor = localStorage.getItem('selected-color');
+                var sendFont = localStorage.getItem('selected-font');
+                var sendColor = localStorage.getItem('selected-color');
+                var sendPositionSub = selectedPositionSub;
             
-                captions_video=new_captions_video;
-            
+                captions_video=new_captions_video; 
                 
-                websocketClient.send("tocreate_client_"+user_id+"_client_"+new_captions_video+"_client_"+first_url+"_client_"+sendFont+"_client_"+sendColor);
+                websocketClient.send("tocreate_client_"+user_id+"_client_"+new_captions_video+"_client_"+first_url+"_client_"+sendFont+"_client_"+sendColor+"_client_"+sendPositionSub);
 
                 
                 video_received=0;
@@ -995,6 +1129,7 @@ function connect() {
     websocketClient = new WebSocket("wss://"+url_websocket+"/"+user_id);
   
     
+    console.log("connecting...");
     
       websocketClient.addEventListener('open', () => {
         console.log("Client connected");
@@ -1036,9 +1171,8 @@ function connect() {
         var message_result = event.data;
 
         if (typeof message_result==="string"){
-            
 
-            
+ 
             if (message_result.includes("affiliate_message:")){
                 if (message_result.includes("20% discount applied")){
                     const aff_message=message_result.split(":")[1];
@@ -1369,6 +1503,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const settingsCloseBtn = document.querySelector('.settings-close-btn');
     const fontElement = document.getElementById('settings-font');
     const colorElement = document.getElementById('settings-color');
+    const positionElementSub = document.getElementById('settings-position-sub');
 
     settingsOpenModalBtn.addEventListener('click', function() {
         settingsModal.style.display = 'block';
@@ -1393,12 +1528,136 @@ document.addEventListener("DOMContentLoaded", function() {
         
         settingsModal.style.display = 'none';
     });
+
+    if (positionElementSub && settingsModal){
+        positionElementSub.addEventListener('click', function() {
+            
+            settingsModal.style.display = 'none';
+        });
+         
+         
+    }
+     
+     
+     
 });
 
 
 
 
+ document.addEventListener("DOMContentLoaded", function() {
+  const openPositionModalBtn = document.getElementById('settings-position-sub');
+  const positionModalSub = document.getElementById('positionModalSub');
+  const closeBtnPosition = document.querySelector('.position-close-btn-sub');
 
+  if (openPositionModalBtn && positionModalSub && closeBtnPosition){
+
+  
+    openPositionModalBtn.addEventListener('click', function() {
+        positionModalSub.style.display = 'block';
+    });
+
+    closeBtnPosition.addEventListener('click', function() {
+        positionModalSub.style.display = 'none';
+    });
+
+    positionModalSub.addEventListener('click', function(event) {
+        if (event.target === positionModalSub) {
+        positionModalSub.style.display = 'none';
+        }
+    });
+
+    const positionSubContainer = document.getElementById("bar-position-container");
+    const positionSubCircle = document.getElementById("circle");
+
+    
+    const positionsPercent = [0, 50, 100];
+    const classes = ['pos-0', 'pos-1', 'pos-2'];
+    let positionSubCurrentPos = 0; 
+    let positionSubDragging = false;
+    let positionSubOffsetX = 0;
+
+    function setPosition(index) {
+        positionSubCircle.classList.remove(...classes);
+        positionSubCircle.classList.add(classes[index]);
+        positionSubCurrentPos = index;
+        selectedPositionSub=index + 1; 
+    }
+
+    
+    setPosition(positionSubCurrentPos);
+
+    positionSubCircle.addEventListener("mousedown", function(e) {
+        positionSubDragging = true;
+        const circleRect = positionSubCircle.getBoundingClientRect();
+        positionSubOffsetX = e.clientX - circleRect.left;
+    });
+
+    document.addEventListener("mousemove", function(e) {
+        if (!positionSubDragging) return;
+
+        const containerRect = positionSubContainer.getBoundingClientRect();
+        let x = e.clientX - containerRect.left - positionSubOffsetX;
+
+        
+        x = Math.max(0, Math.min(x, containerRect.width - positionSubCircle.offsetWidth));
+
+        
+        positionSubCircle.style.left = x + "px";
+        positionSubCircle.style.transform = 'none';  
+    });
+
+    document.addEventListener("mouseup", function() {
+        if (!positionSubDragging) return;
+        positionSubDragging = false;
+
+        const containerRect = positionSubContainer.getBoundingClientRect();
+        const circleRect = positionSubCircle.getBoundingClientRect();
+        const x = circleRect.left - containerRect.left + positionSubCircle.offsetWidth / 2;  
+
+        
+        const width = containerRect.width;
+        let nearestIndex = 0;
+        let minDist = Math.abs(x - (positionsPercent[0] / 100) * width);
+
+        for (let i = 1; i < positionsPercent.length; i++) {
+        const posX = (positionsPercent[i] / 100) * width;
+        const dist = Math.abs(x - posX);
+        if (dist < minDist) {
+            minDist = dist;
+            nearestIndex = i;
+        }
+        }
+
+        
+        setPosition(nearestIndex);
+        positionSubCircle.style.left = '';
+        positionSubCircle.style.transform = '';
+    });
+
+    positionSubContainer.addEventListener("click", function(e) {
+        if (positionSubDragging) return;
+
+        const rect = positionSubContainer.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const width = rect.width;
+
+        let nearestIndex = 0;
+        let minDist = Math.abs(clickX - (positionsPercent[0] / 100) * width);
+
+        for (let i = 1; i < positionsPercent.length; i++) {
+        const posX = (positionsPercent[i] / 100) * width;
+        const dist = Math.abs(clickX - posX);
+        if (dist < minDist) {
+            minDist = dist;
+            nearestIndex = i;
+        }
+        }
+
+        setPosition(nearestIndex);
+    });
+}
+});
 
 
 
@@ -1465,13 +1724,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-
-saveColorsToLocalStorageMono("#FFFF00");
-    const selectedColors = [
-        "#15ED64",
+saveColorsToLocalStorageMono('#FFFFFF');
+ 
+    var selectedColors = [
+        "#0FF764",
         "#FFFF00",
-        "#FF951C"
-    ];
+        "#469AFA"
+    ]; 
+
     saveColorsToLocalStorage({ multiColor: selectedColors });
 
     const colorButton = document.getElementById('settings-color');
@@ -1530,7 +1790,7 @@ saveColorsToLocalStorageMono("#FFFF00");
         setActiveButton(monoColorButton);
         const savedColor = getColorsFromLocalStorageMono();
         colorOptions.innerHTML = `<input type="color" id="monoPalette" value="${savedColor}">`;
-        colorCount.textContent = "One single color in all captions";
+        colorCount.textContent = "One single color in all subtitles";
     });
 
     multiColorButton.addEventListener('click', () => {
@@ -1541,7 +1801,7 @@ saveColorsToLocalStorageMono("#FFFF00");
             <input type="color" id="multiPalette2" value="${savedColors[1]}">
             <input type="color" id="multiPalette3" value="${savedColors[2]}">
         `;
-        colorCount.textContent = "Colors will alternate randomly across all captions";
+        colorCount.textContent = "Colors will alternate randomly across all subtitles";
     });
 
     saveButton.addEventListener('click', () => {
@@ -1554,7 +1814,7 @@ saveColorsToLocalStorageMono("#FFFF00");
             ];
             saveColorsToLocalStorage({ multiColor: selectedColors });
 
-            const selected_color=selectedColors.join('-').replace(/#/g, "").toUpperCase();;
+            const selected_color=selectedColors.join('-').replace(/#/g, "").toUpperCase();
             
             localStorage.setItem('selected-color', selected_color);
 
@@ -1562,13 +1822,13 @@ saveColorsToLocalStorageMono("#FFFF00");
             const selectedColor = document.getElementById('monoPalette').value;
             saveColorsToLocalStorageMono(selectedColor);
 
-            const selected_color=selectedColor.replace(/#/g, "").toUpperCase();;
+            const selected_color=selectedColor.replace(/#/g, "").toUpperCase();
             
             localStorage.setItem('selected-color', selected_color);
         }
     });
-
-    multiColorButton.click();
+ 
+    monoColorButton.click();
 
 
 
@@ -1785,10 +2045,3 @@ inputFile_drag.addEventListener('change', (event) => {
 
 
         
-    
-        
-
-
-
-
- 
