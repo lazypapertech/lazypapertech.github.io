@@ -28,8 +28,7 @@ let current_step=0;
 let selectedPositionSub=1;
 
  (function () {
-
-     localStorage.clear();
+ 
 
      if ('caches' in window) {
         caches.keys().then(keys => {
