@@ -59,12 +59,7 @@ User-agent: *
 Disallow: /404.html
 Disallow: /register.html
 Disallow: /affiliates.html
-Disallow: /pricing.html
-Disallow: /airdrop.html
-Disallow: /project2285.html
-Disallow: /videogenerator.html
-Disallow: /generador-de-videos.html
-Disallow: /portuguese/text-to-video.html
+Disallow: /pricing.html   
 Disallow: /design/
 
 Sitemap: https://manycaptions.com/sitemap.xml
