@@ -27,16 +27,7 @@ let current_step=0;
 
 let selectedPositionSub=1;
 
- (function () {
  
-
-     if ('caches' in window) {
-        caches.keys().then(keys => {
-            keys.forEach(key => caches.delete(key));
-        });
-    } 
- 
-})();
 
 localStorage.setItem('selected-font', '9');
 localStorage.setItem('selected-color', 'FFFFFF');
