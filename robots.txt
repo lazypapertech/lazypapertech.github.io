@@ -55,6 +55,9 @@ Disallow:
 User-agent: Timpibot
 Disallow: 
 
+User-agent: Bingbot
+Allow: /
+ 
 User-agent: *
 Disallow: /404.html
 Disallow: /register.html
