@@ -1,5 +1,5 @@
 let lastPressedButton=0;
-let caption_length=0.5;
+let caption_length=0.5; 
 let interval;
 let interval_2;
 let captions_video="";
@@ -445,10 +445,10 @@ function start_percentage(type_loading) {
     if (type_loading==1){
         delta_seconds=1000;
         if (current_duration>60){
-            delta_seconds=500;
+            delta_seconds=800;
         }
         if (current_duration>180){
-            delta_seconds=500;
+            delta_seconds=700;
             time_increment=2;
         }
         if (current_duration>300){
@@ -807,38 +807,45 @@ function isValidURL(url) {
 
   
 
+ 
 
-  function generateSRT(phrases) {
-    let srt = '';
-    let startTime = 0;
+function generateSRT(phrases) {
+    var srt = '';
+    var startTime = 0;
+    var step = 0.5; 
 
     phrases.forEach((phrase, index) => {
-        let endTime = startTime + 1;
+        var endTime = startTime + step;
+
         srt += `${index + 1}\n`;
         srt += `${formatTime(startTime)} --> ${formatTime(endTime)}\n`;
         srt += `${phrase}\n\n`;
+
         startTime = endTime;
     });
 
     return srt;
-};
+}
 
+  
 function formatTime(seconds) {
-    let hours = Math.floor(seconds / 3600);
-    let minutes = Math.floor((seconds % 3600) / 60);
-    let secs = seconds % 60;
-    let millis = Math.floor((seconds - Math.floor(seconds)) * 1000);
+    let totalMilliseconds = Math.floor(seconds * 1000);
+    let hours = Math.floor(totalMilliseconds / 3600000);
+    let minutes = Math.floor((totalMilliseconds % 3600000) / 60000);
+    let secs = Math.floor((totalMilliseconds % 60000) / 1000);
+    let millis = totalMilliseconds % 1000;
 
     return `${pad(hours)}:${pad(minutes)}:${pad(secs)},${padMillis(millis)}`;
-};
+}
 
 function pad(num) {
-    return num.toString().padStart(2, '0');
-};
+    return String(num).padStart(2, '0');
+}
 
 function padMillis(num) {
-    return num.toString().padStart(3, '0');
-};
+    return String(num).padStart(3, '0');
+}
+
 
 function correctUTF8_0(str) {
     const encoder = new TextEncoder('iso-8859-1');
@@ -1204,7 +1211,7 @@ function connect() {
                 bad_connection_choose_file=0;
                 captions_video=message_result.split("_client_")[2];
                 first_url="none";
-                caption_length=message_result.split("_client_")[4];
+                caption_length=message_result.split("_client_")[4]; 
                 
                 clearInterval(interval);
                 reset_percentage();
@@ -1828,7 +1835,8 @@ saveColorsToLocalStorageMono('#FFFFFF');
 
 const languages = [
     'English', 
-    'Español'
+    'Español',
+    'Português'
 ];
 
 function populateLanguageList() {
@@ -2035,3 +2043,5 @@ inputFile_drag.addEventListener('change', (event) => {
 
 
         
+    
+         
