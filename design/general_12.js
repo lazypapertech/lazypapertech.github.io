@@ -445,7 +445,7 @@ function start_percentage(type_loading) {
     if (type_loading==1){
         delta_seconds=1000;
         if (current_duration>60){
-            delta_seconds=800;
+            delta_seconds=1000;
         }
         if (current_duration>180){
             delta_seconds=700;
@@ -1835,8 +1835,7 @@ saveColorsToLocalStorageMono('#FFFFFF');
 
 const languages = [
     'English', 
-    'Español',
-    'Português'
+    'Español' 
 ];
 
 function populateLanguageList() {
