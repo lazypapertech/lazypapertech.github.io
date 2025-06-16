@@ -1835,7 +1835,8 @@ saveColorsToLocalStorageMono('#FFFFFF');
 
 const languages = [
     'English', 
-    'Español' 
+    'Español',
+	'Português'
 ];
 
 function populateLanguageList() {
