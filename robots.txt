@@ -59,7 +59,6 @@ User-agent: Bingbot
 Allow: /
  
 User-agent: *
-Disallow: /404.html
 Disallow: /register.html
 Disallow: /affiliates.html
 Disallow: /pricing.html   
