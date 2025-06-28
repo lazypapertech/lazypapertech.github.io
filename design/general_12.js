@@ -26,8 +26,8 @@ let current_duration=1;
 let current_step=0;
 
 let selectedPositionSub=1;
-let selectedTextGlowSub=0;
-let selectedAudioSub=0;
+let selectedTextGlowSub=1;
+let selectedAudioSub=1;
 let extra_seconds=0;
 
  
@@ -1146,6 +1146,8 @@ function check_edited_captions_next() {
                 var sendPositionSub = selectedPositionSub;
                 var sendTextGlowSub = selectedTextGlowSub;
                 var sendAudioSub = selectedAudioSub;
+
+                console.log("sendPositionSub:",sendPositionSub,", ",sendTextGlowSub,", ",sendAudioSub);
             
                 captions_video=new_captions_video; 
                 
