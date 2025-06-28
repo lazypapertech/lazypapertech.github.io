@@ -26,15 +26,22 @@ let current_duration=1;
 let current_step=0;
 
 let selectedPositionSub=1;
+let selectedTextGlowSub=0;
+let selectedAudioSub=0;
+let extra_seconds=0;
 
  
 
 localStorage.setItem('selected-font', '9');
 localStorage.setItem('selected-color', 'FFFFFF');
+localStorage.setItem('caption_length', 0.5);
+ 
 
   
 const currentPath = window.location.pathname;
   
+ 
+
 
 const settingsList = document.getElementById('settingsList');
 
@@ -50,19 +57,45 @@ if (settingsList) {
 const div_text=`<div id="positionModalSub" class="positionModalSub">
         <div class="position-modal-content-sub">
             <span class="position-close-btn-sub">&times;</span>
-            <div id="position-sub-title"></div>
-            <div id="bar-position-container"> 
-                 
+
+            <div id="position-sub-title" class="option-sub-title"></div>
+            <div id="bar-position-container" class="bar-option-container">  
                  <div class="labels">
                     <div id="position-down" class="label"></div>
                     <div id="position-center" class="label"></div>
                     <div id="position-up" class="label"></div>
                 </div>
                 <div class="bar"></div>
-                <div class="circle" id="circle"></div>
-                 
-                 
+                <div class="circle" id="position-circle"></div>    
             </div>
+
+
+            <div id="textglow-sub-title" class="option-sub-title"></div>
+            <div id="bar-textglow-container" class="bar-option-container">  
+                 <div class="labels">
+                    <div id="textglow-down" class="label"></div>
+                    <div id="textglow-center" class="label"></div>
+                    <div id="textglow-up" class="label"></div>
+                </div>
+                <div class="bar"></div>
+                <div class="circle" id="textglow-circle"></div> 
+            </div>
+            
+
+            <div id="audio-sub-title" class="option-sub-title"></div>
+            <div id="bar-audio-container" class="bar-option-container">  
+                 <div class="labels">
+                    <div id="audio-down" class="label"></div>
+                    <div id="audio-center" class="label"></div>
+                    <div id="audio-up" class="label"></div>
+                </div>
+                <div class="bar"></div>
+                <div class="circle" id="audio-circle"></div> 
+            </div>
+
+            
+
+
         </div>
     </div>` ;
 const principalContainer = document.querySelector('.card-container');
@@ -207,7 +240,7 @@ let xx15=".me";
 const start_elements = [ 
     { id: 'login-btn', content: 'Get started' }, 
     { id: 'li-home', content: 'Home' }, 
-    { id: 'li-affiliates', content: 'Affiliates' },
+    { id: 'li-affiliates', content: 'Deals' },
     { id: 'li-features', content: 'Features' },
     { id: 'li-tutorial', content: 'How to use' },
     { id: 'li-questions', content: 'FAQ' },
@@ -250,13 +283,26 @@ const start_elements = [
     { selector: '.copyright', content: '© 2024 manycaptions.com. All rights reserved' }, 
     { selector: '.settings-title', content: 'Settings' }, 
 
-    { id: 'settings-font', content: 'Font' },
-    { id: 'settings-color', content: 'Color' },
+    { id: 'settings-font', content: 'Text font' },
+    { id: 'settings-color', content: 'Text color' },
+
     { id: 'position-down', content: 'Down' },
     { id: 'position-center', content: 'Center' },
     { id: 'position-up', content: 'Up' },
+
+    { id: 'textglow-down', content: 'Off' },
+    { id: 'textglow-center', content: 'Thin' },
+    { id: 'textglow-up', content: 'Thick' },
+
+    { id: 'audio-down', content: 'Off' },
+    { id: 'audio-center', content: 'Low' },
+    { id: 'audio-up', content: 'High' },
+
     { id: 'position-sub-title', content: 'Position of subtitles' },
-    { id: 'settings-position-sub', content: 'Position' }, 
+    { id: 'textglow-sub-title', content: 'Text Glow' },
+    { id: 'audio-sub-title', content: 'Audio enhacement' },
+
+    { id: 'settings-position-sub', content: 'Text design' }, 
     { id: 'monoColor', content: 'Monocolor' },
     { id: 'multiColor', content: 'Multicolor' },
     { id: 'saveColor', content: 'Save' },
@@ -367,7 +413,8 @@ function scrollToElement(element) {
 
 
 var videoElement = document.getElementById('my-video-2');
-videoElement.setAttribute('controlsList', 'nodownload');
+if (videoElement){
+    videoElement.setAttribute('controlsList', 'nodownload');
 
     videoElement.addEventListener('timeupdate', function() {
         var currentTime = videoElement.currentTime;
@@ -386,7 +433,9 @@ videoElement.setAttribute('controlsList', 'nodownload');
 
         
         
-    });
+    }); 
+}
+ 
 
 
     function write_captions(indice) {
@@ -448,7 +497,7 @@ function start_percentage(type_loading) {
             delta_seconds=1000;
         }
         if (current_duration>180){
-            delta_seconds=700;
+            delta_seconds=900;
             time_increment=2;
         }
         if (current_duration>300){
@@ -456,7 +505,8 @@ function start_percentage(type_loading) {
             time_increment=4;
         }
     }else{
-        if (current_duration>120){
+        delta_seconds=1200 + extra_seconds;
+        if (current_duration>150){
             delta_seconds=1000;
         }
         if (current_duration>240){
@@ -516,20 +566,22 @@ function start_percentage(type_loading) {
 
 
 const selectImage = document.querySelector('.btn-upload');
-const inputFile = document.querySelector('#file');
-const inputFile_2 = document.querySelector('#file-2');
+const inputFile = document.querySelector('#file'); 
 
+if (selectImage && inputFile){
+    selectImage.addEventListener('click', function () {
+        if (final_lang!=""){
+            inputFile.click();
+            
+        }else{
+            populateLanguageList();
+            const languageModal = document.getElementById('languageModal');
+            languageModal.style.display = 'block';
+        }
+    }); 
+}
 
-selectImage.addEventListener('click', function () {
-  if (final_lang!=""){
-    inputFile.click();
-    
-  }else{
-    populateLanguageList();
-    const languageModal = document.getElementById('languageModal');
-    languageModal.style.display = 'block';
-  }
-});
+ 
 
 
 function enviarMensaje(websocket, mensaje) {
@@ -584,63 +636,70 @@ async function sendVideo(selectedFile){
   };
 
 
-inputFile.addEventListener('change', (event) => {
+
+ if (inputFile){
+
+    inputFile.addEventListener('change', (event) => {
 
     
 
-    const fileInputElement = document.getElementById('file');
-    const selectedFile = fileInputElement.files[0];
+        const fileInputElement = document.getElementById('file');
+        const selectedFile = fileInputElement.files[0];
 
+        
+
+        let video_file;
+        video_file = event.target.files[0];
+
+        const filePath = URL.createObjectURL(video_file);
+
+        
+        
+        
+        
+        
+
+        var normal_size=150000000;
+        const user_id_size=localStorage.getItem('userid');
+        if (user_id_size.includes("0x")){
+            normal_size=500000000;
+        }
+        
+        if(video_file.size < normal_size) {
+
+            
+            hide_choose_file();
+            
+            show_circle();
+            changeVideoSource(filePath);
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            
+
+            
+
+            
+
+            
+
+            
+            sendVideo(selectedFile);
+            
     
 
-    let video_file;
-	  video_file = event.target.files[0];
+        } else {
+            
+            const modal_limit_size = document.getElementById('myModal_limit_size');
+            modal_limit_size.style.display = 'block';
+            inputFile.value='';
+        }
+    });
 
-    const filePath = URL.createObjectURL(video_file);
+  } 
 
-    
-    
-    
-    
-    
-
-    var normal_size=150000000;
-    const user_id_size=localStorage.getItem('userid');
-    if (user_id_size.includes("0x")){
-        normal_size=500000000;
-    }
-    
-	if(video_file.size < normal_size) {
-
-        
-        hide_choose_file();
-        
-        show_circle();
-        changeVideoSource(filePath);
-
-        const formData = new FormData();
-        formData.append('file', selectedFile);
-
-        
-
-        
-
-        
-
-        
-
-        
-        sendVideo(selectedFile);
-        
-   
-
-	} else {
-		
-        const modal_limit_size = document.getElementById('myModal_limit_size');
-        modal_limit_size.style.display = 'block';
-        inputFile.value='';
-	}
-});
+ 
 
 
 function generarInputs_captions(frases){
@@ -770,7 +829,7 @@ function isValidURL(url) {
       downloadLink.click(); 
   };
 
-  function downloadVideo() {
+  function downloadVideo_2() {
      const timestamp_download = Date.now();
                 
 
@@ -805,6 +864,10 @@ function isValidURL(url) {
     
   };
 
+
+  function downloadVideo(){
+    console.log("exporting video...");
+  }
   
 
  
@@ -813,6 +876,13 @@ function generateSRT(phrases) {
     var srt = '';
     var startTime = 0;
     var step = 0.5; 
+    var step0 = parseFloat(localStorage.getItem('caption_length'));
+    if (step){
+        step=step0;
+    }else{
+        step=1;
+    }
+    console.log("step",step); 
 
     phrases.forEach((phrase, index) => {
         var endTime = startTime + step;
@@ -866,7 +936,7 @@ function correctUTF8(str) {
 
 
 
-  function downloadSRT() {
+  function downloadTXT() {
     var current_captions_str=getTextareaValue();
     var phrases_list_str = current_captions_str.split("-o-");
     var randomdownload = Math.floor(1000 + Math.random() * 9000);
@@ -886,6 +956,31 @@ function correctUTF8(str) {
     document.body.removeChild(a_str);
     URL.revokeObjectURL(url_str);
 };
+function downloadSRT_2() {
+    var current_captions_str=getTextareaValue();
+    var phrases_list_str = current_captions_str.split("-o-");
+    var randomdownload = Math.floor(1000 + Math.random() * 9000);
+    var randomstring = randomdownload.toString();
+    var filename_srt="manycaptions"+randomstring+".txt";
+    var content_srt = generateSRT(phrases_list_str);
+    
+
+    const blob_str = new Blob(["\uFEFF"+content_srt], { type: 'application/octet-stream' });
+    const url_str = URL.createObjectURL(blob_str);
+
+    const a_str = document.createElement('a');
+    a_str.href = url_str;
+    a_str.download = filename_srt;
+    document.body.appendChild(a_str);
+    a_str.click();
+    document.body.removeChild(a_str);
+    URL.revokeObjectURL(url_str);
+};
+
+function downloadSRT(){
+    console.log("exporting srt...");
+}
+
   function changeVideoSource_2() {
 
     const sourceElement = videoElement.querySelector('source');
@@ -971,28 +1066,27 @@ function toggleEditability(option) {
     const saveButton = document.getElementById("saveButton");
     const editButton = document.getElementById("editButton");
 
-    if (option === 0) {
-        saveButton.style.color = "white";
-        editButton.style.color = "black";
-        lastPressedButton = 0;
-        saveButton.classList.remove("red-button");
-        saveButton.classList.add("lila-button");
-        editButton.classList.remove("lila-button");
-        editButton.classList.add("red-button");
-        
-        
-    } else if (option === 1) {
-        saveButton.style.color = "black";
-        editButton.style.color = "white";
-        lastPressedButton = 1;
-        editButton.classList.remove("red-button");
-        editButton.classList.add("lila-button");
-        saveButton.classList.remove("lila-button");
-        saveButton.classList.add("red-button");
-	
-    }
-
-    
+    if (saveButton && editButton){
+        if (option === 0) {
+            saveButton.style.color = "white";
+            editButton.style.color = "black";
+            lastPressedButton = 0;
+            saveButton.classList.remove("red-button");
+            saveButton.classList.add("lila-button");
+            editButton.classList.remove("lila-button");
+            editButton.classList.add("red-button");
+            
+            
+        } else if (option === 1) {
+            saveButton.style.color = "black";
+            editButton.style.color = "white";
+            lastPressedButton = 1;
+            editButton.classList.remove("red-button");
+            editButton.classList.add("lila-button");
+            saveButton.classList.remove("lila-button");
+            saveButton.classList.add("red-button"); 
+        } 
+    } 
 };
 
 
@@ -1050,10 +1144,12 @@ function check_edited_captions_next() {
                 var sendFont = localStorage.getItem('selected-font');
                 var sendColor = localStorage.getItem('selected-color');
                 var sendPositionSub = selectedPositionSub;
+                var sendTextGlowSub = selectedTextGlowSub;
+                var sendAudioSub = selectedAudioSub;
             
                 captions_video=new_captions_video; 
                 
-                websocketClient.send("tocreate_client_"+user_id+"_client_"+new_captions_video+"_client_"+first_url+"_client_"+sendFont+"_client_"+sendColor+"_client_"+sendPositionSub);
+                websocketClient.send("tocreate_client_"+user_id+"_client_"+new_captions_video+"_client_"+first_url+"_client_"+sendFont+"_client_"+sendColor+"_client_"+sendPositionSub+"_client_"+sendTextGlowSub+"_client_"+sendAudioSub);
 
                 
                 video_received=0;
@@ -1119,7 +1215,7 @@ let videoChunks = [];
 
 
 
-function connect() {
+function connect(type_connection) {
 
     const user_id=localStorage.getItem('userid');
 
@@ -1129,15 +1225,21 @@ function connect() {
     console.log("connecting...");
     
       websocketClient.addEventListener('open', () => {
-        console.log("Client connected");
-        websocketClient.send("connected: "+user_id+", path: "+currentPath);
+        console.log("Client connected"); 
+        const send_type_connection = "type_connection=="+type_connection+"=="+currentPath+"=="+user_id;
+        websocketClient.send(send_type_connection);
 
         if (waiting_caption==1){
             websocketClient.send("check_captions");
         };
 
         bad_connection_create_video=0;
-        document.querySelector('.error-creation').style.display = 'none';
+
+        const error_creation = document.querySelector('.error-creation');
+        if (error_creation){
+            error_creation.style.display = 'none';
+        }
+          
 
         if (bad_connection_choose_file==1){
             hide_circle();
@@ -1212,6 +1314,7 @@ function connect() {
                 captions_video=message_result.split("_client_")[2];
                 first_url="none";
                 caption_length=message_result.split("_client_")[4]; 
+                localStorage.setItem('caption_length', caption_length);
                 
                 clearInterval(interval);
                 reset_percentage();
@@ -1428,7 +1531,7 @@ function connect() {
         } else {
           console.log('reconnecting...');
             setTimeout(() => {
-                connect();
+                connect("reconnecting");
             }, 5000);
         };
         console.log(`close error: ${event.code}, Razón: ${event.reason}`);
@@ -1443,7 +1546,7 @@ function connect() {
     };
 
 
-    connect();
+    connect("connected");
 
     
      
@@ -1488,7 +1591,7 @@ document.addEventListener("DOMContentLoaded", function () {
     hide_choose_file();
 
     show_exportDropdown();
-    hide_export_mp4();
+    hide_export_mp4(); 
   });
   
 
@@ -1501,164 +1604,181 @@ document.addEventListener("DOMContentLoaded", function() {
     const fontElement = document.getElementById('settings-font');
     const colorElement = document.getElementById('settings-color');
     const positionElementSub = document.getElementById('settings-position-sub');
+ 
 
-    settingsOpenModalBtn.addEventListener('click', function() {
-        settingsModal.style.display = 'block';
-    });
+    if (settingsOpenModalBtn && settingsModal && settingsCloseBtn && fontElement && colorElement && positionElementSub){
+        settingsOpenModalBtn.addEventListener('click', function() {
+            settingsModal.style.display = 'block';
+        });
 
-    settingsCloseBtn.addEventListener('click', function() {
-        settingsModal.style.display = 'none';
-    });
-
-    settingsModal.addEventListener('click', function(event) {
-        if (event.target === settingsModal) {
+        settingsCloseBtn.addEventListener('click', function() {
             settingsModal.style.display = 'none';
-        }
-    });
+        });
 
-    fontElement.addEventListener('click', function() {
-        
-        settingsModal.style.display = 'none';
-    });
+        settingsModal.addEventListener('click', function(event) {
+            if (event.target === settingsModal) {
+                settingsModal.style.display = 'none';
+            }
+        });
 
-    colorElement.addEventListener('click', function() {
-        
-        settingsModal.style.display = 'none';
-    });
-
-    if (positionElementSub && settingsModal){
-        positionElementSub.addEventListener('click', function() {
+        fontElement.addEventListener('click', function() {
             
             settingsModal.style.display = 'none';
         });
-         
-         
-    }
-     
-     
-     
+
+        colorElement.addEventListener('click', function() {
+            
+            settingsModal.style.display = 'none';
+        });
+
+        if (positionElementSub && settingsModal){
+            positionElementSub.addEventListener('click', function() {
+                
+                settingsModal.style.display = 'none';
+            }); 
+        }
+    } 
 });
 
 
 
 
- document.addEventListener("DOMContentLoaded", function() {
-  const openPositionModalBtn = document.getElementById('settings-position-sub');
-  const positionModalSub = document.getElementById('positionModalSub');
-  const closeBtnPosition = document.querySelector('.position-close-btn-sub');
 
-  if (openPositionModalBtn && positionModalSub && closeBtnPosition){
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const textglowPercent = [0, 50, 100];
+    const textglowClasses = ['pos-0', 'pos-1', 'pos-2'];
+
+    function initSlider(name, onChangeCallback = null) {
+        const container = document.getElementById(`bar-${name}-container`);
+        const circle = document.getElementById(`${name}-circle`);
+        let currentPos = 0;
+        let dragging = false;
+        let offsetX = 0;
+
+        function setPosition(index) {
+            circle.classList.remove(...textglowClasses);
+            circle.classList.add(textglowClasses[index]);
+            currentPos = index;
+
+            if (onChangeCallback) {
+                onChangeCallback(index);
+            }
+        }
+
+        setPosition(currentPos);
+
+        circle.addEventListener("mousedown", function (e) {
+            dragging = true;
+            const circleRect = circle.getBoundingClientRect();
+            offsetX = e.clientX - circleRect.left;
+        });
+
+        document.addEventListener("mousemove", function (e) {
+            if (!dragging) return;
+
+            const containerRect = container.getBoundingClientRect();
+            let x = e.clientX - containerRect.left - offsetX;
+            x = Math.max(0, Math.min(x, containerRect.width - circle.offsetWidth));
+
+            circle.style.left = x + "px";
+            circle.style.transform = 'none';
+        });
+
+        document.addEventListener("mouseup", function () {
+            if (!dragging) return;
+            dragging = false;
+
+            const containerRect = container.getBoundingClientRect();
+            const circleRect = circle.getBoundingClientRect();
+            const x = circleRect.left - containerRect.left + circle.offsetWidth / 2;
+
+            const width = containerRect.width;
+            let nearestIndex = 0;
+            let minDist = Math.abs(x - (textglowPercent[0] / 100) * width);
+
+            for (let i = 1; i < textglowPercent.length; i++) {
+                const posX = (textglowPercent[i] / 100) * width;
+                const dist = Math.abs(x - posX);
+                if (dist < minDist) {
+                    minDist = dist;
+                    nearestIndex = i;
+                }
+            }
+
+            setPosition(nearestIndex);
+            circle.style.left = '';
+            circle.style.transform = '';
+        });
+
+        container.addEventListener("click", function (e) {
+            if (dragging) return;
+
+            const rect = container.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+
+            let nearestIndex = 0;
+            let minDist = Math.abs(clickX - (textglowPercent[0] / 100) * width);
+
+            for (let i = 1; i < textglowPercent.length; i++) {
+                const posX = (textglowPercent[i] / 100) * width;
+                const dist = Math.abs(clickX - posX);
+                if (dist < minDist) {
+                    minDist = dist;
+                    nearestIndex = i;
+                }
+            }
+
+            setPosition(nearestIndex);
+        });
+    }
+
+     
+    initSlider("position", (index) => {
+        selectedPositionSub=index + 1;  
+    });
+
+    initSlider("textglow", (index) => {
+        selectedTextGlowSub=index + 1;  
+    });
+
+    initSlider("audio", (index) => {
+        selectedAudioSub=index + 1;  
+    });
+ 
+});
+
+
+ 
+ document.addEventListener("DOMContentLoaded", function() {
+    const openPositionModalBtn = document.getElementById('settings-position-sub');
+    const positionModalSub = document.getElementById('positionModalSub');
+    const closeBtnPosition = document.querySelector('.position-close-btn-sub');
+
+    if (openPositionModalBtn && positionModalSub && closeBtnPosition){
 
   
-    openPositionModalBtn.addEventListener('click', function() {
-        positionModalSub.style.display = 'block';
-    });
+        openPositionModalBtn.addEventListener('click', function() {
+            positionModalSub.style.display = 'block';
+        });
 
-    closeBtnPosition.addEventListener('click', function() {
-        positionModalSub.style.display = 'none';
-    });
+        closeBtnPosition.addEventListener('click', function() {
+            positionModalSub.style.display = 'none';
+        });
 
-    positionModalSub.addEventListener('click', function(event) {
-        if (event.target === positionModalSub) {
-        positionModalSub.style.display = 'none';
-        }
-    });
-
-    const positionSubContainer = document.getElementById("bar-position-container");
-    const positionSubCircle = document.getElementById("circle");
-
-    
-    const positionsPercent = [0, 50, 100];
-    const classes = ['pos-0', 'pos-1', 'pos-2'];
-    let positionSubCurrentPos = 0; 
-    let positionSubDragging = false;
-    let positionSubOffsetX = 0;
-
-    function setPosition(index) {
-        positionSubCircle.classList.remove(...classes);
-        positionSubCircle.classList.add(classes[index]);
-        positionSubCurrentPos = index;
-        selectedPositionSub=index + 1; 
+        positionModalSub.addEventListener('click', function(event) {
+            if (event.target === positionModalSub) {
+            positionModalSub.style.display = 'none';
+            }
+        }); 
     }
-
-    
-    setPosition(positionSubCurrentPos);
-
-    positionSubCircle.addEventListener("mousedown", function(e) {
-        positionSubDragging = true;
-        const circleRect = positionSubCircle.getBoundingClientRect();
-        positionSubOffsetX = e.clientX - circleRect.left;
-    });
-
-    document.addEventListener("mousemove", function(e) {
-        if (!positionSubDragging) return;
-
-        const containerRect = positionSubContainer.getBoundingClientRect();
-        let x = e.clientX - containerRect.left - positionSubOffsetX;
-
-        
-        x = Math.max(0, Math.min(x, containerRect.width - positionSubCircle.offsetWidth));
-
-        
-        positionSubCircle.style.left = x + "px";
-        positionSubCircle.style.transform = 'none';  
-    });
-
-    document.addEventListener("mouseup", function() {
-        if (!positionSubDragging) return;
-        positionSubDragging = false;
-
-        const containerRect = positionSubContainer.getBoundingClientRect();
-        const circleRect = positionSubCircle.getBoundingClientRect();
-        const x = circleRect.left - containerRect.left + positionSubCircle.offsetWidth / 2;  
-
-        
-        const width = containerRect.width;
-        let nearestIndex = 0;
-        let minDist = Math.abs(x - (positionsPercent[0] / 100) * width);
-
-        for (let i = 1; i < positionsPercent.length; i++) {
-        const posX = (positionsPercent[i] / 100) * width;
-        const dist = Math.abs(x - posX);
-        if (dist < minDist) {
-            minDist = dist;
-            nearestIndex = i;
-        }
-        }
-
-        
-        setPosition(nearestIndex);
-        positionSubCircle.style.left = '';
-        positionSubCircle.style.transform = '';
-    });
-
-    positionSubContainer.addEventListener("click", function(e) {
-        if (positionSubDragging) return;
-
-        const rect = positionSubContainer.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const width = rect.width;
-
-        let nearestIndex = 0;
-        let minDist = Math.abs(clickX - (positionsPercent[0] / 100) * width);
-
-        for (let i = 1; i < positionsPercent.length; i++) {
-        const posX = (positionsPercent[i] / 100) * width;
-        const dist = Math.abs(clickX - posX);
-        if (dist < minDist) {
-            minDist = dist;
-            nearestIndex = i;
-        }
-        }
-
-        setPosition(nearestIndex);
-    });
-}
 });
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function() { 
     const openModalBtn = document.getElementById('settings-font');
     const fontModal = document.getElementById('fontModal');
     const closeBtn = document.querySelector('.font-close-btn');
@@ -1702,6 +1822,10 @@ document.addEventListener("DOMContentLoaded", function() {
             fontBlock.classList.add('font-block');
             fontBlock.style.fontFamily = font;
             fontBlock.textContent = `${index + 1}. Subtitle`; 
+            fontBlock.style.paddingTop = '5px';
+            fontBlock.style.paddingRight = '0';
+            fontBlock.style.paddingBottom = '5px';
+            fontBlock.style.paddingLeft = '0';
             
             fontBlock.addEventListener('click', function() {
                 
@@ -1835,8 +1959,7 @@ saveColorsToLocalStorageMono('#FFFFFF');
 
 const languages = [
     'English', 
-    'Español',
-	'Português'
+    'Español' 
 ];
 
 function populateLanguageList() {
@@ -1852,9 +1975,10 @@ function populateLanguageList() {
         const listItem = document.createElement('li');
         const fontBlock = document.createElement('div');
         
+        
         fontBlock.classList.add('language-block');
         fontBlock.style.fontFamily = 'Arial';
-        fontBlock.textContent = font;
+        fontBlock.textContent = font;  
         
         fontBlock.addEventListener('click', function() {
             
@@ -1885,36 +2009,36 @@ document.addEventListener("DOMContentLoaded", function() {
     const languageModal = document.getElementById('languageModal');
     const languageCloseBtn = document.querySelector('.language-close-btn');
     const languageSaveBtn = document.getElementById('save-lang');
-    
-
-    
-    openLanguageModalBtn.addEventListener('click', function() {
-        populateLanguageList();
-        languageModal.style.display = 'block';
-    });
-    
-
-    languageCloseBtn.addEventListener('click', function() {
-        languageModal.style.display = 'none';
-    });
-
-    languageSaveBtn.addEventListener('click', function() {
-        languageModal.style.display = 'none';
-        final_lang=language_video;
-        websocketClient.send("lang_client_"+userId+"_client_"+final_lang);
-        selectedLanguage.textContent = `${languages[parseInt(final_lang)-1]}`;
-    });
 
 
+    if (selectedLanguage && openLanguageModalBtn && languageModal && languageCloseBtn && languageSaveBtn){
+        openLanguageModalBtn.addEventListener('click', function() {
+            populateLanguageList();
+            languageModal.style.display = 'block';
+        });
+        
 
+        languageCloseBtn.addEventListener('click', function() {
+            languageModal.style.display = 'none';
+        });
+
+        languageSaveBtn.addEventListener('click', function() {
+            languageModal.style.display = 'none';
+            final_lang=language_video;
+            websocketClient.send("lang_client_"+userId+"_client_"+final_lang);
+            selectedLanguage.textContent = `${languages[parseInt(final_lang)-1]}`;
+        });
+    }
      
+    const myModal_limit_size = document.getElementById('myModal_limit_size');
+    const closeBtn_limit_size = document.querySelector('.close_limit_size');
 
-            const myModal_limit_size = document.getElementById('myModal_limit_size');
-            const closeBtn_limit_size = document.querySelector('.close_limit_size');
-
-            closeBtn_limit_size.addEventListener('click', function() {
-                myModal_limit_size.style.display = 'none';
-            });
+    if (myModal_limit_size && closeBtn_limit_size){
+        closeBtn_limit_size.addEventListener('click', function() {
+            myModal_limit_size.style.display = 'none';
+        });
+    }
+            
     
 });
 
@@ -2004,12 +2128,13 @@ function selectOption(option) {
 const dropZone = document.getElementById('dropZone');
 const inputFile_drag = document.getElementById('file');
 
-inputFile_drag.addEventListener('change', (event) => {
-    const files_drag = event.target.files;
-    if (files_drag.length > 0) {
-        console.log("File selected: " + files_drag[0].name);
-     }
-});
+if (dropZone && inputFile_drag){
+    inputFile_drag.addEventListener('change', (event) => {
+        const files_drag = event.target.files;
+        if (files_drag.length > 0) {
+            console.log("File selected: " + files_drag[0].name);
+        }
+    });
 
         dropZone.addEventListener('dragover', (event) => {
             event.preventDefault();
@@ -2038,10 +2163,45 @@ inputFile_drag.addEventListener('change', (event) => {
             }
         });
 
+}
+
+ 
+
+         
 
 
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const exportDropdown_srt = document.getElementById('exportDropdown-srt');
+    const exportDropdown_mp4 = document.getElementById('exportDropdown-mp4');
+
+    if (exportDropdown_srt && exportDropdown_mp4){
+        exportDropdown_srt.addEventListener('click', () => {
+        downloadSRT_2();
+        });  
+        exportDropdown_mp4.addEventListener('click', () => {
+        downloadVideo_2();
+        }); 
+    } 
+  });
 
 
         
-    
-         
+    document.addEventListener("DOMContentLoaded", function() {  
+        const settingsOption = document.querySelectorAll('.settings-font-block');
+        if (settingsOption){
+            settingsOption.forEach(elemOption => {
+                elemOption.style.paddingTop = '10px';
+                elemOption.style.paddingRight = '0';
+                elemOption.style.paddingBottom = '10px';
+                elemOption.style.paddingLeft = '0';
+            });  
+        } 
+    });
+        
+
+
+
+
+  
