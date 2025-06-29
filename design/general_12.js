@@ -300,7 +300,7 @@ const start_elements = [
 
     { id: 'position-sub-title', content: 'Position of subtitles' },
     { id: 'textglow-sub-title', content: 'Text Glow' },
-    { id: 'audio-sub-title', content: 'Audio enhacement' },
+    { id: 'audio-sub-title', content: 'Noise reduction' },
 
     { id: 'settings-position-sub', content: 'Text design' }, 
     { id: 'monoColor', content: 'Monocolor' },
@@ -2205,5 +2205,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });  
         } 
     });
-        
- 
+         
