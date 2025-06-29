@@ -493,7 +493,11 @@ function start_percentage(type_loading) {
     var time_increment=1;
     if (type_loading==1){
         delta_seconds=1000;
-        if (current_duration>60){
+        if (current_duration<62){
+            delta_seconds=2000;
+        }
+
+        if (current_duration>=62){
             delta_seconds=1000;
         }
         if (current_duration>180){
@@ -1147,7 +1151,7 @@ function check_edited_captions_next() {
                 var sendTextGlowSub = selectedTextGlowSub;
                 var sendAudioSub = selectedAudioSub;
 
-                console.log("sendPositionSub:",sendPositionSub,", ",sendTextGlowSub,", ",sendAudioSub);
+                 
             
                 captions_video=new_captions_video; 
                 
@@ -2202,8 +2206,4 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
     });
         
-
-
-
-
-  
+ 
