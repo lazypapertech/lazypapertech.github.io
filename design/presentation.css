@@ -1,0 +1,404 @@
+#start-presentation {
+  font-family: sans-serif;
+  background-color: #f3f5f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+}
+
+ .start-header {
+  margin-bottom: 1rem;
+}
+
+.start-announcement {
+  display: flex;
+  justify-content: center;
+}
+
+.start-announcement-link {
+  display: flex; 
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  background-color: #f3f5f7;
+  border-radius: 100px;
+  padding: 5px 20px;
+}
+
+ 
+
+.start-announcement-badge {
+  position: relative;
+  border-radius: 100px;
+  overflow: hidden;
+}
+
+.start-announcement-badge img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 100px;
+}
+
+.start-announcement-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  color: white;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start-announcement-title { 
+  color: #0d0d0d;
+}
+
+.start-announcement-title h3{
+    font-size: 18px;
+}
+
+
+.start-chevron-icon {
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid black;
+  border-bottom: 2px solid black;
+  transform: rotate(-45deg);
+  margin: 0;
+}
+
+ .start-title-container {
+  max-width: 800px;
+  margin:0 10px 0 10px;
+}
+
+.start-title-container h3{
+    color:#252525;
+}
+.start-title-container h4{
+    color:#252525;
+    font-size: 20px;
+    letter-spacing:0.5px;
+}
+
+.start-title {
+  font-size: 3rem;
+  line-height: 1.2;
+  margin:0 0 1rem 0; 
+}
+ 
+
+.start-platform { 
+  color: #6898ff;
+ 
+  background: linear-gradient(90deg, #7c55e6, #6898ff, #47c3ff, #22d1ab);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.start-subtitle {
+  font-size: 1.2rem;
+  font-weight:normal;
+  line-height: 1.5;
+  margin-top: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.8;
+}
+
+ .start-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+.start-button {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-size: 1rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.start-button-dark {
+  background-color: #000;
+  color: #fff;
+  border: 1px solid #000;
+}
+
+.start-button-colorful {
+  background: linear-gradient(45deg, #7c55e6, #22e6bc);
+  color: #fff;
+  border: none;
+}
+
+.start-play-icon-0 {
+  width: 0;
+  height: 0;
+  border-left: 12px solid white;      
+  border-top: 6.9px solid transparent;  
+  border-bottom: 6.9px solid transparent;
+
+  position: relative;
+  left: 0;  
+  margin:2px 5px;
+  box-sizing: border-box;
+}
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ .start-video-preview {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  box-sizing: border-box;
+}
+
+ .start-video-container {
+  position: relative;
+  width: 700px;
+  max-width: 800px;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 25px;
+  box-sizing: border-box;
+}
+
+.start-video-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-sizing: border-box;
+}
+
+ .start-play-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;  
+  cursor: pointer;
+}
+
+
+.start-play-button {
+  width: 80px;
+  height: 80px;
+  background-color: black;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.start-play-icon {
+  width: 0;
+  height: 0;
+  border-left: 24px solid white;
+  border-top: 14px solid transparent;
+  border-bottom: 14px solid transparent;
+
+  position: relative;
+  left: 4.5px;  
+}
+
+
+
+.start-pulse-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.9);
+  transform: translate(-50%, -50%);
+  opacity: 0.9; 
+  box-sizing: border-box;
+}
+
+
+ 
+
+@keyframes pulseWave {
+  0% {
+    width: 80px;
+    height: 80px;
+    opacity: 0.9;
+  }
+  50% {
+    width: 130px;
+    height: 130px;
+    opacity: 0.4;
+  }
+  100% {
+    width: 180px;
+    height: 180px;
+    opacity: 0;
+  }
+}
+
+@media (max-width: 600px) {
+
+    #start-presentation{
+    padding: 10px 0;
+  }
+  .start-buttons {
+    gap: 0.5rem;
+  }
+
+  .start-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .start-title {
+    font-size: 2rem;
+    line-height: 1;
+  }
+  
+
+    .start-announcement-title h3{
+    font-size: 15px;
+}
+
+.start-title-container h3{
+    color:#252525;
+}
+.start-title-container h4{
+    color:#252525;
+    font-size: 16px;
+    padding:0 5px;
+    letter-spacing:0px;
+}
+
+.start-video-container {
+  margin:0 7px;
+}
+
+  .start-subtitle {
+    font-size: 1rem; 
+  }
+   .start-play-wrapper {
+    width: 20%;
+    height: auto;  
+  }
+   .start-play-button,
+  .start-pulse-circle {
+    width: 100%;  
+    height: 0;
+    padding-top: 100%;  
+  }
+  .start-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  width: 35%;         
+  height: 45%;        
+  border-left: 0.56em solid white;    
+  border-top: 0.32em solid transparent;
+  border-bottom: 0.32em solid transparent;
+  background-color: white;
+  clip-path: polygon(0% 0%, 100% 50%, 0% 100%);  
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+}
+
+ 
+   
+ 
+
+    @keyframes pulseWave {
+    0% {
+      width: 60px;
+      height: 60px;
+      opacity: 0.9;
+    }
+    50% {
+      width: 85px;
+      height: 85px;
+      opacity: 0.4;
+    }
+    100% {
+      width: 110px;
+      height: 110px;
+      opacity: 0;
+    }
+  }
+
+   
+}
+
+
+@media (max-width: 300px) {
+  @keyframes pulseWave {
+  0% {
+    width: 40px;
+    height: 40px;
+    opacity: 0.9;
+  }
+  50% {
+    width: 65px;
+    height: 65px;
+    opacity: 0.4;
+  }
+  100% {
+    width: 90px;
+    height: 90px;
+    opacity: 0;
+  }
+}
+}
+ 
