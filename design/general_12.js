@@ -260,7 +260,7 @@ const start_elements = [
 
     { selector: '.error-dimension', content: 'Something went wrong. Try it again' },
     { selector: '.percentage', content: '0%' },
-    { selector: '.loader-description', content: 'Manycaptions is being renovated, it will be back on July 10th' },
+    { selector: '.loader-description', content: 'Manycaptions is under maintenance, it will be back on July 10th' },
 
     { id: 'settings-openModalBtn', content: `<i class="fas fa-cog"></i> Customize` }, 
     { id: 'createVideo', content: `<i class="fas fa-film"></i> Subtitle video` }, 
