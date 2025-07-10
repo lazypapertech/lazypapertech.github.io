@@ -5,7 +5,10 @@ let interval_2;
 let captions_video="";
 let new_captions_video="";
 let websocketClient;
-let send_new_captions=0;
+let send_new_captions=0;  
+
+ 
+let irregular_timestamp = []; 
 
 let blob;
 let videoURL;
@@ -260,7 +263,7 @@ const start_elements = [
 
     { selector: '.error-dimension', content: 'Something went wrong. Try it again' },
     { selector: '.percentage', content: '0%' },
-    { selector: '.loader-description', content: 'Manycaptions is under maintenance, it will be back on July 10th' },
+    { selector: '.loader-description', content: 'Loading . . .' },
 
     { id: 'settings-openModalBtn', content: `<i class="fas fa-cog"></i> Customize` }, 
     { id: 'createVideo', content: `<i class="fas fa-film"></i> Subtitle video` }, 
@@ -327,7 +330,7 @@ const start_elements = [
 
 
  
- let url_websocket="symphonious20.glitch.me";
+ let url_websocket="rndomg84pbrg.onrender.com";
 
  
 
@@ -401,7 +404,24 @@ function show_export_mp4() {
 
 
 
+function hasValueNotEqualToOne(list) {
+    return list.some(element => element !== 1);
+}
 
+
+function indiceAcumuladoHasta(entero, lista) {
+    let acumulado = 0;
+    for (let i = 0; i < lista.length; i++) {
+        acumulado += lista[i];
+        if (acumulado >= entero) {
+            return i;
+        }
+    } 
+    return -1; 
+}
+
+
+ 
 
  
 
@@ -424,11 +444,14 @@ if (videoElement){
         var seconds = Math.floor(currentTime - hours * 3600 - minutes * 60);
         var totalSeconds = Math.floor(currentTime);
 
-        
-
-        if (totalSeconds%caption_length==0){
-            
-            write_captions(totalSeconds/caption_length);
+         
+         
+        var index_irregular_timestamps = indiceAcumuladoHasta(totalSeconds+1,irregular_timestamp);
+  
+        if (totalSeconds%1==0){ 
+            if (true){ 
+                write_captions(index_irregular_timestamps);
+            }  
         };
 
         
@@ -456,14 +479,25 @@ if (videoElement){
 
         if (caption_length<0.9){
             if (indice < textareas.length) {
-                 scrollToElement(textareas[indice]);
-                textareas.forEach((textarea, i) => {
-                    if (i === indice || i === indice + 1) {
-                        textarea.style.border = '2px solid rgb(119, 0, 255)';
-                    } else {
-                        textarea.style.border = '1px solid rgba(177, 177, 177, 0.5)';
-                    }
-                });
+                if (true){
+                    scrollToElement(textareas[2*indice]);
+                     
+                    textareas.forEach((textarea, i) => {
+                        if (i<textareas.length-1){
+                            if (i%2==0){
+                                if (i === 2*indice) {
+                                    textareas[i].style.border = '2px solid rgb(119, 0, 255)';
+                                    textareas[i+1].style.border = '2px solid rgb(119, 0, 255)';
+                                      
+                                }else{
+                                    textareas[i].style.border = '1px solid rgba(177, 177, 177, 0.5)';
+                                    textareas[i+1].style.border = '1px solid rgba(177, 177, 177, 0.5)';  
+                                }
+                            }
+                        }
+                    });
+                 }    
+                  
             } 
         }
 
@@ -663,11 +697,7 @@ async function sendVideo(selectedFile){
         
         
 
-        var normal_size=150000000;
-        const user_id_size=localStorage.getItem('userid');
-        if (user_id_size.includes("0x")){
-            normal_size=500000000;
-        }
+        var normal_size=150000000; 
         
         if(video_file.size < normal_size) {
 
@@ -725,6 +755,12 @@ function generarInputs_captions(frases){
         arrayFrases.pop();
     }
 
+    const N_frases = arrayFrases.length;
+    irregular_timestamp = []; 
+    for (let i = 0; i < N_frases; i++) {
+    irregular_timestamp.push(1);
+    }
+
     for (let i = 0; i < arrayFrases.length; i += 2) {
         var rowDiv = document.createElement("div");
         rowDiv.style.display = "flex";
@@ -778,7 +814,8 @@ function generarInputs_captions(frases){
 
 
 
-function generarInputs_captions_1seg(frases) {
+function generarInputs_captions_1seg(frases) { 
+
     var form = document.getElementById("form-container");
     
     form.innerHTML = "";
@@ -786,6 +823,12 @@ function generarInputs_captions_1seg(frases) {
     var arrayFrases = frases.split("-o-");
     while (arrayFrases.length > 0 && arrayFrases[arrayFrases.length - 1] === '') {
         arrayFrases.pop();
+    }
+
+    const N_frases = arrayFrases.length;
+    irregular_timestamp = []; 
+    for (let i = 0; i < N_frases; i++) {
+    irregular_timestamp.push(1);
     }
 
     arrayFrases.forEach(function(frase,index) {
@@ -826,7 +869,7 @@ function isValidURL(url) {
 
   function downloadVideo_stream() {
     const downloadLink = document.createElement('a');
-      downloadLink.href = 'https://symphonious20.glitch.me/download/'+userId+'/export'; 
+      downloadLink.href = 'https://rndomg84pbrg.onrender.com/download/'+userId+'/export'; 
       var randomdownload = Math.floor(1000 + Math.random() * 9000);
       var randomstring = randomdownload.toString();
       downloadLink.download = 'clip_manycaptions'+randomstring+'.mp4'; 
@@ -841,7 +884,7 @@ function isValidURL(url) {
         console.log("download type 0");
         const downloadLink = document.createElement('a');
         
-	downloadLink.href = `https://symphonious20.glitch.me/download/${userId}/export?ts=${timestamp_download}`; 
+	downloadLink.href = `https://rndomg84pbrg.onrender.com/download/${userId}/export?ts=${timestamp_download}`; 
         var randomdownload = Math.floor(1000 + Math.random() * 9000);
         var randomstring = randomdownload.toString();
         downloadLink.download = 'clip_manycaptions'+randomstring+'.mp4'; 
@@ -990,7 +1033,7 @@ function downloadSRT(){
     const sourceElement = videoElement.querySelector('source');
 
     if (sourceElement) {
-        sourceElement.src = 'https://symphonious20.glitch.me/download/'+userId+'/watch'; 
+        sourceElement.src = 'https://rndomg84pbrg.onrender.com/download/'+userId+'/watch'; 
         videoElement.load(); 
     } else {
         console.error('No se encontró el elemento source.');
@@ -1021,7 +1064,7 @@ function request_video_mp4() {
         }
 
         
-        sourceElement.src = 'https://symphonious20.glitch.me/download/'+userId+'/watch'; 
+        sourceElement.src = 'https://rndomg84pbrg.onrender.com/download/'+userId+'/watch'; 
         videoElement.load(); 
         isLoading_mp4 = false;
 
@@ -1043,7 +1086,7 @@ function request_video_mp4_2() {
             }
             if (sourceElement) {
 		const timestamp_new = Date.now();
-                sourceElement.src = `https://symphonious20.glitch.me/download/${userId}/watch?ts=${timestamp_new}`; 
+                sourceElement.src = `https://rndomg84pbrg.onrender.com/download/${userId}/watch?ts=${timestamp_new}`; 
                 videoElement.currentTime = 0;
 		videoElement.load();
             }
@@ -2205,4 +2248,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });  
         } 
     });
-         
+        
+
+ 
