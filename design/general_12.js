@@ -7,7 +7,8 @@ let new_captions_video="";
 let websocketClient;
 let send_new_captions=0;  
 
- 
+let custom_timestamp=0;
+let received_durations = -1;
 let irregular_timestamp = []; 
 
 let blob;
@@ -757,8 +758,13 @@ function generarInputs_captions(frases){
 
     const N_frases = arrayFrases.length;
     irregular_timestamp = []; 
-    for (let i = 0; i < N_frases; i++) {
-    irregular_timestamp.push(1);
+
+    if (received_durations==-1){ 
+        for (let i = 0; i < N_frases; i++) {
+            irregular_timestamp.push(1);
+        }
+    }else{
+        irregular_timestamp = received_durations;
     }
 
     for (let i = 0; i < arrayFrases.length; i += 2) {
@@ -826,9 +832,14 @@ function generarInputs_captions_1seg(frases) {
     }
 
     const N_frases = arrayFrases.length;
-    irregular_timestamp = []; 
-    for (let i = 0; i < N_frases; i++) {
-    irregular_timestamp.push(1);
+    irregular_timestamp = [];   
+
+    if (received_durations==-1){ 
+        for (let i = 0; i < N_frases; i++) {
+            irregular_timestamp.push(1);
+        }
+    }else{
+        irregular_timestamp = received_durations;
     }
 
     arrayFrases.forEach(function(frase,index) {
@@ -1354,17 +1365,24 @@ function connect(type_connection) {
 
             if (message_result.split("_client_")[0]=="enviar"){
 
+                const message_result_split = message_result.split("_client_");
                 current_step=1;
 
                 waiting_video=0;
 
                 waiting_caption=0;
                 bad_connection_choose_file=0;
-                captions_video=message_result.split("_client_")[2];
+                captions_video=message_result_split[2];
                 first_url="none";
-                caption_length=message_result.split("_client_")[4]; 
+                caption_length=message_result_split[4]; 
                 localStorage.setItem('caption_length', caption_length);
                 
+                if (message_result_split.length==6){
+                    custom_timestamp = 1;
+                    received_durations = JSON.parse(message_result_split[5]);
+                }
+                 
+
                 clearInterval(interval);
                 reset_percentage();
                 
@@ -2250,4 +2268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
         
 
- 
+
+
+
+  
