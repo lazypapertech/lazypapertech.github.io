@@ -1208,8 +1208,15 @@ function check_edited_captions_next() {
                  
             
                 captions_video=new_captions_video; 
+
+                var send_settings = "tocreate_client_"+user_id+"_client_"+new_captions_video+"_client_"+first_url+"_client_"+sendFont+"_client_"+sendColor+"_client_"+sendPositionSub+"_client_"+sendTextGlowSub+"_client_"+sendAudioSub;
+
+                if (received_durations!=-1){
+                    var durations_string = received_durations.join("_");
+                    send_settings=send_settings+"_client_"+durations_string;
+                }
                 
-                websocketClient.send("tocreate_client_"+user_id+"_client_"+new_captions_video+"_client_"+first_url+"_client_"+sendFont+"_client_"+sendColor+"_client_"+sendPositionSub+"_client_"+sendTextGlowSub+"_client_"+sendAudioSub);
+                websocketClient.send(send_settings);
 
                 
                 video_received=0;
@@ -2268,7 +2275,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
         
 
-
-
-
-  
+ 
