@@ -33,6 +33,8 @@ let selectedPositionSub=1;
 let selectedTextGlowSub=1;
 let selectedAudioSub=1;
 let extra_seconds=0;
+let selectedLanguageIndex = null;
+let currentFile=null;
 
  
 
@@ -428,7 +430,9 @@ function indiceAcumuladoHasta(entero, lista) {
 
 function scrollToElement(element) {
     var container = document.querySelector('.form-container');
-    container.scrollTop = element.offsetTop - container.offsetTop - (container.offsetHeight / 2) + (element.offsetHeight / 2);
+    if (container){ 
+        container.scrollTop = element.offsetTop - container.offsetTop - (container.offsetHeight / 2) + (element.offsetHeight / 2);
+    }
 };
 
 
@@ -462,51 +466,54 @@ if (videoElement){
  
 
 
-    function write_captions(indice) {
+function write_captions(indice) {
         const textareas = document.querySelectorAll('.flexible-captions');
-        if (caption_length==1){ 
-            if (indice<textareas.length){
-                scrollToElement(textareas[indice]);
-                textareas[indice].style.border = '2px solid rgb(119, 0, 255)';
-                let suma=0;
-                textareas.forEach(textarea => {
-                    if (suma!=indice){
-                        textarea.style.border = '1px solid rgb(177, 177, 177,0.5)';
-                    }
-                    suma=suma+1
-                }); 
-            } 
-        }
-
-        if (caption_length<0.9){
-            if (indice < textareas.length) {
-                if (true){
-                    scrollToElement(textareas[2*indice]);
-                     
-                    textareas.forEach((textarea, i) => {
-                        if (i<textareas.length-1){
-                            if (i%2==0){
-                                if (i === 2*indice) {
-                                    textareas[i].style.border = '2px solid rgb(119, 0, 255)';
-                                    textareas[i+1].style.border = '2px solid rgb(119, 0, 255)';
-                                      
-                                }else{
-                                    textareas[i].style.border = '1px solid rgba(177, 177, 177, 0.5)';
-                                    textareas[i+1].style.border = '1px solid rgba(177, 177, 177, 0.5)';  
+        if (textareas && textareas[indice]){ 
+            if (caption_length==1){ 
+                if (indice<textareas.length){
+                    scrollToElement(textareas[indice]);
+                    textareas[indice].style.border = '2px solid rgb(119, 0, 255)';
+                    let suma=0;
+                    textareas.forEach(textarea => {
+                        if (suma!=indice){
+                            textarea.style.border = '1px solid rgb(177, 177, 177,0.5)';
+                        }
+                        suma=suma+1
+                    }); 
+                } 
+            }
+        }    
+        if (textareas && textareas[2*indice]){ 
+            if (caption_length<0.9){
+                if (indice < textareas.length) {
+                    if (true){
+                        scrollToElement(textareas[2*indice]);
+                        
+                        textareas.forEach((textarea, i) => {
+                            if (i<textareas.length-1){
+                                if (i%2==0){
+                                    if (i === 2*indice) {
+                                        textareas[i].style.border = '2px solid rgb(119, 0, 255)';
+                                        textareas[i+1].style.border = '2px solid rgb(119, 0, 255)';
+                                        
+                                    }else{
+                                        textareas[i].style.border = '1px solid rgba(177, 177, 177, 0.5)';
+                                        textareas[i+1].style.border = '1px solid rgba(177, 177, 177, 0.5)';  
+                                    }
                                 }
                             }
-                        }
-                    });
-                 }    
-                  
-            } 
-        }
+                        });
+                    }    
+                    
+                } 
+            }
 
              
 
-        if (indice==textareas.length-1){
-            textareas[indice].style.border = '1px solid rgb(177, 177, 177,0.5)';
-        }
+            if (indice==textareas.length-1){
+                textareas[indice].style.border = '1px solid rgb(177, 177, 177,0.5)';
+            }
+        }    
  
     };
     
@@ -638,13 +645,22 @@ function enviarMensaje(websocket, mensaje) {
 
 
 
-async function sendVideo(selectedFile){
+async function sendTotalSize(selectedFile){
     document.querySelector('.percentage').textContent = "0%";
-    document.querySelector('.loader-description').innerHTML = 'Uploading video . . .';
+    document.querySelector('.loader-description').innerHTML = 'Uploading video . . . ';
+    writeLanguageInLoadingCircle(languages[selectedLanguageIndex]);
+     
+    const totalSize = selectedFile.size;
+    websocketClient.send("video_size:"+totalSize.toString()); 
+     
+  };
+
+
+
+  async function sendVideo(selectedFile){ 
     
     const chunkSize = 200 * 1000; 
-    const totalSize = selectedFile.size;
-    websocketClient.send("video_size:"+totalSize.toString());
+    const totalSize = selectedFile.size; 
     
     const delta_float_percent=100*chunkSize/totalSize;
     
@@ -684,6 +700,7 @@ async function sendVideo(selectedFile){
 
         const fileInputElement = document.getElementById('file');
         const selectedFile = fileInputElement.files[0];
+        currentFile = selectedFile;
 
         
 
@@ -720,7 +737,7 @@ async function sendVideo(selectedFile){
             
 
             
-            sendVideo(selectedFile);
+            sendTotalSize(selectedFile);
             
     
 
@@ -1405,7 +1422,7 @@ function connect(type_connection) {
                 document.querySelector('.loader-description').innerHTML = 'Subtitling video . . .';
             }
 
-            if (message_result=="good_file"){
+            if (message_result=="all_chunks_received"){
                 waiting_caption=1;
                 bad_connection_choose_file=0;
 
@@ -1495,18 +1512,18 @@ function connect(type_connection) {
                 hide_circle();
                 show_video_buttons();
                 show_video_container();
-    
-                 
-
+     
 		        request_video_mp4_2();
                 
 
-                websocketClient.send("video_received_good:"+userId);
-
-                
+                websocketClient.send("video_received_good:"+userId); 
                 
             }
 
+            if (message_result === "ready_to_upload"){
+                console.log("message: ",message_result);
+                sendVideo(currentFile);
+            }
 
             
 
@@ -1529,25 +1546,24 @@ function connect(type_connection) {
             bad_connection_choose_file=0;
             bad_connection_create_video=0;
             waiting_video=0;
- 
-            generarInputs_captions(captions_video);
-            show_card_captions();
-
-            blob = new Blob([event.data], { type: 'video/mp4' });
-            videoURL = URL.createObjectURL(blob);
+  
 
             clearInterval(interval);
             reset_percentage();
+            show_card_captions();
+            generarInputs_captions(captions_video);
 
-            changeVideoSource(videoURL);
-             
-             
-            
+              
             toggleEditability(1);
             hide_choose_file();
             hide_circle();
             show_video_buttons();
             show_video_container();
+
+
+            blob = new Blob([event.data], { type: 'video/mp4' });
+            videoURL = URL.createObjectURL(blob);
+            changeVideoSource(videoURL);
   
             
 
@@ -2030,6 +2046,21 @@ saveColorsToLocalStorageMono('#FFFFFF');
 
 
 
+function writeLanguageInLoadingCircle(texto){
+    const div = document.querySelector('.loader-description');
+    if (div){ 
+        div.appendChild(document.createElement('br')); 
+        const text = document.createTextNode("Video language: "+texto);
+        div.appendChild(text);
+    } 
+} 
+
+function writeUpdatingMessage(texto){
+    const div = document.querySelector('.error-dimension');
+    div.innerHTML = texto; 
+    div.style.display = "block"; 
+} 
+
 
 const languages = [
     'English', 
@@ -2041,8 +2072,7 @@ function populateLanguageList() {
 
     
 
-    let selectedLanguageIndex = null;
-
+ 
     languageList.innerHTML = '';
 
     languages.forEach(function(font, index) { 
@@ -2070,6 +2100,7 @@ function populateLanguageList() {
 
             selectedLanguageIndex = index;
             console.log(index);
+             
         });
 
         listItem.appendChild(fontBlock);
@@ -2275,4 +2306,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
         
 
+writeUpdatingMessage("Currently under maintenance, errors may occur during the next few hours.");
  
+  
