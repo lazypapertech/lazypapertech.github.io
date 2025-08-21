@@ -2305,7 +2305,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } 
     });
         
-
-writeUpdatingMessage("Currently under maintenance, errors may occur during the next few hours.");
  
   
+
