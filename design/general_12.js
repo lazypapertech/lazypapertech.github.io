@@ -630,7 +630,7 @@ if (selectImage && inputFile){
  
 
 
-function enviarMensaje(websocket, mensaje) {
+function enviarMensaje_0(websocket, mensaje) {
     return new Promise((resolve, reject) => {
         const listener = (event) => {
             resolve(event.data); 
@@ -641,6 +641,10 @@ function enviarMensaje(websocket, mensaje) {
         websocket.send(mensaje);
     });
 };
+
+ 
+ 
+
 
 
 
@@ -657,7 +661,7 @@ async function sendTotalSize(selectedFile){
 
 
 
-  async function sendVideo(selectedFile){ 
+  async function sendVideo_0(selectedFile){ 
     
     const chunkSize = 200 * 1000; 
     const totalSize = selectedFile.size; 
@@ -683,6 +687,8 @@ async function sendTotalSize(selectedFile){
             document.querySelector('.percentage').textContent = `${round_percentage}%`;
             float_percentage=float_percentage+delta_float_percent;
         };
+
+        console.log(n);
         
         n=n+1;
 
@@ -690,6 +696,67 @@ async function sendTotalSize(selectedFile){
     };
   };
 
+  function enviarMensaje(websocket, mensaje) {
+    return new Promise((resolve, reject) => {
+        const listener = (event) => {
+            websocket.removeEventListener("message", listener);
+            resolve(event.data);
+        };
+
+        const errorListener = (err) => {
+            websocket.removeEventListener("message", listener);
+            reject(err);
+        };
+
+        websocket.addEventListener("message", listener, { once: true });
+        websocket.addEventListener("error", errorListener, { once: true });
+        websocket.addEventListener("close", errorListener, { once: true });
+
+        try {
+            websocket.send(mensaje);
+        } catch (err) {
+            websocket.removeEventListener("message", listener);
+            reject(err);
+        }
+    });
+}
+
+  async function sendVideo(selectedFile) {
+    const totalSize = selectedFile.size; 
+     
+    let chunkKB = 125;                  
+    const maxKB = 2000;                 
+    const stepKB = 10;                  
+
+    let offset = 0;
+    let n = 0;
+
+    while (offset < totalSize) {
+         
+        let chunkSize = chunkKB * 1024;
+        if (chunkSize > maxKB * 1024) {
+            chunkSize = maxKB * 1024;   
+        } 
+         
+        const end = Math.min(offset + chunkSize, totalSize);
+        const chunk = selectedFile.slice(offset, end);
+        offset = end; 
+         
+        await enviarMensaje(websocketClient, chunk); 
+         
+        const percent = ((offset / totalSize) * 100).toFixed(1);
+        document.querySelector('.percentage').textContent = `${percent}%`;
+ 
+        n++; 
+         
+        if (chunkKB < maxKB) {
+            chunkKB += stepKB;
+            if (chunkKB > maxKB) chunkKB = maxKB;  
+        }
+    }
+}
+
+ 
 
 
  if (inputFile){
@@ -2306,5 +2373,3 @@ document.addEventListener('DOMContentLoaded', () => {
     });
         
  
-  
-
