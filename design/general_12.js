@@ -2130,7 +2130,7 @@ function writeUpdatingMessage(texto){
 
 
 const languages = [
-    'English', 
+    'English (beta)', 
     'Español' 
 ];
 
@@ -2373,3 +2373,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
         
  
+
