@@ -1,4 +1,4 @@
-let lastPressedButton = 0;
+ let lastPressedButton = 0;
 let caption_length = 0.5;
 let interval;
 let interval_2;
@@ -1305,6 +1305,8 @@ function connect(type_connection) {
 
         document.querySelector(".loader-description").innerHTML =
           "Subtitling video . . .";
+
+          websocketClient.send("captions_received:" + userId);
       }
 
       if (message_result == "all_chunks_received") {
