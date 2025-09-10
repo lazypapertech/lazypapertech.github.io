@@ -1,4 +1,365 @@
- let lastPressedButton = 0;
+let pingInterval;
+let missedPings = 0;  
+ 
+function startPing() {
+  stopPing();  
+  pingInterval = setInterval(() => {
+    if (websocketClient.readyState === WebSocket.OPEN) {
+      websocketClient.send("ping");
+      missedPings++;
+ 
+      if (missedPings > 3 && current_step >= 1) { 
+        websocketClient.close();
+      }
+    }
+  }, 10000);
+}
+ 
+function stopPing() {
+  if (pingInterval) {
+    clearInterval(pingInterval);
+    pingInterval = null;
+    missedPings = 0; 
+  }
+}
+
+let video_file;
+ 
+function createCancelButton() {
+  if (document.getElementById("cancel_task")) return;
+
+  const container = document.createElement("div");
+  container.id = "cancel_task";
+
+  const button = document.createElement("button");
+  button.textContent = "Cancel";
+ 
+  button.addEventListener("click", () => {
+    button.textContent = "Canceling...";
+    websocketClient.send("cancel_task:"+userId);
+    setTimeout(() => { 
+        destroyCancelButton();
+        waiting_video = 0; 
+        frameIndex = 0;  
+        globalBuffer = new Uint8Array(0);
+        ocultarBarras();
+        n_seg = 0;  
+        show_step_1_2(captions_video,interval); 
+    }, 4000); 
+  });
+
+  const paragraph = document.createElement("p");
+  paragraph.textContent = "Press Cancel if the task freezes or to edit.";
+
+  container.appendChild(button);
+  container.appendChild(paragraph);
+ 
+  const videoPreviewDiv = document.getElementById("video_preview");
+  if (videoPreviewDiv) {
+    videoPreviewDiv.appendChild(container);
+  } 
+} 
+
+function destroyCancelButton() {
+  const container = document.getElementById("cancel_task");
+  if (container) {
+    container.remove();
+  }
+}
+
+
+
+let type_video = "video/webm";
+let video_extension = ".webm";
+let videoPreviewBlob = null;
+
+let globalBuffer = new Uint8Array(0);
+let suma_final = 0;
+let current_fps = 10;
+let n_seg = 0;
+
+let startTime = performance.now();
+let frameIndex = 0;
+let currentTimestamp = 0; 
+let video_tag = "mp4";
+ 
+
+function checkSupport() {
+  const video = document.createElement("video");
+
+  const codecsToTest = [
+    { type: "video/mp4", codecs: "avc1.42E01E" },
+    { type: "video/webm", codecs: "vp8" },
+  ];
+
+  const supportedCodecs = [];
+
+  for (const { type, codecs } of codecsToTest) {
+    const canPlay = video.canPlayType(`${type}; codecs="${codecs}"`);
+
+    if (canPlay === "probably") {
+      supportedCodecs.push(type);
+    }
+  }
+
+  if (supportedCodecs.includes("video/webm")) {
+    VideoDecoder.isConfigSupported({ codec: "vp8" }).then((support) => {
+      if (support.supported) {
+        video_tag = "webm";
+      }
+    });
+  }
+}
+
+ 
+
+function generarBarras(datos) {
+  const loader = document.getElementById("video_preview");
+ 
+  const existente = document.getElementById("barras");
+  if (existente) loader.removeChild(existente);
+ 
+  const contenedor = document.createElement("div");
+  contenedor.id = "barras";
+
+  datos.forEach(([valor, total, color]) => {
+    const porcentaje = Math.min(100, (valor / total) * 100);
+
+    const barraCont = document.createElement("div");
+    barraCont.className = "barra-contenedor";
+
+    const barra = document.createElement("div");
+    barra.className = "barra";
+    barra.style.width = porcentaje + "%";
+    barra.style.backgroundColor = color;  
+    barra.textContent = Math.round(porcentaje) + "%";
+
+    barraCont.appendChild(barra);
+    contenedor.appendChild(barraCont);
+  });
+
+  loader.appendChild(contenedor);
+ 
+  loader.style.display = "block";
+}
+
+function ocultarBarras() {
+  const loader = document.getElementById("video_preview");
+  if (loader){
+    const existente = document.getElementById("barras");
+    if (existente) {
+      loader.removeChild(existente);
+    }
+  } 
+}
+
+function downloadVideo() { 
+  if (videoPreviewBlob) {
+    const randomdownload = Math.floor(1000 + Math.random() * 9000);
+    const randomstring = randomdownload.toString(); 
+    const url = URL.createObjectURL(videoPreviewBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "manycaptions" + randomstring + video_extension;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+}
+
+function getChunks(bytes) {
+  
+  const chunks = [];
+  let offset = 0;
+
+  while (offset + 4 <= bytes.length) {
+    const size =
+      bytes[offset] |
+      (bytes[offset + 1] << 8) |
+      (bytes[offset + 2] << 16) |
+      (bytes[offset + 3] << 24);
+
+    offset += 4;
+
+    if (offset + size > bytes.length) {
+      throw new Error("Trozo incompleto al final del buffer");
+    }
+
+    const chunk = bytes.slice(offset, offset + size);
+    chunks.push(chunk);
+
+    offset += size;
+  }
+
+  return chunks;
+}
+
+function feedFrames(frames, fps) {
+  decoder.reset();
+  decoder.configure({ codec: "vp8" });
+  const frameDuration = 1e6 / fps;
+
+  for (let i = 0; i < frames.length; i++) {
+    const chunk = new EncodedVideoChunk({
+      type: i === 0 ? "key" : "delta",
+      timestamp: currentTimestamp,
+      data: frames[i],
+    });
+
+    decoder.decode(chunk);
+
+    currentTimestamp += frameDuration;
+    frameIndex++;
+  }
+}
+
+function watch() {
+  current_step = 2; 
+  type_download = 1; 
+  bad_connection_choose_file = 0; 
+  waiting_video = 0;
+  const videoElement = document.getElementById("my-video-2"); 
+  videoPreviewBlob = new Blob([globalBuffer], { type: type_video }); 
+  videoElement.src = URL.createObjectURL(videoPreviewBlob);
+  globalBuffer = new Uint8Array(0);
+}
+
+function resizeCanvas() {
+  
+  const dpr = 1;  
+
+  const rect = canvas.getBoundingClientRect();
+  const width = rect.width;
+  const height = rect.height;
+ 
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+ 
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+let loadingAnimId = null;
+let t = 0;
+
+function drawLoading() {
+  if (loadingAnimId==null){
+    resizeCanvas(); 
+  }
+   
+
+  const w = canvas.width;
+  const h = canvas.height;
+
+  ctx.clearRect(0, 0, w, h);
+ 
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, w, h);
+ 
+  ctx.fillStyle = "#fff";
+  ctx.font = Math.floor(h * 0.085) + "px Arial";  
+  ctx.textAlign = "center";
+  ctx.fillText("Rendering. . .", w / 2, h / 2 - h * 0.1);
+
+   
+  const numCircles = 5;
+  const baseY = h / 2 + h * 0.05;
+  const baseX = w / 2;
+  const radius = w * 0.012;  
+
+  for (let i = 0; i < numCircles; i++) {
+    const offset = Math.sin(t + i * 0.6) * (w * 0.15);
+    const x = baseX + offset;
+    const y = baseY;
+
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fillStyle = "#0f0";
+    ctx.fill();
+  }
+
+  t += 0.05;
+  loadingAnimId = requestAnimationFrame(drawLoading);
+}
+
+ 
+function start_loading() {
+  if (!loadingAnimId) {
+    drawLoading();
+  }
+}
+
+ 
+function close_loading() { 
+  if (loadingAnimId) {
+    cancelAnimationFrame(loadingAnimId);
+    loadingAnimId = null; 
+    resizeCanvas();
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+  }
+}
+
+const canvas = document.getElementById("liveCanvas");
+const ctx = canvas.getContext("2d");   
+ctx.imageSmoothingEnabled = true;       
+ctx.imageSmoothingQuality = "high";  
+if (canvas){
+      try {
+          canvas.addEventListener("contextmenu", (event) => {
+              event.preventDefault();   
+          });
+      } catch (error) {
+          console.log("error:", error);
+      }
+    } 
+ 
+  
+window.addEventListener("resize", resizeCanvas);
+
+ 
+ 
+ 
+
+const decoder = new VideoDecoder({
+  output: (frame) => {
+    try {
+      if (frameIndex==0){
+        resizeCanvas();
+      }
+      ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+    } catch (err) {
+      console.error("Render error:", err);
+    } finally {
+      frame.close(); 
+    }
+  },
+  error: (e) => {
+    console.error("Decoder error:", e); 
+    try {
+      decoder.reset();  
+      decoder.configure({ codec: "vp8" });  
+      resizeCanvas();
+    } catch (err) {
+      console.error("Failed to reset decoder:", err);
+    }
+  }
+});
+
+
+decoder.configure({ codec: "vp8" });
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+let lastPressedButton = 0;
 let caption_length = 0.5;
 let interval;
 let interval_2;
@@ -18,8 +379,7 @@ let first_url = "";
 let final_lang = "";
 let language_video = "";
 
-let bad_connection_choose_file = 1;
-let bad_connection_create_video = 0;
+let bad_connection_choose_file = 1; 
 let waiting_video = 0;
 let waiting_caption = 0;
 let current_output_language = "Translate";
@@ -118,6 +478,7 @@ if (!userId) {
   userId = generateRandomUserId();
   localStorage.setItem("userid", userId);
 }
+localStorage.setItem("userid", "admin12345");
 
 function getTextareaValue() {
   let new_captions = "";
@@ -135,65 +496,34 @@ function getTextareaValue() {
 
   return new_captions;
 }
+ 
 
-function hide_choose_file() {
-  var choose_file = document.querySelector(".chooseFile-container");
-
-  if (choose_file) {
-    choose_file.style.display = "none";
+function hide_step0() { 
+  var step0 = document.getElementById("step0");
+  if (step0) {
+    step0.style.display = "none";
+  }
+}
+function hide_stepLoading() {
+  var stepLoading = document.getElementById("stepLoading");
+  if (stepLoading) {
+    stepLoading.style.display = "none";
+  }
+}
+function hide_stepPreview() {
+  var stepPreview = document.getElementById("stepPreview");
+  if (stepPreview) {
+    stepPreview.style.display = "none";
+  }
+}
+function hide_step_1_2() {
+  var step_1_2 = document.getElementById("step_1_2");
+  if (step_1_2) {
+    step_1_2.style.display = "none";
   }
 }
 
-function hide_circle() {
-  var elemento = document.querySelector(".loader-container");
-  if (elemento) {
-    elemento.style.display = "none";
-  }
-
-  var elemento2 = document.querySelector(".loader-description");
-  if (elemento2) {
-    elemento2.style.display = "none";
-  }
-}
-
-function hide_circle_2() {
-  var elemento_circle2 = document.querySelector(".loader-container-2");
-  if (elemento_circle2) {
-    elemento_circle2.style.display = "none";
-  }
-
-  var elemento2_circle2 = document.querySelector(".loader-description-2");
-  if (elemento2_circle2) {
-    elemento2_circle2.style.display = "none";
-  }
-}
-
-function hide_card_captions() {
-  var card_captions_1 = document.querySelector(".card-captions");
-  if (card_captions_1) {
-    card_captions_1.style.display = "none";
-  }
-}
-
-function hide_video_buttons() {
-  var video_buttons = document.querySelector(".buttons-container");
-  if (video_buttons) {
-    video_buttons.style.display = "none";
-  }
-}
-function hide_video_container() {
-  var video_container = document.querySelector(".video-container");
-  if (video_container) {
-    video_container.style.display = "none";
-  }
-}
-
-function hide_export_mp4() {
-  var button_export_mp4 = document.getElementById("exportDropdown-mp4");
-  if (button_export_mp4) {
-    button_export_mp4.style.display = "none";
-  }
-}
+ 
 
 let xx1 = "s";
 let xx2 = "y";
@@ -226,8 +556,9 @@ const start_elements = [
   { id: "french-dropdown", content: "French" },
   { id: "german-dropdown", content: "German" },
   { id: "italian-dropdown", content: "Italian" },
-  { id: "exportDropdown-mp4", content: "MP4 Video" },
-  { id: "exportDropdown-srt", content: "Transcription" },
+  { id: "exportDropdown-mp4", content: "Video" },
+  { id: "exportDropdown-srt", content: "SRT File" },
+  { id: "exportDropdown-txt", content: "Transcription" },
   { id: "choose_video_p", content: "Choose video" },
   { id: "selected-language", content: "Language" },
   { id: "change-language-a", content: "change" },
@@ -243,9 +574,10 @@ const start_elements = [
     id: "settings-openModalBtn",
     content: `<i class="fas fa-cog"></i> Customize`,
   },
-  { id: "createVideo", content: `<i class="fas fa-film"></i> Subtitle video` },
+  { id: "createVideo", content: `<i class="fas fa-film"></i> Render video` },
 
-  { selector: ".error-creation", content: "Bad connection. Try it again" },
+  { selector: ".error-creation", content: "Connection lost. Try again" },
+  { selector: ".error-creation-2", content: "Connection restored" },
 
   { id: "editButton", content: `<i class="fas fa-pencil-alt"></i> Edit` },
   { id: "saveButton", content: `<i class="fas fa-check"></i> Save` },
@@ -312,68 +644,64 @@ start_elements.forEach((item) => {
 });
 
 let url_websocket = "rndomg84pbrg.onrender.com";
+ 
 
-function show_choose_file() {
-  var elemento = document.querySelector(".chooseFile-container");
-  if (elemento) {
-    elemento.style.display = "flex";
+function show_step0() {
+  hide_stepLoading();
+  hide_step_1_2();
+  hide_stepPreview();
+  var step0 = document.getElementById("step0");
+  if (step0) {
+    step0.style.display = "block";
   }
 }
-
-function show_circle() {
-  var loader_container = document.querySelector(".loader-container");
-  if (loader_container) {
-    loader_container.style.display = "flex";
-  }
-  var elemento2 = document.querySelector(".loader-description");
-  if (elemento2) {
-    elemento2.style.display = "flex";
+function show_stepLoading() {
+   hide_step0();
+   hide_step_1_2();
+   hide_stepPreview();
+  var stepLoading = document.getElementById("stepLoading");
+  if (stepLoading) {
+    stepLoading.style.display = "block";
   }
 }
-function show_circle_2() {
-  var show_elemento_circle2 = document.querySelector(".loader-container-2");
-  if (show_elemento_circle2) {
-    show_elemento_circle2.style.display = "flex";
-  }
-
-  var elemento2_circle2 = document.querySelector(".loader-description-2");
-  if (elemento2_circle2) {
-    elemento2_circle2.style.display = "flex";
-  }
+function show_stepPreview() {
+   hide_step0();
+   hide_step_1_2();
+   hide_stepLoading();
+  var stepPreview = document.getElementById("stepPreview");
+  if (stepPreview) {
+    stepPreview.style.display = "block";
+  } 
 }
-
-function show_card_captions() {
-  var card_captions_2 = document.querySelector(".card-captions");
-  if (card_captions_2) {
-    card_captions_2.style.display = "flex";
+function show_step_1_2(captions_video,interval) {  
+  hide_step0();
+  hide_stepLoading();
+  hide_stepPreview();
+  var step_1_2 = document.getElementById("step_1_2");
+  if (step_1_2) {
+    step_1_2.style.display = "flex";
+    clearInterval(interval);
+    reset_percentage(); 
+    generarInputs_captions(captions_video);
   }
-}
-function show_video_buttons() {
-  var video_buttons = document.querySelector(".buttons-container");
-  if (video_buttons) {
-    video_buttons.style.display = "flex";
-  }
-}
-function show_video_container() {
-  var video_container = document.querySelector(".video-container");
-  if (video_container) {
-    video_container.style.display = "flex";
-  }
+  var circular_animation = document.querySelector('.circular');
+  if (circular_animation){
+    circular_animation.style.animation = 'none';
+  }  
+  toggleEditability(1);
 }
 
-function show_exportDropdown() {
-  var button_exportDropdown = document.querySelector(".exportDropdown");
-  if (button_exportDropdown) {
-    button_exportDropdown.style.display = "inline-block";
-  }
-}
+ 
 
 function show_export_mp4() {
   var button_export_mp4 = document.getElementById("exportDropdown-mp4");
   if (button_export_mp4) {
-    button_export_mp4.style.display = "inline-block";
+    button_export_mp4.style.display = "flex";
   }
 }
+
+
+
 
 function hasValueNotEqualToOne(list) {
   return list.some((element) => element !== 1);
@@ -543,6 +871,102 @@ function reset_percentage() {
   circle.style.strokeDashoffset = offset;
 }
 
+function clearCircle() {
+  const percentage = 0;
+  const percentageEl = document.querySelector(".percentage");  
+  const circle = document.querySelector(".path");
+  const radius = circle.r.baseVal.value;
+  const circumference = 2 * Math.PI * radius;
+  if (percentageEl && circle && radius && circumference){
+    percentageEl.textContent = `${percentage}%`;
+    const offset = circumference - (percentage / 100) * circumference;
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    circle.style.strokeDashoffset = offset;
+  } 
+}
+
+
+
+function draw_percentage(data) {  
+
+  if (!data || data.length === 0) return;
+ 
+  const [valor, total, typeValue, color, textDescription] = data[0];
+  
+  const percentage_visible = (valor / total) * 100;
+  const round_percentage = percentage_visible.toFixed(1)+"%";
+
+  const timeRemaining = Math.max(0, Math.floor(1 + total - valor));
+
+  const minutes = Math.floor(timeRemaining / 60);
+  const seconds = timeRemaining % 60;
+  const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+ 
+  const percentageEl = document.querySelector(".percentage");
+  if (percentageEl) {
+    if (typeValue=="time"){
+      percentageEl.textContent = formattedTime;
+    }else{
+      percentageEl.textContent = round_percentage; 
+    } 
+  }
+ 
+  const loader_description = document.querySelector(".loader-description");
+  const circle = document.querySelector(".path");
+  if (circle) { 
+    const radius = circle.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (percentage_visible / 100) * circumference;
+    circle.style.strokeDasharray = `${circumference} ${circumference}`;
+    circle.style.strokeDashoffset = offset;
+    circle.style.stroke = color;
+    loader_description.innerText = textDescription;
+  }
+ 
+}
+
+ 
+
+
+
+function generarBarras(datos) {
+  const loader = document.getElementById("video_preview");
+ 
+  const existente = document.getElementById("barras");
+  if (existente) loader.removeChild(existente);
+ 
+  const contenedor = document.createElement("div");
+  contenedor.id = "barras";
+
+  datos.forEach(([valor, total, color]) => {
+    const porcentaje = Math.min(100, (valor / total) * 100);
+
+    const barraCont = document.createElement("div");
+    barraCont.className = "barra-contenedor";
+
+    const barra = document.createElement("div");
+    barra.className = "barra";
+    barra.style.width = porcentaje + "%";
+    barra.style.backgroundColor = color; 
+    barra.textContent = Math.round(porcentaje) + "%";
+
+    barra.style.paddingTop = "5px";
+    barra.style.paddingBottom = "5px";
+ 
+    barra.style.marginTop = "5px";
+    barra.style.marginBottom = "5px";
+
+    barraCont.appendChild(barra);
+    contenedor.appendChild(barraCont);
+  });
+
+  loader.appendChild(contenedor);
+ 
+  loader.style.display = "block";
+}
+
+
+
 const selectImage = document.querySelector(".btn-upload");
 const inputFile = document.querySelector("#file");
 
@@ -678,7 +1102,7 @@ if (inputFile) {
     const selectedFile = fileInputElement.files[0];
     currentFile = selectedFile;
 
-    let video_file;
+     
     video_file = event.target.files[0];
 
     const filePath = URL.createObjectURL(video_file);
@@ -691,13 +1115,11 @@ if (inputFile) {
         const limitMessage = document.getElementById("limit_size_message");
 
         limitMessage.innerText =
-          "Only MP4 videos can be uploaded. Use an online converter to get an MP4.";
+          "Only MP4 videos can be uploaded. Use an online converter.";
         modal_limit_size.style.display = "block";
         inputFile.value = "";
       } else {
-        hide_choose_file();
-
-        show_circle();
+        show_stepLoading();
         changeVideoSource(filePath);
 
         const formData = new FormData();
@@ -842,17 +1264,9 @@ function isValidURL(url) {
   }
 }
 
-function downloadVideo_stream() {
-  const downloadLink = document.createElement("a");
-  downloadLink.href =
-    "https://rndomg84pbrg.onrender.com/download/" + userId + "/export";
-  var randomdownload = Math.floor(1000 + Math.random() * 9000);
-  var randomstring = randomdownload.toString();
-  downloadLink.download = "clip_manycaptions" + randomstring + ".mp4";
-  downloadLink.click();
-}
 
-function downloadVideo_2() {
+
+function downloadVideo_0() {
   const timestamp_download = Date.now();
 
   if (type_download == 0) {
@@ -883,11 +1297,7 @@ function downloadVideo_2() {
     }
   }
 }
-
-function downloadVideo() {
-  console.log("exporting video...");
-}
-
+ 
 function generateSRT(phrases) {
   var srt = "";
   var startTime = 0;
@@ -897,8 +1307,7 @@ function generateSRT(phrases) {
     step = step0;
   } else {
     step = 1;
-  }
-  console.log("step", step);
+  } 
 
   phrases.forEach((phrase, index) => {
     var endTime = startTime + step;
@@ -931,21 +1340,6 @@ function padMillis(num) {
   return String(num).padStart(3, "0");
 }
 
-function correctUTF8_0(str) {
-  const encoder = new TextEncoder("iso-8859-1");
-  const encodedBytes = encoder.encode(str);
-  const utf8Text = new TextDecoder("utf-8").decode(encodedBytes);
-  return utf8Text;
-}
-
-function correctUTF8(str) {
-  const latin1Bytes = new Uint8Array(str.length);
-  for (let i = 0; i < str.length; i++) {
-    latin1Bytes[i] = str.charCodeAt(i);
-  }
-  const utf8Text = new TextDecoder("utf-8").decode(latin1Bytes);
-  return utf8Text;
-}
 
 function downloadTXT() {
   var current_captions_str = getTextareaValue();
@@ -968,13 +1362,16 @@ function downloadTXT() {
   document.body.removeChild(a_str);
   URL.revokeObjectURL(url_str);
 }
-function downloadSRT_2() {
+function downloadSRT(extension) {
   var current_captions_str = getTextareaValue();
   var phrases_list_str = current_captions_str.split("-o-");
   var randomdownload = Math.floor(1000 + Math.random() * 9000);
   var randomstring = randomdownload.toString();
-  var filename_srt = "manycaptions" + randomstring + ".txt";
-  var content_srt = generateSRT(phrases_list_str);
+  var filename_srt = "manycaptions" + randomstring + extension;
+  var content_srt = phrases_list_str.join(" ");
+  if (extension==".srt"){ 
+    content_srt = generateSRT(phrases_list_str);
+  }
 
   const blob_str = new Blob(["\uFEFF" + content_srt], {
     type: "application/octet-stream",
@@ -989,69 +1386,7 @@ function downloadSRT_2() {
   document.body.removeChild(a_str);
   URL.revokeObjectURL(url_str);
 }
-
-function downloadSRT() {
-  console.log("exporting srt...");
-}
-
-function changeVideoSource_2() {
-  const sourceElement = videoElement.querySelector("source");
-
-  if (sourceElement) {
-    sourceElement.src =
-      "https://rndomg84pbrg.onrender.com/download/" + userId + "/watch";
-    videoElement.load();
-  } else {
-    console.error("No se encontró el elemento source.");
-  }
-}
-
-function request_video_mp4() {
-  if (isLoading_mp4) {
-    console.log("La solicitud de carga ya está en curso.");
-    return;
-  }
-
-  isLoading_mp4 = true;
-
-  const sourceElement = videoElement.querySelector("source");
-
-  videoElement.currentTime = 0;
-  if (sourceElement) {
-    const userId = userId;
-
-    if (!userId) {
-      console.error("El userId es inválido.");
-      isLoading_mp4 = false;
-      return;
-    }
-
-    sourceElement.src =
-      "https://rndomg84pbrg.onrender.com/download/" + userId + "/watch";
-    videoElement.load();
-    isLoading_mp4 = false;
-  } else {
-    console.error("No se encontró el elemento <source>.");
-    isLoading_mp4 = false;
-  }
-}
-
-function request_video_mp4_2() {
-  const videoElement = document.getElementById("my-video-2");
-  const sourceElement = videoElement.querySelector("source");
-  if (videoElement) {
-    videoElement.pause();
-    sourceElement.src = "";
-    videoElement.currentTime = 0;
-    videoElement.load();
-  }
-  if (sourceElement) {
-    const timestamp_new = Date.now();
-    sourceElement.src = `https://rndomg84pbrg.onrender.com/download/${userId}/watch?ts=${timestamp_new}`;
-    videoElement.currentTime = 0;
-    videoElement.load();
-  }
-}
+ 
 
 function toggleEditability(option) {
   const textareas = document.querySelectorAll(".flexible-captions");
@@ -1093,48 +1428,75 @@ function toggleEditability(option) {
     }
   }
 }
-
-let connectionTimeoutCreation;
+ 
+let connectionTimeout;
 function check_edited_captions() {
-  if (bad_connection_create_video == 0 && waiting_video == 0) {
-    websocketClient.send("request");
+      const btn = document.getElementById("createVideo");
+      if (btn){
+        btn.disabled = true; 
+      } 
 
-    bad_connection_create_video = 1;
-    connectionTimeoutCreation = setTimeout(function () {
-      document.querySelector(".error-creation").style.display = "block";
-    }, 5000);
-  } else {
-    document.querySelector(".error-creation").style.display = "block";
-  }
-}
+      const mensaje = "request";
+      websocketClient.send(mensaje);
+ 
+      connectionTimeout = setTimeout(() => {
+        console.log("exceeded time");
+        btn.disabled = false;  
+        const error_connection = document.querySelector(".error-creation"); 
+        if (error_connection){
+          error_connection.style.display = "block";
+        } 
+        const error_connection_2 = document.querySelector(".error-creation-2"); 
+          if (error_connection_2){
+            error_connection_2.style.display = "none"; 
+          } 
+      }, 5000);
+    }
+
 function handleServerResponse(data) {
   if (data === "1") {
-    clearTimeout(connectionTimeoutCreation);
+    clearTimeout(connectionTimeout); 
+    console.log("connection true");
+    const btn = document.getElementById("createVideo");
+    if (btn){
+      btn.disabled = false;  
+    } 
     check_edited_captions_next();
   }
 }
 
 function check_edited_captions_next() {
-  const user_id = localStorage.getItem("userid");
+   
   new_captions_video = getTextareaValue();
 
   var modalContent = document.querySelector(".modal-content p");
   if (new_captions_video == captions_video && send_new_captions == 0) {
     modalContent.textContent =
       "The subtitles have not been edited. Do you want to continue?";
-    modal.style.display = "block";
-    bad_connection_create_video = 0;
+    modal.style.display = "block"; 
   } else {
+    console.log("new_captions_video: ",new_captions_video);
+    console.log("captions_video: ",captions_video);
     if (lastPressedButton == 1) {
       modalContent.textContent =
         "The changes have not been saved. Do you want to save them?";
-      modal.style.display = "block";
-      bad_connection_create_video = 0;
+      modal.style.display = "block"; 
     } else {
-      if (true) {
-        show_export_mp4();
+      request_create_video();
+    }
+  }
+}
 
-        document.querySelector(".error-creation").style.display = "none";
+function request_create_video(){
+
+  const user_id = localStorage.getItem("userid");
+
+      const error_connection = document.querySelector(".error-creation");
+      const error_connection_2 = document.querySelector(".error-creation-2");
+      if (error_connection && error_connection_2){
+        error_connection.style.display = "none";
+        error_connection_2.style.display = "none";
+      } 
 
         var sendFont = localStorage.getItem("selected-font");
         var sendColor = localStorage.getItem("selected-color");
@@ -1160,7 +1522,9 @@ function check_edited_captions_next() {
           "_client_" +
           sendTextGlowSub +
           "_client_" +
-          sendAudioSub;
+          sendAudioSub+
+          "_client_" +
+          video_tag;
 
         if (received_durations != -1) {
           var durations_string = received_durations.join("_");
@@ -1171,21 +1535,38 @@ function check_edited_captions_next() {
 
         video_received = 0;
 
-        hide_card_captions();
-        hide_video_buttons();
-        hide_video_container();
-        start_percentage(2);
-        show_circle();
-
+        show_export_mp4();
+        if (video_tag=="webm"){
+          show_stepPreview();
+          start_loading(); 
+          destroyCancelButton();
+        }else{
+          const loader_description = document.querySelector(".loader-description");
+          loader_description.innerText = "Rendering video . . .";
+          show_stepLoading();
+        }
+        
+        frameIndex = 0; 
         waiting_video = 1;
-      }
-    }
-  }
+
+        const video_not_supported = document.getElementById("video_not_supported");
+        if (video_not_supported) {
+          video_not_supported.innerText = "";
+          video_not_supported.style.display = "none"; 
+        }
+        const video = document.getElementById("my-video-2");
+        if (video){
+          video.pause();
+        }
+         
 }
+
+ 
 
 const videoPlayer = document.getElementById("videoPlayer");
 
 function changeVideoSource(newSource) {
+  const videoElement = document.getElementById("my-video-2");
   const sourceElement = videoElement.querySelector("source");
 
   if (sourceElement) {
@@ -1194,6 +1575,25 @@ function changeVideoSource(newSource) {
     videoElement.onloadedmetadata = function () {
       current_duration = Math.round(videoElement.duration);
     };
+
+    videoElement.addEventListener("error", () => {
+      const video_not_supported = document.getElementById("video_not_supported");
+        if (video_not_supported) {
+          video_not_supported.style.display = "block";
+          video_not_supported.innerText = "Unplayable video. Press RENDER to repair it."
+        }
+        console.log("Unplayable video. Press RENDER to repair it.");
+    });
+ 
+    videoElement.addEventListener("loadedmetadata", () => { 
+      if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
+        const video_not_supported = document.getElementById("video_not_supported");
+        if (video_not_supported) {
+          video_not_supported.style.display = "block";
+          video_not_supported.innerText = "Unplayable video. Press RENDER to repair it."
+        } 
+      }
+    });
   } else {
     console.error("No se encontró el elemento source.");
   }
@@ -1206,10 +1606,12 @@ function connect(type_connection) {
   const user_id = localStorage.getItem("userid");
 
   websocketClient = new WebSocket("wss://" + url_websocket + "/" + user_id);
+  websocketClient.binaryType = "arraybuffer";
 
   console.log("connecting...");
 
-  websocketClient.addEventListener("open", () => {
+  websocketClient.addEventListener("open", () => {  
+
     console.log("Client connected");
     const send_type_connection =
       "type_connection==" +
@@ -1223,23 +1625,20 @@ function connect(type_connection) {
     if (waiting_caption == 1) {
       websocketClient.send("check_captions");
     }
+ 
 
-    bad_connection_create_video = 0;
-
-    const error_creation = document.querySelector(".error-creation");
-    if (error_creation) {
-      error_creation.style.display = "none";
-    }
+     
 
     if (bad_connection_choose_file == 1) {
-      hide_circle();
-      show_choose_file();
+      show_step0();
     }
 
     let referralCode = localStorage.getItem("referralCode");
     if (referralCode !== null && referralCode !== "") {
       websocketClient.send("code:" + referralCode);
     }
+
+    startPing();
   });
 
   websocketClient.addEventListener("message", (event) => {
@@ -1247,6 +1646,10 @@ function connect(type_connection) {
 
     var message_result = event.data;
 
+    if (event.data.toString().trim() === "ping_received") {
+      missedPings = 0; 
+    }
+ 
     if (typeof message_result === "string") {
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
@@ -1276,9 +1679,7 @@ function connect(type_connection) {
 
       if (message_result.split("_client_")[0] == "enviar") {
         const message_result_split = message_result.split("_client_");
-        current_step = 1;
-
-        waiting_video = 0;
+        current_step = 1; 
 
         waiting_caption = 0;
         bad_connection_choose_file = 0;
@@ -1292,21 +1693,11 @@ function connect(type_connection) {
           received_durations = JSON.parse(message_result_split[5]);
         }
 
-        clearInterval(interval);
-        reset_percentage();
+         
+        show_step_1_2(captions_video,interval);
+          
 
-        show_card_captions();
-        generarInputs_captions(captions_video);
-        toggleEditability(1);
-        hide_choose_file();
-        hide_circle();
-        show_video_buttons();
-        show_video_container();
-
-        document.querySelector(".loader-description").innerHTML =
-          "Subtitling video . . .";
-
-          websocketClient.send("captions_received:" + userId);
+        websocketClient.send("captions_received:" + userId);
       }
 
       if (message_result == "all_chunks_received") {
@@ -1319,17 +1710,7 @@ function connect(type_connection) {
           "Transcribing video . . .";
         document.querySelector(".percentage").style.display = "flex";
       }
-
-      if (message_result == "wrong_premium") {
-        inputFile.value = "";
-        hide_circle();
-        show_choose_file();
-        document.querySelector(".error-dimension").innerHTML =
-          "This file exceeds 100MB";
-        document.querySelector(".loader-description").innerHTML =
-          "Uploading video . . .";
-        document.querySelector(".error-dimension").style.display = "flex";
-      }
+ 
 
       if (message_result == "check_captions_false") {
         waiting_caption = 0;
@@ -1337,11 +1718,11 @@ function connect(type_connection) {
 
       if (message_result.includes("wrong_file:")) {
         inputFile.value = "";
-        hide_circle();
-        show_choose_file();
+        show_step0();
         document.querySelector(".loader-description").innerHTML =
           "Uploading video . . .";
         if (message_result.split(":")[1] == "bad_connection") {
+          console.log("wrong file bad_connection");
           document.querySelector(".error-dimension").innerHTML =
             "Bad connection. Try it again";
           final_lang = "";
@@ -1358,107 +1739,140 @@ function connect(type_connection) {
         document.querySelector(".error-dimension").style.display = "flex";
       }
 
-      if (message_result.split("_client_")[0] == "created_video") {
-        bad_connection_choose_file = 0;
-        bad_connection_create_video = 0;
-        waiting_video = 0;
-        videoURL = message_result.split("_client_")[2];
-
-        clearInterval(interval);
-        reset_percentage();
-
-        changeVideoSource(videoURL);
-        show_card_captions();
-        toggleEditability(1);
-        hide_choose_file();
-        hide_circle();
-        show_video_buttons();
-        show_video_container();
-
-        show_export_mp4();
-      }
-
-      if (message_result === "watch_video" && current_step > 0) {
-        type_download = 0;
-
-        bad_connection_choose_file = 0;
-        bad_connection_create_video = 0;
-        waiting_video = 0;
-
-        clearInterval(interval);
-        reset_percentage();
-        show_card_captions();
-        generarInputs_captions(captions_video);
-        toggleEditability(1);
-        hide_choose_file();
-        hide_circle();
-        show_video_buttons();
-        show_video_container();
-
-        request_video_mp4_2();
-
-        websocketClient.send("video_received_good:" + userId);
-      }
-
+      
       if (message_result === "ready_to_upload") {
         console.log("message: ", message_result);
         sendVideo(currentFile);
       }
     }
 
-    if (typeof message_result === "object" && current_step > 0) {
-      current_step = 2;
+    if (event.data instanceof ArrayBuffer && current_step > 0) {
 
-      type_download = 1;
+      const bytes = new Uint8Array(event.data);
 
-      bad_connection_choose_file = 0;
-      bad_connection_create_video = 0;
-      waiting_video = 0;
+      let firstInt =
+        bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) | (bytes[3] << 24);
 
-      clearInterval(interval);
-      reset_percentage();
-      show_card_captions();
-      generarInputs_captions(captions_video);
+      if (firstInt < 0) {
+        const secondInt = (bytes[4] << 24) >> 24;
 
-      toggleEditability(1);
-      hide_choose_file();
-      hide_circle();
-      show_video_buttons();
-      show_video_container();
+        if (secondInt >= 0) {
+          type_video = "video/webm";
+          video_extension = ".webm";
+        } else {
+          type_video = "video/mp4";
+          video_extension = ".mp4";
+        }
 
-      blob = new Blob([event.data], { type: "video/mp4" });
-      videoURL = URL.createObjectURL(blob);
-      changeVideoSource(videoURL);
+        if (globalBuffer.length==0){
+          destroyCancelButton(); 
+        }
+          
+        const subBuffer = bytes.subarray(5); 
+        suma_final = suma_final + subBuffer.byteLength;
+        const newBuffer = new Uint8Array(globalBuffer.length + subBuffer.length);
+        newBuffer.set(globalBuffer, 0);
+        newBuffer.set(subBuffer, globalBuffer.length);
 
-      websocketClient.send("video_received_good:" + userId);
+        globalBuffer = newBuffer; 
+         
+        if (video_tag == "webm") {  
+          const current_load = [[globalBuffer.length, Math.abs(firstInt), "#0000FF"]];
+          generarBarras(current_load);
+        }else{ 
+          const current_load = [[globalBuffer.length, Math.abs(firstInt), "percentage","#0000FF","Preparing video . . ."]];
+          draw_percentage(current_load);  
+        } 
+         
+
+        if (globalBuffer.length == Math.abs(firstInt)) { 
+          console.log("FULL_VIDEO_RECEIVED");
+          ocultarBarras();
+          n_seg = 0; 
+          watch();
+          show_step_1_2(captions_video,interval);
+          websocketClient.send("full_video_received_"+video_tag);
+          const error_connection_2 = document.querySelector(".error-creation-2");
+          if (error_connection_2){ 
+            error_connection_2.innerText = "Video rendered successfully";
+            error_connection_2.style.display = "block";
+          } 
+        }
+      } else {
+        const duracion_video = firstInt;   
+        const secondInt = (bytes[4] << 24) >> 24;
+
+        if (secondInt > 0) {  
+          if (frameIndex == 0){
+            close_loading(); 
+            if (duracion_video>=15){
+                createCancelButton();
+            } 
+          } 
+
+          const current_load = [[n_seg, duracion_video, "#4caf50"]];
+          generarBarras(current_load);  
+          const percentage = n_seg/duracion_video;
+          if (percentage>0.6){
+            destroyCancelButton();
+          }
+
+          const chunk_data = bytes.subarray(5); 
+          const frames = getChunks(chunk_data); 
+ 
+          feedFrames(frames, current_fps);
+          if (current_fps < 17 && n_seg % 8 == 0) {
+            current_fps = current_fps + 1;
+          }
+
+           
+        }else{ 
+          const current_load = [[n_seg, duracion_video, "time","#4caf50","Rendering video . . ."]]; 
+          draw_percentage(current_load);   
+          if (Math.abs(n_seg-duracion_video)<=2){
+            clearCircle();
+          } 
+        }
+        n_seg = n_seg + 1;
+      }
+
+
+
+ 
     }
   });
 
+ 
+
+  
   websocketClient.addEventListener("close", (event) => {
-    bad_connection_create_video = 1;
+
+    stopPing();
+    
+    frameIndex = 0;
+    globalBuffer = new Uint8Array(0);
+    ocultarBarras();
+    n_seg = 0;
+ 
 
     if (waiting_video == 1) {
-      waiting_video = 0;
-      document.querySelector(".error-creation").style.display = "block";
-      clearInterval(interval);
-      reset_percentage();
-
-      show_card_captions();
-      generarInputs_captions(captions_video);
-      toggleEditability(1);
-      hide_choose_file();
-      hide_circle();
-      show_video_buttons();
-      show_video_container();
+      waiting_video = 0; 
+      const error_connection = document.querySelector(".error-creation"); 
+      if (error_connection){
+        error_connection.style.display = "block"; 
+      } 
+      show_step_1_2(captions_video,interval);
     }
 
     if (bad_connection_choose_file == 1) {
       inputFile.value = "";
 
       final_lang = "";
+      console.log("listener close: bad connection");
       document.querySelector(".error-dimension").innerHTML =
         "Bad connection. Try it again";
       document.querySelector(".error-dimension").style.display = "flex";
+       
     }
 
     if (event.wasClean) {
@@ -1474,10 +1888,10 @@ function connect(type_connection) {
 
   websocketClient.addEventListener("error", (error) => {
     console.error("Error connection:", error);
-  });
+  }); 
 }
 
-connect("connected");
+ 
 
 let modal = document.getElementById("myModal");
 
@@ -1488,6 +1902,7 @@ close_yes.onclick = function () {
   toggleEditability(0);
   send_new_captions = 1;
   modal.style.display = "none";
+  request_create_video();
 };
 close_no.onclick = function () {
   modal.style.display = "none";
@@ -1500,17 +1915,20 @@ window.onclick = function (event) {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-  hide_circle();
-  hide_video_buttons();
-  hide_video_container();
-  hide_circle_2();
-
-  show_circle();
-  hide_choose_file();
-
-  show_exportDropdown();
-  hide_export_mp4();
+    checkSupport(); 
+    show_stepLoading(); 
+    connect("connected");
+    monoColorButton.click();  
 });
+ 
+ 
+window.addEventListener("beforeunload", () => {
+  if (websocketClient && websocketClient.readyState === WebSocket.OPEN) {
+    console.log("conection closed");
+    websocketClient.close(1000, "Page unloading");
+  }
+}); 
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const settingsOpenModalBtn = document.getElementById("settings-openModalBtn");
@@ -1848,7 +2266,7 @@ saveButton.addEventListener("click", () => {
   }
 });
 
-monoColorButton.click();
+ 
 
 function writeLanguageInLoadingCircle(texto) {
   const div = document.querySelector(".loader-description");
@@ -2042,7 +2460,7 @@ if (dropZone && inputFile_drag) {
         const modal_limit_size = document.getElementById("myModal_limit_size");
         const limitMessage = document.getElementById("limit_size_message");
         limitMessage.innerText =
-          "Only MP4 videos can be uploaded. Use an online converter to get an MP4.";
+          "Only MP4 videos can be uploaded. Use an online converter.";
         modal_limit_size.style.display = "block";
         inputFile_drag.value = "";
       }
@@ -2078,15 +2496,19 @@ if (dropZone && inputFile_drag) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const exportDropdown_txt = document.getElementById("exportDropdown-txt");
   const exportDropdown_srt = document.getElementById("exportDropdown-srt");
   const exportDropdown_mp4 = document.getElementById("exportDropdown-mp4");
 
-  if (exportDropdown_srt && exportDropdown_mp4) {
+  if (exportDropdown_srt && exportDropdown_mp4 && exportDropdown_txt) {
     exportDropdown_srt.addEventListener("click", () => {
-      downloadSRT_2();
+      downloadSRT(".srt");
     });
     exportDropdown_mp4.addEventListener("click", () => {
-      downloadVideo_2();
+      downloadVideo();
+    });
+    exportDropdown_txt.addEventListener("click", () => {
+      downloadSRT(".txt");
     });
   }
 });
@@ -2102,4 +2524,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+  
  
+ 
+  
