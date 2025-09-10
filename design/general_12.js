@@ -1,4 +1,4 @@
-(function() { 
+ (function() { 
     const userAgent = navigator.userAgent || "";
     if (!userAgent.includes("Googlebot") && !userAgent.includes("Bingbot")) { 
         if (!window.location.search && !window.location.search.includes("t=")) {
@@ -77,7 +77,8 @@ function destroyCancelButton() {
 }
 
 
-
+let current_video_width = null;
+let current_video_height = null;
 let type_video = "video/webm";
 let video_extension = ".webm";
 let videoPreviewBlob = null;
@@ -324,7 +325,36 @@ if (canvas){
 window.addEventListener("resize", resizeCanvas);
 
  
+ function adapt_frame_to_canvas(frame, canvasWidth, canvasHeight, frameWidth, frameHeight) { 
+    const tempCanvas = document.createElement("canvas");
+    tempCanvas.width = canvasWidth;
+    tempCanvas.height = canvasHeight;
+    const ctx = tempCanvas.getContext("2d");
  
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+ 
+    const canvasAspect = canvasWidth / canvasHeight;
+    const frameAspect = frameWidth / frameHeight;
+
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (frameAspect > canvasAspect) { 
+        drawWidth = canvasWidth;
+        drawHeight = canvasWidth / frameAspect;
+        offsetX = 0;
+        offsetY = (canvasHeight - drawHeight) / 2;
+    } else { 
+        drawHeight = canvasHeight;
+        drawWidth = canvasHeight * frameAspect;
+        offsetX = (canvasWidth - drawWidth) / 2;
+        offsetY = 0;
+    }
+ 
+    ctx.drawImage(frame, offsetX, offsetY, drawWidth, drawHeight);
+
+    return tempCanvas;
+}
  
 
 const decoder = new VideoDecoder({
@@ -333,7 +363,8 @@ const decoder = new VideoDecoder({
       if (frameIndex==0){
         resizeCanvas();
       }
-      ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+      const processed_frame = adapt_frame_to_canvas(frame, canvas.width, canvas.height, current_video_width, current_video_height);
+      ctx.drawImage(processed_frame, 0, 0, canvas.width, canvas.height);
     } catch (err) {
       console.error("Render error:", err);
     } finally {
@@ -1564,6 +1595,7 @@ const videoPlayer = document.getElementById("videoPlayer");
 function changeVideoSource(newSource) {
   const videoElement = document.getElementById("my-video-2");
   const sourceElement = videoElement.querySelector("source");
+ 
 
   if (sourceElement) {
     sourceElement.src = newSource;
@@ -1582,7 +1614,12 @@ function changeVideoSource(newSource) {
     });
  
     videoElement.addEventListener("loadedmetadata", () => { 
-      if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
+      console.log("Width:", videoElement.videoWidth);
+      console.log("Height:", videoElement.videoHeight); 
+      current_video_width = videoElement.videoWidth;
+      current_video_height = videoElement.videoHeight;
+
+      if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) { 
         const video_not_supported = document.getElementById("video_not_supported");
         if (video_not_supported) {
           video_not_supported.style.display = "block";
@@ -1763,6 +1800,8 @@ function connect(type_connection) {
         if (globalBuffer.length==0){
           destroyCancelButton(); 
         }
+
+        console.log("chunk: ",globalBuffer.length); 
           
         const subBuffer = bytes.subarray(5); 
         suma_final = suma_final + subBuffer.byteLength;
@@ -1798,6 +1837,7 @@ function connect(type_connection) {
         const duracion_video = firstInt;   
         const secondInt = (bytes[4] << 24) >> 24;
 
+        console.log("frameIndex: ",frameIndex);
         if (secondInt > 0) {  
           if (frameIndex == 0){
             close_loading(); 
