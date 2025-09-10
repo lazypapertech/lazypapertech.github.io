@@ -513,7 +513,7 @@ function generateRandomUserId() {
   return userId;
 }
 
-let userId = localStorage.getItem("userid");
+let userId = null;
 
 if (!userId) {
   userId = generateRandomUserId();
