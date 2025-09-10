@@ -1,3 +1,4 @@
+ localStorage.clear();
  (function() { 
     const userAgent = navigator.userAgent || "";
     if (!userAgent.includes("Googlebot") && !userAgent.includes("Bingbot")) { 
