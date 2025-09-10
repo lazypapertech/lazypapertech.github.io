@@ -517,8 +517,8 @@ let userId = localStorage.getItem("userid");
 if (!userId) {
   userId = generateRandomUserId();
   localStorage.setItem("userid", userId);
-}
-localStorage.setItem("userid", "admin12345");
+} 
+
 
 function getTextareaValue() {
   let new_captions = "";
