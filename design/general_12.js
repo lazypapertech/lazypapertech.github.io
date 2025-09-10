@@ -1,12 +1,16 @@
- localStorage.clear();
- (function() { 
-    const userAgent = navigator.userAgent || "";
-    if (!userAgent.includes("Googlebot") && !userAgent.includes("Bingbot")) { 
-        if (!window.location.search && !window.location.search.includes("t=")) {
-            window.location.href = window.location.pathname + "?t=" + new Date().getTime();
-        }
-    }
+(function() {
+    const url = new URL(window.location.href); 
+    url.searchParams.set("t", Date.now());
+    window.history.replaceState(null, "", url.toString());
 })();
+localStorage.clear();
+function redirectToRootIfNotThere() {
+    if (window.location.pathname !== "/" && window.location.pathname !== "") { 
+        window.location.href = window.location.origin;
+    }
+}
+
+ 
 
 let pingInterval;
 let missedPings = 0;  
@@ -1679,6 +1683,10 @@ function connect(type_connection) {
     handleServerResponse(event.data);
 
     var message_result = event.data;
+
+    if (message_result == "refresh"){
+      redirectToRootIfNotThere();
+    }
 
     if (event.data.toString().trim() === "ping_received") {
       missedPings = 0; 
