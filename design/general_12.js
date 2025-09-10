@@ -2,14 +2,16 @@
     const url = new URL(window.location.href); 
     url.searchParams.set("t", Date.now());
     window.history.replaceState(null, "", url.toString());
-})();
-localStorage.clear();
+})(); 
+
 function redirectToRootIfNotThere() {
     if (window.location.pathname !== "/" && window.location.pathname !== "") { 
         window.location.href = window.location.origin;
     }
 }
 
+ 
+ 
  
 
 let pingInterval;
@@ -178,6 +180,9 @@ function downloadVideo() {
     a.download = "manycaptions" + randomstring + video_extension;
     a.click();
     URL.revokeObjectURL(url);
+    if (websocketClient.readyState === WebSocket.OPEN) {
+      websocketClient.send("exported");
+    } 
   }
 }
 
@@ -1684,8 +1689,10 @@ function connect(type_connection) {
 
     var message_result = event.data;
 
-    if (message_result == "refresh"){
-      redirectToRootIfNotThere();
+    const isUpdated = localStorage.getItem("updated"); 
+    if (message_result == "refresh" && !isUpdated){
+      localStorage.setItem("updated","true");
+      redirectToRootIfNotThere(); 
     }
 
     if (event.data.toString().trim() === "ping_received") {
@@ -2570,6 +2577,4 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
   
- 
- 
   
