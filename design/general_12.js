@@ -1,3 +1,12 @@
+(function() { 
+    const userAgent = navigator.userAgent || "";
+    if (!userAgent.includes("Googlebot") && !userAgent.includes("Bingbot")) { 
+        if (!window.location.search && !window.location.search.includes("t=")) {
+            window.location.href = window.location.pathname + "?t=" + new Date().getTime();
+        }
+    }
+})();
+
 let pingInterval;
 let missedPings = 0;  
  
@@ -524,22 +533,7 @@ function hide_step_1_2() {
 }
 
  
-
-let xx1 = "s";
-let xx2 = "y";
-let xx3 = "m";
-let xx4 = "p";
-let xx5 = "h";
-let xx6 = "o";
-let xx7 = "n";
-let xx8 = "i";
-let xx9 = "o";
-let xx10 = "u";
-let xx11 = "s";
-let xx12 = ".";
-let xx13 = "gli";
-let xx14 = "tch";
-let xx15 = ".me";
+ 
 
 const start_elements = [
   { id: "login-btn", content: "Get started" },
@@ -562,6 +556,8 @@ const start_elements = [
   { id: "choose_video_p", content: "Choose video" },
   { id: "selected-language", content: "Language" },
   { id: "change-language-a", content: "change" },
+  { id: "preview_description", content: "Audio available when render finish" },
+   
 
   {
     selector: ".error-dimension",
