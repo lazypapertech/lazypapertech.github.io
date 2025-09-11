@@ -1,4 +1,19 @@
+ function comprimirIPv6(ipv6) { 
+    let bloques = ipv6.split(':'); 
+    bloques = bloques.map(b => b.replace(/^0+/, '') || '0');
  
+    let direccion = bloques.join(':');
+ 
+    let match = direccion.match(/(?:^|:)(0(?::0)+)(?::|$)/);
+    if (match) {
+        direccion = direccion.replace(match[1], '');
+        direccion = direccion.replace(/:::/, '::');  
+    }
+
+    return direccion.replace(/[:.]/g, 'x');
+} 
+
+console.log(comprimirIPv6("192.1.90.200"));
  
 function checkVersion(serverVer) { 
  
@@ -1306,37 +1321,7 @@ function isValidURL(url) {
 
 
 
-function downloadVideo_0() {
-  const timestamp_download = Date.now();
-
-  if (type_download == 0) {
-    console.log("download type 0");
-    const downloadLink = document.createElement("a");
-
-    downloadLink.href = `https://rndomg84pbrg.onrender.com/download/${userId}/export?ts=${timestamp_download}`;
-    var randomdownload = Math.floor(1000 + Math.random() * 9000);
-    var randomstring = randomdownload.toString();
-    downloadLink.download = "clip_manycaptions" + randomstring + ".mp4";
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
-    console.log("exported");
-  } else {
-    console.log("download type 1");
-    if (videoURL && isValidURL(videoURL)) {
-      const a_static_download = document.createElement("a");
-      a_static_download.style.display = "none";
-      a_static_download.href = videoURL;
-      var randomdownload = Math.floor(1000 + Math.random() * 9000);
-      var randomstring = randomdownload.toString();
-      a_static_download.download = "manycaptions" + randomstring + ".mp4";
-      document.body.appendChild(a_static_download);
-      a_static_download.click();
-      document.body.removeChild(a_static_download);
-    } else {
-      console.log("videoURL is not valid");
-    }
-  }
-}
+ 
  
 function generateSRT(phrases) {
   var srt = "";
@@ -1692,11 +1677,7 @@ function connect(type_connection) {
 
     var message_result = event.data;
  
-
-    if (message_result.includes("version:")){
-      const version_value = message_result.split(":")[1];   
-      checkVersion(version_value);
-    }
+ 
      
 
     if (event.data.toString().trim() === "ping_received") {
