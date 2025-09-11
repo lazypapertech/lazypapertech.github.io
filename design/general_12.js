@@ -1,17 +1,20 @@
-(function() {
-    const url = new URL(window.location.href); 
-    url.searchParams.set("t", Date.now());
-    window.history.replaceState(null, "", url.toString());
-})(); 
-
-function redirectToRootIfNotThere() {
-    if (window.location.pathname !== "/" && window.location.pathname !== "") { 
-        window.location.href = window.location.origin;
-    }
+ 
+ 
+function checkVersion(serverVer) { 
+ 
+  let localVer = localStorage.getItem("version_manycaptions");
+  
+  if (!localVer) {
+    localStorage.setItem("version_manycaptions", serverVer); 
+    return;
+  }
+ 
+  if (localVer !== serverVer) {
+    localStorage.setItem("version_manycaptions", serverVer);
+    window.location.href = `/?t=${serverVer}`;
+    return;
+  }
 }
-
- 
- 
  
 
 let pingInterval;
@@ -521,12 +524,12 @@ function generateRandomUserId() {
   }
   return userId;
 }
-
-let userId = null;
+  
+let userId = localStorage.getItem("useridManycaptions");
 
 if (!userId) {
   userId = generateRandomUserId();
-  localStorage.setItem("userid", userId);
+  localStorage.setItem("useridManycaptions", userId); 
 } 
 
 
@@ -1526,7 +1529,7 @@ function check_edited_captions_next() {
 
 function request_create_video(){
 
-  const user_id = localStorage.getItem("userid");
+  const user_id = localStorage.getItem("useridManycaptions");
 
       const error_connection = document.querySelector(".error-creation");
       const error_connection_2 = document.querySelector(".error-creation-2");
@@ -1646,7 +1649,7 @@ let current_chunk_size = 0;
 let videoChunks = [];
 
 function connect(type_connection) {
-  const user_id = localStorage.getItem("userid");
+  const user_id = localStorage.getItem("useridManycaptions");
 
   websocketClient = new WebSocket("wss://" + url_websocket + "/" + user_id);
   websocketClient.binaryType = "arraybuffer";
@@ -1688,12 +1691,13 @@ function connect(type_connection) {
     handleServerResponse(event.data);
 
     var message_result = event.data;
+ 
 
-    const isUpdated = localStorage.getItem("updated"); 
-    if (message_result == "refresh" && !isUpdated){
-      localStorage.setItem("updated","true");
-      redirectToRootIfNotThere(); 
+    if (message_result.includes("version:")){
+      const version_value = message_result.split(":")[1];   
+      checkVersion(version_value);
     }
+     
 
     if (event.data.toString().trim() === "ping_received") {
       missedPings = 0; 
@@ -2477,7 +2481,7 @@ let output_language = {
 
 function send_to_translate(lang) {
   var text = getTextareaValue();
-  const user_id = localStorage.getItem("userid");
+  const user_id = localStorage.getItem("useridManycaptions");
   websocketClient.send(
     "translate_client_" + user_id + "_client_" + text + "_client_" + lang
   );
@@ -2577,4 +2581,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
   
+ 
+ 
   
