@@ -1,36 +1,3 @@
- function comprimirIPv6(ipv6) { 
-    let bloques = ipv6.split(':'); 
-    bloques = bloques.map(b => b.replace(/^0+/, '') || '0');
- 
-    let direccion = bloques.join(':');
- 
-    let match = direccion.match(/(?:^|:)(0(?::0)+)(?::|$)/);
-    if (match) {
-        direccion = direccion.replace(match[1], '');
-        direccion = direccion.replace(/:::/, '::');  
-    }
-
-    return direccion.replace(/[:.]/g, 'x');
-} 
-
-console.log(comprimirIPv6("192.1.90.200"));
- 
-function checkVersion(serverVer) { 
- 
-  let localVer = localStorage.getItem("version_manycaptions");
-  
-  if (!localVer) {
-    localStorage.setItem("version_manycaptions", serverVer); 
-    return;
-  }
- 
-  if (localVer !== serverVer) {
-    localStorage.setItem("version_manycaptions", serverVer);
-    window.location.href = `/?t=${serverVer}`;
-    return;
-  }
-}
- 
 
 let pingInterval;
 let missedPings = 0;  
