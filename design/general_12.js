@@ -1,3 +1,4 @@
+ 
 
 let pingInterval;
 let missedPings = 0;  
@@ -711,6 +712,7 @@ function show_step_1_2(captions_video,interval) {
     circular_animation.style.animation = 'none';
   }  
   toggleEditability(1);
+  show_export_mp4(); 
 }
 
  
@@ -1643,15 +1645,13 @@ function connect(type_connection) {
     handleServerResponse(event.data);
 
     var message_result = event.data;
- 
- 
-     
-
-    if (event.data.toString().trim() === "ping_received") {
-      missedPings = 0; 
-    }
- 
+    
+    
     if (typeof message_result === "string") {
+      if (event.data.toString().trim() === "ping_received") {
+        missedPings = 0; 
+      }
+      
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
           const aff_message = message_result.split(":")[1];
@@ -2499,6 +2499,15 @@ if (dropZone && inputFile_drag) {
   });
 }
 
+
+function show_modal_error(){
+  const modal_limit_size = document.getElementById("myModal_limit_size");
+  const limitMessage = document.getElementById("limit_size_message");
+
+  limitMessage.innerText = "Press Render Video\n\nStep 1: Transcription\nStep2: Edit subtitles\nStep3: Render video\nStep 4: Export video";
+  modal_limit_size.style.display = "block";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const exportDropdown_txt = document.getElementById("exportDropdown-txt");
   const exportDropdown_srt = document.getElementById("exportDropdown-srt");
@@ -2509,13 +2518,19 @@ document.addEventListener("DOMContentLoaded", () => {
       downloadSRT(".srt");
     });
     exportDropdown_mp4.addEventListener("click", () => {
-      downloadVideo();
+      if (current_step==2){
+        downloadVideo();
+      }else{
+        show_modal_error();
+      }
+       
     });
     exportDropdown_txt.addEventListener("click", () => {
       downloadSRT(".txt");
     });
   }
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
   const settingsOption = document.querySelectorAll(".settings-font-block");
@@ -2531,4 +2546,29 @@ document.addEventListener("DOMContentLoaded", function () {
   
  
  
-  
+ 
+ 
+
+function redirect() {
+  window.location.href = '/?t=' + Date.now();
+ }
+
+ 
+ window.onerror = function (mensaje, url, linea, columna, error) { 
+  console.log("error");
+  redirect();   
+};
+
+ const params = new URLSearchParams(window.location.search);
+
+ if (params.has('t')) {
+  const message_error = document.querySelector(".error-dimension");
+  if (message_error){
+    message_error.innerHTML = "Task interrupted due to app update. Try it again";
+    message_error.style.display = "flex";
+  } 
+  console.log(params.get('t'));
+}
+
+
+ 
