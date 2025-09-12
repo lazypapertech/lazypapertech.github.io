@@ -1646,7 +1646,6 @@ function connect(type_connection) {
 
     var message_result = event.data;
     
-    
     if (typeof message_result === "string") {
       if (event.data.toString().trim() === "ping_received") {
         missedPings = 0; 
@@ -1747,7 +1746,7 @@ function connect(type_connection) {
       }
     }
 
-    if (event.data instanceof ArrayBuffer && current_step > 0) {
+    if (event.data instanceof ArrayBuffer && current_step > 0 && waiting_video==1) {
 
       const bytes = new Uint8Array(event.data);
 
@@ -2558,6 +2557,11 @@ function redirect() {
   console.log("error");
   redirect();   
 };
+window.addEventListener("unhandledrejection", function(event) {
+    console.log("Unhandled promise rejection:"); 
+    redirect();   
+});
+
 
  const params = new URLSearchParams(window.location.search);
 
