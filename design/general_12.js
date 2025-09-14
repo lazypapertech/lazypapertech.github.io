@@ -1,30 +1,5 @@
  
-
-let pingInterval;
-let missedPings = 0;  
- 
-function startPing() {
-  stopPing();  
-  pingInterval = setInterval(() => {
-    if (websocketClient.readyState === WebSocket.OPEN) {
-      websocketClient.send("ping");
-      missedPings++;
- 
-      if (missedPings > 3 && current_step >= 1) { 
-        websocketClient.close();
-      }
-    }
-  }, 10000);
-}
- 
-function stopPing() {
-  if (pingInterval) {
-    clearInterval(pingInterval);
-    pingInterval = null;
-    missedPings = 0; 
-  }
-}
-
+   
 let video_file;
  
 function createCancelButton() {
@@ -1637,8 +1612,7 @@ function connect(type_connection) {
     if (referralCode !== null && referralCode !== "") {
       websocketClient.send("code:" + referralCode);
     }
-
-    startPing();
+ 
   });
 
   websocketClient.addEventListener("message", (event) => {
@@ -1646,10 +1620,8 @@ function connect(type_connection) {
 
     var message_result = event.data;
     
-    if (typeof message_result === "string") {
-      if (event.data.toString().trim() === "ping_received") {
-        missedPings = 0; 
-      }
+    if (typeof message_result === "string") { 
+ 
       
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
@@ -1849,8 +1821,7 @@ function connect(type_connection) {
 
   
   websocketClient.addEventListener("close", (event) => {
-
-    stopPing();
+ 
     
     frameIndex = 0;
     globalBuffer = new Uint8Array(0);
@@ -1878,14 +1849,14 @@ function connect(type_connection) {
        
     }
 
-    if (event.wasClean) {
-      console.log("Connection closed");
-    } else {
-      console.log("reconnecting...");
+     
+    console.log("reconnecting...");
       setTimeout(() => {
         connect("reconnecting");
       }, 5000);
-    }
+
+
+
     console.log(`close error: ${event.code}, Razón: ${event.reason}`);
   });
 
