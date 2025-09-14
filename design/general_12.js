@@ -1,4 +1,22 @@
  
+ function isNotUser() { 
+  const botPattern = /bot|crawl|spider|slurp|facebookexternalhit|mediapartners/i;
+  return botPattern.test(navigator.userAgent);
+}
+
+function redirect2() { 
+  if (isNotUser()) return;
+ 
+  const path = window.location.pathname;
+ 
+  if (path !== '/' && path !== '/index.html') {
+    window.location.href = '/index.html?t=' + Date.now();
+  }
+}
+  
+
+ 
+
    
 let video_file;
  
@@ -1893,6 +1911,11 @@ document.addEventListener("DOMContentLoaded", function () {
     show_stepLoading(); 
     connect("connected");
     monoColorButton.click();  
+
+    const button_chooseFile = document.getElementById("chooseFile"); 
+    button_chooseFile.addEventListener("click", () => {
+      redirect2();
+    });
 });
  
  
@@ -2520,6 +2543,7 @@ document.addEventListener("DOMContentLoaded", function () {
  
 
 function redirect() {
+  if (isNotUser()) return;
   window.location.href = '/?t=' + Date.now();
  }
 
@@ -2534,16 +2558,7 @@ window.addEventListener("unhandledrejection", function(event) {
 });
 
 
- const params = new URLSearchParams(window.location.search);
-
- if (params.has('t')) {
-  const message_error = document.querySelector(".error-dimension");
-  if (message_error){
-    message_error.innerHTML = "Task interrupted due to app update. Try it again";
-    message_error.style.display = "flex";
-  } 
-  console.log(params.get('t'));
-}
+  
 
 
  
