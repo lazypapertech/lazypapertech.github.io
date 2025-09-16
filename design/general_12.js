@@ -1677,11 +1677,13 @@ function connect(type_connection) {
   });
 
   websocketClient.addEventListener("message", (event) => {
-    handleServerResponse(event.data);
+     
 
     var message_result = event.data;
     
     if (typeof message_result === "string") { 
+
+      handleServerResponse(message_result);
  
       
       if (message_result.includes("affiliate_message:")) {
@@ -1954,11 +1956,7 @@ document.addEventListener("DOMContentLoaded", function () {
     show_stepLoading(); 
     connect("connected");
     monoColorButton.click();  
-
-    const button_chooseFile = document.getElementById("chooseFile"); 
-    button_chooseFile.addEventListener("click", () => {
-      redirect2();
-    });
+ 
 });
  
  
@@ -2602,5 +2600,6 @@ window.addEventListener("unhandledrejection", function(event) {
 
 
   
+
 
  
