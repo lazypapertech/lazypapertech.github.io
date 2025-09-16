@@ -1,4 +1,5 @@
  
+ 
  function isNotUser() { 
   const botPattern = /bot|crawl|spider|slurp|facebookexternalhit|mediapartners/i;
   return botPattern.test(navigator.userAgent);
@@ -314,7 +315,7 @@ if (canvas){
 window.addEventListener("resize", resizeCanvas);
 
  
- function adapt_frame_to_canvas(frame, canvasWidth, canvasHeight, frameWidth, frameHeight) { 
+ function adapt_frame_to_canvas_0(frame, canvasWidth, canvasHeight, frameWidth, frameHeight) { 
     const tempCanvas = document.createElement("canvas");
     tempCanvas.width = canvasWidth;
     tempCanvas.height = canvasHeight;
@@ -344,6 +345,48 @@ window.addEventListener("resize", resizeCanvas);
 
     return tempCanvas;
 }
+
+function adapt_frame_to_canvas(frame, canvasWidth, canvasHeight, frameWidth, frameHeight) {
+    const dpr = window.devicePixelRatio || 1;  
+    console.log("dpr: ",dpr);
+    const tempCanvas = document.createElement("canvas");
+
+     
+    tempCanvas.width = canvasWidth * dpr;
+    tempCanvas.height = canvasHeight * dpr;
+
+     
+    tempCanvas.style.width = canvasWidth + "px";
+    tempCanvas.style.height = canvasHeight + "px";
+
+    const ctx = tempCanvas.getContext("2d");
+    ctx.scale(dpr, dpr); 
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+
+    const canvasAspect = canvasWidth / canvasHeight;
+    const frameAspect = frameWidth / frameHeight;
+
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (frameAspect > canvasAspect) {
+        drawWidth = canvasWidth;
+        drawHeight = canvasWidth / frameAspect;
+        offsetX = 0;
+        offsetY = (canvasHeight - drawHeight) / 2;
+    } else {
+        drawHeight = canvasHeight;
+        drawWidth = canvasHeight * frameAspect;
+        offsetX = (canvasWidth - drawWidth) / 2;
+        offsetY = 0;
+    }
+
+    ctx.drawImage(frame, offsetX, offsetY, drawWidth, drawHeight);
+
+    return tempCanvas;
+}
+
  
 
 const decoder = new VideoDecoder({
