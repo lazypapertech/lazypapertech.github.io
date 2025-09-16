@@ -688,7 +688,7 @@ const start_elements = [
   {
     id: "limit_size_message",
     content:
-      "This video exceeds 150MB of free plan. Use an online video compressor",
+      "This video exceeds 350MB of free plan. Use an online video compressor",
   },
 ];
 
@@ -1167,7 +1167,7 @@ if (inputFile) {
 
     const filePath = URL.createObjectURL(video_file);
 
-    var normal_size = 150000000;
+    var normal_size = 350000000;
 
     if (video_file.size < normal_size) {
       if (!selectedFile.name.toLowerCase().endsWith(".mp4")) {
@@ -1191,7 +1191,7 @@ if (inputFile) {
       const modal_limit_size = document.getElementById("myModal_limit_size");
       const limitMessage = document.getElementById("limit_size_message");
       limitMessage.innerText =
-        "This video exceeds 150MB of free plan. Use an online video compressor";
+        "This video exceeds 350MB of free plan. Use an online video compressor";
       modal_limit_size.style.display = "block";
       inputFile.value = "";
     }
@@ -2602,6 +2602,5 @@ window.addEventListener("unhandledrejection", function(event) {
 
 
   
-
 
  
