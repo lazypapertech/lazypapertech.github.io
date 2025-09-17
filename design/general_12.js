@@ -1913,10 +1913,14 @@ function connect(type_connection) {
     }
 
      
-    console.log("reconnecting...");
-      setTimeout(() => {
-        connect("reconnecting");
-      }, 5000);
+    if (event.wasClean) {
+          console.log('Connection closed');
+        } else {
+          console.log('reconnecting...');
+            setTimeout(() => {
+                connect("reconnecting");
+            }, 5000);
+        }
 
 
 
