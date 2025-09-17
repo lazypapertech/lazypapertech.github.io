@@ -1467,7 +1467,7 @@ function check_edited_captions() {
       } 
 
       const mensaje = "request";
-      websocketClient.send(mensaje);
+      websocketClient.send(mensaje+":"+lastPressedButton);
  
       connectionTimeout = setTimeout(() => {
         console.log("exceeded time");
@@ -1500,12 +1500,7 @@ function check_edited_captions_next() {
   new_captions_video = getTextareaValue();
 
   var modalContent = document.querySelector(".modal-content p");
-  if (new_captions_video == captions_video && send_new_captions == 0) {
-    modalContent.textContent =
-      "The subtitles have not been edited. Do you want to continue?";
-    modal.style.display = "block"; 
-  } else {
-    console.log("new_captions_video: ",new_captions_video);
+  console.log("new_captions_video: ",new_captions_video);
     console.log("captions_video: ",captions_video);
     if (lastPressedButton == 1) {
       modalContent.textContent =
@@ -1514,7 +1509,6 @@ function check_edited_captions_next() {
     } else {
       request_create_video();
     }
-  }
 }
 
 function request_create_video(){
@@ -2601,9 +2595,5 @@ window.addEventListener("unhandledrejection", function(event) {
     console.log("Unhandled promise rejection:"); 
     redirect();   
 });
-
-
-  
-
 
  
