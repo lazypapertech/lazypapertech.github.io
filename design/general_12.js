@@ -225,7 +225,7 @@ function watch() {
 
 function resizeCanvas() {
   
-  const dpr = 1;  
+  const dpr = 1;    
 
   const rect = canvas.getBoundingClientRect();
   const width = rect.width;
@@ -298,7 +298,10 @@ function close_loading() {
 }
 
 const canvas = document.getElementById("liveCanvas");
-const ctx = canvas.getContext("2d");   
+const ctx = canvas.getContext("2d"); 
+const dpr = window.devicePixelRatio || 1;  
+console.log("dpr principal: ",dpr);
+ctx.scale(dpr, dpr);  
 ctx.imageSmoothingEnabled = true;       
 ctx.imageSmoothingQuality = "high";  
 if (canvas){
@@ -2596,4 +2599,6 @@ window.addEventListener("unhandledrejection", function(event) {
     redirect();   
 });
 
+
+  
  
