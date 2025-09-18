@@ -224,8 +224,8 @@ function watch() {
 }
 
 function resizeCanvas() {
-  
-  const dpr = 1;    
+   
+  const dpr = window.devicePixelRatio || 1;  
 
   const rect = canvas.getBoundingClientRect();
   const width = rect.width;
@@ -233,17 +233,15 @@ function resizeCanvas() {
  
   canvas.width = width * dpr;
   canvas.height = height * dpr;
- 
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  
 }
 
 let loadingAnimId = null;
 let t = 0;
 
 function drawLoading() {
-  if (loadingAnimId==null){
-    resizeCanvas(); 
-  }
+   
+  resizeCanvas(); 
    
 
   const w = canvas.width;
@@ -364,6 +362,8 @@ function adapt_frame_to_canvas(frame, canvasWidth, canvasHeight, frameWidth, fra
 
     const ctx = tempCanvas.getContext("2d");
     ctx.scale(dpr, dpr); 
+    ctx.imageSmoothingEnabled = true;       
+    ctx.imageSmoothingQuality = "high";  
 
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
@@ -2601,4 +2601,6 @@ window.addEventListener("unhandledrejection", function(event) {
 
 
   
+
+
  
