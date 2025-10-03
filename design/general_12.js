@@ -537,6 +537,36 @@ if (principalContainer) {
   principalContainer.insertAdjacentHTML("beforeend", div_text);
 }
 
+const div_presentation =  `<div class="start-video-preview">
+            <div class="start-video-container">
+                <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/preview_video.jpeg" alt="Video Preview" class="start-video-thumbnail">
+                <div class="start-play-wrapper" onclick="abrirVideo()">
+                    <div class="start-pulse-circle"></div>
+                    <div class="start-play-button">
+                        <span class="start-play-icon"></span>
+                    </div>
+                </div>
+            </div>
+        </div> `;
+const clip_container = document.querySelector(".clip-container");
+if (clip_container) {
+  clip_container.insertAdjacentHTML("afterbegin", div_presentation);
+}     
+
+const div_modal_video = `<div class="video-modal" id="videoModal"> 
+        <div class="video-modal-header">
+            <span class="video-close" onclick="cerrarVideo()">&times;</span>
+        </div> 
+        <div class="video-modal-content">
+            <video id="miVideo" controls autoplay>
+                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/app_animation.mp4" type="video/mp4"> 
+            </video>
+        </div>
+    </div>`; 
+if (principalContainer) {
+  principalContainer.insertAdjacentHTML("beforeend", div_modal_video);
+}
+
 function generateRandomUserId() {
   const digits = "0123456789abcdefghijklmnopqrstuvwxyz";
   let userId = "";
@@ -2603,4 +2633,26 @@ window.addEventListener("unhandledrejection", function(event) {
   
 
 
- 
+function abrirVideo() {
+    const modal = document.getElementById("videoModal");
+    const video = document.getElementById("miVideo");
+    modal.style.display = "flex";
+    video.play();
+}
+
+function cerrarVideo() {
+    const modal = document.getElementById("videoModal");
+    const video = document.getElementById("miVideo");
+    modal.style.display = "none";
+    video.pause();
+}
+
+
+window.onclick = function(e) {
+    const modal = document.getElementById("videoModal");
+    const video = document.getElementById("miVideo");
+    if (e.target === modal) {
+        modal.style.display = "none";
+        video.pause();
+    }
+} 
