@@ -2392,6 +2392,9 @@ function populateLanguageList() {
 
     fontBlock.addEventListener("click", function () {
       language_video = (index + 1).toString();
+      if (font=="Hindi"){
+	language_video = "11";
+      }
 
       const allFontBlocks = document.querySelectorAll(".language-block");
       allFontBlocks.forEach((block) => {
@@ -2404,9 +2407,7 @@ function populateLanguageList() {
 
       selectedLanguageIndex = index;
       selectedLanguageName = font;
-      if (selectedLanguageName=="Hindi"){
-	selectedLanguageIndex = 11;
-      }
+       
       console.log(index);
     });
 
