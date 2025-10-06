@@ -1715,26 +1715,7 @@ function connect(type_connection) {
 
       handleServerResponse(message_result);
  
-	if (message_result.includes("language:")){
-	    const language_extra = message_result.split(":")[1];
-	    console.log("language_extra: ",language_extra);
-	    if (language_extra=="11"){
-	       languages.push("Hindi");
-	       populateLanguageList();
-	    }
-	    if (language_extra=="3"){
-	       languages.push("Portuguese");
-	       populateLanguageList();
-	    }	
-	    if (language_extra=="5"){
-	       languages.push("Deutsch");
-	       populateLanguageList();
-	    }	
-	    if (language_extra=="6"){
-	       languages.push("Italiano");
-	       populateLanguageList();
-	    }	    
-        }
+	 
       
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
@@ -2375,7 +2356,7 @@ function writeUpdatingMessage(texto) {
   div.style.display = "block";
 }
 
-const languages = ["English (beta)", "Español"];
+const languages = ["English (beta)", "Español","Portuguese","Deutsch","Italiano"];
 
 function populateLanguageList() {
   const languageList = document.getElementById("languageList");
@@ -2392,9 +2373,12 @@ function populateLanguageList() {
 
     fontBlock.addEventListener("click", function () {
       language_video = (index + 1).toString();
-      if (font=="Hindi"){
-	language_video = "11";
+      if (font=="Deutsch"){
+	language_video = "5";
       }
+      if (font=="Italiano"){
+	language_video = "5";
+      }	
 
       const allFontBlocks = document.querySelectorAll(".language-block");
       allFontBlocks.forEach((block) => {
