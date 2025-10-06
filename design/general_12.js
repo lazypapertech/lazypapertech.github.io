@@ -469,7 +469,6 @@ let selectedTextGlowSub = 1;
 let selectedAudioSub = 1;
 let extra_seconds = 0;
 let selectedLanguageIndex = null;
-let selectedLanguageName = "null";
 let currentFile = null;
 
 localStorage.setItem("selected-font", "9");
@@ -1092,9 +1091,7 @@ async function sendTotalSize(selectedFile) {
   document.querySelector(".percentage").textContent = "0%";
   document.querySelector(".loader-description").innerHTML =
     "Uploading video . . . ";
-  //writeLanguageInLoadingCircle(languages[selectedLanguageIndex]);
-  writeLanguageInLoadingCircle(selectedLanguageName);
- 
+  writeLanguageInLoadingCircle(languages[selectedLanguageIndex]);
 
   const totalSize = selectedFile.size;
   websocketClient.send("video_size:" + totalSize.toString());
@@ -1714,9 +1711,8 @@ function connect(type_connection) {
     if (typeof message_result === "string") { 
 
       handleServerResponse(message_result);
- 
-	 
-      
+  
+     
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
           const aff_message = message_result.split(":")[1];
@@ -2356,7 +2352,7 @@ function writeUpdatingMessage(texto) {
   div.style.display = "block";
 }
 
-const languages = ["English (beta)", "Español","Portuguese","Deutsch","Italiano"];
+const languages = ["English (beta)", "Español","Portuguese"];
 
 function populateLanguageList() {
   const languageList = document.getElementById("languageList");
@@ -2373,12 +2369,6 @@ function populateLanguageList() {
 
     fontBlock.addEventListener("click", function () {
       language_video = (index + 1).toString();
-      if (font=="Deutsch"){
-	language_video = "5";
-      }
-      if (font=="Italiano"){
-	language_video = "6";
-      }	
 
       const allFontBlocks = document.querySelectorAll(".language-block");
       allFontBlocks.forEach((block) => {
@@ -2390,8 +2380,6 @@ function populateLanguageList() {
       fontBlock.style.color = "#ffffff";
 
       selectedLanguageIndex = index;
-      selectedLanguageName = font;
-       
       console.log(index);
     });
 
@@ -2668,3 +2656,4 @@ window.onclick = function(e) {
         video.pause();
     }
 } 
+ 
