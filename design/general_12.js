@@ -1712,7 +1712,27 @@ function connect(type_connection) {
 
       handleServerResponse(message_result);
  
-      
+      if (message_result.includes("language:")){
+	       const language_extra = message_result.split(":")[1];
+	       console.log("language_extra: ",language_extra);
+	       if (language_extra=="11"){
+	          languages.push("Hindi");
+	          populateLanguageList();
+	       }
+	       if (language_extra=="3"){
+	          languages.push("Portuguese");
+	          populateLanguageList();
+	       }	
+	       if (language_extra=="5"){
+	          languages.push("Deutsch");
+	          populateLanguageList();
+	       }	
+	       if (language_extra=="6"){
+	          languages.push("Italiano");
+	          populateLanguageList();
+	       }	    
+      }
+     
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
           const aff_message = message_result.split(":")[1];
@@ -2656,3 +2676,4 @@ window.onclick = function(e) {
         video.pause();
     }
 } 
+
