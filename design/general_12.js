@@ -2377,7 +2377,7 @@ function populateLanguageList() {
 	language_video = "5";
       }
       if (font=="Italiano"){
-	language_video = "5";
+	language_video = "6";
       }	
 
       const allFontBlocks = document.querySelectorAll(".language-block");
