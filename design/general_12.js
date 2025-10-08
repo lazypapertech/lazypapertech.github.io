@@ -1,26 +1,21 @@
- 
- 
- function isNotUser() { 
-  const botPattern = /bot|crawl|spider|slurp|facebookexternalhit|mediapartners/i;
+function isNotUser() {
+  const botPattern =
+    /bot|crawl|spider|slurp|facebookexternalhit|mediapartners/i;
   return botPattern.test(navigator.userAgent);
 }
 
-function redirect2() { 
+function redirect2() {
   if (isNotUser()) return;
- 
+
   const path = window.location.pathname;
- 
-  if (path !== '/' && path !== '/index.html') {
-    window.location.href = '/index.html?t=' + Date.now();
+
+  if (path !== "/" && path !== "/index.html") {
+    window.location.href = "/index.html?t=" + Date.now();
   }
 }
-  
 
- 
-
-   
 let video_file;
- 
+
 function createCancelButton() {
   if (document.getElementById("cancel_task")) return;
 
@@ -29,19 +24,19 @@ function createCancelButton() {
 
   const button = document.createElement("button");
   button.textContent = "Cancel";
- 
+
   button.addEventListener("click", () => {
     button.textContent = "Canceling...";
-    websocketClient.send("cancel_task:"+userId);
-    setTimeout(() => { 
-        destroyCancelButton();
-        waiting_video = 0; 
-        frameIndex = 0;  
-        globalBuffer = new Uint8Array(0);
-        ocultarBarras();
-        n_seg = 0;  
-        show_step_1_2(captions_video,interval); 
-    }, 4000); 
+    websocketClient.send("cancel_task:" + userId);
+    setTimeout(() => {
+      destroyCancelButton();
+      waiting_video = 0;
+      frameIndex = 0;
+      globalBuffer = new Uint8Array(0);
+      ocultarBarras();
+      n_seg = 0;
+      show_step_1_2(captions_video, interval);
+    }, 4000);
   });
 
   const paragraph = document.createElement("p");
@@ -49,12 +44,12 @@ function createCancelButton() {
 
   container.appendChild(button);
   container.appendChild(paragraph);
- 
+
   const videoPreviewDiv = document.getElementById("video_preview");
   if (videoPreviewDiv) {
     videoPreviewDiv.appendChild(container);
-  } 
-} 
+  }
+}
 
 function destroyCancelButton() {
   const container = document.getElementById("cancel_task");
@@ -62,7 +57,6 @@ function destroyCancelButton() {
     container.remove();
   }
 }
-
 
 let current_video_width = null;
 let current_video_height = null;
@@ -77,9 +71,8 @@ let n_seg = 0;
 
 let startTime = performance.now();
 let frameIndex = 0;
-let currentTimestamp = 0; 
+let currentTimestamp = 0;
 let video_tag = "mp4";
- 
 
 function checkSupport() {
   const video = document.createElement("video");
@@ -108,14 +101,12 @@ function checkSupport() {
   }
 }
 
- 
-
 function generarBarras(datos) {
   const loader = document.getElementById("video_preview");
- 
+
   const existente = document.getElementById("barras");
   if (existente) loader.removeChild(existente);
- 
+
   const contenedor = document.createElement("div");
   contenedor.id = "barras";
 
@@ -128,7 +119,7 @@ function generarBarras(datos) {
     const barra = document.createElement("div");
     barra.className = "barra";
     barra.style.width = porcentaje + "%";
-    barra.style.backgroundColor = color;  
+    barra.style.backgroundColor = color;
     barra.textContent = Math.round(porcentaje) + "%";
 
     barraCont.appendChild(barra);
@@ -136,24 +127,24 @@ function generarBarras(datos) {
   });
 
   loader.appendChild(contenedor);
- 
+
   loader.style.display = "block";
 }
 
 function ocultarBarras() {
   const loader = document.getElementById("video_preview");
-  if (loader){
+  if (loader) {
     const existente = document.getElementById("barras");
     if (existente) {
       loader.removeChild(existente);
     }
-  } 
+  }
 }
 
-function downloadVideo() { 
+function downloadVideo() {
   if (videoPreviewBlob) {
     const randomdownload = Math.floor(1000 + Math.random() * 9000);
-    const randomstring = randomdownload.toString(); 
+    const randomstring = randomdownload.toString();
     const url = URL.createObjectURL(videoPreviewBlob);
     const a = document.createElement("a");
     a.href = url;
@@ -162,12 +153,11 @@ function downloadVideo() {
     URL.revokeObjectURL(url);
     if (websocketClient.readyState === WebSocket.OPEN) {
       websocketClient.send("exported");
-    } 
+    }
   }
 }
 
 function getChunks(bytes) {
-  
   const chunks = [];
   let offset = 0;
 
@@ -213,55 +203,50 @@ function feedFrames(frames, fps) {
 }
 
 function watch() {
-  current_step = 2; 
-  type_download = 1; 
-  bad_connection_choose_file = 0; 
+  current_step = 2;
+  type_download = 1;
+  bad_connection_choose_file = 0;
   waiting_video = 0;
-  const videoElement = document.getElementById("my-video-2"); 
-  videoPreviewBlob = new Blob([globalBuffer], { type: type_video }); 
+  const videoElement = document.getElementById("my-video-2");
+  videoPreviewBlob = new Blob([globalBuffer], { type: type_video });
   videoElement.src = URL.createObjectURL(videoPreviewBlob);
   globalBuffer = new Uint8Array(0);
 }
 
 function resizeCanvas() {
-   
-  const dpr = window.devicePixelRatio || 1;  
+  const dpr = window.devicePixelRatio || 1;
 
   const rect = canvas.getBoundingClientRect();
   const width = rect.width;
   const height = rect.height;
- 
+
   canvas.width = width * dpr;
   canvas.height = height * dpr;
-  
 }
 
 let loadingAnimId = null;
 let t = 0;
 
 function drawLoading() {
-   
-  resizeCanvas(); 
-   
+  resizeCanvas();
 
   const w = canvas.width;
   const h = canvas.height;
 
   ctx.clearRect(0, 0, w, h);
- 
+
   ctx.fillStyle = "#000";
   ctx.fillRect(0, 0, w, h);
- 
+
   ctx.fillStyle = "#fff";
-  ctx.font = Math.floor(h * 0.085) + "px Arial";  
+  ctx.font = Math.floor(h * 0.085) + "px Arial";
   ctx.textAlign = "center";
   ctx.fillText("Rendering. . .", w / 2, h / 2 - h * 0.1);
 
-   
   const numCircles = 5;
   const baseY = h / 2 + h * 0.05;
   const baseX = w / 2;
-  const radius = w * 0.012;  
+  const radius = w * 0.012;
 
   for (let i = 0; i < numCircles; i++) {
     const offset = Math.sin(t + i * 0.6) * (w * 0.15);
@@ -278,162 +263,158 @@ function drawLoading() {
   loadingAnimId = requestAnimationFrame(drawLoading);
 }
 
- 
 function start_loading() {
   if (!loadingAnimId) {
     drawLoading();
   }
 }
 
- 
-function close_loading() { 
+function close_loading() {
   if (loadingAnimId) {
     cancelAnimationFrame(loadingAnimId);
-    loadingAnimId = null; 
+    loadingAnimId = null;
     resizeCanvas();
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 }
 
 const canvas = document.getElementById("liveCanvas");
-const ctx = canvas.getContext("2d"); 
-const dpr = window.devicePixelRatio || 1;  
-console.log("dpr principal: ",dpr);
-ctx.scale(dpr, dpr);  
-ctx.imageSmoothingEnabled = true;       
-ctx.imageSmoothingQuality = "high";  
-if (canvas){
-      try {
-          canvas.addEventListener("contextmenu", (event) => {
-              event.preventDefault();   
-          });
-      } catch (error) {
-          console.log("error:", error);
-      }
-    } 
- 
-  
+const ctx = canvas.getContext("2d");
+const dpr = window.devicePixelRatio || 1;
+console.log("dpr principal: ", dpr);
+ctx.scale(dpr, dpr);
+ctx.imageSmoothingEnabled = true;
+ctx.imageSmoothingQuality = "high";
+if (canvas) {
+  try {
+    canvas.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+    });
+  } catch (error) {
+    console.log("error:", error);
+  }
+}
+
 window.addEventListener("resize", resizeCanvas);
 
- 
- function adapt_frame_to_canvas_0(frame, canvasWidth, canvasHeight, frameWidth, frameHeight) { 
-    const tempCanvas = document.createElement("canvas");
-    tempCanvas.width = canvasWidth;
-    tempCanvas.height = canvasHeight;
-    const ctx = tempCanvas.getContext("2d");
- 
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
- 
-    const canvasAspect = canvasWidth / canvasHeight;
-    const frameAspect = frameWidth / frameHeight;
+function adapt_frame_to_canvas_0(
+  frame,
+  canvasWidth,
+  canvasHeight,
+  frameWidth,
+  frameHeight
+) {
+  const tempCanvas = document.createElement("canvas");
+  tempCanvas.width = canvasWidth;
+  tempCanvas.height = canvasHeight;
+  const ctx = tempCanvas.getContext("2d");
 
-    let drawWidth, drawHeight, offsetX, offsetY;
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-    if (frameAspect > canvasAspect) { 
-        drawWidth = canvasWidth;
-        drawHeight = canvasWidth / frameAspect;
-        offsetX = 0;
-        offsetY = (canvasHeight - drawHeight) / 2;
-    } else { 
-        drawHeight = canvasHeight;
-        drawWidth = canvasHeight * frameAspect;
-        offsetX = (canvasWidth - drawWidth) / 2;
-        offsetY = 0;
-    }
- 
-    ctx.drawImage(frame, offsetX, offsetY, drawWidth, drawHeight);
+  const canvasAspect = canvasWidth / canvasHeight;
+  const frameAspect = frameWidth / frameHeight;
 
-    return tempCanvas;
+  let drawWidth, drawHeight, offsetX, offsetY;
+
+  if (frameAspect > canvasAspect) {
+    drawWidth = canvasWidth;
+    drawHeight = canvasWidth / frameAspect;
+    offsetX = 0;
+    offsetY = (canvasHeight - drawHeight) / 2;
+  } else {
+    drawHeight = canvasHeight;
+    drawWidth = canvasHeight * frameAspect;
+    offsetX = (canvasWidth - drawWidth) / 2;
+    offsetY = 0;
+  }
+
+  ctx.drawImage(frame, offsetX, offsetY, drawWidth, drawHeight);
+
+  return tempCanvas;
 }
 
-function adapt_frame_to_canvas(frame, canvasWidth, canvasHeight, frameWidth, frameHeight) {
-    const dpr = window.devicePixelRatio || 1;  
-    console.log("dpr: ",dpr);
-    const tempCanvas = document.createElement("canvas");
+function adapt_frame_to_canvas(
+  frame,
+  canvasWidth,
+  canvasHeight,
+  frameWidth,
+  frameHeight
+) {
+  const dpr = window.devicePixelRatio || 1;
+  console.log("dpr: ", dpr);
+  const tempCanvas = document.createElement("canvas");
 
-     
-    tempCanvas.width = canvasWidth * dpr;
-    tempCanvas.height = canvasHeight * dpr;
+  tempCanvas.width = canvasWidth * dpr;
+  tempCanvas.height = canvasHeight * dpr;
 
-     
-    tempCanvas.style.width = canvasWidth + "px";
-    tempCanvas.style.height = canvasHeight + "px";
+  tempCanvas.style.width = canvasWidth + "px";
+  tempCanvas.style.height = canvasHeight + "px";
 
-    const ctx = tempCanvas.getContext("2d");
-    ctx.scale(dpr, dpr); 
-    ctx.imageSmoothingEnabled = true;       
-    ctx.imageSmoothingQuality = "high";  
+  const ctx = tempCanvas.getContext("2d");
+  ctx.scale(dpr, dpr);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
 
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
-    const canvasAspect = canvasWidth / canvasHeight;
-    const frameAspect = frameWidth / frameHeight;
+  const canvasAspect = canvasWidth / canvasHeight;
+  const frameAspect = frameWidth / frameHeight;
 
-    let drawWidth, drawHeight, offsetX, offsetY;
+  let drawWidth, drawHeight, offsetX, offsetY;
 
-    if (frameAspect > canvasAspect) {
-        drawWidth = canvasWidth;
-        drawHeight = canvasWidth / frameAspect;
-        offsetX = 0;
-        offsetY = (canvasHeight - drawHeight) / 2;
-    } else {
-        drawHeight = canvasHeight;
-        drawWidth = canvasHeight * frameAspect;
-        offsetX = (canvasWidth - drawWidth) / 2;
-        offsetY = 0;
-    }
+  if (frameAspect > canvasAspect) {
+    drawWidth = canvasWidth;
+    drawHeight = canvasWidth / frameAspect;
+    offsetX = 0;
+    offsetY = (canvasHeight - drawHeight) / 2;
+  } else {
+    drawHeight = canvasHeight;
+    drawWidth = canvasHeight * frameAspect;
+    offsetX = (canvasWidth - drawWidth) / 2;
+    offsetY = 0;
+  }
 
-    ctx.drawImage(frame, offsetX, offsetY, drawWidth, drawHeight);
+  ctx.drawImage(frame, offsetX, offsetY, drawWidth, drawHeight);
 
-    return tempCanvas;
+  return tempCanvas;
 }
-
- 
 
 const decoder = new VideoDecoder({
   output: (frame) => {
     try {
-      if (frameIndex==0){
+      if (frameIndex == 0) {
         resizeCanvas();
       }
-      const processed_frame = adapt_frame_to_canvas(frame, canvas.width, canvas.height, current_video_width, current_video_height);
+      const processed_frame = adapt_frame_to_canvas(
+        frame,
+        canvas.width,
+        canvas.height,
+        current_video_width,
+        current_video_height
+      );
       ctx.drawImage(processed_frame, 0, 0, canvas.width, canvas.height);
     } catch (err) {
       console.error("Render error:", err);
     } finally {
-      frame.close(); 
+      frame.close();
     }
   },
   error: (e) => {
-    console.error("Decoder error:", e); 
+    console.error("Decoder error:", e);
     try {
-      decoder.reset();  
-      decoder.configure({ codec: "vp8" });  
+      decoder.reset();
+      decoder.configure({ codec: "vp8" });
       resizeCanvas();
     } catch (err) {
       console.error("Failed to reset decoder:", err);
     }
-  }
+  },
 });
-
 
 decoder.configure({ codec: "vp8" });
 
-
-
-
-
-
-
-
-
-
-
-
- 
- 
 let lastPressedButton = 0;
 let caption_length = 0.5;
 let interval;
@@ -454,7 +435,7 @@ let first_url = "";
 let final_lang = "";
 let language_video = "";
 
-let bad_connection_choose_file = 1; 
+let bad_connection_choose_file = 1;
 let waiting_video = 0;
 let waiting_caption = 0;
 let current_output_language = "Translate";
@@ -481,88 +462,88 @@ const settingsList = document.getElementById("settingsList");
 
 if (settingsList) {
   const nuevoItem = `
-        <li>
-            <div id="settings-position-sub" class="settings-font-block"></div>
-        </li>
-    `;
+          <li>
+              <div id="settings-position-sub" class="settings-font-block"></div>
+          </li>
+      `;
   settingsList.insertAdjacentHTML("beforeend", nuevoItem);
 }
 
 const div_text = `<div id="positionModalSub" class="positionModalSub">
-        <div class="position-modal-content-sub">
-            <span class="position-close-btn-sub">&times;</span>
-
-            <div id="position-sub-title" class="option-sub-title"></div>
-            <div id="bar-position-container" class="bar-option-container">  
-                 <div class="labels">
-                    <div id="position-down" class="label"></div>
-                    <div id="position-center" class="label"></div>
-                    <div id="position-up" class="label"></div>
-                </div>
-                <div class="bar"></div>
-                <div class="circle" id="position-circle"></div>    
-            </div>
-
-
-            <div id="textglow-sub-title" class="option-sub-title"></div>
-            <div id="bar-textglow-container" class="bar-option-container">  
-                 <div class="labels">
-                    <div id="textglow-down" class="label"></div>
-                    <div id="textglow-center" class="label"></div>
-                    <div id="textglow-up" class="label"></div>
-                </div>
-                <div class="bar"></div>
-                <div class="circle" id="textglow-circle"></div> 
-            </div>
-            
-
-            <div id="audio-sub-title" class="option-sub-title"></div>
-            <div id="bar-audio-container" class="bar-option-container">  
-                 <div class="labels">
-                    <div id="audio-down" class="label"></div>
-                    <div id="audio-center" class="label"></div>
-                    <div id="audio-up" class="label"></div>
-                </div>
-                <div class="bar"></div>
-                <div class="circle" id="audio-circle"></div> 
-            </div>
-
-            
-
-
-        </div>
-    </div>`;
+          <div class="position-modal-content-sub">
+              <span class="position-close-btn-sub">&times;</span>
+  
+              <div id="position-sub-title" class="option-sub-title"></div>
+              <div id="bar-position-container" class="bar-option-container">  
+                   <div class="labels">
+                      <div id="position-down" class="label"></div>
+                      <div id="position-center" class="label"></div>
+                      <div id="position-up" class="label"></div>
+                  </div>
+                  <div class="bar"></div>
+                  <div class="circle" id="position-circle"></div>    
+              </div>
+  
+  
+              <div id="textglow-sub-title" class="option-sub-title"></div>
+              <div id="bar-textglow-container" class="bar-option-container">  
+                   <div class="labels">
+                      <div id="textglow-down" class="label"></div>
+                      <div id="textglow-center" class="label"></div>
+                      <div id="textglow-up" class="label"></div>
+                  </div>
+                  <div class="bar"></div>
+                  <div class="circle" id="textglow-circle"></div> 
+              </div>
+              
+  
+              <div id="audio-sub-title" class="option-sub-title"></div>
+              <div id="bar-audio-container" class="bar-option-container">  
+                   <div class="labels">
+                      <div id="audio-down" class="label"></div>
+                      <div id="audio-center" class="label"></div>
+                      <div id="audio-up" class="label"></div>
+                  </div>
+                  <div class="bar"></div>
+                  <div class="circle" id="audio-circle"></div> 
+              </div>
+  
+              
+  
+  
+          </div>
+      </div>`;
 const principalContainer = document.querySelector(".card-container");
 if (principalContainer) {
   principalContainer.insertAdjacentHTML("beforeend", div_text);
 }
 
-const div_presentation =  `<div class="start-video-preview">
-            <div class="start-video-container">
-                <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/preview_video.jpeg" alt="Video Preview" class="start-video-thumbnail">
-                <div class="start-play-wrapper" onclick="abrirVideo()">
-                    <div class="start-pulse-circle"></div>
-                    <div class="start-play-button">
-                        <span class="start-play-icon"></span>
-                    </div>
-                </div>
-            </div>
-        </div> `;
+const div_presentation = `<div class="start-video-preview">
+              <div class="start-video-container">
+                  <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/preview_video.jpeg" alt="Video Preview" class="start-video-thumbnail">
+                  <div class="start-play-wrapper" onclick="abrirVideo()">
+                      <div class="start-pulse-circle"></div>
+                      <div class="start-play-button">
+                          <span class="start-play-icon"></span>
+                      </div>
+                  </div>
+              </div>
+          </div> `;
 const clip_container = document.querySelector(".clip-container");
 if (clip_container) {
   clip_container.insertAdjacentHTML("afterbegin", div_presentation);
-}     
+}
 
 const div_modal_video = `<div class="video-modal" id="videoModal"> 
-        <div class="video-modal-header">
-            <span class="video-close" onclick="cerrarVideo()">&times;</span>
-        </div> 
-        <div class="video-modal-content">
-            <video id="miVideo" controls autoplay>
-                <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/app_animation.mp4" type="video/mp4"> 
-            </video>
-        </div>
-    </div>`; 
+          <div class="video-modal-header">
+              <span class="video-close" onclick="cerrarVideo()">&times;</span>
+          </div> 
+          <div class="video-modal-content">
+              <video id="miVideo" controls autoplay>
+                  <source src="https://raw.githubusercontent.com/manyresources/resourcespage/main/videos/app_animation.mp4" type="video/mp4"> 
+              </video>
+          </div>
+      </div>`;
 if (principalContainer) {
   principalContainer.insertAdjacentHTML("beforeend", div_modal_video);
 }
@@ -576,14 +557,13 @@ function generateRandomUserId() {
   }
   return userId;
 }
-  
+
 let userId = localStorage.getItem("useridManycaptions");
 
 if (!userId) {
   userId = generateRandomUserId();
-  localStorage.setItem("useridManycaptions", userId); 
-} 
-
+  localStorage.setItem("useridManycaptions", userId);
+}
 
 function getTextareaValue() {
   let new_captions = "";
@@ -601,9 +581,8 @@ function getTextareaValue() {
 
   return new_captions;
 }
- 
 
-function hide_step0() { 
+function hide_step0() {
   var step0 = document.getElementById("step0");
   if (step0) {
     step0.style.display = "none";
@@ -628,9 +607,6 @@ function hide_step_1_2() {
   }
 }
 
- 
- 
-
 const start_elements = [
   { id: "login-btn", content: "Get started" },
   { id: "li-home", content: "Home" },
@@ -638,7 +614,7 @@ const start_elements = [
   { id: "li-features", content: "Features" },
   { id: "li-tutorial", content: "How to use" },
   { id: "li-questions", content: "FAQ" },
-  { id: "dropdown-btn", content: "Translate  &#x025BE;" },
+  { id: "dropdown-btn", content: "Translate to:  &#x025BE;" },
   { id: "reset-dropdown", content: "Reset" },
   { id: "english-dropdown", content: "English" },
   { id: "spanish-dropdown", content: "Spanish" },
@@ -653,7 +629,6 @@ const start_elements = [
   { id: "selected-language", content: "Language" },
   { id: "change-language-a", content: "change" },
   { id: "preview_description", content: "Audio available when render finish" },
-   
 
   {
     selector: ".error-dimension",
@@ -736,7 +711,6 @@ start_elements.forEach((item) => {
 });
 
 let url_websocket = "rndomg84pbrg.onrender.com";
- 
 
 function show_step0() {
   hide_stepLoading();
@@ -748,24 +722,24 @@ function show_step0() {
   }
 }
 function show_stepLoading() {
-   hide_step0();
-   hide_step_1_2();
-   hide_stepPreview();
+  hide_step0();
+  hide_step_1_2();
+  hide_stepPreview();
   var stepLoading = document.getElementById("stepLoading");
   if (stepLoading) {
     stepLoading.style.display = "block";
   }
 }
 function show_stepPreview() {
-   hide_step0();
-   hide_step_1_2();
-   hide_stepLoading();
+  hide_step0();
+  hide_step_1_2();
+  hide_stepLoading();
   var stepPreview = document.getElementById("stepPreview");
   if (stepPreview) {
     stepPreview.style.display = "block";
-  } 
+  }
 }
-function show_step_1_2(captions_video,interval) {  
+function show_step_1_2(captions_video, interval) {
   hide_step0();
   hide_stepLoading();
   hide_stepPreview();
@@ -773,18 +747,16 @@ function show_step_1_2(captions_video,interval) {
   if (step_1_2) {
     step_1_2.style.display = "flex";
     clearInterval(interval);
-    reset_percentage(); 
+    reset_percentage();
     generarInputs_captions(captions_video);
   }
-  var circular_animation = document.querySelector('.circular');
-  if (circular_animation){
-    circular_animation.style.animation = 'none';
-  }  
+  var circular_animation = document.querySelector(".circular");
+  if (circular_animation) {
+    circular_animation.style.animation = "none";
+  }
   toggleEditability(1);
-  show_export_mp4(); 
+  show_export_mp4();
 }
-
- 
 
 function show_export_mp4() {
   var button_export_mp4 = document.getElementById("exportDropdown-mp4");
@@ -792,9 +764,6 @@ function show_export_mp4() {
     button_export_mp4.style.display = "flex";
   }
 }
-
-
-
 
 function hasValueNotEqualToOne(list) {
   return list.some((element) => element !== 1);
@@ -966,47 +935,44 @@ function reset_percentage() {
 
 function clearCircle() {
   const percentage = 0;
-  const percentageEl = document.querySelector(".percentage");  
+  const percentageEl = document.querySelector(".percentage");
   const circle = document.querySelector(".path");
   const radius = circle.r.baseVal.value;
   const circumference = 2 * Math.PI * radius;
-  if (percentageEl && circle && radius && circumference){
+  if (percentageEl && circle && radius && circumference) {
     percentageEl.textContent = `${percentage}%`;
     const offset = circumference - (percentage / 100) * circumference;
     circle.style.strokeDasharray = `${circumference} ${circumference}`;
     circle.style.strokeDashoffset = offset;
-  } 
+  }
 }
 
-
-
-function draw_percentage(data) {  
-
+function draw_percentage(data) {
   if (!data || data.length === 0) return;
- 
+
   const [valor, total, typeValue, color, textDescription] = data[0];
-  
+
   const percentage_visible = (valor / total) * 100;
-  const round_percentage = percentage_visible.toFixed(1)+"%";
+  const round_percentage = percentage_visible.toFixed(1) + "%";
 
   const timeRemaining = Math.max(0, Math.floor(1 + total - valor));
 
   const minutes = Math.floor(timeRemaining / 60);
   const seconds = timeRemaining % 60;
   const formattedTime = `${minutes}:${seconds.toString().padStart(2, "0")}`;
- 
+
   const percentageEl = document.querySelector(".percentage");
   if (percentageEl) {
-    if (typeValue=="time"){
+    if (typeValue == "time") {
       percentageEl.textContent = formattedTime;
-    }else{
-      percentageEl.textContent = round_percentage; 
-    } 
+    } else {
+      percentageEl.textContent = round_percentage;
+    }
   }
- 
+
   const loader_description = document.querySelector(".loader-description");
   const circle = document.querySelector(".path");
-  if (circle) { 
+  if (circle) {
     const radius = circle.r.baseVal.value;
     const circumference = 2 * Math.PI * radius;
     const offset = circumference - (percentage_visible / 100) * circumference;
@@ -1015,19 +981,14 @@ function draw_percentage(data) {
     circle.style.stroke = color;
     loader_description.innerText = textDescription;
   }
- 
 }
-
- 
-
-
 
 function generarBarras(datos) {
   const loader = document.getElementById("video_preview");
- 
+
   const existente = document.getElementById("barras");
   if (existente) loader.removeChild(existente);
- 
+
   const contenedor = document.createElement("div");
   contenedor.id = "barras";
 
@@ -1040,12 +1001,12 @@ function generarBarras(datos) {
     const barra = document.createElement("div");
     barra.className = "barra";
     barra.style.width = porcentaje + "%";
-    barra.style.backgroundColor = color; 
+    barra.style.backgroundColor = color;
     barra.textContent = Math.round(porcentaje) + "%";
 
     barra.style.paddingTop = "5px";
     barra.style.paddingBottom = "5px";
- 
+
     barra.style.marginTop = "5px";
     barra.style.marginBottom = "5px";
 
@@ -1054,11 +1015,9 @@ function generarBarras(datos) {
   });
 
   loader.appendChild(contenedor);
- 
+
   loader.style.display = "block";
 }
-
-
 
 const selectImage = document.querySelector(".btn-upload");
 const inputFile = document.querySelector("#file");
@@ -1195,7 +1154,6 @@ if (inputFile) {
     const selectedFile = fileInputElement.files[0];
     currentFile = selectedFile;
 
-     
     video_file = event.target.files[0];
 
     const filePath = URL.createObjectURL(video_file);
@@ -1357,10 +1315,6 @@ function isValidURL(url) {
   }
 }
 
-
-
- 
- 
 function generateSRT(phrases) {
   var srt = "";
   var startTime = 0;
@@ -1370,7 +1324,7 @@ function generateSRT(phrases) {
     step = step0;
   } else {
     step = 1;
-  } 
+  }
 
   phrases.forEach((phrase, index) => {
     var endTime = startTime + step;
@@ -1403,7 +1357,6 @@ function padMillis(num) {
   return String(num).padStart(3, "0");
 }
 
-
 function downloadTXT() {
   var current_captions_str = getTextareaValue();
   var phrases_list_str = current_captions_str.split("-o-");
@@ -1432,7 +1385,7 @@ function downloadSRT(extension) {
   var randomstring = randomdownload.toString();
   var filename_srt = "manycaptions" + randomstring + extension;
   var content_srt = phrases_list_str.join(" ");
-  if (extension==".srt"){ 
+  if (extension == ".srt") {
     content_srt = generateSRT(phrases_list_str);
   }
 
@@ -1449,7 +1402,6 @@ function downloadSRT(extension) {
   document.body.removeChild(a_str);
   URL.revokeObjectURL(url_str);
 }
- 
 
 function toggleEditability(option) {
   const textareas = document.querySelectorAll(".flexible-captions");
@@ -1491,141 +1443,135 @@ function toggleEditability(option) {
     }
   }
 }
- 
+
 let connectionTimeout;
 function check_edited_captions() {
-      const btn = document.getElementById("createVideo");
-      if (btn){
-        btn.disabled = true; 
-      } 
+  const btn = document.getElementById("createVideo");
+  if (btn) {
+    btn.disabled = true;
+  }
 
-      const mensaje = "request";
-      websocketClient.send(mensaje+":"+lastPressedButton);
- 
-      connectionTimeout = setTimeout(() => {
-        console.log("exceeded time");
-        btn.disabled = false;  
-        const error_connection = document.querySelector(".error-creation"); 
-        if (error_connection){
-          error_connection.style.display = "block";
-        } 
-        const error_connection_2 = document.querySelector(".error-creation-2"); 
-          if (error_connection_2){
-            error_connection_2.style.display = "none"; 
-          } 
-      }, 5000);
+  const mensaje = "request";
+  websocketClient.send(mensaje + ":" + lastPressedButton);
+
+  connectionTimeout = setTimeout(() => {
+    console.log("exceeded time");
+    btn.disabled = false;
+    const error_connection = document.querySelector(".error-creation");
+    if (error_connection) {
+      error_connection.style.display = "block";
     }
+    const error_connection_2 = document.querySelector(".error-creation-2");
+    if (error_connection_2) {
+      error_connection_2.style.display = "none";
+    }
+  }, 5000);
+}
 
 function handleServerResponse(data) {
   if (data === "1") {
-    clearTimeout(connectionTimeout); 
+    clearTimeout(connectionTimeout);
     console.log("connection true");
     const btn = document.getElementById("createVideo");
-    if (btn){
-      btn.disabled = false;  
-    } 
+    if (btn) {
+      btn.disabled = false;
+    }
     check_edited_captions_next();
   }
 }
 
 function check_edited_captions_next() {
-   
   new_captions_video = getTextareaValue();
 
   var modalContent = document.querySelector(".modal-content p");
-  console.log("new_captions_video: ",new_captions_video);
-    console.log("captions_video: ",captions_video);
-    if (lastPressedButton == 1) {
-      modalContent.textContent =
-        "The changes have not been saved. Do you want to save them?";
-      modal.style.display = "block"; 
-    } else {
-      request_create_video();
-    }
+  console.log("new_captions_video: ", new_captions_video);
+  console.log("captions_video: ", captions_video);
+  if (lastPressedButton == 1) {
+    modalContent.textContent =
+      "The changes have not been saved. Do you want to save them?";
+    modal.style.display = "block";
+  } else {
+    request_create_video();
+  }
 }
 
-function request_create_video(){
-
+function request_create_video() {
   const user_id = localStorage.getItem("useridManycaptions");
 
-      const error_connection = document.querySelector(".error-creation");
-      const error_connection_2 = document.querySelector(".error-creation-2");
-      if (error_connection && error_connection_2){
-        error_connection.style.display = "none";
-        error_connection_2.style.display = "none";
-      } 
+  const error_connection = document.querySelector(".error-creation");
+  const error_connection_2 = document.querySelector(".error-creation-2");
+  if (error_connection && error_connection_2) {
+    error_connection.style.display = "none";
+    error_connection_2.style.display = "none";
+  }
 
-        var sendFont = localStorage.getItem("selected-font");
-        var sendColor = localStorage.getItem("selected-color");
-        var sendPositionSub = selectedPositionSub;
-        var sendTextGlowSub = selectedTextGlowSub;
-        var sendAudioSub = selectedAudioSub;
+  var sendFont = localStorage.getItem("selected-font");
+  var sendColor = localStorage.getItem("selected-color");
+  var sendPositionSub = selectedPositionSub;
+  var sendTextGlowSub = selectedTextGlowSub;
+  var sendAudioSub = selectedAudioSub;
 
-        captions_video = new_captions_video;
+  captions_video = new_captions_video;
 
-        var send_settings =
-          "tocreate_client_" +
-          user_id +
-          "_client_" +
-          new_captions_video +
-          "_client_" +
-          first_url +
-          "_client_" +
-          sendFont +
-          "_client_" +
-          sendColor +
-          "_client_" +
-          sendPositionSub +
-          "_client_" +
-          sendTextGlowSub +
-          "_client_" +
-          sendAudioSub+
-          "_client_" +
-          video_tag;
+  var send_settings =
+    "tocreate_client_" +
+    user_id +
+    "_client_" +
+    new_captions_video +
+    "_client_" +
+    first_url +
+    "_client_" +
+    sendFont +
+    "_client_" +
+    sendColor +
+    "_client_" +
+    sendPositionSub +
+    "_client_" +
+    sendTextGlowSub +
+    "_client_" +
+    sendAudioSub +
+    "_client_" +
+    video_tag;
 
-        if (received_durations != -1) {
-          var durations_string = received_durations.join("_");
-          send_settings = send_settings + "_client_" + durations_string;
-        }
+  if (received_durations != -1) {
+    var durations_string = received_durations.join("_");
+    send_settings = send_settings + "_client_" + durations_string;
+  }
 
-        websocketClient.send(send_settings);
+  websocketClient.send(send_settings);
 
-        video_received = 0;
+  video_received = 0;
 
-        show_export_mp4();
-        if (video_tag=="webm"){
-          show_stepPreview();
-          start_loading(); 
-          destroyCancelButton();
-        }else{
-          const loader_description = document.querySelector(".loader-description");
-          loader_description.innerText = "Rendering video . . .";
-          show_stepLoading();
-        }
-        
-        frameIndex = 0; 
-        waiting_video = 1;
+  show_export_mp4();
+  if (video_tag == "webm") {
+    show_stepPreview();
+    start_loading();
+    destroyCancelButton();
+  } else {
+    const loader_description = document.querySelector(".loader-description");
+    loader_description.innerText = "Rendering video . . .";
+    show_stepLoading();
+  }
 
-        const video_not_supported = document.getElementById("video_not_supported");
-        if (video_not_supported) {
-          video_not_supported.innerText = "";
-          video_not_supported.style.display = "none"; 
-        }
-        const video = document.getElementById("my-video-2");
-        if (video){
-          video.pause();
-        }
-         
+  frameIndex = 0;
+  waiting_video = 1;
+
+  const video_not_supported = document.getElementById("video_not_supported");
+  if (video_not_supported) {
+    video_not_supported.innerText = "";
+    video_not_supported.style.display = "none";
+  }
+  const video = document.getElementById("my-video-2");
+  if (video) {
+    video.pause();
+  }
 }
-
- 
 
 const videoPlayer = document.getElementById("videoPlayer");
 
 function changeVideoSource(newSource) {
   const videoElement = document.getElementById("my-video-2");
   const sourceElement = videoElement.querySelector("source");
- 
 
   if (sourceElement) {
     sourceElement.src = newSource;
@@ -1635,26 +1581,32 @@ function changeVideoSource(newSource) {
     };
 
     videoElement.addEventListener("error", () => {
-      const video_not_supported = document.getElementById("video_not_supported");
-        if (video_not_supported) {
-          video_not_supported.style.display = "block";
-          video_not_supported.innerText = "Unplayable video. Press RENDER to repair it."
-        }
-        console.log("Unplayable video. Press RENDER to repair it.");
+      const video_not_supported = document.getElementById(
+        "video_not_supported"
+      );
+      if (video_not_supported) {
+        video_not_supported.style.display = "block";
+        video_not_supported.innerText =
+          "Unplayable video. Press RENDER to repair it.";
+      }
+      console.log("Unplayable video. Press RENDER to repair it.");
     });
- 
-    videoElement.addEventListener("loadedmetadata", () => { 
+
+    videoElement.addEventListener("loadedmetadata", () => {
       console.log("Width:", videoElement.videoWidth);
-      console.log("Height:", videoElement.videoHeight); 
+      console.log("Height:", videoElement.videoHeight);
       current_video_width = videoElement.videoWidth;
       current_video_height = videoElement.videoHeight;
 
-      if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) { 
-        const video_not_supported = document.getElementById("video_not_supported");
+      if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
+        const video_not_supported = document.getElementById(
+          "video_not_supported"
+        );
         if (video_not_supported) {
           video_not_supported.style.display = "block";
-          video_not_supported.innerText = "Unplayable video. Press RENDER to repair it."
-        } 
+          video_not_supported.innerText =
+            "Unplayable video. Press RENDER to repair it.";
+        }
       }
     });
   } else {
@@ -1673,8 +1625,7 @@ function connect(type_connection) {
 
   console.log("connecting...");
 
-  websocketClient.addEventListener("open", () => {  
-
+  websocketClient.addEventListener("open", () => {
     console.log("Client connected");
     const send_type_connection =
       "type_connection==" +
@@ -1688,9 +1639,6 @@ function connect(type_connection) {
     if (waiting_caption == 1) {
       websocketClient.send("check_captions");
     }
- 
-
-     
 
     if (bad_connection_choose_file == 1) {
       show_step0();
@@ -1700,19 +1648,14 @@ function connect(type_connection) {
     if (referralCode !== null && referralCode !== "") {
       websocketClient.send("code:" + referralCode);
     }
- 
   });
 
   websocketClient.addEventListener("message", (event) => {
-     
-
     var message_result = event.data;
-    
-    if (typeof message_result === "string") { 
 
+    if (typeof message_result === "string") {
       handleServerResponse(message_result);
-  
-     
+
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
           const aff_message = message_result.split(":")[1];
@@ -1741,7 +1684,7 @@ function connect(type_connection) {
 
       if (message_result.split("_client_")[0] == "enviar") {
         const message_result_split = message_result.split("_client_");
-        current_step = 1; 
+        current_step = 1;
 
         waiting_caption = 0;
         bad_connection_choose_file = 0;
@@ -1755,9 +1698,7 @@ function connect(type_connection) {
           received_durations = JSON.parse(message_result_split[5]);
         }
 
-         
-        show_step_1_2(captions_video,interval);
-          
+        show_step_1_2(captions_video, interval);
 
         websocketClient.send("captions_received:" + userId);
       }
@@ -1772,7 +1713,6 @@ function connect(type_connection) {
           "Transcribing video . . .";
         document.querySelector(".percentage").style.display = "flex";
       }
- 
 
       if (message_result == "check_captions_false") {
         waiting_caption = 0;
@@ -1801,15 +1741,17 @@ function connect(type_connection) {
         document.querySelector(".error-dimension").style.display = "flex";
       }
 
-      
       if (message_result === "ready_to_upload") {
         console.log("message: ", message_result);
         sendVideo(currentFile);
       }
     }
 
-    if (event.data instanceof ArrayBuffer && current_step > 0 && waiting_video==1) {
-
+    if (
+      event.data instanceof ArrayBuffer &&
+      current_step > 0 &&
+      waiting_video == 1
+    ) {
       const bytes = new Uint8Array(event.data);
 
       let firstInt =
@@ -1826,106 +1768,108 @@ function connect(type_connection) {
           video_extension = ".mp4";
         }
 
-        if (globalBuffer.length==0){
-          destroyCancelButton(); 
+        if (globalBuffer.length == 0) {
+          destroyCancelButton();
         }
 
-        console.log("chunk: ",globalBuffer.length); 
-          
-        const subBuffer = bytes.subarray(5); 
+        console.log("chunk: ", globalBuffer.length);
+
+        const subBuffer = bytes.subarray(5);
         suma_final = suma_final + subBuffer.byteLength;
-        const newBuffer = new Uint8Array(globalBuffer.length + subBuffer.length);
+        const newBuffer = new Uint8Array(
+          globalBuffer.length + subBuffer.length
+        );
         newBuffer.set(globalBuffer, 0);
         newBuffer.set(subBuffer, globalBuffer.length);
 
-        globalBuffer = newBuffer; 
-         
-        if (video_tag == "webm") {  
-          const current_load = [[globalBuffer.length, Math.abs(firstInt), "#0000FF"]];
-          generarBarras(current_load);
-        }else{ 
-          const current_load = [[globalBuffer.length, Math.abs(firstInt), "percentage","#0000FF","Preparing video . . ."]];
-          draw_percentage(current_load);  
-        } 
-         
+        globalBuffer = newBuffer;
 
-        if (globalBuffer.length == Math.abs(firstInt)) { 
+        if (video_tag == "webm") {
+          const current_load = [
+            [globalBuffer.length, Math.abs(firstInt), "#0000FF"],
+          ];
+          generarBarras(current_load);
+        } else {
+          const current_load = [
+            [
+              globalBuffer.length,
+              Math.abs(firstInt),
+              "percentage",
+              "#0000FF",
+              "Preparing video . . .",
+            ],
+          ];
+          draw_percentage(current_load);
+        }
+
+        if (globalBuffer.length == Math.abs(firstInt)) {
           console.log("FULL_VIDEO_RECEIVED");
           ocultarBarras();
-          n_seg = 0; 
+          n_seg = 0;
           watch();
-          show_step_1_2(captions_video,interval);
-          websocketClient.send("full_video_received_"+video_tag);
-          const error_connection_2 = document.querySelector(".error-creation-2");
-          if (error_connection_2){ 
+          show_step_1_2(captions_video, interval);
+          websocketClient.send("full_video_received_" + video_tag);
+          const error_connection_2 =
+            document.querySelector(".error-creation-2");
+          if (error_connection_2) {
             error_connection_2.innerText = "Video rendered successfully";
             error_connection_2.style.display = "block";
-          } 
+          }
         }
       } else {
-        const duracion_video = firstInt;   
+        const duracion_video = firstInt;
         const secondInt = (bytes[4] << 24) >> 24;
 
-        console.log("frameIndex: ",frameIndex);
-        if (secondInt > 0) {  
-          if (frameIndex == 0){
-            close_loading(); 
-            if (duracion_video>=15){
-                createCancelButton();
-            } 
-          } 
+        console.log("frameIndex: ", frameIndex);
+        if (secondInt > 0) {
+          if (frameIndex == 0) {
+            close_loading();
+            if (duracion_video >= 15) {
+              createCancelButton();
+            }
+          }
 
           const current_load = [[n_seg, duracion_video, "#4caf50"]];
-          generarBarras(current_load);  
-          const percentage = n_seg/duracion_video;
-          if (percentage>0.6){
+          generarBarras(current_load);
+          const percentage = n_seg / duracion_video;
+          if (percentage > 0.6) {
             destroyCancelButton();
           }
 
-          const chunk_data = bytes.subarray(5); 
-          const frames = getChunks(chunk_data); 
- 
+          const chunk_data = bytes.subarray(5);
+          const frames = getChunks(chunk_data);
+
           feedFrames(frames, current_fps);
           if (current_fps < 17 && n_seg % 8 == 0) {
             current_fps = current_fps + 1;
           }
-
-           
-        }else{ 
-          const current_load = [[n_seg, duracion_video, "time","#4caf50","Rendering video . . ."]]; 
-          draw_percentage(current_load);   
-          if (Math.abs(n_seg-duracion_video)<=2){
+        } else {
+          const current_load = [
+            [n_seg, duracion_video, "time", "#4caf50", "Rendering video . . ."],
+          ];
+          draw_percentage(current_load);
+          if (Math.abs(n_seg - duracion_video) <= 2) {
             clearCircle();
-          } 
+          }
         }
         n_seg = n_seg + 1;
       }
-
-
-
- 
     }
   });
 
- 
-
-  
   websocketClient.addEventListener("close", (event) => {
- 
-    
     frameIndex = 0;
     globalBuffer = new Uint8Array(0);
     ocultarBarras();
     n_seg = 0;
- 
 
     if (waiting_video == 1) {
-      waiting_video = 0; 
-      const error_connection = document.querySelector(".error-creation"); 
-      if (error_connection){
-        error_connection.style.display = "block"; 
-      } 
-      show_step_1_2(captions_video,interval);
+      waiting_video = 0;
+      const error_connection = document.querySelector(".error-creation");
+      if (error_connection) {
+        error_connection.style.display = "block";
+      }
+      show_step_1_2(captions_video, interval);
     }
 
     if (bad_connection_choose_file == 1) {
@@ -1936,30 +1880,24 @@ function connect(type_connection) {
       document.querySelector(".error-dimension").innerHTML =
         "Bad connection. Try it again";
       document.querySelector(".error-dimension").style.display = "flex";
-       
     }
 
-     
     if (event.wasClean) {
-          console.log('Connection closed');
-        } else {
-          console.log('reconnecting...');
-            setTimeout(() => {
-                connect("reconnecting");
-            }, 5000);
-        }
-
-
+      console.log("Connection closed");
+    } else {
+      console.log("reconnecting...");
+      setTimeout(() => {
+        connect("reconnecting");
+      }, 5000);
+    }
 
     console.log(`close error: ${event.code}, Razón: ${event.reason}`);
   });
 
   websocketClient.addEventListener("error", (error) => {
     console.error("Error connection:", error);
-  }); 
+  });
 }
-
- 
 
 let modal = document.getElementById("myModal");
 
@@ -1983,21 +1921,18 @@ window.onclick = function (event) {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    checkSupport(); 
-    show_stepLoading(); 
-    connect("connected");
-    monoColorButton.click();  
- 
+  checkSupport();
+  show_stepLoading();
+  connect("connected");
+  monoColorButton.click();
 });
- 
- 
+
 window.addEventListener("beforeunload", () => {
   if (websocketClient && websocketClient.readyState === WebSocket.OPEN) {
     console.log("conection closed");
     websocketClient.close(1000, "Page unloading");
   }
-}); 
-
+});
 
 document.addEventListener("DOMContentLoaded", function () {
   const settingsOpenModalBtn = document.getElementById("settings-openModalBtn");
@@ -2301,10 +2236,10 @@ multiColorButton.addEventListener("click", () => {
     "#FF951C",
   ];
   colorOptions.innerHTML = `
-            <input type="color" id="multiPalette1" value="${savedColors[0]}">
-            <input type="color" id="multiPalette2" value="${savedColors[1]}">
-            <input type="color" id="multiPalette3" value="${savedColors[2]}">
-        `;
+              <input type="color" id="multiPalette1" value="${savedColors[0]}">
+              <input type="color" id="multiPalette2" value="${savedColors[1]}">
+              <input type="color" id="multiPalette3" value="${savedColors[2]}">
+          `;
   colorCount.textContent =
     "Colors will alternate randomly across all subtitles";
 });
@@ -2335,8 +2270,6 @@ saveButton.addEventListener("click", () => {
   }
 });
 
- 
-
 function writeLanguageInLoadingCircle(texto) {
   const div = document.querySelector(".loader-description");
   if (div) {
@@ -2352,7 +2285,7 @@ function writeUpdatingMessage(texto) {
   div.style.display = "block";
 }
 
-const languages = ["English (beta)", "Español","Portuguese"];
+const languages = ["Español", "Portuguese"];
 
 function populateLanguageList() {
   const languageList = document.getElementById("languageList");
@@ -2368,7 +2301,7 @@ function populateLanguageList() {
     fontBlock.textContent = font;
 
     fontBlock.addEventListener("click", function () {
-      language_video = (index + 1).toString();
+      language_video = (index + 2).toString();
 
       const allFontBlocks = document.querySelectorAll(".language-block");
       allFontBlocks.forEach((block) => {
@@ -2564,12 +2497,12 @@ if (dropZone && inputFile_drag) {
   });
 }
 
-
-function show_modal_error(){
+function show_modal_error() {
   const modal_limit_size = document.getElementById("myModal_limit_size");
   const limitMessage = document.getElementById("limit_size_message");
 
-  limitMessage.innerText = "Press Render Video\n\nStep 1: Transcription\nStep2: Edit subtitles\nStep3: Render video\nStep 4: Export video";
+  limitMessage.innerText =
+    "Press Render Video\n\nStep 1: Transcription\nStep2: Edit subtitles\nStep3: Render video\nStep 4: Export video";
   modal_limit_size.style.display = "block";
 }
 
@@ -2583,19 +2516,17 @@ document.addEventListener("DOMContentLoaded", () => {
       downloadSRT(".srt");
     });
     exportDropdown_mp4.addEventListener("click", () => {
-      if (current_step==2){
+      if (current_step == 2) {
         downloadVideo();
-      }else{
+      } else {
         show_modal_error();
       }
-       
     });
     exportDropdown_txt.addEventListener("click", () => {
       downloadSRT(".txt");
     });
   }
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   const settingsOption = document.querySelectorAll(".settings-font-block");
@@ -2608,52 +2539,41 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-  
- 
- 
- 
- 
 
 function redirect() {
   if (isNotUser()) return;
-  window.location.href = '/?t=' + Date.now();
- }
+  window.location.href = "/?t=" + Date.now();
+}
 
- 
- window.onerror = function (mensaje, url, linea, columna, error) { 
+window.onerror = function (mensaje, url, linea, columna, error) {
   console.log("error");
-  redirect();   
+  redirect();
 };
-window.addEventListener("unhandledrejection", function(event) {
-    console.log("Unhandled promise rejection:"); 
-    redirect();   
+window.addEventListener("unhandledrejection", function (event) {
+  console.log("Unhandled promise rejection:");
+  redirect();
 });
 
-
-  
-
-
 function abrirVideo() {
-    const modal = document.getElementById("videoModal");
-    const video = document.getElementById("miVideo");
-    modal.style.display = "flex";
-    video.play();
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("miVideo");
+  modal.style.display = "flex";
+  video.play();
 }
 
 function cerrarVideo() {
-    const modal = document.getElementById("videoModal");
-    const video = document.getElementById("miVideo");
-    modal.style.display = "none";
-    video.pause();
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("miVideo");
+  modal.style.display = "none";
+  video.pause();
 }
 
-
-window.onclick = function(e) {
-    const modal = document.getElementById("videoModal");
-    const video = document.getElementById("miVideo");
-    if (e.target === modal) {
-        modal.style.display = "none";
-        video.pause();
-    }
-} 
+window.onclick = function (e) {
+  const modal = document.getElementById("videoModal");
+  const video = document.getElementById("miVideo");
+  if (e.target === modal) {
+    modal.style.display = "none";
+    video.pause();
+  }
+};
  
