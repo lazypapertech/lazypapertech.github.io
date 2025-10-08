@@ -4,7 +4,6 @@ function isNotUser() {
   return botPattern.test(navigator.userAgent);
 }
 
-
 function redirect2() {
   if (isNotUser()) return;
 
@@ -434,8 +433,7 @@ let videoURL;
 let first_url = "";
 
 let final_lang = "";
-let language_video = "";
-let language_updated = "";
+let language_video = ""; 
 
 let bad_connection_choose_file = 1;
 let waiting_video = 0;
@@ -742,9 +740,8 @@ function show_stepPreview() {
   }
 }
 
-function update_languages() {
-  console.log("language_updated: ", language_updated);
-  if (language_updated == "2") {
+function update_languages() { 
+  if (language_video == "2") {
     const temp_div = document.getElementById("spanish-dropdown");
     if (temp_div) {
       temp_div.style.display = "none";
@@ -752,7 +749,7 @@ function update_languages() {
       console.log("element not found");
     }
   }
-  if (language_updated == "3") {
+  if (language_video == "3") {
     const temp_div = document.getElementById("portuguese-dropdown");
     if (temp_div) {
       temp_div.style.display = "none";
@@ -1679,9 +1676,7 @@ function connect(type_connection) {
     if (typeof message_result === "string") {
       handleServerResponse(message_result);
 
-      if (message_result.includes("language:")) {
-        language_updated = message_result.split(":")[1];
-      }
+       
 
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
@@ -2604,4 +2599,3 @@ window.onclick = function (e) {
   }
 };
  
-
