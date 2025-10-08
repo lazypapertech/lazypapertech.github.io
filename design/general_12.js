@@ -434,6 +434,7 @@ let first_url = "";
 
 let final_lang = "";
 let language_video = "";
+let language_updated = "";
 
 let bad_connection_choose_file = 1;
 let waiting_video = 0;
@@ -739,6 +740,21 @@ function show_stepPreview() {
     stepPreview.style.display = "block";
   }
 }
+
+function update_languages() {
+  if (language_updated == "2") {
+    const temp_div = document.getElementById("spanish-dropdown");
+    if (temp_div) {
+      temp_div.style.display = "none";
+    }
+  }
+  if (language_updated == "3") {
+    const temp_div = document.getElementById("portuguese-dropdown");
+    if (temp_div) {
+      temp_div.style.display = "none";
+    }
+  }
+}
 function show_step_1_2(captions_video, interval) {
   hide_step0();
   hide_stepLoading();
@@ -756,6 +772,7 @@ function show_step_1_2(captions_video, interval) {
   }
   toggleEditability(1);
   show_export_mp4();
+  update_languages();
 }
 
 function show_export_mp4() {
@@ -1657,19 +1674,7 @@ function connect(type_connection) {
       handleServerResponse(message_result);
 
       if (message_result.includes("language:")) {
-        const language_updated = message_result.split(":")[1];
-        if (language_updated == "2") {
-          const temp_div = document.getElementById("spanish-dropdown");
-          if (temp_div) {
-            temp_div.style.display = "none";
-          }
-        }
-        if (language_updated == "3") {
-          const temp_div = document.getElementById("portuguese-dropdown");
-          if (temp_div) {
-            temp_div.style.display = "none";
-          }
-        }
+        language_updated = message_result.split(":")[1];
       }
 
       if (message_result.includes("affiliate_message:")) {
@@ -2328,7 +2333,7 @@ function populateLanguageList() {
       fontBlock.style.backgroundColor = "#7c55e6";
       fontBlock.style.color = "#ffffff";
 
-      selectedLanguageIndex = index;
+      selectedLanguageIndex = index + 1;
       console.log(index);
     });
 
