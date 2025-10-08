@@ -4,6 +4,7 @@ function isNotUser() {
   return botPattern.test(navigator.userAgent);
 }
 
+
 function redirect2() {
   if (isNotUser()) return;
 
@@ -2603,3 +2604,4 @@ window.onclick = function (e) {
   }
 };
  
+
