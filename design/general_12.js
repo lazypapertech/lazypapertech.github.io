@@ -742,16 +742,21 @@ function show_stepPreview() {
 }
 
 function update_languages() {
+  console.log("language_updated: ", language_updated);
   if (language_updated == "2") {
     const temp_div = document.getElementById("spanish-dropdown");
     if (temp_div) {
       temp_div.style.display = "none";
+    } else {
+      console.log("element not found");
     }
   }
   if (language_updated == "3") {
     const temp_div = document.getElementById("portuguese-dropdown");
     if (temp_div) {
       temp_div.style.display = "none";
+    } else {
+      console.log("element not found");
     }
   }
 }
@@ -2333,7 +2338,7 @@ function populateLanguageList() {
       fontBlock.style.backgroundColor = "#7c55e6";
       fontBlock.style.color = "#ffffff";
 
-      selectedLanguageIndex = index + 1;
+      selectedLanguageIndex = index;
       console.log(index);
     });
 
@@ -2369,7 +2374,7 @@ document.addEventListener("DOMContentLoaded", function () {
       languageModal.style.display = "none";
       final_lang = language_video;
       websocketClient.send("lang_client_" + userId + "_client_" + final_lang);
-      selectedLanguage.textContent = `${languages[parseInt(final_lang) - 1]}`;
+      selectedLanguage.textContent = `${languages[parseInt(final_lang) - 2]}`;
     });
   }
 
