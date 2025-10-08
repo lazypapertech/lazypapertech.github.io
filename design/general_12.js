@@ -614,7 +614,7 @@ const start_elements = [
   { id: "li-features", content: "Features" },
   { id: "li-tutorial", content: "How to use" },
   { id: "li-questions", content: "FAQ" },
-  { id: "dropdown-btn", content: "Translate to:  &#x025BE;" },
+  { id: "dropdown-btn", content: "Translate to  &#x025BE;" },
   { id: "reset-dropdown", content: "Reset" },
   { id: "english-dropdown", content: "English" },
   { id: "spanish-dropdown", content: "Spanish" },
@@ -1655,6 +1655,22 @@ function connect(type_connection) {
 
     if (typeof message_result === "string") {
       handleServerResponse(message_result);
+
+      if (message_result.includes("language:")) {
+        const language_updated = message_result.split(":")[1];
+        if (language_updated == "2") {
+          const temp_div = document.getElementById("spanish-dropdown");
+          if (temp_div) {
+            temp_div.style.display = "none";
+          }
+        }
+        if (language_updated == "3") {
+          const temp_div = document.getElementById("portuguese-dropdown");
+          if (temp_div) {
+            temp_div.style.display = "none";
+          }
+        }
+      }
 
       if (message_result.includes("affiliate_message:")) {
         if (message_result.includes("20% discount applied")) {
