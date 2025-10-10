@@ -451,6 +451,8 @@ function isNotUser() {
   let extra_seconds = 0;
   let selectedLanguageIndex = null;
   let currentFile = null;
+
+  let session_is_duplicated = 0;
   
   localStorage.setItem("selected-font", "9");
   localStorage.setItem("selected-color", "FFFFFF");
@@ -1678,6 +1680,13 @@ function isNotUser() {
   
         if (message_result=="session_duplicated"){
             console.log("session_duplicated received");
+            session_is_duplicated = 1;
+            const session_duplicated = document.querySelector(".error-dimension"); 
+            if (session_duplicated) { 
+                session_duplicated.innerHTML = "Session duplicated. Connection closed. Please reload the page.";
+                session_duplicated.style.display = "flex"; 
+                websocketClient.close(4001, "Duplicate session");
+            }
         }
   
         if (message_result.includes("affiliate_message:")) {
