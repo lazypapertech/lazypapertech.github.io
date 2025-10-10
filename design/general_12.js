@@ -1904,6 +1904,13 @@ function connect(type_connection) {
       document.querySelector(".error-dimension").style.display = "flex";
     }
 
+    if (event.code === 4001) {
+    	    const session_duplicated = document.querySelector(".error-dimension"); 
+          if (session_duplicated) {
+              session_duplicated.innerHTML = "Session duplicated. Connection closed. Please reload the page.";
+          }
+    }
+
     if (event.wasClean) {
       console.log("Connection closed");
     } else {
@@ -2599,3 +2606,4 @@ window.onclick = function (e) {
   }
 };
  
+
