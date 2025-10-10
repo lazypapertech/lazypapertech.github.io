@@ -1880,6 +1880,7 @@ function connect(type_connection) {
   });
 
   websocketClient.addEventListener("close", (event) => {
+    console.log("error listened");
     frameIndex = 0;
     globalBuffer = new Uint8Array(0);
     ocultarBarras();
@@ -2609,6 +2610,7 @@ window.onclick = function (e) {
   }
 };
  
+
 
 
 
