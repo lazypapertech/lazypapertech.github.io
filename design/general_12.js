@@ -1676,18 +1676,7 @@ function isNotUser() {
       if (typeof message_result === "string") {
         handleServerResponse(message_result);
   
-
-        if (message_result.includes("session_duplicated")) {
-            const session_duplicated = document.querySelector(".error-dimension"); 
-            if (session_duplicated) {
-                console.log("element error");
-                session_duplicated.innerHTML = "Session duplicated. Connection closed. Please reload the page.";
-                session_duplicated.style.display = "flex";
-                websocketClient.close();
-            }
-            console.log("session duplicated");
-             
-        } 
+ 
   
         if (message_result.includes("affiliate_message:")) {
           if (message_result.includes("20% discount applied")) {
@@ -1914,7 +1903,15 @@ function isNotUser() {
           "Bad connection. Try it again";
         document.querySelector(".error-dimension").style.display = "flex";
       }
- 
+
+      if (event.code === 4001) {
+            const session_duplicated = document.querySelector(".error-dimension"); 
+            if (session_duplicated) { 
+                session_duplicated.innerHTML = "Session duplicated. Connection closed. Please reload the page.";
+                session_duplicated.style.display = "flex"; 
+            }
+            console.log("session duplicated");
+      }
   
       if (event.wasClean) {
         console.log("Connection closed");
