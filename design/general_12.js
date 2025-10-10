@@ -1676,7 +1676,9 @@ function isNotUser() {
       if (typeof message_result === "string") {
         handleServerResponse(message_result);
   
- 
+        if (message_result=="session_duplicated"){
+            console.log("session_duplicated received");
+        }
   
         if (message_result.includes("affiliate_message:")) {
           if (message_result.includes("20% discount applied")) {
