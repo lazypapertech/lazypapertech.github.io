@@ -1805,7 +1805,7 @@ function isNotUser() {
             destroyCancelButton();
           }
   
-          console.log("chunk: ", globalBuffer.length);
+          //console.log("chunk: ", globalBuffer.length);
   
           const subBuffer = bytes.subarray(5);
           suma_final = suma_final + subBuffer.byteLength;
@@ -1853,7 +1853,7 @@ function isNotUser() {
           const duracion_video = firstInt;
           const secondInt = (bytes[4] << 24) >> 24;
   
-          console.log("frameIndex: ", frameIndex);
+          //console.log("frameIndex: ", frameIndex);
           if (secondInt > 0) {
             if (frameIndex == 0) {
               close_loading();
@@ -2619,3 +2619,4 @@ function isNotUser() {
     }
   };
     
+
