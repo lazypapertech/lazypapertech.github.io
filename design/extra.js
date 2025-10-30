@@ -5,7 +5,7 @@ function pauseVideoWhenWriting() {
   if (!container || !videoElement) return;
 
   function checkActiveTextarea() {
-    const activeTextarea = container.querySelector("textarea.flexible-input:focus");
+    const activeTextarea = container.querySelector("textarea.flexible-captions:focus");
     return !!activeTextarea;
   }
 
@@ -33,3 +33,4 @@ function pauseVideoWhenWriting() {
 
 pauseVideoWhenWriting();
  
+
