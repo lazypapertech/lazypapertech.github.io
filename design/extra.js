@@ -39,11 +39,17 @@ function pauseVideoWhenWriting() {
     }
   }
 
-  container.addEventListener("focusin", updateVideoState);
+  container.addEventListener("focusin", (e) => {
+  if (e.target.matches("textarea.flexible-input")) {
+    e.preventDefault();
+  }
+  updateVideoState();
+});
   container.addEventListener("focusout", updateVideoState);
 }
 
 pauseVideoWhenWriting();
+
 
 
 
