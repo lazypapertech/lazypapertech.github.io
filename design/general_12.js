@@ -681,13 +681,13 @@ function isNotUser() {
     { id: "textglow-center", content: "Thin" },
     { id: "textglow-up", content: "Thick" },
   
-    { id: "audio-down", content: "Off" },
-    { id: "audio-center", content: "Low" },
-    { id: "audio-up", content: "High" },
+    { id: "audio-down", content: "1" },
+    { id: "audio-center", content: "2" },
+    { id: "audio-up", content: "3" },
   
     { id: "position-sub-title", content: "Position of subtitles" },
     { id: "textglow-sub-title", content: "Text Glow" },
-    { id: "audio-sub-title", content: "Noise reduction" },
+    { id: "audio-sub-title", content: "Simultaneous lines" },
   
     { id: "settings-position-sub", content: "Text design" },
     { id: "monoColor", content: "Monocolor" },
@@ -2327,7 +2327,7 @@ function isNotUser() {
     div.style.display = "block";
   }
   
-  const languages = ["Español", "Portuguese"];
+  const languages = ["Español", "Portuguese", "German", "Italian", "Croatian"];
   
   function populateLanguageList() {
     const languageList = document.getElementById("languageList");
@@ -2619,4 +2619,5 @@ function isNotUser() {
     }
   };
     
+
 
