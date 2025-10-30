@@ -808,8 +808,7 @@ function isNotUser() {
       container.scrollTop =
         element.offsetTop -
         container.offsetTop -
-        container.offsetHeight / 2 +
-        element.offsetHeight / 2;
+        container.offsetHeight / 2;
     }
   }
   
