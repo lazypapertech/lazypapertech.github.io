@@ -1,71 +1,35 @@
-function autoPauseVideoOnInput() {
+function pauseVideoWhenWriting() {
   const container = document.getElementById("form-container");
   const videoElement = document.getElementById("my-video-2");
 
-  if (!container || !videoElement) {
-    console.error("No se encontró el contenedor o el video.");
-    return;
+  if (!container || !videoElement) return;
+
+  function checkActiveTextarea() {
+    const activeTextarea = container.querySelector("textarea.flexible-input:focus");
+    return !!activeTextarea;
   }
 
-  let bloqueandoScroll = false;
-  let bloqueandoVideo = false;
-  let videoPausedByInput = false;
+  function updateVideoState() {
+    const writing = checkActiveTextarea();
 
-  function checkFocus() {
-    const focusedTextarea = container.querySelector("textarea.flexible-captions:focus");
-    if (focusedTextarea) {
-      if (!videoPausedByInput) {
-        videoElement.pause();
-        videoPausedByInput = true;
-      }
+    if (writing) {
+      if (!videoElement.paused) videoElement.pause();
     } else {
-      if (videoPausedByInput) {
-        videoPausedByInput = false;
-        const scrollTop = container.scrollTop;
-        const scrollHeight = container.scrollHeight - container.clientHeight;
-        const porcentaje = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+      const scrollTop = container.scrollTop;
+      const scrollHeight = container.scrollHeight - container.clientHeight;
+      const porcentaje = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
 
-        if (!isNaN(videoElement.duration)) {
-          bloqueandoScroll = true;
-          videoElement.currentTime = videoElement.duration * porcentaje;
-          bloqueandoScroll = false;
-        }
-
-        videoElement.play();
+      if (!isNaN(videoElement.duration)) {
+        videoElement.currentTime = videoElement.duration * porcentaje;
       }
+
+      videoElement.play();
     }
   }
 
-  container.addEventListener("focusin", checkFocus);
-  container.addEventListener("focusout", () => {
-    setTimeout(checkFocus, 0);  
-  });
-
-  container.addEventListener("scroll", () => {
-    if (videoPausedByInput) return;
-
-    const scrollTop = container.scrollTop;
-    const scrollHeight = container.scrollHeight - container.clientHeight;
-    const porcentaje = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
-
-    if (!isNaN(videoElement.duration)) {
-      bloqueandoScroll = true;
-      videoElement.currentTime = videoElement.duration * porcentaje;
-      bloqueandoScroll = false;
-    }
-  });
-
-  videoElement.addEventListener("timeupdate", () => {
-    if (videoPausedByInput || bloqueandoScroll) return;
-
-    const porcentaje = videoElement.currentTime / videoElement.duration;
-    const scrollHeight = container.scrollHeight - container.clientHeight;
-
-    bloqueandoVideo = true;
-    container.scrollTop = scrollHeight * porcentaje;
-    bloqueandoVideo = false;
-  });
+  container.addEventListener("focusin", updateVideoState);
+  container.addEventListener("focusout", updateVideoState);
 }
 
-autoPauseVideoOnInput();
+pauseVideoWhenWriting();
  
