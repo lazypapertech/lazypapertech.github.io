@@ -1,4 +1,4 @@
-function syncScrollWithVideo() {
+ function syncScrollWithVideo() {
   const container = document.querySelector(".form-container");
   const videoElement = document.getElementById("my-video-2");
 
@@ -7,12 +7,12 @@ function syncScrollWithVideo() {
     return;
   }
 
-  let bloqueandoScroll = false;  
+  let bloqueandoScroll = false;
   let bloqueandoVideo = false;
+  let videoPlaying = false;
 
-   
   container.addEventListener("scroll", () => {
-    if (bloqueandoVideo) return;  
+    if (bloqueandoVideo || videoPlaying) return;
 
     const scrollTop = container.scrollTop;
     const scrollHeight = container.scrollHeight - container.clientHeight;
@@ -26,9 +26,9 @@ function syncScrollWithVideo() {
 
     console.log(`Scroll: ${(porcentaje * 100).toFixed(2)}%`);
   });
- 
+
   videoElement.addEventListener("timeupdate", () => {
-    if (bloqueandoScroll) return;  
+    if (bloqueandoScroll) return;
 
     const porcentaje = videoElement.currentTime / videoElement.duration;
     const scrollHeight = container.scrollHeight - container.clientHeight;
@@ -37,7 +37,18 @@ function syncScrollWithVideo() {
     container.scrollTop = scrollHeight * porcentaje;
     bloqueandoVideo = false;
   });
+
+  videoElement.addEventListener("play", () => {
+    videoPlaying = true;
+  });
+
+  videoElement.addEventListener("pause", () => {
+    videoPlaying = false;
+  });
+
+  videoElement.addEventListener("seeking", () => {
+    videoPlaying = false;
+  });
 }
- 
+
 syncScrollWithVideo();
- 
