@@ -1,5 +1,5 @@
- function syncScrollWithVideo() {
-  const container = document.querySelector(".form-container");
+function autoPauseVideoOnInput() {
+  const container = document.getElementById("form-container");
   const videoElement = document.getElementById("my-video-2");
 
   if (!container || !videoElement) {
@@ -9,10 +9,40 @@
 
   let bloqueandoScroll = false;
   let bloqueandoVideo = false;
-  let videoPlaying = false;
+  let videoPausedByInput = false;
+
+  function checkFocus() {
+    const focusedTextarea = container.querySelector("textarea.flexible-captions:focus");
+    if (focusedTextarea) {
+      if (!videoPausedByInput) {
+        videoElement.pause();
+        videoPausedByInput = true;
+      }
+    } else {
+      if (videoPausedByInput) {
+        videoPausedByInput = false;
+        const scrollTop = container.scrollTop;
+        const scrollHeight = container.scrollHeight - container.clientHeight;
+        const porcentaje = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+
+        if (!isNaN(videoElement.duration)) {
+          bloqueandoScroll = true;
+          videoElement.currentTime = videoElement.duration * porcentaje;
+          bloqueandoScroll = false;
+        }
+
+        videoElement.play();
+      }
+    }
+  }
+
+  container.addEventListener("focusin", checkFocus);
+  container.addEventListener("focusout", () => {
+    setTimeout(checkFocus, 0);  
+  });
 
   container.addEventListener("scroll", () => {
-    if (bloqueandoVideo || videoPlaying) return;
+    if (videoPausedByInput) return;
 
     const scrollTop = container.scrollTop;
     const scrollHeight = container.scrollHeight - container.clientHeight;
@@ -23,12 +53,10 @@
       videoElement.currentTime = videoElement.duration * porcentaje;
       bloqueandoScroll = false;
     }
-
-    console.log(`Scroll: ${(porcentaje * 100).toFixed(2)}%`);
   });
 
   videoElement.addEventListener("timeupdate", () => {
-    if (bloqueandoScroll) return;
+    if (videoPausedByInput || bloqueandoScroll) return;
 
     const porcentaje = videoElement.currentTime / videoElement.duration;
     const scrollHeight = container.scrollHeight - container.clientHeight;
@@ -37,18 +65,7 @@
     container.scrollTop = scrollHeight * porcentaje;
     bloqueandoVideo = false;
   });
-
-  videoElement.addEventListener("play", () => {
-    videoPlaying = true;
-  });
-
-  videoElement.addEventListener("pause", () => {
-    videoPlaying = false;
-  });
-
-  videoElement.addEventListener("seeking", () => {
-    videoPlaying = false;
-  });
 }
 
-syncScrollWithVideo();
+autoPauseVideoOnInput();
+ 
