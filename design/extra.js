@@ -4,16 +4,20 @@ function pauseVideoWhenWriting() {
 
   if (!container || !videoElement) return;
 
+  let videoShouldBePlaying = true;
+
   function checkActiveTextarea() {
-    const activeTextarea = container.querySelector("textarea.flexible-captions:focus");
-    return !!activeTextarea;
+    return !!container.querySelector("textarea.flexible-captions:focus");
   }
 
   function updateVideoState() {
     const writing = checkActiveTextarea();
 
     if (writing) {
-      if (!videoElement.paused) videoElement.pause();
+      if (!videoElement.paused) {
+        videoElement.pause();
+        videoShouldBePlaying = false;
+      }
     } else {
       const scrollTop = container.scrollTop;
       const scrollHeight = container.scrollHeight - container.clientHeight;
@@ -23,7 +27,15 @@ function pauseVideoWhenWriting() {
         videoElement.currentTime = videoElement.duration * porcentaje;
       }
 
-      videoElement.play();
+      if (videoElement.paused && !videoShouldBePlaying) {
+        videoShouldBePlaying = true;
+        const playPromise = videoElement.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(err => {
+            if (err.name !== "AbortError") console.error(err);
+          });
+        }
+      }
     }
   }
 
@@ -32,5 +44,6 @@ function pauseVideoWhenWriting() {
 }
 
 pauseVideoWhenWriting();
- 
+
+
 
