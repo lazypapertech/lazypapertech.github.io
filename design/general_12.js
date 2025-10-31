@@ -2591,10 +2591,11 @@ function isNotUser() {
     console.log("error");
     redirect();
   };
+ 
   window.addEventListener("unhandledrejection", function (event) {
     console.log("Unhandled promise rejection:");
-    redirect();
-  });
+    /*redirect();*/
+  }); 
   
   function abrirVideo() {
     const modal = document.getElementById("videoModal");
@@ -2619,5 +2620,6 @@ function isNotUser() {
     }
   };
     
+
 
 
