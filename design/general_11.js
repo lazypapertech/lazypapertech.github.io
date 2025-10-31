@@ -806,8 +806,7 @@ function isNotUser() {
     var container = document.querySelector(".form-container");
     if (container) {
       container.scrollTop =
-        element.offsetTop -
-        container.offsetTop;
+        element.offsetTop;
     }
   }
   
