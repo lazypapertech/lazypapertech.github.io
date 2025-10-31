@@ -802,12 +802,7 @@ function isNotUser() {
     return -1;
   }
   
-  function scrollToElement(element) {
-    var container = document.querySelector(".form-container");
-    if (container) {
-      container.scrollTop =
-        element.offsetTop;
-    }
+  function scrollToElement(element) { 
   }
   
   var videoElement = document.getElementById("my-video-2");
