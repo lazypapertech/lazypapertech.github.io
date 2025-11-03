@@ -2327,7 +2327,7 @@ function isNotUser() {
     div.style.display = "block";
   }
   
-  const languages = ["Español", "Portuguese", "German", "Italian", "Croatian"];
+  const languages = ["English (beta)", "Español", "Portuguese", "German", "Italian"];
   
   function populateLanguageList() {
     const languageList = document.getElementById("languageList");
@@ -2343,7 +2343,7 @@ function isNotUser() {
       fontBlock.textContent = font;
   
       fontBlock.addEventListener("click", function () {
-        language_video = (index + 2).toString();
+        language_video = (index + 1).toString();
   
         const allFontBlocks = document.querySelectorAll(".language-block");
         allFontBlocks.forEach((block) => {
@@ -2390,7 +2390,7 @@ function isNotUser() {
         languageModal.style.display = "none";
         final_lang = language_video;
         websocketClient.send("lang_client_" + userId + "_client_" + final_lang);
-        selectedLanguage.textContent = `${languages[parseInt(final_lang) - 2]}`;
+        selectedLanguage.textContent = `${languages[parseInt(final_lang) - 1]}`;
       });
     }
   
@@ -2620,6 +2620,7 @@ function isNotUser() {
     }
   };
     
+
 
 
 
