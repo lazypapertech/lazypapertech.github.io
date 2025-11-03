@@ -2319,7 +2319,7 @@ function isNotUser() {
     div.style.display = "block";
   }
   
-  const languages = ["Español", "Portuguese", "German", "Italian"];
+  const languages = ["English","Español", "Portuguese", "German", "Italian"];
   
   function populateLanguageList() {
     const languageList = document.getElementById("languageList");
