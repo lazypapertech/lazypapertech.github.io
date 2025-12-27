@@ -6650,6 +6650,8 @@ function eliminarTabPorNombre(tabName) {
     return;
   }
 
+  customNames = customNames.filter(name => name !== current_item);
+	
   // Imprime el data-tab-name del de arriba
   const nombreAnterior = tabAnterior.getAttribute('data-tab-name');
   console.log('Tab anterior:', nombreAnterior);
@@ -7455,6 +7457,7 @@ window.addEventListener('resize', ajustarGeneralMain);
 
 </body>
 </html>  
+
 
 
 
