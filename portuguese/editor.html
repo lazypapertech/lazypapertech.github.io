@@ -1050,10 +1050,10 @@ text-shadow: 1px 2px 4px rgba(0,0,0);
   box-sizing: border-box;
 
   /* efecto suavizado */
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px); 
 }
 
-#modal_box_dinamico {
+#modal_box_dinamico { 
   background: rgba(25, 40, 60, 0.55); /* vidrio oscuro */
   padding: 20px;
   border-radius: 12px;
@@ -1659,7 +1659,7 @@ display:none;
  
     <div class="file-name-overlay" id="file-name-overlay"></div>
     <div class="file-name-form" id="file-name-form">
-        <p style="font-size:18px;font-weight:bold;margin:10px 5px 10px 5px;">Este nombre lo usarás luego<p>
+        <p style="font-size:18px;font-weight:bold;margin:10px 5px 10px 5px;">Create item<p>
         <div class="error-message" id="error-message"></div>
 
 	<input type="text" id="custom-name-input" placeholder="Item name..." maxlength="15">
@@ -1676,8 +1676,8 @@ display:none;
 
          
         <div style="margin-bottom: 10px;">
-            <button class="btn-confirm" id="confirm-name">Confirmar</button>
-            <button class="btn-cancel" id="cancel-name">Cancelar</button>
+            <button class="btn-confirm" id="confirm-name">Confirm</button>
+            <button class="btn-cancel" id="cancel-name">Cancel</button>
         </div>
     </div>
  
@@ -1832,7 +1832,7 @@ function showErrorModal(message) {
 function check_conditions() {
     // Verificar si se ha subido al menos un archivo
     if (uniqueFiles.length === 0 && textnames_llenos==0) {
-        showErrorModal('Aun no se subio ningun archivo multimedia');
+        showErrorModal('No multimedia files have been uploaded yet');
         return false;
     }
     
@@ -2527,7 +2527,7 @@ let unica_regla = {
 };
 
 let resolution_scene = "1280x720";
-const MINUTOS_TOTALES = 30;
+const MINUTOS_TOTALES = 2;
 const PASO_DELTA = 5;//0.2 segundos
 const SEGMENTO_BASE = 20;
 const CALIBRACION = 2;
@@ -6835,13 +6835,13 @@ grupo.addEventListener("click", (e) => {
 
         if (unica_regla.rectangulos.length <= 1) {
             //alert('No se puede eliminar el último rectángulo.');
-	    showErrorModal('No se puede eliminar el último rectángulo.');
+	    showErrorModal('The last rectangle cannot be deleted.');
             return;
         }else{
 	   if(unica_regla.rectangulos.length==2 && indice<unica_regla.rectangulos.length-1){
 		if ( rectangulos[indice+1] && typeof rectangulos[indice+1].start_value === "string" && rectangulos[indice+1].start_value.includes("/%(bounce)%/")){
 			//alert('No se puede eliminar el último rectángulo');
-			showErrorModal('No se puede eliminar el último rectángulo');
+			showErrorModal('The last rectangle cannot be deleted.');
             		return;
 		}
 	   }
@@ -7446,14 +7446,12 @@ window.addEventListener('resize', ajustarGeneralMain);
 </script>
 
 
-<script src="../design2/general.js"></script>
-<script src="../design2/send_files.js"></script> 
-<script src="../design2/clipcontainer.js"></script>  
-<script src="../design2/htmlstring.js"></script>  
-<script src="../design2/expressions4.js"></script>   
-<script src="../design2/panel_tabs.js"></script>  
+<script src="../design2/general.js"> </script>
+<script src="../design2/send_files.js"> </script> 
+<script src="../design2/clipcontainer.js"> </script>  
+<script src="../design2/htmlstring.js"> </script>  
+<script src="../design2/expressions4.js"> </script>   
+<script src="../design2/panel_tabs.js"> </script>  
 
 </body>
-
-</html> 
-
+</html>  
