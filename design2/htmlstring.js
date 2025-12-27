@@ -706,7 +706,7 @@ function cargarHeader() {
     contenedor.innerHTML = `
         <div class="header-menu">
             <div class="logo-container-menu">
-                <img src="title.png" alt="Logo" class="logo-menu">
+                <img src="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" alt="Logo" class="logo-menu">
                 <p style="font-size:16px;">Manycaptions</p>
             </div>
             <div class="hamburger">&#9776;</div>
@@ -1003,4 +1003,5 @@ document.addEventListener("click", (e) => {
 
 
  
+
 
