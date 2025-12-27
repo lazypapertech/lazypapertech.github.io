@@ -165,10 +165,18 @@ document.addEventListener("click", function (e) {
   // Botón Run Script 
   if (e.target.matches(".team-project")) {
 	console.log("team-project");
+	const plusModalOverlay = document.getElementById('plus-modal-overlay');
+	if (plusModalOverlay){
+		plusModalOverlay.style.display = "none";
+	}
 	abrirModalDinamicoSimple(html_login_required);
   }
   if (e.target.matches(".run-shortcut")) {
 	console.log("run-shortcut");
+	const plusModalOverlay = document.getElementById('plus-modal-overlay');
+	if (plusModalOverlay){
+		plusModalOverlay.style.display = "none";
+	}
 	abrirModalDinamicoSimple(html_login_required);
   }
   if (e.target.matches(".btn-run-script")) {
@@ -391,4 +399,5 @@ function update_from_panel_rectangles() {
 function saveState() { 
 console.log("saveState: ",saveState);
 }
+
  
