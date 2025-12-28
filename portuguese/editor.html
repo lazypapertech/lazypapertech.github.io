@@ -1392,9 +1392,6 @@ display:none;
 }
 
  
- 
-
- 
 
 
 
@@ -2211,6 +2208,7 @@ websocketClient.send(JSON.stringify(json_data_02));
 
 	 
 
+let filename_url={};
 
 fileInput.addEventListener('change', (e) => {
   const files = e.target.files;
@@ -2218,7 +2216,7 @@ fileInput.addEventListener('change', (e) => {
 
   for (const file of files) {
     const fileIdentifier = `${file.name}-${file.size}-${file.lastModified}`;
-
+     
     // ⚠️ Evitar duplicados antes de crear el preview
     if (uniqueFiles.includes(fileIdentifier)) {
       console.log(`⚠️ Archivo duplicado, ya subido: ${file.name}`);
@@ -2250,6 +2248,7 @@ fileInput.addEventListener('change', (e) => {
       video.muted = true;
       fileItem.appendChild(video);
       fileType = 'video';
+      filename_url[file.name] = video.src;	
       console.log('Video agregado a la galería');
     } else if (file.type.startsWith('audio/')) {
       const audio = document.createElement('div');
@@ -6651,7 +6650,7 @@ function eliminarTabPorNombre(tabName) {
   }
 
   customNames = customNames.filter(name => name !== current_item);
-	
+
   // Imprime el data-tab-name del de arriba
   const nombreAnterior = tabAnterior.getAttribute('data-tab-name');
   console.log('Tab anterior:', nombreAnterior);
@@ -6663,8 +6662,8 @@ function eliminarTabPorNombre(tabName) {
 
   const tab = document.querySelector(`.tab[data-tab-name="${nombreAnterior}"]`);
   tab.dataset.modo = "delete_item";//si quito esto se ejecuta el save_item del cursor y eso modifica el valor de filename
-  tab.click();
-
+  tab.click(); 
+   
   // Elimina el tab actual
   tabActual.remove();
 }
@@ -6811,10 +6810,11 @@ document.addEventListener("click", (e) => {
     const select = document.getElementById("selector_dinamico");
     if (select){	
     	const valor_seleccionado = select.value; 
-    	console.log("valor_seleccionadooooooo: ",valor_seleccionado,unica_regla.rectangulos);
+    	console.log("valor_seleccionado interval: ",valor_seleccionado,unica_regla.rectangulos);
     	current_filename = valor_seleccionado;
- 
-    	abrirModalConClipper(valor_seleccionado);
+        
+        const url_object = filename_url[valor_seleccionado];
+    	abrirModalConClipper(url_object);
     }
 });
 
@@ -7457,9 +7457,3 @@ window.addEventListener('resize', ajustarGeneralMain);
 
 </body>
 </html>  
-
-
-
-
-
-
