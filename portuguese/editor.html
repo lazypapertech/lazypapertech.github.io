@@ -2255,6 +2255,8 @@ fileInput.addEventListener('change', (e) => {
       fileItem.appendChild(audio);
       fileType = 'audio';
       console.log('Audio agregado a la galería');
+		const url_audio = URL.createObjectURL(file);
+	    filename_url[file.name] = url_audio;
     }
 
     const fileName = document.createElement('div');
@@ -7845,5 +7847,6 @@ window.addEventListener('resize', ajustarGeneralMain);
 
 </body>
 </html>  
+
 
 
