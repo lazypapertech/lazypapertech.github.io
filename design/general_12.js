@@ -95,7 +95,8 @@ function isNotUser() {
     if (supportedCodecs.includes("video/webm")) {
       VideoDecoder.isConfigSupported({ codec: "vp8" }).then((support) => {
         if (support.supported) {
-          video_tag = "webm";
+          //video_tag = "webm";
+          video_tag = "mp4";      
         }
       });
     }
@@ -2620,6 +2621,7 @@ function isNotUser() {
     }
   };
     
+
 
 
 
