@@ -287,7 +287,7 @@
 
 #subcontent-regla{background-color: rgb(35, 45, 50);position: relative;} 
 .scroll-wrapper{width:100%;height:auto;max-height:200px;overflow:auto;border:0;position: relative;} /*quitar position relative*/
-.contenedor{position:relative;width:100%;background-color:rgb(35, 45, 50);border:2px solid rgb(25, 25, 25);}/*quitar position relative*/
+.contenedor{position:relative;width:100%;background-color:rgb(35, 45, 50);border-top:2px solid rgb(25, 25, 25);}/*quitar position relative*/
 .detalles {
   width:auto;	
   height: auto;
@@ -421,20 +421,24 @@
 .rectangulo-caja {
     position: absolute;
     height: 50px;
-    background: linear-gradient(135deg, #9874ff 0%, #7c55e6 50%, #532ebd 100%); 
+    /*background: linear-gradient(135deg, #9874ff 0%, #7c55e6 50%, #532ebd 100%);*/
+    background: #7c55e6; 
     transform: translateY(-50%);
     z-index: 9;
     cursor: grab; 
-    border-radius: 8px;
+    border-radius: 8px; 
+/*
     box-shadow: 
         0 4px 12px rgba(124, 85, 230, 0.4),
         inset 0 1px 0 rgba(255, 255, 255, 0.4),
         inset 0 -2px 0 rgba(0, 0, 0, 0.15); 
+ 
     border: 1px solid rgba(255, 255, 255, 0.2);
+*/
 }
 
 .rectangulo-caja:hover {
-    background: linear-gradient(135deg, #a794ff 0%, #8b6aea 50%, #623dd5 100%); 
+    background: linear-gradient(135deg, #a794ff 0%, #8b6aea 50%, #623dd5 100%);
     box-shadow: 
         0 6px 16px rgba(124, 85, 230, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.5),
@@ -455,34 +459,29 @@
 
 
 .rectangulo-caja.dragging{cursor:grabbing} 
-
-/*
-.extremo-blanco{position:absolute;width:3px;height:60px;background:white;top:50%;transform:translateY(-50%);cursor:ew-resize;z-index:11}
-.extremo-blanco.izquierdo{left:0}
-.extremo-blanco.derecho{right:0}
-*/
+ 
 .extremo-blanco {
     position: absolute;
-    width: 6px;
-    height: 55px;
+    width: 12px;
+    height: 50px;
     background: linear-gradient(135deg, #ffffff 0%, #e8e8e8 100%);
     top: 50%;
     transform: translateY(-50%);
     cursor: ew-resize;
-    z-index: 11;
+    z-index: 11; 
     box-shadow: 
         0 2px 8px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .extremo-blanco.izquierdo {
-    left: -2px;
-    border-radius: 0 8px 8px 0;
+    left: -12px; 
+    border-radius: 4px 0 0 4px; 
 }
 
 .extremo-blanco.derecho {
-    right: -2px;
-    border-radius: 8px 0 0 8px;
+    right: -12px; 
+    border-radius: 0 4px 4px 0; 
 }
 
 .extremo-blanco:hover {
@@ -543,7 +542,7 @@
  
 @media (max-width: 600px) {
 .rectangulo-caja{height:40px}
-.extremo-blanco{height:50px}
+.extremo-blanco{height:40px}
 }
  
 
@@ -576,7 +575,7 @@
  
    
 
-.tabs-container{display:flex;background-color:#141414;border:none;align-items:stretch}.tabs-add-button{flex:0 0 40px;background-color:rgb(25, 25, 25);text-shadow: 0 1px 2px rgba(0,0,0);color:#fff;border:none;font-size:20px;cursor:pointer;border-right:1px solid #333;display:flex;align-items:center;justify-content:center;height:40px}.tabs-add-button:hover{background-color:#444}.tabs-scroll-container{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;white-space:nowrap}.tabs-scroll-container::-webkit-scrollbar{height:6px}.tabs-scroll-container::-webkit-scrollbar-thumb{background-color:#666;border-radius:3px}.tab{padding:10px 15px;background-color:rgb(25, 25, 25);color:#fff;cursor:pointer;border:none;border-right:1px solid #333;font-size:14px;white-space:nowrap;flex-shrink:0;transition:background-color .2s;width:auto}.tab:hover{background-color:#444}.tab.active{background-color:#7c55e6;text-shadow: 0 1px 2px rgba(0,0,0);}.tab-content{flex:1;padding:0px;display:none;align-items:center;justify-content:center;font-size:18px;color:#666}.tab-content.active{display:flex}
+.tabs-container{display:flex;background-color:#141414;border:none;align-items:stretch}.tabs-add-button{flex:0 0 40px;background-color:rgb(25, 25, 25);text-shadow: 0 1px 2px rgba(0,0,0);color:#fff;border:none;font-size:25px;cursor:pointer;border-right:1px solid #333;display:flex;align-items:center;justify-content:center;height:40px}.tabs-add-button:hover{background-color:#444}.tabs-scroll-container{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;white-space:nowrap}.tabs-scroll-container::-webkit-scrollbar{height:6px}.tabs-scroll-container::-webkit-scrollbar-thumb{background-color:#666;border-radius:3px}.tab{padding:10px 15px;background-color:rgb(25, 25, 25);color:#fff;cursor:pointer;border:none;border-right:1px solid #333;font-size:14px;white-space:nowrap;flex-shrink:0;transition:background-color .2s;width:auto}.tab:hover{background-color:#444}.tab.active{background-color:#7c55e6;text-shadow: 0 1px 2px rgba(0,0,0);}.tab-content{flex:1;padding:0px;display:none;align-items:center;justify-content:center;font-size:18px;color:#666}.tab-content.active{display:flex}
 
 #new_project{font-size:12px;padding:0 15px;background-color:rgb(25,25,25);border:none;border-right:1px solid rgb(65,65,65);color:rgb(255,255,255);cursor:pointer;}
 #new_project:hover{background-color:#444}
@@ -797,22 +796,13 @@
     min-height: 0;
     margin: 0;
     line-height: normal;
-    font-size: 1.2rem;/*17px*/
-    /*font-weight: bold;*/
-    /*background-color: rgb(124, 85, 230,1); */
-    /*color: #fff;*/
+    font-size: 1.2rem; 
     background-color: rgb(196, 205, 208);
     color: rgb(0,0,0);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    /*box-shadow: none;*/
-    /*text-shadow: 0 1px 2px rgba(0,0,0);*/
-    /*box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.4),
-    0 0 6px 2px rgba(255, 255, 255, 0.2); */
   
     position: relative;
     overflow: hidden;
@@ -1171,7 +1161,6 @@ text-shadow: 1px 2px 4px rgba(0,0,0);
 
  
  
- 
 
   
 @media (max-width: 1000px) {
@@ -1314,16 +1303,20 @@ text-shadow: 1px 2px 4px rgba(0,0,0);
         left: 0;
         width: 100%;
         z-index: 100;
+        gap:0;
+        aspect-ratio: auto;  
+         
     }
 
-.buttons-block {
-gap:0;
-}
+ 
 .buttons-block button { 
-    font-size:14px;   
+    font-size:12px;   
     border: 1px solid rgba(255, 255, 255, 0.4);
     background-color:rgb(25,25,25); 
-    color: rgb(255,255,255);
+    color: rgb(255,255,255); 
+    height: auto; 
+    padding: 2px 8px;
+    min-height: 30px;
 }
 .buttons-block button::before {
     font-weight: bold;
@@ -1360,6 +1353,7 @@ gap:0;
   } 
 
      
+   
 
 
 }
@@ -1392,9 +1386,13 @@ display:none;
 }
 
  
+#add-file-btn{
+    font-size:40px;
+}
 
-
-
+#cancel_task{display:flex;align-items:center;gap:10px}
+#cancel_task button{display:flex;color:#fff;font-size:16px;background-color:#004ad3;align-items:center;justify-content:center;border:none;margin:0;border-radius:4px;padding:8px 10px;cursor:pointer}
+#cancel_task p{display:flex;color:rgb(255,255,255);font-size:16px;margin:2px;padding:0}
 
 </style> 
 
@@ -1424,7 +1422,7 @@ display:none;
                 <div class="buttons-block">
                     <button id="upload-btn" translate="no">Upload</button>
                     <button id="plus-btn" translate="no">Shortcuts</button> 
-                    <button id="finish-btn" translate="no">Render</button>
+                    <button id="finish-btn" translate="no">Apply changes</button>
                 </div>
             </div>
         </div>
@@ -1640,7 +1638,7 @@ display:none;
     <div class="tabs-menu-container-settings">
       <button class="tab-button-active-settings" data-tab="general-tab-content-settings" translate="no">AI Shortcuts</button>
       <button class="tab-button-inactive-settings" data-tab="advanced-tab-content-settings" translate="no">Comments</button>
-      <button class="tab-button-inactive-settings" data-tab="team-tab-content-settings" translate="no">Team</button>
+      <button class="tab-button-inactive-settings" data-tab="team-tab-content-settings" translate="no">Teams</button>
     </div>
     <div id="different_tabs"></div>  
   </div> 
@@ -1656,7 +1654,7 @@ display:none;
  
     <div class="file-name-overlay" id="file-name-overlay"></div>
     <div class="file-name-form" id="file-name-form">
-        <p style="font-size:18px;font-weight:bold;margin:10px 5px 10px 5px;">Create item<p>
+        <p style="font-size:18px;font-weight:bold;margin:10px 5px 10px 5px;">New item<p>
         <div class="error-message" id="error-message"></div>
 
 	<input type="text" id="custom-name-input" placeholder="Item name..." maxlength="15">
@@ -2559,15 +2557,14 @@ let anchoInicial = 0;
 let posicionInicialRectRedim = 0;
 let rectanguloSeleccionado = null;
 
- 
+/* 
+// 0.005s = 5ms 
 const principal_video = document.getElementById('my-video-2');
- 
-
+  
 const pxPorIntervalo = 2;
-const intervalo = 0.01; // 0.005s = 5ms
-let animationId;
-
-
+const intervalo = 0.01;  
+let animationId; 
+ 
 function actualizarScroll() {
     const currentTime = principal_video.currentTime;
     const pasos = Math.floor(currentTime / intervalo);
@@ -2600,6 +2597,246 @@ principal_video.addEventListener("seeking", actualizarScroll);
 
 // 🎯 Cuando termina de mover el cursor
 principal_video.addEventListener("seeked", actualizarScroll);
+*/
+
+ 
+/*
+const principal_video = document.getElementById('my-video-2');
+const pxPorIntervalo = 2;
+const intervalo = 0.01;  
+let animationId;
+let videoControlaScroll = false; // Bandera invertida
+
+// Función para actualizar el scroll según el video
+function actualizarScroll() {
+    const currentTime = principal_video.currentTime;
+    const pasos = Math.floor(currentTime / intervalo);
+    
+    videoControlaScroll = true; // El video va a mover el scroll
+    scrollWrapper.scrollLeft = pasos * pxPorIntervalo;
+    
+    // Resetear después de un momento
+    setTimeout(() => {
+        videoControlaScroll = false;
+    }, 50);
+}
+
+// Animación continua del scroll mientras el video reproduce
+function animarScroll() {
+    const currentTime = principal_video.currentTime;
+    const pasos = Math.floor(currentTime / intervalo);
+    
+    videoControlaScroll = true;
+    scrollWrapper.scrollLeft = pasos * pxPorIntervalo;
+    
+    animationId = requestAnimationFrame(animarScroll);
+}
+
+// Actualizar el video según el scroll
+function actualizarVideoPorScroll() {
+    const scrollPos = scrollWrapper.scrollLeft;
+    const pasos = Math.floor(scrollPos / pxPorIntervalo);
+    const nuevoTiempo = pasos * intervalo;
+    
+    if (nuevoTiempo <= principal_video.duration) {
+        principal_video.currentTime = nuevoTiempo;
+    }
+}
+
+// Detectar cuando el usuario mueve el scroll
+scrollWrapper.addEventListener('scroll', () => {
+    // Si el video está controlando el scroll, ignorar
+    if (videoControlaScroll) {
+        return;
+    }
+    
+    // El usuario movió el scroll
+    // Pausar el video si está reproduciéndose
+    if (!principal_video.paused) {
+        principal_video.pause();
+    }
+    
+    // Actualizar posición del video
+    actualizarVideoPorScroll();
+});
+
+// Cuando el video empieza a reproducirse
+principal_video.addEventListener("play", () => {
+    videoControlaScroll = false;
+    cancelAnimationFrame(animationId);
+    animationId = requestAnimationFrame(animarScroll);
+});
+
+// Cuando el video se pausa
+principal_video.addEventListener("pause", () => {
+    cancelAnimationFrame(animationId);
+    videoControlaScroll = false;
+});
+
+// Cuando el video termina
+principal_video.addEventListener("ended", () => {
+    cancelAnimationFrame(animationId);
+    videoControlaScroll = false;
+});
+
+// Cuando el usuario mueve el cursor del video estando pausado
+principal_video.addEventListener("seeking", actualizarScroll);
+
+// Cuando termina de mover el cursor del video
+principal_video.addEventListener("seeked", actualizarScroll);
+*/
+ 
+
+ 
+const principal_video = document.getElementById('my-video-2');
+const pxPorIntervalo = 2;
+const intervalo = 0.01;
+
+let animationId;
+
+let videoControlaScroll = false;   // El video mueve el scroll
+let usuarioControlaScroll = false; // El usuario mueve el scroll
+let scrollTimeout;
+
+// --- VIDEO -> SCROLL ---
+function actualizarScroll() {
+    if (usuarioControlaScroll) return; // <- no tocar scroll si el usuario está actuando
+
+    const pasos = Math.floor(principal_video.currentTime / intervalo);
+    videoControlaScroll = true;
+    scrollWrapper.scrollLeft = pasos * pxPorIntervalo;
+}
+
+ 
+function animarScroll() {
+    if (usuarioControlaScroll) return;
+
+    const pasos = Math.floor(principal_video.currentTime / intervalo);
+    videoControlaScroll = true;
+    scrollWrapper.scrollLeft = pasos * pxPorIntervalo;
+
+    animationId = requestAnimationFrame(animarScroll);
+}
+ 
+
+// --- SCROLL -> VIDEO ---
+function actualizarVideoPorScroll() {
+    const pasos = Math.floor(scrollWrapper.scrollLeft / pxPorIntervalo);
+    const nuevoTiempo = pasos * intervalo;
+
+    if (nuevoTiempo <= principal_video.duration) {
+        principal_video.currentTime = nuevoTiempo;
+    }
+}
+
+// --- EVENTOS ---
+
+// Usuario mueve el scroll
+scrollWrapper.addEventListener('scroll', () => {
+
+    // Si el scroll fue causado por el video → ignorar
+    if (videoControlaScroll) {
+        videoControlaScroll = false; // limpiar la bandera
+        return;
+    }
+
+    // Desde aquí sí es scroll del usuario
+    usuarioControlaScroll = true;
+
+    // Pausar solo si el usuario interviene
+    if (!principal_video.paused) {
+        principal_video.pause();
+    }
+
+    actualizarVideoPorScroll();
+
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+        usuarioControlaScroll = false;
+    }, 120);
+});
+
+
+// Play del video → el video controla el scroll
+principal_video.addEventListener("play", () => {
+    usuarioControlaScroll = false;
+    cancelAnimationFrame(animationId);
+    animationId = requestAnimationFrame(animarScroll);
+});
+
+principal_video.addEventListener("pause", () => {
+    cancelAnimationFrame(animationId);
+    videoControlaScroll = false;
+});
+
+principal_video.addEventListener("ended", () => {
+    cancelAnimationFrame(animationId);
+    videoControlaScroll = false;
+});
+
+// seeking / seeked solo sincroniza si NO es el usuario
+principal_video.addEventListener("seeking", actualizarScroll);
+principal_video.addEventListener("seeked", actualizarScroll);
+ 
+
+const desplazamiento_pausa = 30;
+// --- DETECTOR DE TOUCH/TRACKPAD EN CONTENEDOR --- 
+let touchStartX = 0;
+let touchStartY = 0;
+let mouseStartX = 0;
+
+// Para touch (móvil/tablet)
+contenedor.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+contenedor.addEventListener('touchmove', (e) => {
+    const touchCurrentX = e.touches[0].clientX;
+    const touchCurrentY = e.touches[0].clientY;
+    const deltaX = Math.abs(touchCurrentX - touchStartX);
+    const deltaY = Math.abs(touchCurrentY - touchStartY);
+     
+    if (deltaX > desplazamiento_pausa && deltaX > deltaY && !principal_video.paused) {
+        usuarioControlaScroll = true;
+        principal_video.pause();
+    }
+}, { passive: true });
+
+// Para trackpad/mouse (escritorio)
+contenedor.addEventListener('mousedown', (e) => {
+    mouseStartX = e.clientX;
+});
+
+contenedor.addEventListener('mousemove', (e) => {
+    // Solo si el botón está presionado (drag)
+    if (e.buttons === 1) {
+        const deltaX = Math.abs(e.clientX - mouseStartX);
+        
+        if (deltaX > desplazamiento_pausa && !principal_video.paused) {
+            usuarioControlaScroll = true;
+            principal_video.pause();
+        }
+    }
+});
+
+// Para wheel (rueda del mouse/trackpad)
+contenedor.addEventListener('wheel', (e) => {
+    // Detectar scroll horizontal
+    if (Math.abs(e.deltaX) > desplazamiento_pausa && !principal_video.paused) {
+        usuarioControlaScroll = true;
+        principal_video.pause();
+    }
+}, { passive: true });
+ 
+
+
+
+
+
+
+
+
 
 
 
@@ -2764,13 +3001,15 @@ function crearRegla() {
             height: ALTURA_REGLA / 4
         });
     }
-
+/*
+    //linea horizontal que aparecia en el medio de la regla
     const linea = document.createElement('div');
     linea.classList.add('linea');
     linea.style.top = `${yRegla}px`;
     linea.style.left = '0';
     linea.style.width = `${ANCHO_VENTANA_VIRTUAL}px`;
     contenedor.appendChild(linea);
+*/
 
 
 
@@ -2787,13 +3026,15 @@ fondoRegla.style.borderTop = "2px solid rgb(27, 27, 27)";
 fondoRegla.style.boxShadow = "inset 0 0 0 3px rgb(35, 45, 50)";
 fondoRegla.style.zIndex = '-1';
 contenedor.appendChild(fondoRegla);
-
+/*
+//linea horizontal que aparecia en el medio de la regla
 lineaRegla = document.createElement('div');
 lineaRegla.classList.add('linea');
 lineaRegla.style.top = `${yRegla}px`;
 lineaRegla.style.left = '0';
 lineaRegla.style.width = `${ANCHO_VENTANA_VIRTUAL}px`;
 contenedor.appendChild(lineaRegla);
+*/
  
 /*comentar*/
 
@@ -2881,10 +3122,17 @@ function resetOverlay() {
 
 function seleccionarRectangulo(rect) {
 
+     
 
-  
+    if (selected_rect){
+    	apply_rounded_corners(selected_rect); 
+    }
 
     selected_rect = rect; 
+    if (selected_rect){
+    	remove_rounded_corners(selected_rect);
+    }
+    show_rect_extrems(rect);
 
     // Deseleccionar el anterior  
     if (rectanguloSeleccionado && rectanguloSeleccionado !== rect) { 
@@ -2969,15 +3217,17 @@ moverOverlay(0, 20);
 
 
 function deseleccionarRectangulo() {
- 
+    if (selected_rect){
+    	apply_rounded_corners(selected_rect); 
+    }
 
-    if (rectanguloSeleccionado) { 
+    if (rectanguloSeleccionado) {   
 	rectanguloSeleccionado.style.background = '#7c55e6';//rgb(0,166,104) 
 	rectanguloSeleccionado.style.boxShadow = `
     		0 4px 12px rgba(124, 85, 230, 0.4),
         	inset 0 1px 0 rgba(255, 255, 255, 0.4),
         	inset 0 -2px 0 rgba(0, 0, 0, 0.15)
-	`; 
+	`;  
         rectanguloSeleccionado = null;
     } 
 
@@ -3002,6 +3252,117 @@ if (window.innerWidth > 1000) {
 }
  
 
+function show_rect_extrems_0(rect) {
+    // Primero ocultar todos los extremos de todos los rectángulos
+    rectangulos.forEach(r => {
+        const extremos = r.elemento.querySelectorAll('.extremo-blanco');
+        extremos.forEach(extremo => {
+            extremo.style.display = 'none';
+        });
+    });
+    
+    // Mostrar solo los extremos del rectángulo seleccionado
+    const extremos = rect.querySelectorAll('.extremo-blanco');
+    extremos.forEach(extremo => {
+        extremo.style.display = 'block'; // o 'flex' dependiendo de tu CSS
+    });
+    remove_rounded_corners(selected_rect);
+}
+
+function show_rect_extrems_1(rect) {
+    // Primero ocultar todos los extremos de todos los rectángulos
+    rectangulos.forEach(r => {
+        const extremos = r.elemento.querySelectorAll('.extremo-blanco');
+        extremos.forEach(extremo => {
+            extremo.style.display = 'none';
+        });
+    });
+    
+    // Mostrar solo los extremos del rectángulo seleccionado
+    const extremos = rect.querySelectorAll('.extremo-blanco');
+    extremos.forEach(extremo => {
+        extremo.style.display = 'block'; // o 'flex' dependiendo de tu CSS
+        extremo.style.zIndex = '2'; // ← Añadir aquí
+    }); 
+    remove_rounded_corners(selected_rect);
+}
+
+function show_rect_extrems(rect) {
+    if (!rect) { 
+        return;
+    }
+    // Primero ocultar todos los extremos y resetear z-index de todos
+    rectangulos.forEach(r => {
+        r.elemento.style.zIndex = '1'; // z-index base
+        const extremos = r.elemento.querySelectorAll('.extremo-blanco');
+        extremos.forEach(extremo => {
+            extremo.style.display = 'none';
+        });
+    });
+    
+    // Elevar el rectángulo seleccionado
+    rect.style.zIndex = '10'; // z-index alto para el seleccionado
+    
+    // Mostrar solo los extremos del rectángulo seleccionado
+    const extremos = rect.querySelectorAll('.extremo-blanco');
+    if (extremos){
+    	extremos.forEach(extremo => {
+        	extremo.style.display = 'block';
+        	extremo.style.zIndex = '2';
+    	}); 
+    } 
+}
+
+function hide_rect_extrems(rect) { 
+    if (!rect) { 
+        return;
+    }
+    const extremos = rect.querySelectorAll('.extremo-blanco');
+    if (extremos){
+    	extremos.forEach(extremo => {
+		extremo.style.zIndex = '0';
+        	extremo.style.display = 'none';
+    	}); 
+    } 
+}
+
+function apply_rounded_corners(rect) {
+    rect.style.borderRadius = '8px';
+}
+
+function remove_rounded_corners(rect) {
+    rect.style.borderRadius = '0';
+}
+
+function ocultarBotonMas() {
+    const boton = document.querySelector('.boton-mas');
+    if (boton) {
+        boton.style.display = 'none';
+    }
+} 
+function mostrarBotonMas() {
+    const boton = document.querySelector('.boton-mas');
+    if (boton) {
+        boton.style.display = 'block';
+    }
+}
+
+function opacidad_desplazamiento(rect) {
+    apply_rounded_corners(rect);
+    hide_rect_extrems(rect);
+    ocultarBotonMas();	
+    rect.style.opacity = '0.5';
+}
+
+function opacidad_reposo(rect) {
+    remove_rounded_corners(rect);
+    show_rect_extrems(rect);
+    mostrarBotonMas();
+    rect.style.opacity = '1';
+}
+
+
+
 const LONG_PRESS_TIME = 600;  
 let touchTimer = null;
 let touchStarted = 0;
@@ -3019,19 +3380,31 @@ function crearRectangulo(datos, indice) {
 
     const rect = document.createElement('div');
     rect.classList.add('rectangulo-caja');
-    rect.dataset.indice = indice;
+    rect.dataset.indice = indice; 
     rect.style.left = `${posicion - offsetVirtual}px`;
     rect.style.top = `${yRegla}px`;
-    rect.style.width = `${ancho}px`;
+    rect.style.width = `${ancho}px`; 
+/* 
+    rect.style.borderLeft = '1px solid rgb(196, 205, 208,0.6)';
+    rect.style.borderRight = '1px solid rgb(196, 205, 208,0.6)';
+    rect.style.borderTop = '1px solid rgb(196, 205, 208,0.9)';
+    rect.style.borderBottom = '1px solid rgb(196, 205, 208,0.9)'; 
+*/  
+    rect.style.borderLeft = '1px solid rgb(35, 45, 50)';
+    rect.style.borderRight = '1px solid rgb(35, 45, 50)';
+ 
+    //rect.style.border = '1px solid rgb(196, 205, 208)';
     rect.dataset.xReal = posicion;
     rect.dataset.widthReal = ancho; 
 
     const extremoIzq = document.createElement('div');
     extremoIzq.classList.add('extremo-blanco', 'izquierdo');
+    extremoIzq.style.display = 'none';
     rect.appendChild(extremoIzq);
 
     const extremoDer = document.createElement('div');
     extremoDer.classList.add('extremo-blanco', 'derecho');
+    extremoDer.style.display = 'none';
     rect.appendChild(extremoDer);
 
     contenedor.appendChild(rect);
@@ -3046,20 +3419,14 @@ function crearRectangulo(datos, indice) {
     });
 
  
-/*
-    rect.addEventListener('mousedown', (e) => {
-    	if (!e.target.classList.contains('extremo-blanco')) {
-        	seleccionarRectangulo(rect); 
-    	} 
-    	iniciarArrastre(e); 
-    });
-*/
+ 
 
 rect.addEventListener('mousedown', (e) => { 
 e.preventDefault()
 
 if (!e.target.classList.contains('extremo-blanco')) {
         	seleccionarRectangulo(rect); 
+		show_rect_extrems(rect);
     	} 
     let arrastrando = false;
 
@@ -3076,7 +3443,7 @@ if (!e.target.classList.contains('extremo-blanco')) {
 
     function onMouseUp() {
         arrastrando = false;
-        finalizarArrastre();
+        finalizarArrastre(); 
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
     }
@@ -3095,6 +3462,7 @@ rect.addEventListener('touchstart', (e) => {
 
     if (!e.target.classList.contains('extremo-blanco')) {
         seleccionarRectangulo(rect); 
+	show_rect_extrems(rect);
     } 
 
     let arrastrando = false;
@@ -3112,7 +3480,7 @@ rect.addEventListener('touchstart', (e) => {
 
     function onUp() {
         arrastrando = false;
-        finalizarArrastreTouch();
+        finalizarArrastreTouch(); 
         window.removeEventListener('mousemove', onMove);
         window.removeEventListener('mouseup', onUp);
         window.removeEventListener('touchmove', onMove);
@@ -3269,7 +3637,7 @@ function crearBotonMas() {
     const boton = document.createElement('button');
     boton.classList.add('boton-mas');
     boton.textContent = '+';
-    boton.style.left = `${posicionBoton - offsetVirtual}px`;
+    boton.style.left = `${6+posicionBoton - offsetVirtual}px`;//6 es la mitad del ancho del extremo
     boton.style.top = `${yRegla}px`;
     boton.dataset.xReal = posicionBoton;
 
@@ -3344,6 +3712,8 @@ boton.addEventListener('click', (e) => {
 
 function iniciarArrastreTouch(e, rect) {
     if (e.target.classList.contains('extremo-blanco')) return;
+
+    opacidad_desplazamiento(rect);
 
     arrastreActivo = true;
     rectanguloArrastrado = rect;
@@ -3500,6 +3870,8 @@ let offsetRectanguloEnViewport = 0;
  
 function iniciarArrastre(e, rect) {
   if (e.target.classList.contains('extremo-blanco')) return;
+
+  opacidad_desplazamiento(rect);
 
   arrastreActivo = true;
   rectanguloArrastrado = rect;
@@ -3854,6 +4226,7 @@ function finalizarArrastre() {
     document.removeEventListener('mousemove', moverRectangulo);
     document.removeEventListener('mouseup', finalizarArrastre);
     saveState();
+    opacidad_reposo(selected_rect);
 }
 
 //9
@@ -3925,6 +4298,7 @@ function finalizarArrastreTouch() {
     document.removeEventListener('touchend', finalizarArrastreTouch);
     //document.removeEventListener('touchcancel', finalizarArrastreTouch);
     saveState();
+    opacidad_reposo(selected_rect);
 }
 
 
@@ -5621,7 +5995,7 @@ function actualizarPosicionesVisuales() {
     		const indiceSeleccionado = parseInt(rectanguloSeleccionado.dataset.indice);
     		const rectSeleccionado = rectangulos[indiceSeleccionado];
     		const posicionBoton = parseFloat(rectSeleccionado.posicion) + parseFloat(rectSeleccionado.ancho);
-    		boton.style.left = `${posicionBoton - offsetVirtual}px`;
+    		boton.style.left = `${6+posicionBoton - offsetVirtual}px`;//6 es la mitad del ancho del extremo
     		boton.dataset.xReal = posicionBoton;
 	}
 
@@ -5857,6 +6231,7 @@ const time = formatearTiempoDecimal(parseFloat(cmExacto));
 		resetOverlay();	
 		//show_vertical_line();
 	        deseleccionarRectangulo();
+		hide_rect_extrems(selected_rect);
         }
 	//modal_overlay_dinamico
 
@@ -6373,7 +6748,12 @@ document.addEventListener("change", function(e) {
             rectangulos[indice].end_value = valor;
             actualizarEstadoGlobal();
         console.log("Key seleccionado:", e.target.value);
-	filenames_llenos=filenames_llenos+1;
+        if (valor in visible_names) {
+		console.log("VISIBLE NAMES: ",valor);
+  		filenames_llenos=filenames_llenos+1;
+	}
+	//filenames_llenos=filenames_llenos+1;
+
 	//agregarBotonInterval();
 	if (valor!=""){
 		const div_interval = document.getElementById("btn_select_interval");
@@ -6590,8 +6970,10 @@ function reset_variables(){
     textnames_llenos = 0;
     current_item = "scene";
     current_property_id = "";
+    customNames = ["scene"]; 
+     
+/*
     uploadedFiles = {};
-    customNames = ["scene"];
     file_types = {
             "image": [],
             "video": [],
@@ -6604,7 +6986,10 @@ function reset_variables(){
             "video": [],
             "audio": []
         };
+*/
 }
+
+
 function request_new_project(){
 
     reset_variables(); 
@@ -6726,7 +7111,10 @@ document.addEventListener("click", function (e) {
 		value = limpiarEspacios(value);
 		if (id=="input_dynamic_box_0"){
 		    if (value!=""){
-			textnames_llenos = textnames_llenos + 1;
+			console.log("TEXNAME: ",value);
+                        if (current_filetype=="text"){
+				textnames_llenos = textnames_llenos + 1;
+			}  
 		    } 	
 		}
     		console.log("save: ",id, value); 
@@ -7314,7 +7702,7 @@ console.log("chunk: ", globalBuffer.length," ",Math.abs(firstInt));
       if (frameIndex == 0) {
 	console.log("frameIndex: ", frameIndex);
         close_loading();
-        if (duracion_video >= 15) {
+        if (duracion_video >= 0) {
           //createCancelButton();
         }
       }
