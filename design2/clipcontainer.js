@@ -59,7 +59,7 @@ function diffTime(t1, t2) {
 
 function createVideoClipperMainContainer(videoSrc) {
   const htmlString = `
-    <div id="videoClipperMainContainer" style="max-width:480px; width:100%; border:1px solid #ccc; padding:10px; display:flex; flex-direction:column; gap:10px; font-family:sans-serif;">
+    <div id="videoClipperMainContainer" style="max-width:600px; width:100%; border:none; padding:0; display:flex; flex-direction:column; gap:10px; font-family:sans-serif;">
       <canvas id="videoClipperCanvas" style="width:100%; aspect-ratio:16/9; border:1px solid #999; background:black;"></canvas>
 
       <div id="videoClipperTimelineContainer" style="position:relative; width:100%; height:20px; background:#ccc; border-radius:10px; cursor:pointer;">
@@ -443,8 +443,12 @@ console.log("durationnnn: ",duration);
 
 	const indice = parseInt(selected_rect.dataset.indice); 
  
-	const end_ajustado = sumarTiempo(unica_regla.rectangulos[indice].start,duration,current_speed);  
-console.log("BBBBBBB timestamp_video_audio: ",timestamp_video_audio);
+	let end_ajustado = sumarTiempo(unica_regla.rectangulos[indice].start,duration,current_speed);  
+console.log("BBBBBBB timestamp_video_audio: ",timestamp_video_audio,", end_ajustado: ",end_ajustado);
+	
+	if (end_ajustado == "00:00:00.1" || end_ajustado == "00:00:00"){
+		end_ajustado = "00:00:00.2";
+	}
 
 	unica_regla.rectangulos[indice].end = end_ajustado;
 	rectangulos[indice].end = end_ajustado;
@@ -597,3 +601,4 @@ function update_rectangles() {
   }   
 }
 
+ 
