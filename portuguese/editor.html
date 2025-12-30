@@ -2255,8 +2255,8 @@ fileInput.addEventListener('change', (e) => {
       fileItem.appendChild(audio);
       fileType = 'audio';
       console.log('Audio agregado a la galería');
-		const url_audio = URL.createObjectURL(file);
-	    filename_url[file.name] = url_audio;
+	const url_audio = URL.createObjectURL(file);
+	filename_url[file.name] = url_audio;
     }
 
     const fileName = document.createElement('div');
@@ -3093,7 +3093,7 @@ function sincronizar_rectangulos_contiguos(indice) {
   	    if (izq && izq.end === principal.start) {
     		izq.end_value = principal.start_value;
     		rectangulos[indice-1].end_value = principal.start_value;
-		console.log("IZQUIERDA ✅ ");
+		console.log("IZQUIERDA ✅ NOOOOOOOOOOOOOOOO");
   	    }
 
             // 🔹 Derecha
@@ -3292,6 +3292,12 @@ function show_rect_extrems_1(rect) {
 function show_rect_extrems(rect) {
     if (!rect) { 
         return;
+    }
+    if (current_filetype=="video" || current_filetype=="audio"){
+        console.log("MAL REDIM: ",current_property_id);
+        if (current_property_id=="filename"){
+ 	    return; 
+        }
     }
     // Primero ocultar todos los extremos y resetear z-index de todos
     rectangulos.forEach(r => {
@@ -4229,9 +4235,10 @@ function finalizarArrastre() {
     document.removeEventListener('mouseup', finalizarArrastre);
     saveState();
     opacidad_reposo(selected_rect);
+    ajustarRectangulosMove();
 }
 
-//9
+ 
  
  
  
@@ -6036,7 +6043,7 @@ if (indice==3){
 	activarBoton(current_property_id);
 } 
 */
-    ajustarIntervalosBounce();
+    //ajustarIntervalosBounce();//reemplazado por ajustarRectangulosMove()
  
  
     websocketClient.send(JSON.stringify(json_data)); 
@@ -6422,7 +6429,7 @@ let current_params = "time="+current_scroll_x;//time=true
  
 //unica_regla.selectedTab
 const json_data_0 =  {"service":"save_item_data","itemName":current_item,"property":unica_regla.selectedProperty,"params":current_params, "rectangulos":unica_regla.rectangulos,"extra":"time"}; 
-    //ajustarIntervalosBounce(); 
+    //ajustarIntervalosBounce();//mantener comentado
     websocketClient.send(JSON.stringify(json_data_0)); 
  
 
@@ -7204,6 +7211,7 @@ document.addEventListener("click", (e) => {
     	current_filename = valor_seleccionado;
         
         const url_object = filename_url[valor_seleccionado];
+	console.log("error audio:",valor_seleccionado,", url: ",url_object);
     	abrirModalConClipper(url_object);
     }
 });
@@ -7519,8 +7527,7 @@ console.log("✔✔✔✔✔",rectangulos[0]);
 	if (property_id=="timestamp_of_video_item"){
 	    property_id = "filename";
 	}
-	const current_rectangles = data["rectangulos"]; 
-console.log("2: ",current_rectangles," service: ",service);
+	const current_rectangles = data["rectangulos"];  
 	const property_name = reemplazarGuionesPorEspacios(property_id);
 	 
 	const lista_propiedades = data["properties"];
@@ -7847,6 +7854,3 @@ window.addEventListener('resize', ajustarGeneralMain);
 
 </body>
 </html>  
-
-
-
