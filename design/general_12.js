@@ -1640,7 +1640,29 @@ function isNotUser() {
   let current_chunk_size = 0;
   let videoChunks = [];
   
-  function connect(type_connection) {
+
+
+let reconnectTimeout = null;
+let isReconnecting = false;
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 120;
+ 
+
+function connect(type_connection) {
+
+    if (websocketClient) {
+      websocketClient.close();
+      websocketClient = null;
+    }
+
+    if (reconnectTimeout) {
+      clearTimeout(reconnectTimeout);
+      reconnectTimeout = null;
+    }
+
+    isReconnecting = false; 
+
+
     const user_id = localStorage.getItem("useridManycaptions");
   
     websocketClient = new WebSocket("wss://" + url_websocket + "/" + user_id);
@@ -1649,6 +1671,10 @@ function isNotUser() {
     console.log("connecting...");
   
     websocketClient.addEventListener("open", () => {
+
+      reconnectAttempts = 0; 
+      isReconnecting = false;
+
       console.log("Client connected");
       const send_type_connection =
         "type_connection==" +
@@ -1892,6 +1918,21 @@ function isNotUser() {
     });
   
     websocketClient.addEventListener("close", (event) => {
+
+      if (isReconnecting) return;
+      isReconnecting = true;
+ 
+      if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+        console.warn("Límite de reconexiones alcanzado");
+        return;
+      }
+
+      reconnectAttempts++; 
+      console.log(`Reintentando conexión (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}) en 5s...`);
+
+
+
+
       frameIndex = 0;
       globalBuffer = new Uint8Array(0);
       ocultarBarras();
@@ -1938,9 +1979,30 @@ function isNotUser() {
     });
   
     websocketClient.addEventListener("error", (error) => {
-      console.error("Error connection:", error);
+      console.warn("Error connection:", error);
+      scheduleReconnect();
     });
   }
+
+
+function scheduleReconnect() {
+ 
+  if (isReconnecting) return;
+  isReconnecting = true;
+ 
+  if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
+    console.warn("Límite de reconexiones alcanzado");
+    return;
+  }
+
+  reconnectAttempts++;   
+  console.log(`Reintentando conexión (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}) en 5s...`);
+
+  reconnectTimeout = setTimeout(() => {
+    connect("reconnecting");
+  }, 5000);
+}
+ 
   
   let modal = document.getElementById("myModal");
   
@@ -2625,4 +2687,4 @@ function isNotUser() {
 
 
 
-
+ 
