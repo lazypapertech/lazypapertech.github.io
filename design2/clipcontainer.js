@@ -1,10 +1,10 @@
 
  
-let timestamp_and_duration="00:00:00,0.4";
+let timestamp_and_duration="00:00:00,0.2";//poner 00:00:00,0.4
 let current_speed = 1;
 let current_volume = 100;
 let initialtimepoint1 = "00:00:00";
-let initialtimepoint2 = "00:00:00.4"; 
+let initialtimepoint2 = "00:00:00.2";//poner 00:00:00.4 
 
 function inicializar_rango(){
   if (selected_rect){
@@ -30,7 +30,7 @@ function inicializar_rango(){
 	}
     }else{ 
 	initialtimepoint1 = "00:00:00.0";
-	initialtimepoint2 = "00:00:00.4"; 
+	initialtimepoint2 = "00:00:00.2";//poner 00:00:00.4  
 	current_volume = 100;
 	const videoClipperVolumeSlider = document.getElementById('videoClipperVolumeSlider'); 
  	if (videoClipperVolumeSlider){
@@ -59,8 +59,10 @@ function diffTime(t1, t2) {
 
 function createVideoClipperMainContainer(videoSrc) {
   const htmlString = `
-    <div id="videoClipperMainContainer" style="max-width:600px; width:100%; border:none; padding:0; display:flex; flex-direction:column; gap:10px; font-family:sans-serif;">
+    <div id="videoClipperMainContainer" style="max-width:550px; width:100%; border:none; padding:0; display:flex; flex-direction:column; gap:10px; font-family:sans-serif;">
       <canvas id="videoClipperCanvas" style="width:100%; aspect-ratio:16/9; border:1px solid #999; background:black;"></canvas>
+	
+	<p>Slide the circles to select a segment</p>
 
       <div id="videoClipperTimelineContainer" style="position:relative; width:100%; height:20px; background:#ccc; border-radius:10px; cursor:pointer;">
         <div id="videoClipperPurpleRange" style="position:absolute; height:100%; background:#7c55e6; top:0;"></div>
@@ -70,10 +72,11 @@ function createVideoClipperMainContainer(videoSrc) {
       
       <div id="videoClipperControlsWrapper" style="display:flex; flex-direction:column; gap:5px; width:100%;">
         <div id="videoClipperPlayPauseInterval" style="display:flex; align-items:center; gap:5px;">
-          <button id="videoClipperPlayButton" style="font-size:14px; padding:3px 6px; border-radius:4px; cursor:pointer; user-select:none; background-color:#7c55e6; color:white; border:1px solid #7c55e6;">▶</button>
-          <button id="videoClipperPauseButton" style="display:none;font-size:14px; padding:3px 6px; border-radius:4px; cursor:pointer; user-select:none; background-color:#7c55e6; color:white; border:1px solid #7c55e6;">❚❚</button>
+          <button id="videoClipperPlayButton" style="font-size:20px; padding:3px 6px; border-radius:4px; cursor:pointer; user-select:none; background-color:#7c55e6; color:white; border:1px solid #7c55e6;">▶︎</button>
+          <button id="videoClipperPauseButton" style="display:none;font-size:20px; padding:3px 6px; border-radius:4px; cursor:pointer; user-select:none; background-color:#7c55e6; color:white; border:1px solid #7c55e6;">❚❚</button>
           <div id="videoClipperIntervalDisplay" style="margin:0 5px; font-size:14px; font-weight:bold; font-family:Arial,sans-serif;"></div>
         </div>
+ 
 
         <div id="videoClipperSpeedControlBar" style="display:flex; flex-wrap:wrap; gap:5px;">
 <!--
@@ -493,11 +496,11 @@ timestamp_and_duration=null;
 let cleanupClipper = null;
 
 function abrirModalConClipper(videoSrc) {
-  timestamp_and_duration="00:00:00,0.4";
+  timestamp_and_duration="00:00:00,0.2";//poner 00:00:00,0.4
   current_speed = 1;
   current_volume = 100;
   initialtimepoint1 = "00:00:00";
-  initialtimepoint2 = "00:00:00.4"; 
+  initialtimepoint2 = "00:00:00.2";//poner 00:00:00.4  
   const html = createVideoClipperMainContainer(videoSrc);
   abrirModalDinamico(html);
   cleanupClipper = initVideoClipper();
@@ -550,7 +553,7 @@ function get_interval_parameters(indice){
 		//update_time(parameters_list[parameters_list.length-1]);
     	}else{
 		initialtimepoint1 = "00:00:00.0";
-		initialtimepoint2 = "00:00:00.4";
+		initialtimepoint2 = "00:00:00.2";//poner 00:00:00.4 
 	}
     } 	
  
@@ -599,6 +602,62 @@ function update_rectangles() {
     rectangulos[i].elemento.dataset.xReal = rectangulos[i].posicion; 
     rectangulos[i].elemento.dataset.widthReal = rectangulos[i].ancho; 
   }   
+}
+
+
+
+
+
+
+function ajustarRectangulosMove() {
+
+  // Convierte "HH:MM:SS.s" -> segundos (número)
+  function parseTime(t) {
+    const [h, m, s] = t.split(":");
+    return (
+      Number(h) * 3600 +
+      Number(m) * 60 +
+      Number(s)
+    );
+  }
+
+  // Convierte segundos -> "HH:MM:SS.s"
+  function formatTime(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor((sec % 3600) / 60);
+    const s = (sec % 60).toFixed(1); // conserva décima
+
+    const pad = n => String(n).padStart(2, "0");
+    return `${pad(h)}:${pad(m)}:${pad(s)}`;
+  }
+
+  const rects = unica_regla?.rectangulos;
+  if (!Array.isArray(rects)) return;
+
+  for (let i = 1; i < rects.length; i++) {
+    const prev = rects[i - 1];
+    const curr = rects[i];
+
+    if (!curr || typeof curr !== "object") continue;
+
+    const key4 = curr["start_value"];
+    if (typeof key4 !== "string" || !key4.includes("bounce")) continue;
+
+    const start = parseTime(curr.start);
+    const endPrev = parseTime(prev.end);
+
+    // Sólo ajustamos si el start actual es mayor que el end anterior
+    if (start > endPrev) {
+      const delta = start - endPrev;
+
+      const newStart = start - delta;
+      const newEnd = parseTime(curr.end) - delta;
+
+      curr.start = formatTime(newStart);
+      curr.end   = formatTime(newEnd);
+    }
+  }
+  new_update();
 }
 
  
