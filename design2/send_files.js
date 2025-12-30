@@ -167,13 +167,14 @@ async function sendFile(selectedFile) {
     offset = end;
 
     if (websocketClient.readyState !== WebSocket.OPEN) {
-    	throw new Error('WebSocket cerrado antes de enviar chunk');
+  	console.warn("Socket no está abierto, no envío chunk");
+  	break; 
     }
     // Envía el fragmento
     try {	
-    await enviarChunk(websocketClient, chunk);
+        await enviarChunk(websocketClient, chunk);
     }catch (err) {
-    	console.error('Error al enviar chunk:', err);
+    	console.warn('Error al enviar chunk:', err);
     	break; 
     }
     //console.log("progress_visible_names: ",JSON.stringify(progress_visible_names));
@@ -349,4 +350,4 @@ function removeProgressFromVisibleName(originalName) {
 
 
  
- 
+  
