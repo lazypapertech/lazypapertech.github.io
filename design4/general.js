@@ -1134,6 +1134,23 @@ function decodeFrames(encodedFrames, fps) {
 function setFrameSeguro(indice, frame) {
   const anterior = fotogramas_guardados[indice];
   
+  if (anterior instanceof ImageBitmap || (anterior && typeof anterior.close === 'function')) {
+    console.log(`Reemplazando frame en índice ${indice}`);
+    anterior.close();
+  }
+  
+  if (frame === null || frame === undefined) {
+    console.error(`⚠️ Intentando guardar frame null en índice ${indice}`);
+  } else {
+    console.log(`✓ Frame guardado en índice ${indice}`);
+  }
+  
+  fotogramas_guardados[indice] = frame;
+}
+
+function setFrameSeguro_bien(indice, frame) {
+  const anterior = fotogramas_guardados[indice];
+  
   // Cerrar el anterior si existe (ImageBitmap tiene .close())
   if (anterior && typeof anterior.close === 'function' && anterior !== PENDIENTE) {
     anterior.close();
