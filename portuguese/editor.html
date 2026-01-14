@@ -6409,7 +6409,7 @@ if (posicion_en_segundos > 0) {
   }).catch(console.error);
 }
 */
-
+/*
 const bytes = new Uint8Array(event.data);
 
   const posicion_en_segundos =
@@ -6455,6 +6455,60 @@ if (posicion_en_segundos < 0) {
     })
     .catch(console.error);
 }
+*/
+
+	const bytes = new Uint8Array(event.data);
+const posicion_en_segundos =
+  bytes[0] |
+  (bytes[1] << 8) |
+  (bytes[2] << 16) |
+  (bytes[3] << 24);
+
+if (posicion_en_segundos < 0) {
+  console.log("chunk:", globalBuffer.length, " ", Math.abs(posicion_en_segundos));
+  
+  const subBuffer = bytes.subarray(5);
+  const newBuffer = new Uint8Array(globalBuffer.length + subBuffer.length);
+  newBuffer.set(globalBuffer, 0);
+  newBuffer.set(subBuffer, globalBuffer.length);
+  globalBuffer = newBuffer;
+  
+  if (globalBuffer.length == Math.abs(posicion_en_segundos)) {
+    console.log("FULL_VIDEO_RECEIVED");
+    websocketClient.send("full_video_received_" + video_tag);
+  }
+} else {
+  console.log("posicion_en_segundos:", posicion_en_segundos);
+  
+  const chunk_data = bytes.subarray(5);
+  const encodedFrames = getChunks(chunk_data);
+  
+  console.log("Frames recibidos:", encodedFrames.length);
+  
+  const indiceInicial = posicion_en_segundos * TARGET_FPS;
+  const indiceFinal = indiceInicial + encodedFrames.length;
+  
+  // Asegurar espacio en el array
+  while (fotogramas_guardados.length < indiceFinal) {
+    fotogramas_guardados.push(PENDIENTE);
+  }
+  
+  decodeFrames(encodedFrames, TARGET_FPS)
+    .then((rawFrames) => {
+      console.log("Frames decodificados correctamente:", rawFrames.length);
+      
+      for (let i = 0; i < rawFrames.length; i++) {
+        setFrameSeguro(indiceInicial + i, rawFrames[i]);
+      }
+      
+      console.log("Frames guardados desde índice", indiceInicial, "hasta", indiceInicial + rawFrames.length - 1);
+    })
+    .catch((error) => {
+      console.error("Error decodificando frames:", error);
+      console.error("Stack:", error.stack);
+    });
+}
+
 
 
 
@@ -6617,6 +6671,7 @@ verificarSoporteCodec().then(soportado => {
  
 </body>
 </html>  
+
 
 
 
