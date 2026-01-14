@@ -6555,8 +6555,50 @@ contenedor.addEventListener('scroll', (event) => {
 });
 */ 
 
-console.log('VideoDecoder' in window);
-console.log('VideoFrame' in window);
+
+
+console.log("VideoDecoder:",'VideoDecoder' in window);
+console.log("VideoFrame:",'VideoFrame' in window);
+console.log('crossOriginIsolated:', crossOriginIsolated);
+
+
+// Al inicio, antes de usar el decoder
+async function verificarSoporteCodec() {
+  try {
+    const support = await VideoDecoder.isConfigSupported({
+      codec: "vp8"
+    });
+    
+    console.log("VP8 soportado:", support.supported);
+    
+    if (!support.supported) {
+      // Intentar con VP9
+      const vp9Support = await VideoDecoder.isConfigSupported({
+        codec: "vp09.00.10.08" // VP9 profile 0
+      });
+      console.log("VP9 soportado:", vp9Support.supported);
+      
+      // O intentar H.264
+      const h264Support = await VideoDecoder.isConfigSupported({
+        codec: "avc1.42E01E" // H.264 baseline
+      });
+      console.log("H.264 soportado:", h264Support.supported);
+    }
+    
+    return support.supported;
+  } catch (error) {
+    console.error("Error verificando codec:", error);
+    return false;
+  }
+}
+
+// Llamar antes de iniciar
+verificarSoporteCodec().then(soportado => {
+  if (!soportado) {
+    console.error("VP8 no soportado en este dispositivo");
+    // Aquí puedes mostrar un mensaje al usuario o usar un fallback
+  }
+});
 	
 
 </script>
@@ -6575,6 +6617,7 @@ console.log('VideoFrame' in window);
  
 </body>
 </html>  
+
 
 
 
