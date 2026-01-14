@@ -815,7 +815,7 @@ function decodeFrames_bien_pero_no_mejor(encodedFrames, fps) {
   });
 }
 
-function decodeFrames(encodedFrames, fps) {
+function decodeFrames_mal(encodedFrames, fps) {
   return new Promise(async (resolve, reject) => {
     const rawFrames = [];
     let timestamp = 0;
@@ -897,6 +897,95 @@ function decodeFrames(encodedFrames, fps) {
       cerrarDecoder();
       
       console.log(`Todos los ${rawFrames.length} frames listos`);
+      resolve(rawFrames);
+      
+    } catch (error) {
+      console.error("Error en decoder:", error);
+      cerrarDecoder();
+      reject(error);
+    }
+  });
+}
+
+function decodeFrames(encodedFrames, fps) {
+  return new Promise(async (resolve, reject) => {
+    const framesMap = new Map(); // ✅ Usar Map para evitar problemas de índice
+    const bitmapPromises = [];
+    let timestamp = 0;
+    const frameDuration = 1e6 / fps;
+    let outputCallCount = 0;
+    const totalFrames = encodedFrames.length;
+    let decoderCerrado = false;
+    
+    const decoder = new VideoDecoder({
+      output: (videoFrame) => {
+        const frameIndex = outputCallCount++;
+        
+        const bitmapPromise = createImageBitmap(videoFrame)
+          .then(bitmap => {
+            framesMap.set(frameIndex, bitmap);
+            console.log(`Frame ${frameIndex}/${totalFrames - 1} listo`);
+            return bitmap;
+          })
+          .catch(err => {
+            console.error(`Error frame ${frameIndex}:`, err);
+            throw err;
+          })
+          .finally(() => {
+            videoFrame.close();
+          });
+        
+        bitmapPromises.push(bitmapPromise);
+      },
+      error: (e) => {
+        console.error("Decoder error:", e);
+        if (!decoderCerrado) {
+          cerrarDecoder();
+        }
+        reject(e);
+      },
+    });
+    
+    function cerrarDecoder() {
+      if (!decoderCerrado) {
+        try {
+          decoder.close();
+          decoderCerrado = true;
+        } catch (e) {}
+      }
+    }
+    
+    try {
+      decoder.configure({ codec: "vp8" });
+      
+      console.log(`Decodificando ${totalFrames} frames a ${fps} fps`);
+      
+      for (let i = 0; i < encodedFrames.length; i++) {
+        decoder.decode(new EncodedVideoChunk({
+          type: i === 0 ? "key" : "delta",
+          timestamp,
+          data: encodedFrames[i],
+        }));
+        timestamp += frameDuration;
+      }
+      
+      await decoder.flush();
+      await Promise.all(bitmapPromises);
+      
+      cerrarDecoder();
+      
+      // ✅ Convertir Map a Array ordenado
+      const rawFrames = [];
+      for (let i = 0; i < totalFrames; i++) {
+        if (framesMap.has(i)) {
+          rawFrames.push(framesMap.get(i));
+        } else {
+          console.error(`Frame ${i} faltante!`);
+          rawFrames.push(null);
+        }
+      }
+      
+      console.log(`Completado: ${rawFrames.filter(f => f).length}/${totalFrames} frames`);
       resolve(rawFrames);
       
     } catch (error) {
