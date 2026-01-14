@@ -658,7 +658,7 @@ function decodeFrames_1(encodedFrames, fps) {
   });
 }
 
-function decodeFrames(encodedFrames, fps) {
+function decodeFrames_muy_bien(encodedFrames, fps) {
   return new Promise(async (resolve, reject) => {
     const rawFrames = [];
     let timestamp = 0;
@@ -726,6 +726,95 @@ function decodeFrames(encodedFrames, fps) {
     }
   });
 }
+
+function decodeFrames(encodedFrames, fps) {
+  return new Promise(async (resolve, reject) => {
+    const rawFrames = [];
+    const bitmapPromises = []; // ✅ Guardar las promesas
+    let timestamp = 0;
+    const frameDuration = 1e6 / fps;
+    let processedCount = 0;
+    const totalFrames = encodedFrames.length;
+    let decoderCerrado = false;
+    
+    const decoder = new VideoDecoder({
+      output: (videoFrame) => {
+        try {
+          // ✅ Guardar la promesa del bitmap
+          const bitmapPromise = createImageBitmap(videoFrame)
+            .then(bitmap => {
+              rawFrames[processedCount] = bitmap; // Guardar en posición correcta
+              processedCount++;
+              console.log(`Frame ${processedCount}/${totalFrames} procesado`);
+              return bitmap;
+            })
+            .catch(err => {
+              console.error("Error procesando frame:", err);
+              throw err;
+            })
+            .finally(() => {
+              videoFrame.close();
+            });
+          
+          bitmapPromises.push(bitmapPromise);
+          
+        } catch (err) {
+          console.error("Error en output:", err);
+          videoFrame.close();
+        }
+      },
+      error: (e) => {
+        console.error("Decoder error:", e);
+        if (!decoderCerrado) {
+          cerrarDecoder();
+        }
+        reject(e);
+      },
+    });
+    
+    function cerrarDecoder() {
+      if (!decoderCerrado) {
+        try {
+          decoder.close();
+          decoderCerrado = true;
+        } catch (e) {
+          console.log("Decoder ya estaba cerrado");
+        }
+      }
+    }
+    
+    try {
+      decoder.configure({ codec: "vp8" });
+      
+      console.log(`Decodificando ${totalFrames} frames a ${fps} fps`);
+      
+      for (let i = 0; i < encodedFrames.length; i++) {
+        decoder.decode(new EncodedVideoChunk({
+          type: i === 0 ? "key" : "delta",
+          timestamp,
+          data: encodedFrames[i],
+        }));
+        timestamp += frameDuration;
+      }
+      
+      await decoder.flush();
+      
+      // ✅ ESPERAR a que TODOS los ImageBitmap estén listos
+      await Promise.all(bitmapPromises);
+      
+      cerrarDecoder();
+      
+      console.log(`Todos los ${rawFrames.length} frames listos para usar`);
+      resolve(rawFrames);
+      
+    } catch (error) {
+      console.error("Error en decoder:", error);
+      cerrarDecoder();
+      reject(error);
+    }
+  });
+}
+
 
 function setFrameSeguro(indice, frame) {
   const anterior = fotogramas_guardados[indice];
