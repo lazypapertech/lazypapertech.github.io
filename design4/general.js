@@ -1182,4 +1182,46 @@ function limpiarTodosLosFrames() {
   });
   fotogramas_guardados.length = 0;
   console.log("Todos los frames limpiados");
+}
+
+
+
+
+// Función de verificación
+function verificarFramesGuardados() {
+  console.log("=== VERIFICACIÓN FINAL DE FRAMES ===");
+  console.log("Total items en array:", fotogramas_guardados.length);
+  
+  const pendientes = [];
+  const nulls = [];
+  const validos = [];
+  
+  for (let i = 0; i < fotogramas_guardados.length; i++) {
+    const frame = fotogramas_guardados[i];
+    
+    if (frame === PENDIENTE) {
+      pendientes.push(i);
+    } else if (frame === null || frame === undefined) {
+      nulls.push(i);
+    } else {
+      validos.push(i);
+    }
+  }
+  
+  console.log(`✅ Frames VÁLIDOS (${validos.length}):`, validos.length > 10 ? `${validos.slice(0, 10).join(', ')}...` : validos.join(', '));
+  console.log(`⏳ Frames PENDIENTES (${pendientes.length}):`, pendientes);
+  console.log(`❌ Frames NULL (${nulls.length}):`, nulls);
+  
+  if (pendientes.length === 0 && nulls.length === 0) {
+    console.log("🎉 TODOS LOS FRAMES GUARDADOS CORRECTAMENTE!");
+  } else {
+    console.error("⚠️ HAY FRAMES FALTANTES!");
+  }
+  
+  return {
+    total: fotogramas_guardados.length,
+    pendientes: pendientes.length,
+    nulls: nulls.length,
+    validos: validos.length
+  };
 } 
