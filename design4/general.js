@@ -727,7 +727,7 @@ function decodeFrames_muy_bien(encodedFrames, fps) {
   });
 }
 
-function decodeFrames(encodedFrames, fps) {
+function decodeFrames_bien_pero_no_mejor(encodedFrames, fps) {
   return new Promise(async (resolve, reject) => {
     const rawFrames = [];
     const bitmapPromises = []; // ✅ Guardar las promesas
@@ -805,6 +805,98 @@ function decodeFrames(encodedFrames, fps) {
       cerrarDecoder();
       
       console.log(`Todos los ${rawFrames.length} frames listos para usar`);
+      resolve(rawFrames);
+      
+    } catch (error) {
+      console.error("Error en decoder:", error);
+      cerrarDecoder();
+      reject(error);
+    }
+  });
+}
+
+function decodeFrames(encodedFrames, fps) {
+  return new Promise(async (resolve, reject) => {
+    const rawFrames = [];
+    let timestamp = 0;
+    const frameDuration = 1e6 / fps;
+    const totalFrames = encodedFrames.length;
+    let decoderCerrado = false;
+    let bitmapsCreados = 0;
+    
+    const decoder = new VideoDecoder({
+      output: (videoFrame) => {
+        const frameIndex = rawFrames.length; // Capturar índice actual
+        
+        createImageBitmap(videoFrame)
+          .then(bitmap => {
+            rawFrames[frameIndex] = bitmap;
+            bitmapsCreados++;
+            console.log(`Frame ${bitmapsCreados}/${totalFrames} bitmap creado`);
+          })
+          .catch(err => {
+            console.error("Error creando bitmap:", err);
+          })
+          .finally(() => {
+            videoFrame.close();
+          });
+        
+        // Reservar espacio
+        rawFrames.push(null);
+      },
+      error: (e) => {
+        console.error("Decoder error:", e);
+        if (!decoderCerrado) {
+          cerrarDecoder();
+        }
+        reject(e);
+      },
+    });
+    
+    function cerrarDecoder() {
+      if (!decoderCerrado) {
+        try {
+          decoder.close();
+          decoderCerrado = true;
+        } catch (e) {
+          console.log("Decoder ya estaba cerrado");
+        }
+      }
+    }
+    
+    try {
+      decoder.configure({ codec: "vp8" });
+      
+      console.log(`Decodificando ${totalFrames} frames a ${fps} fps`);
+      
+      for (let i = 0; i < encodedFrames.length; i++) {
+        decoder.decode(new EncodedVideoChunk({
+          type: i === 0 ? "key" : "delta",
+          timestamp,
+          data: encodedFrames[i],
+        }));
+        timestamp += frameDuration;
+      }
+      
+      await decoder.flush();
+      
+      // ✅ Esperar a que todos los bitmaps estén creados
+      const esperarBitmaps = () => {
+        return new Promise((res) => {
+          const intervalo = setInterval(() => {
+            if (bitmapsCreados === totalFrames) {
+              clearInterval(intervalo);
+              res();
+            }
+          }, 10);
+        });
+      };
+      
+      await esperarBitmaps();
+      
+      cerrarDecoder();
+      
+      console.log(`Todos los ${rawFrames.length} frames listos`);
       resolve(rawFrames);
       
     } catch (error) {
