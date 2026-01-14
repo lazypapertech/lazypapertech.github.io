@@ -478,7 +478,7 @@ let decoderGlobal = null;
 let colaDecoding = [];
 let decodificando = false;
 
-async function inicializarDecoder() {
+async function inicializarDecoder_0() {
   if (decoderGlobal) return;
   
   decoderGlobal = new VideoDecoder({
@@ -508,7 +508,7 @@ async function inicializarDecoder() {
   }
 }
 
-function decodeFrames(encodedFrames, fps) {
+function decodeFrames_00(encodedFrames, fps) {
   return new Promise(async (resolve, reject) => {
     try {
       await inicializarDecoder();
@@ -545,7 +545,7 @@ function decodeFrames(encodedFrames, fps) {
 
 
 
-function setFrameSeguro(indice, frame) {
+function setFrameSeguro_0(indice, frame) {
   const anterior = fotogramas_guardados[indice];
 
   if (anterior instanceof VideoFrame) {
@@ -578,4 +578,187 @@ window.onerror = function(msg, url, line, col, error) {
 window.addEventListener('unhandledrejection', function(event) {
   console.error('Promise rechazada:', event.reason);
   alert('Promise ERROR: ' + event.reason);
-}); 
+});
+
+
+
+
+
+
+
+
+
+
+
+function decodeFrames_1(encodedFrames, fps) {
+  return new Promise(async (resolve, reject) => {
+    const rawFrames = [];
+    let timestamp = 0;
+    const frameDuration = 1e6 / fps;
+    let processedCount = 0;
+    const totalFrames = encodedFrames.length;
+    
+    const decoder = new VideoDecoder({
+      output: async (videoFrame) => {
+        try {
+          // Convertir a ImageBitmap para poder cerrar el VideoFrame
+          const bitmap = await createImageBitmap(videoFrame);
+          rawFrames.push(bitmap);
+          processedCount++;
+          
+          console.log(`Frame ${processedCount}/${totalFrames} procesado`);
+          
+          // Resolver cuando tengamos todos
+          if (processedCount === totalFrames) {
+            decoder.close();
+            resolve(rawFrames);
+          }
+        } catch (err) {
+          console.error("Error procesando frame:", err);
+          reject(err);
+        } finally {
+          videoFrame.close(); // ✅ CRÍTICO - Cerrar siempre
+        }
+      },
+      error: (e) => {
+        console.error("Decoder error:", e);
+        try {
+          decoder.reset();
+          decoder.configure({ codec: "vp8" });
+        } catch (err) {
+          console.error("Failed to reset decoder:", err);
+        }
+        reject(e);
+      },
+    });
+    
+    try {
+      decoder.configure({ codec: "vp8" });
+      
+      console.log(`Decodificando ${totalFrames} frames a ${fps} fps`);
+      
+      for (let i = 0; i < encodedFrames.length; i++) {
+        decoder.decode(new EncodedVideoChunk({
+          type: i === 0 ? "key" : "delta",
+          timestamp,
+          data: encodedFrames[i],
+        }));
+        timestamp += frameDuration;
+      }
+      
+      await decoder.flush();
+      
+    } catch (error) {
+      console.error("Error configurando decoder:", error);
+      try {
+        decoder.close();
+      } catch (e) {}
+      reject(error);
+    }
+  });
+}
+
+function decodeFrames(encodedFrames, fps) {
+  return new Promise(async (resolve, reject) => {
+    const rawFrames = [];
+    let timestamp = 0;
+    const frameDuration = 1e6 / fps;
+    let processedCount = 0;
+    const totalFrames = encodedFrames.length;
+    let decoderCerrado = false;
+    
+    const decoder = new VideoDecoder({
+      output: async (videoFrame) => {
+        try {
+          const bitmap = await createImageBitmap(videoFrame);
+          rawFrames.push(bitmap);
+          processedCount++;
+          
+          console.log(`Frame ${processedCount}/${totalFrames} procesado`);
+        } catch (err) {
+          console.error("Error procesando frame:", err);
+        } finally {
+          videoFrame.close();
+        }
+      },
+      error: (e) => {
+        console.error("Decoder error:", e);
+        if (!decoderCerrado) {
+          cerrarDecoder();
+        }
+        reject(e);
+      },
+    });
+    
+    function cerrarDecoder() {
+      if (!decoderCerrado) {
+        try {
+          decoder.close();
+          decoderCerrado = true;
+        } catch (e) {
+          console.log("Decoder ya estaba cerrado");
+        }
+      }
+    }
+    
+    try {
+      decoder.configure({ codec: "vp8" });
+      
+      console.log(`Decodificando ${totalFrames} frames a ${fps} fps`);
+      
+      for (let i = 0; i < encodedFrames.length; i++) {
+        decoder.decode(new EncodedVideoChunk({
+          type: i === 0 ? "key" : "delta",
+          timestamp,
+          data: encodedFrames[i],
+        }));
+        timestamp += frameDuration;
+      }
+      
+      await decoder.flush();
+      cerrarDecoder();
+      resolve(rawFrames);
+      
+    } catch (error) {
+      console.error("Error en decoder:", error);
+      cerrarDecoder();
+      reject(error);
+    }
+  });
+}
+
+function setFrameSeguro(indice, frame) {
+  const anterior = fotogramas_guardados[indice];
+  
+  // Cerrar el anterior si existe (ImageBitmap tiene .close())
+  if (anterior && typeof anterior.close === 'function' && anterior !== PENDIENTE) {
+    anterior.close();
+  }
+  
+  fotogramas_guardados[indice] = frame;
+}
+
+// Para usar los frames:
+function renderFrame(indice, canvas) {
+  const frame = fotogramas_guardados[indice];
+  
+  if (frame === PENDIENTE || !frame) {
+    console.log("Frame no disponible:", indice);
+    return;
+  }
+  
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(frame, 0, 0, canvas.width, canvas.height);
+}
+
+// Limpiar todo cuando termines
+function limpiarTodosLosFrames() {
+  fotogramas_guardados.forEach((frame, indice) => {
+    if (frame && typeof frame.close === 'function' && frame !== PENDIENTE) {
+      frame.close();
+    }
+  });
+  fotogramas_guardados.length = 0;
+  console.log("Todos los frames limpiados");
+} 
