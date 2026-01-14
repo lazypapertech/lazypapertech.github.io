@@ -907,7 +907,7 @@ function decodeFrames_mal(encodedFrames, fps) {
   });
 }
 
-function decodeFrames(encodedFrames, fps) {
+function decodeFrames_regular(encodedFrames, fps) {
   return new Promise(async (resolve, reject) => {
     const framesMap = new Map(); // ✅ Usar Map para evitar problemas de índice
     const bitmapPromises = [];
@@ -996,6 +996,140 @@ function decodeFrames(encodedFrames, fps) {
   });
 }
 
+function decodeFrames(encodedFrames, fps) {
+  return new Promise(async (resolve, reject) => {
+    const framesMap = new Map();
+    const bitmapPromises = [];
+    const failedFrames = new Set(); // ✅ Rastrear frames que fallan
+    let timestamp = 0;
+    const frameDuration = 1e6 / fps;
+    let outputCallCount = 0;
+    const totalFrames = encodedFrames.length;
+    let decoderCerrado = false;
+    
+    const decoder = new VideoDecoder({
+      output: (videoFrame) => {
+        const frameIndex = outputCallCount++;
+        
+        console.log(`Output llamado para frame ${frameIndex}`);
+        
+        const bitmapPromise = createImageBitmap(videoFrame)
+          .then(bitmap => {
+            if (!bitmap) {
+              console.error(`Frame ${frameIndex}: bitmap es null!`);
+              failedFrames.add(frameIndex);
+              return null;
+            }
+            framesMap.set(frameIndex, bitmap);
+            console.log(`✓ Frame ${frameIndex}/${totalFrames - 1} listo (${bitmap.width}x${bitmap.height})`);
+            return bitmap;
+          })
+          .catch(err => {
+            console.error(`✗ Error frame ${frameIndex}:`, err.message, err);
+            failedFrames.add(frameIndex);
+            return null; // ✅ No hacer throw, solo registrar
+          })
+          .finally(() => {
+            try {
+              videoFrame.close();
+            } catch (e) {
+              console.error(`Error cerrando frame ${frameIndex}:`, e);
+            }
+          });
+        
+        bitmapPromises.push(bitmapPromise);
+      },
+      error: (e) => {
+        console.error("Decoder error:", e);
+        if (!decoderCerrado) {
+          cerrarDecoder();
+        }
+        reject(e);
+      },
+    });
+    
+    function cerrarDecoder() {
+      if (!decoderCerrado) {
+        try {
+          decoder.close();
+          decoderCerrado = true;
+          console.log("Decoder cerrado");
+        } catch (e) {
+          console.log("Error cerrando decoder:", e);
+        }
+      }
+    }
+    
+    try {
+      decoder.configure({ codec: "vp8" });
+      console.log(`Iniciando decodificación de ${totalFrames} frames a ${fps} fps`);
+      
+      for (let i = 0; i < encodedFrames.length; i++) {
+        decoder.decode(new EncodedVideoChunk({
+          type: i === 0 ? "key" : "delta",
+          timestamp,
+          data: encodedFrames[i],
+        }));
+        timestamp += frameDuration;
+      }
+      
+      console.log("Esperando flush...");
+      await decoder.flush();
+      console.log("Flush completado, esperando bitmaps...");
+      
+      // ✅ Esperar con timeout
+      const TIMEOUT = 5000; // 5 segundos
+      const tiempoInicio = Date.now();
+      
+      await Promise.race([
+        Promise.all(bitmapPromises),
+        new Promise((_, rej) => 
+          setTimeout(() => rej(new Error("Timeout creando bitmaps")), TIMEOUT)
+        )
+      ]).catch(err => {
+        console.error("Error o timeout:", err);
+      });
+      
+      const tiempoTranscurrido = Date.now() - tiempoInicio;
+      console.log(`Bitmaps procesados en ${tiempoTranscurrido}ms`);
+      
+      cerrarDecoder();
+      
+      // ✅ Diagnóstico detallado
+      console.log(`Output callback llamado ${outputCallCount} veces`);
+      console.log(`Frames en Map: ${framesMap.size}`);
+      console.log(`Frames fallidos: ${failedFrames.size}`, Array.from(failedFrames));
+      
+      // ✅ Convertir Map a Array ordenado
+      const rawFrames = [];
+      const faltantes = [];
+      
+      for (let i = 0; i < totalFrames; i++) {
+        if (framesMap.has(i)) {
+          rawFrames.push(framesMap.get(i));
+        } else {
+          console.error(`❌ Frame ${i} FALTANTE`);
+          faltantes.push(i);
+          rawFrames.push(null);
+        }
+      }
+      
+      const framesValidos = rawFrames.filter(f => f !== null).length;
+      console.log(`RESULTADO: ${framesValidos}/${totalFrames} frames válidos`);
+      
+      if (faltantes.length > 0) {
+        console.error(`Frames faltantes: [${faltantes.join(', ')}]`);
+      }
+      
+      resolve(rawFrames);
+      
+    } catch (error) {
+      console.error("Error crítico en decoder:", error);
+      cerrarDecoder();
+      reject(error);
+    }
+  });
+}
 
 function setFrameSeguro(indice, frame) {
   const anterior = fotogramas_guardados[indice];
