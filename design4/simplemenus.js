@@ -621,11 +621,12 @@ function ocultarBotonPrincipalView() {
         if (export_video.dataset.visible === 'true') {
             export_video.style.display = 'block';
         }
-        
+        if (window.innerWidth > 500) {
         change_view.style.display = 'block';
+	}
         create_item.style.display = 'flex';
-        //new_project.style.display = 'block';
-        boton_update.style.display = 'block';
+        //new_project.style.display = 'block'; 
+        boton_update.style.display = 'block'; 
     }
 }
 
@@ -754,7 +755,7 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
 				closeModalDinamico();
 				
 				const change_view = document.getElementById('change_view');
-				if (change_view && change_view.style.display === 'none') {
+				if (change_view && change_view.style.display === 'none' && window.innerWidth > 500) {
     					change_view.style.display = 'block';
 				} 
 				const boton_update = document.getElementById('update');
@@ -800,7 +801,7 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
 			closeModalDinamico();
 
 			const change_view = document.getElementById('change_view');
-			if (change_view && change_view.style.display === 'none') {
+			if (change_view && change_view.style.display === 'none' && window.innerWidth > 500) {
     				change_view.style.display = 'block';
 			} 
 			const boton_update = document.getElementById('update');
@@ -1058,4 +1059,4 @@ function check_file_type(file) {
     
     return null; // No es ninguno de los tres
 }
-*/
+*/ 
