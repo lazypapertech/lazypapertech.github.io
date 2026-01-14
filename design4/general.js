@@ -431,7 +431,7 @@ const PENDIENTE = Symbol("pendiente");
 const fotogramas_guardados = []; // VideoFrame | PENDIENTE
 
 
-function decodeFrames(encodedFrames, fps) {
+function decodeFrames_0(encodedFrames, fps) {
   return new Promise(async (resolve, reject) => {
     const rawFrames = [];
 
@@ -448,11 +448,20 @@ function decodeFrames(encodedFrames, fps) {
     decoder.configure({ codec: "vp8" });
 
     for (let i = 0; i < encodedFrames.length; i++) {
+/*
       decoder.decode(new EncodedVideoChunk({
         type: i === 0 ? "key" : "delta",
         timestamp,
         data: encodedFrames[i],
       }));
+*/
+      // En lugar de asumir que el primero es key
+decoder.decode(new EncodedVideoChunk({
+  type: determinarTipoFrame(encodedFrames[i], i === 0),
+  timestamp,
+  data: encodedFrames[i],
+}));
+
       timestamp += frameDuration;
     }
 
@@ -462,6 +471,78 @@ function decodeFrames(encodedFrames, fps) {
     resolve(rawFrames);
   });
 }
+
+
+// Usar un solo decoder con cola
+let decoderGlobal = null;
+let colaDecoding = [];
+let decodificando = false;
+
+async function inicializarDecoder() {
+  if (decoderGlobal) return;
+  
+  decoderGlobal = new VideoDecoder({
+    output: (videoFrame) => {
+      const info = colaDecoding.shift();
+      if (info) {
+        info.frames.push(videoFrame);
+        if (info.frames.length === info.total) {
+          info.resolve(info.frames);
+        }
+      }
+    },
+    error: (error) => {
+      console.error("Error decoder:", error);
+      const info = colaDecoding.shift();
+      if (info) info.reject(error);
+    },
+  });
+  
+  try {
+    decoderGlobal.configure({ codec: "vp8" });
+    console.log("Decoder inicializado correctamente");
+  } catch (error) {
+    console.error("Error configurando decoder:", error);
+    decoderGlobal = null;
+    throw error;
+  }
+}
+
+function decodeFrames(encodedFrames, fps) {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await inicializarDecoder();
+      
+      const info = {
+        frames: [],
+        total: encodedFrames.length,
+        resolve,
+        reject
+      };
+      
+      let timestamp = 0;
+      const frameDuration = 1e6 / fps;
+      
+      for (let i = 0; i < encodedFrames.length; i++) {
+        colaDecoding.push(info);
+        
+        decoderGlobal.decode(new EncodedVideoChunk({
+          type: i === 0 ? "key" : "delta",
+          timestamp,
+          data: encodedFrames[i],
+        }));
+        
+        timestamp += frameDuration;
+      }
+      
+    } catch (error) {
+      console.error("Error en decodeFrames:", error);
+      reject(error);
+    }
+  });
+}
+
+
 
 
 function setFrameSeguro(indice, frame) {
@@ -474,3 +555,27 @@ function setFrameSeguro(indice, frame) {
   fotogramas_guardados[indice] = frame;
 }
 
+
+
+ 
+
+function determinarTipoFrame(data, esPrimero) {
+  // VP8 keyframe tiene signature específica
+  if (data.length > 3) {
+    const firstByte = data[0];
+    const isKeyframe = (firstByte & 0x01) === 0;
+    return isKeyframe ? "key" : "delta";
+  }
+  return esPrimero ? "key" : "delta";
+}
+
+
+window.onerror = function(msg, url, line, col, error) {
+  console.error('Error global:', msg, error);
+  alert('ERROR: ' + msg); // Para ver en pantalla
+};
+
+window.addEventListener('unhandledrejection', function(event) {
+  console.error('Promise rechazada:', event.reason);
+  alert('Promise ERROR: ' + event.reason);
+}); 
