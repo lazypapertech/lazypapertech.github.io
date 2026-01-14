@@ -6596,7 +6596,9 @@ if (posicion_en_segundos < 0) {
 }
 */
 
-	// Variable global para rastrear decodificaciones
+
+
+	// Variable global para rastrear todas las promesas
 const decodificacionesActivas = [];
 
 const bytes = new Uint8Array(event.data);
@@ -6618,6 +6620,13 @@ if (posicion_en_segundos < 0) {
   if (globalBuffer.length == Math.abs(posicion_en_segundos)) {
     console.log("FULL_VIDEO_RECEIVED");
     websocketClient.send("full_video_received_" + video_tag);
+    
+    // ✅ ESPERAR a que todas las decodificaciones terminen
+    console.log(`⏳ Esperando ${decodificacionesActivas.length} decodificaciones...`);
+    Promise.all(decodificacionesActivas).then(() => {
+      console.log("✅ TODAS las decodificaciones completadas");
+      verificarFramesGuardados();
+    });
   }
 } else {
   console.log("posicion_en_segundos:", posicion_en_segundos);
@@ -6630,7 +6639,6 @@ if (posicion_en_segundos < 0) {
   const indiceInicial = posicion_en_segundos * TARGET_FPS;
   const indiceFinal = indiceInicial + encodedFrames.length;
   
-  // Asegurar espacio en el array
   while (fotogramas_guardados.length < indiceFinal) {
     fotogramas_guardados.push(PENDIENTE);
   }
@@ -6638,12 +6646,10 @@ if (posicion_en_segundos < 0) {
   console.log(`Array preparado: índices ${indiceInicial} a ${indiceFinal - 1}`);
   console.log(`🔄 Decodificaciones activas: ${decodificacionesActivas.length}`);
   
-  // ✅ Crear promesa única para esta decodificación
+  // ✅ Crear y guardar la promesa
   const decodificacionPromise = decodeFrames(encodedFrames, TARGET_FPS)
     .then((rawFrames) => {
       console.log(`✅ Decodificación completa para índices ${indiceInicial}-${indiceFinal - 1}: ${rawFrames.length} frames`);
-      
-      let guardadosExitosos = 0;
       
       for (let i = 0; i < rawFrames.length; i++) {
         const frame = rawFrames[i];
@@ -6651,31 +6657,29 @@ if (posicion_en_segundos < 0) {
         
         if (frame !== null && frame !== undefined) {
           setFrameSeguro(indiceDestino, frame);
-          guardadosExitosos++;
         } else {
           console.error(`❌ Frame ${i} es null en índice ${indiceDestino}`);
         }
       }
       
-      console.log(`✓ ${guardadosExitosos}/${rawFrames.length} frames guardados en índices ${indiceInicial}-${indiceInicial + guardadosExitosos - 1}`);
+      console.log(`✓ Frames guardados en índices ${indiceInicial}-${indiceFinal - 1}`);
       
       // Remover de activas
       const idx = decodificacionesActivas.indexOf(decodificacionPromise);
-      if (idx > -1) decodificacionesActivas.splice(idx, 1);
-      
-      console.log(`✓ Decodificaciones restantes: ${decodificacionesActivas.length}`);
+      if (idx > -1) {
+        decodificacionesActivas.splice(idx, 1);
+        console.log(`✓ Decodificaciones restantes: ${decodificacionesActivas.length}`);
+      }
     })
     .catch((error) => {
       console.error(`❌ Error decodificando índices ${indiceInicial}-${indiceFinal - 1}:`, error);
       
-      // Remover de activas
       const idx = decodificacionesActivas.indexOf(decodificacionPromise);
       if (idx > -1) decodificacionesActivas.splice(idx, 1);
     });
   
   decodificacionesActivas.push(decodificacionPromise);
 }
-
 
 
 
@@ -6836,6 +6840,7 @@ verificarSoporteCodec().then(soportado => {
  
 </body>
 </html>  
+
 
 
 
