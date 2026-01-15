@@ -1291,127 +1291,184 @@ class ReproductorTrozos_0 {
 
 
 
-
 /* ===========================
-   REPRODUCTOR CON DOBLE BUFFER
-   (await createImageBitmap – patrón seguro)
+   REPRODUCTOR CON VERIFICACIÓN
 =========================== */
 
 class ReproductorTrozos {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
-
-    // Map<segundo, { frames: ImageBitmap[], cargando: boolean }>
     this.segundos = new Map();
+    this.decodersActivos = new Map();
   }
-
-  /* ===========================
-     REPRODUCIR FRAME
-  =========================== */
+  
   async reproducirFrame(segundo, frameEnSegundo) {
-    this.precargarSiguiente(segundo);
-
+    this.precargarSiguiente(segundo); 
+    
     const data = this.segundos.get(segundo);
-
+    
     if (data && data.frames && data.frames[frameEnSegundo]) {
-      this.ctx.drawImage(
-        data.frames[frameEnSegundo],
-        0, 0,
-        this.canvas.width,
-        this.canvas.height
-      );
-      return true;
+      try {
+        this.ctx.drawImage(
+          data.frames[frameEnSegundo],
+          0, 0,
+          this.canvas.width,
+          this.canvas.height
+        );
+        return true;
+      } catch (err) {
+        console.error("Error renderizando frame:", err);
+        return false;
+      }
     }
-
+    
     if (!data || !data.cargando) {
       this.cargarSegundo(segundo);
     }
-
-    // NO limpiar canvas
+    
     return false;
   }
-
-  /* ===========================
-     PRECARGA DOBLE BUFFER
-  =========================== */
+  
   precargarSiguiente(segundoActual) {
     const siguiente = segundoActual + 1;
-
+    
     if (trozos_guardados[siguiente] && !this.segundos.has(siguiente)) {
+      console.log(`🔄 Precargando segundo ${siguiente}...`);
       this.cargarSegundo(siguiente);
     }
-
+    
     this.segundos.forEach((data, seg) => {
-      if (seg < segundoActual - 2) {
-        data.frames?.forEach(f => f?.close?.());
+      const margen = 2;
+      if (seg < segundoActual - margen) { 
+        console.log(`🗑️ Liberando segundo ${seg}`);
+        if (data.frames) {
+          data.frames.forEach(f => {
+            if (f && f.close) f.close();
+          });
+        }
         this.segundos.delete(seg);
       }
     });
   }
-
-  /* ===========================
-     CARGAR SEGUNDO (CLAVE)
-  =========================== */
+  
   async cargarSegundo(segundo) {
-    if (!trozos_guardados[segundo]) return;
-
-    if (this.segundos.has(segundo)) {
-      if (this.segundos.get(segundo).cargando) return;
-    } else {
-      this.segundos.set(segundo, { frames: [], cargando: true });
+    if (!trozos_guardados[segundo]) {
+      return;
     }
-
+    
+    if (!this.segundos.has(segundo)) {
+      this.segundos.set(segundo, { frames: [], cargando: true });
+    } else if (this.segundos.get(segundo).cargando) {
+      return;
+    }
+    
     const data = this.segundos.get(segundo);
     data.cargando = true;
-
-    const encodedFrames = getChunks(trozos_guardados[segundo]);
-
-    return new Promise(async (resolve, reject) => {
-      const frames = [];
-      const bitmapPromises = [];
-      let outputIndex = 0;
-
+    
+    console.log(`🔄 Cargando segundo ${segundo}...`);
+    
+    const chunk_data = trozos_guardados[segundo];
+    const encodedFrames = getChunks(chunk_data);
+    
+    return new Promise((resolve, reject) => {
+      const frames = new Array(encodedFrames.length); // ✅ Pre-crear array
+      let framesCompletados = 0;
+      let outputCount = 0;
+      
       const decoder = new VideoDecoder({
         output: (videoFrame) => {
-          const frameIndex = outputIndex++;
-
-          const bitmapPromise = (async () => {
+          const frameIndex = outputCount++;
+          
+          try {
+            // ✅ Crear canvas y dibujar SINCRÓNICAMENTE
+            const offscreen = new OffscreenCanvas(
+              videoFrame.displayWidth,
+              videoFrame.displayHeight
+            );
+            const ctx = offscreen.getContext('2d');
+            
+            // Dibujar inmediatamente
+            ctx.drawImage(videoFrame, 0, 0);
+            
+            // Cerrar VideoFrame inmediatamente
+            videoFrame.close();
+            
+            // ✅ AHORA crear ImageBitmap del canvas
+            createImageBitmap(offscreen)
+              .then(bitmap => {
+                frames[frameIndex] = bitmap;
+                framesCompletados++;
+                console.log(`Frame ${frameIndex} creado (${framesCompletados}/${encodedFrames.length})`);
+                
+                // ✅ Verificar si ya tenemos todos
+                if (framesCompletados === encodedFrames.length) {
+                  finalizarCarga();
+                }
+              })
+              .catch(err => {
+                console.error(`❌ Error creando bitmap ${frameIndex}:`, err);
+                frames[frameIndex] = null;
+                framesCompletados++;
+                
+                // Aún así verificar si terminamos
+                if (framesCompletados === encodedFrames.length) {
+                  finalizarCarga();
+                }
+              });
+            
+          } catch (err) {
+            console.error(`Error procesando frame ${frameIndex}:`, err);
             try {
-              const canvas = new OffscreenCanvas(
-                videoFrame.displayWidth,
-                videoFrame.displayHeight
-              );
-              const ctx = canvas.getContext('2d');
-
-              ctx.drawImage(videoFrame, 0, 0);
               videoFrame.close();
-
-              const bitmap = await createImageBitmap(canvas);
-              frames[frameIndex] = bitmap;
-
-              return bitmap;
-            } catch (e) {
-              console.error(`Error frame ${frameIndex}:`, e);
-              try { videoFrame.close(); } catch {}
-              return null;
+            } catch (e) {}
+            framesCompletados++;
+            
+            if (framesCompletados === encodedFrames.length) {
+              finalizarCarga();
             }
-          })();
-
-          bitmapPromises.push(bitmapPromise);
+          }
         },
-        error: e => {
+        error: (e) => {
+          console.error("Decoder error:", e);
           data.cargando = false;
           reject(e);
         }
       });
-
+      
+      function finalizarCarga() {
+        // ✅ Verificar cuántos frames válidos tenemos
+        const framesValidos = frames.filter(f => f !== null && f !== undefined).length;
+        console.log(`✅ Segundo ${segundo}: ${framesValidos}/${encodedFrames.length} frames válidos`);
+        
+        // ✅ Listar frames faltantes
+        const faltantes = [];
+        for (let i = 0; i < frames.length; i++) {
+          if (!frames[i]) {
+            faltantes.push(i);
+          }
+        }
+        
+        if (faltantes.length > 0) {
+          console.error(`⚠️ Segundo ${segundo} - Frames faltantes:`, faltantes);
+        }
+        
+        data.frames = frames;
+        data.cargando = false;
+        
+        try {
+          decoder.close();
+        } catch (e) {}
+        
+        resolve();
+      }
+      
       try {
         decoder.configure({ codec: "vp8" });
-
+        
         let timestamp = 0;
         const frameDuration = 1e6 / TARGET_FPS;
-
+        
         for (let i = 0; i < encodedFrames.length; i++) {
           decoder.decode(new EncodedVideoChunk({
             type: i === 0 ? "key" : "delta",
@@ -1420,30 +1477,25 @@ class ReproductorTrozos {
           }));
           timestamp += frameDuration;
         }
-
-        await decoder.flush();
-        await Promise.all(bitmapPromises);
-
-        data.frames = frames;
+        
+        // ✅ No esperar flush con then, dejar que los frames se completen solos
+        decoder.flush();
+        
+      } catch (error) {
+        console.error("Error configurando decoder:", error);
         data.cargando = false;
-
-        decoder.close();
-        resolve();
-
-      } catch (e) {
-        data.cargando = false;
-        try { decoder.close(); } catch {}
-        reject(e);
+        reject(error);
       }
     });
   }
-
-  /* ===========================
-     CLEANUP
-  =========================== */
+  
   cleanup() {
-    this.segundos.forEach(data => {
-      data.frames?.forEach(f => f?.close?.());
+    this.segundos.forEach((data, segundo) => {
+      if (data.frames) {
+        data.frames.forEach(f => {
+          if (f && f.close) f.close();
+        });
+      }
     });
     this.segundos.clear();
   }
@@ -1452,5 +1504,6 @@ class ReproductorTrozos {
 const reproductorTrozos = new ReproductorTrozos(canvas_principal);
 
    
+
 
 
