@@ -6597,7 +6597,7 @@ if (posicion_en_segundos < 0) {
 */
 
 
-
+/*
 	// Variable global para rastrear todas las promesas
 const decodificacionesActivas = [];
 
@@ -6680,6 +6680,45 @@ if (posicion_en_segundos < 0) {
   
   decodificacionesActivas.push(decodificacionPromise);
 }
+*/
+	const bytes = new Uint8Array(event.data);
+  const posicion_en_segundos =
+    bytes[0] |
+    (bytes[1] << 8) |
+    (bytes[2] << 16) |
+    (bytes[3] << 24);
+    
+  if (posicion_en_segundos >= 0) {
+    const chunk_data = bytes.subarray(5);
+    
+    // ✅ GUARDAR trozo codificado
+    trozos_guardados[posicion_en_segundos] = chunk_data;
+    console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`);
+    
+    // ✅ PRECARGAR INMEDIATAMENTE en background
+    if (!trozosEnProceso.has(posicion_en_segundos)) {
+      trozosEnProceso.add(posicion_en_segundos);
+      
+      console.log(`🔄 Precargando trozo ${posicion_en_segundos} en background...`);
+      
+      // No usar await - decodificar en background
+      TrozoDecoder.decodificarTrozo(posicion_en_segundos)
+        .then(frames => {
+          if (frames && frames.length > 0) {
+            cache_segundos.set(posicion_en_segundos, frames);
+            console.log(`✅ Trozo ${posicion_en_segundos} cacheado automáticamente (${frames.length} frames)`);
+          } else {
+            console.error(`❌ Trozo ${posicion_en_segundos} no generó frames`);
+          }
+        })
+        .catch(err => {
+          console.error(`❌ Error precargando trozo ${posicion_en_segundos}:`, err);
+        })
+        .finally(() => {
+          trozosEnProceso.delete(posicion_en_segundos);
+        });
+    }
+  }
 
 
 
@@ -6840,6 +6879,7 @@ verificarSoporteCodec().then(soportado => {
  
 </body>
 </html>  
+
 
 
 
