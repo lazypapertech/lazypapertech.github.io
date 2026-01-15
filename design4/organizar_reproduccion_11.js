@@ -1308,6 +1308,7 @@ class ReproductorTrozos {
   async reproducirFrame(segundo, frameEnSegundo) {
     // Precargar siguiente segundo
     this.precargarSiguiente(segundo);
+    this.precargarSiguiente(segundo + 1); 
     
     // Verificar si el segundo está cargado
     const data = this.segundos.get(segundo);
@@ -1346,7 +1347,7 @@ class ReproductorTrozos {
     
     // Limpiar segundos lejanos (más de 2 segundos atrás)
     this.segundos.forEach((data, seg) => {
-      const margen = 7;
+      const margen = 2;
       if (seg < segundoActual - margen) {//2
         console.log(`🗑️ Liberando segundo ${seg}`);
         if (data.frames) {
