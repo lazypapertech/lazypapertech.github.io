@@ -1346,7 +1346,8 @@ class ReproductorTrozos {
     
     // Limpiar segundos lejanos (más de 2 segundos atrás)
     this.segundos.forEach((data, seg) => {
-      if (seg < segundoActual - 2) {
+      const margen = 7;
+      if (seg < segundoActual - margen) {//2
         console.log(`🗑️ Liberando segundo ${seg}`);
         if (data.frames) {
           data.frames.forEach(f => {
@@ -1471,4 +1472,4 @@ class ReproductorTrozos {
 }
 
 const reproductorTrozos = new ReproductorTrozos(canvas_principal);
-  
+   
