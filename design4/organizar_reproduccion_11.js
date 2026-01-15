@@ -618,8 +618,8 @@ async function renderFrames(previewOnly = false) {
     }
     
     // Solo limpiar si NO existe el trozo
-    ctx_principal.clearRect(0, 0, rect.width, rect.height);
-    draw_text("Updating frame...", rect);
+    //ctx_principal.clearRect(0, 0, rect.width, rect.height);
+    //draw_text("Updating frame...", rect);
   }
 
   // Videos originales
