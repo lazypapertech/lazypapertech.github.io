@@ -1291,8 +1291,10 @@ class ReproductorTrozos_0 {
 
 
 
+
 /* ===========================
-   REPRODUCTOR CON TRIPLE BUFFER
+   REPRODUCTOR CON DOBLE BUFFER
+   (await createImageBitmap – patrón seguro)
 =========================== */
 
 class ReproductorTrozos {
@@ -1302,43 +1304,19 @@ class ReproductorTrozos {
 
     // Map<segundo, { frames: ImageBitmap[], cargando: boolean }>
     this.segundos = new Map();
-
-    // 🔑 Frame de respaldo GLOBAL (anti-frame-negro)
-    this.ultimoFrameValido = null;
-    this.ultimoSegundoValido = -1;
   }
 
   /* ===========================
-     RENDER DE FRAME
+     REPRODUCIR FRAME
   =========================== */
   async reproducirFrame(segundo, frameEnSegundo) {
-    // 🔄 Triple buffer: pasado + actual + futuro
-    this.precargar(segundo);
+    this.precargarSiguiente(segundo);
 
     const data = this.segundos.get(segundo);
 
-    // ✅ Frame exacto disponible
     if (data && data.frames && data.frames[frameEnSegundo]) {
-      const frame = data.frames[frameEnSegundo];
-
       this.ctx.drawImage(
-        frame,
-        0, 0,
-        this.canvas.width,
-        this.canvas.height
-      );
-
-      // Guardar como respaldo
-      this.ultimoFrameValido = frame;
-      this.ultimoSegundoValido = segundo;
-
-      return true;
-    }
-
-    // 🟡 Frame no listo → usar fallback
-    if (this.ultimoFrameValido) {
-      this.ctx.drawImage(
-        this.ultimoFrameValido,
+        data.frames[frameEnSegundo],
         0, 0,
         this.canvas.width,
         this.canvas.height
@@ -1346,43 +1324,34 @@ class ReproductorTrozos {
       return true;
     }
 
-    // ⏳ Nada disponible todavía
     if (!data || !data.cargando) {
       this.cargarSegundo(segundo);
     }
 
+    // NO limpiar canvas
     return false;
   }
 
   /* ===========================
-     PRECARGA TRIPLE BUFFER
+     PRECARGA DOBLE BUFFER
   =========================== */
-  precargar(segundoActual) {
-    const futuros = [segundoActual + 1, segundoActual + 2];
+  precargarSiguiente(segundoActual) {
+    const siguiente = segundoActual + 1;
 
-    // Precargar futuro
-    for (const seg of futuros) {
-      if (trozos_guardados[seg] && !this.segundos.has(seg)) {
-        this.cargarSegundo(seg);
-      }
+    if (trozos_guardados[siguiente] && !this.segundos.has(siguiente)) {
+      this.cargarSegundo(siguiente);
     }
 
-    // 🧹 Limpieza segura
     this.segundos.forEach((data, seg) => {
-      const esPasadoSeguro = seg < segundoActual - 2;
-      const noEsFallback = seg !== this.ultimoSegundoValido;
-
-      if (esPasadoSeguro && noEsFallback) {
-        if (data.frames) {
-          data.frames.forEach(f => f?.close?.());
-        }
+      if (seg < segundoActual - 2) {
+        data.frames?.forEach(f => f?.close?.());
         this.segundos.delete(seg);
       }
     });
   }
 
   /* ===========================
-     CARGA DE SEGUNDO
+     CARGAR SEGUNDO (CLAVE)
   =========================== */
   async cargarSegundo(segundo) {
     if (!trozos_guardados[segundo]) return;
@@ -1398,31 +1367,38 @@ class ReproductorTrozos {
 
     const encodedFrames = getChunks(trozos_guardados[segundo]);
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const frames = [];
       const bitmapPromises = [];
-      let index = 0;
+      let outputIndex = 0;
 
       const decoder = new VideoDecoder({
         output: (videoFrame) => {
-          const i = index++;
+          const frameIndex = outputIndex++;
 
-          try {
-            const off = new OffscreenCanvas(
-              videoFrame.displayWidth,
-              videoFrame.displayHeight
-            );
-            off.getContext('2d').drawImage(videoFrame, 0, 0);
-            videoFrame.close();
+          const bitmapPromise = (async () => {
+            try {
+              const canvas = new OffscreenCanvas(
+                videoFrame.displayWidth,
+                videoFrame.displayHeight
+              );
+              const ctx = canvas.getContext('2d');
 
-            const p = createImageBitmap(off).then(bmp => {
-              frames[i] = bmp;
-            });
+              ctx.drawImage(videoFrame, 0, 0);
+              videoFrame.close();
 
-            bitmapPromises.push(p);
-          } catch (e) {
-            videoFrame.close();
-          }
+              const bitmap = await createImageBitmap(canvas);
+              frames[frameIndex] = bitmap;
+
+              return bitmap;
+            } catch (e) {
+              console.error(`Error frame ${frameIndex}:`, e);
+              try { videoFrame.close(); } catch {}
+              return null;
+            }
+          })();
+
+          bitmapPromises.push(bitmapPromise);
         },
         error: e => {
           data.cargando = false;
@@ -1433,48 +1409,48 @@ class ReproductorTrozos {
       try {
         decoder.configure({ codec: "vp8" });
 
-        let ts = 0;
-        const dur = 1e6 / TARGET_FPS;
+        let timestamp = 0;
+        const frameDuration = 1e6 / TARGET_FPS;
 
         for (let i = 0; i < encodedFrames.length; i++) {
           decoder.decode(new EncodedVideoChunk({
             type: i === 0 ? "key" : "delta",
-            timestamp: ts,
-            data: encodedFrames[i]
+            timestamp,
+            data: encodedFrames[i],
           }));
-          ts += dur;
+          timestamp += frameDuration;
         }
 
-        decoder.flush().then(async () => {
-          await Promise.all(bitmapPromises);
+        await decoder.flush();
+        await Promise.all(bitmapPromises);
 
-          data.frames = frames;
-          data.cargando = false;
+        data.frames = frames;
+        data.cargando = false;
 
-          decoder.close();
-          resolve();
-        });
+        decoder.close();
+        resolve();
 
       } catch (e) {
         data.cargando = false;
+        try { decoder.close(); } catch {}
         reject(e);
       }
     });
   }
 
   /* ===========================
-     CLEANUP TOTAL
+     CLEANUP
   =========================== */
   cleanup() {
-    this.segundos.forEach(d => {
-      d.frames?.forEach(f => f?.close?.());
+    this.segundos.forEach(data => {
+      data.frames?.forEach(f => f?.close?.());
     });
     this.segundos.clear();
-    this.ultimoFrameValido = null;
   }
 }
 
 const reproductorTrozos = new ReproductorTrozos(canvas_principal);
 
    
+
 
