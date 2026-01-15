@@ -6681,6 +6681,8 @@ if (posicion_en_segundos < 0) {
   decodificacionesActivas.push(decodificacionPromise);
 }
 */
+
+	/*
 	const bytes = new Uint8Array(event.data);
   const posicion_en_segundos =
     bytes[0] |
@@ -6718,8 +6720,23 @@ if (posicion_en_segundos < 0) {
           trozosEnProceso.delete(posicion_en_segundos);
         });
     }
-  }
+  }*/
 
+	const bytes = new Uint8Array(event.data);
+  const posicion_en_segundos =
+    bytes[0] |
+    (bytes[1] << 8) |
+    (bytes[2] << 16) |
+    (bytes[3] << 24);
+
+  if (posicion_en_segundos >= 0){
+    const chunk_data = bytes.subarray(5);
+    
+    // ✅ GUARDAR DIRECTAMENTE SIN DECODIFICAR
+    trozos_guardados[posicion_en_segundos] = chunk_data;
+    
+    console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`);
+  } 
 
 
 
@@ -6879,6 +6896,7 @@ verificarSoporteCodec().then(soportado => {
  
 </body>
 </html>  
+
 
 
 
