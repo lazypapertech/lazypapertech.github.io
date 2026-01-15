@@ -2,7 +2,7 @@
    CONFIGURACIÓN DE FRAMERATE
 =========================== */
 
-const TARGET_FPS = 25; 
+const TARGET_FPS = 25; //25
 const FRAME_DURATION = 1 / TARGET_FPS;
 
 function cuantizarTiempo(tiempo) {
@@ -1504,6 +1504,7 @@ class ReproductorTrozos {
 const reproductorTrozos = new ReproductorTrozos(canvas_principal);
 
    
+
 
 
 
