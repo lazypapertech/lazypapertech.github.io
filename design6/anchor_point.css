@@ -1,0 +1,188 @@
+/*
+.start_end_type_anchorpoint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, #7c55e6 0%, #5a5a7a 100%);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+*/
+
+.start_end_type_anchorpoint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 24px;
+    background: rgb(48, 48, 48); /* Tu color base */
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box; 
+}
+
+.anchor-header strong {
+    font-size: 24px;
+    font-weight: 700;
+    color: #7c55e6; /* Título en color de acento */
+    letter-spacing: 0.5px;
+}
+
+.coordinates-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 16px;
+    background: rgba(124, 85, 230, 0.15); /* Acento púrpura sutil */
+    border-radius: 8px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(124, 85, 230, 0.3);
+}
+ 
+.anchor-header {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+}
+
+/*
+.anchor-header strong {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.5px;
+}
+*/
+
+.anchor-header span {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    max-width: 280px;
+}
+
+/*
+.coordinates-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+}
+*/
+
+.coordinate-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.coordinate-item strong {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.coordinate-item input {
+    background: transparent;
+    border: none;
+    width: 35px;
+    padding: 2px 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    pointer-events: none;
+    user-select: none;
+}
+
+.viewport-image {
+    width: 100%;
+    max-width: 500px; /* Tamaño máximo fijo */
+    box-sizing: border-box;
+}
+
+/* Hacer que la imagen se adapte automáticamente con CSS */
+.image-scroll {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 8px;
+    background: transparent;
+    overflow: visible;
+    padding: 10px;
+}
+
+.image-wrapper {
+    width: 100%;
+    position: relative;
+}
+ 
+/*
+.image-wrapper img {
+    width: 100%;
+    height: auto; 
+    display: block;
+    filter: brightness(0.4);
+}
+*/
+.image-wrapper img {
+    max-height: 250px;   /* el alto máximo que quieras */
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: brightness(0.4); 
+  
+    border: 2px solid rgb(200,200,200);   /* ← contorno blanco */
+    border-radius: 8px;       /* opcional, queda más fino */
+    box-sizing: border-box;
+}
+
+.anchor-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none; /* deja pasar el mouse */
+}
+
+ 
+
+#anchor-point {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ff4757;
+    border: 3px solid #fff;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    cursor: grab;
+    z-index: 10;
+    box-shadow: 0 2px 12px rgba(255, 71, 87, 0.6);
+    transition: transform 0.2s ease;
+}
+
+.start_end_type_anchorpoint #anchor-point {
+    background: #ff4757;  /* ← Rojo brillante */
+    border: 3px solid #fff;  /* ← Contorno blanco de 3px */
+    box-shadow: 0 2px 12px rgba(255, 71, 87, 0.6);  /* ← Sombra roja */
+    transition: transform 0.2s ease;
+}
+
+#anchor-point:hover {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+#anchor-point:active {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.1);
+}
