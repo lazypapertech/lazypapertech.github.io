@@ -10,7 +10,11 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
-  
+ <link rel="stylesheet" href="./design6/menu_options.css">  
+ <link rel="stylesheet" href="./design6/anchor_point.css">   
+ <link rel="stylesheet" href="./design6/color_grading.css"> 
+ <link rel="stylesheet" href="./design6/publicidad.css">    
+ <link rel="stylesheet" href="./design6/freelancers.css">
 
 <style> 
 #general-header{display:none};
@@ -20,6 +24,95 @@
 .logo-container-menu{display:flex;align-items:center;justify-content:center}.logo-container-menu p{margin:auto;font-size:18px;font-weight:bolder;color:rgb(245,245,245)}.logo-menu{height:30px;margin-right:10px;border-radius:50%;object-fit:cover}#languageModal,.side-menu{position:fixed;height:100%}.hamburger{font-size:25px;font-weight:700;cursor:pointer;padding:5px;color:rgb(255,255,255);}.side-menu{top:45px;left:-100%;width:150px;color:#444;padding:20px;box-shadow:2px 0 5px rgba(0,0,0,.3);transition:left .3s;z-index:12}.side-menu.active{left:0}#openModalBtn,#save-lang{background-color:#7c55e6;color:#fff}.side-menu nav ul{list-style:none;padding:0}.side-menu nav ul li{margin:20px 0;padding:10px 5px}.side-menu nav ul li a{color:#fff;text-decoration:none;font-size:18px}
 
  
+
+/*anchor point*/
+/*
+.viewport-image {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.image-scroll {
+    width: 280px;
+    height: 200px; 
+    border-radius: 8px;
+    background: #111;
+}
+
+.image-wrapper {
+    position: relative;
+    transform-origin: top left;
+}
+
+.image-wrapper img {
+    display: block;
+    filter: brightness(0.85);
+    user-select: none;
+}
+
+#anchor-point {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: red;
+    border: 1px solid black;
+    transform: translate(-50%, -50%);
+    cursor: grab;
+}
+*/
+
+ 
+/*
+.image-scroll {
+position: relative;
+width: 100%;
+max-width: 100%;
+aspect-ratio: auto; /* se define desde JS */
+border-radius: 8px;
+background: #111;
+overflow: hidden;
+}
+ 
+
+.image-wrapper {
+    width: 100%;
+    height: 100%; 
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: auto; 
+    display: block;
+    filter: brightness(0.4);
+}
+
+.anchor-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none; /* deja pasar el mouse */
+}
+
+ 
+#anchor-point {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: red;
+    border: 1px solid black;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+    cursor: grab;
+    z-index: 10; /* 🔑 siempre delante */
+}
+*/
+ 
+
+
+
+
 
  
  
@@ -130,7 +223,7 @@
     background: transparent;
     border: none;
     color: rgba(255,255,255,0.6);
-    font-size: 15px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -138,7 +231,7 @@
 .tab-button-active-settings {
     color: #fff;
     font-weight: bold;
-    border-bottom: 3px solid #7c55e6;
+    border-bottom: 3px solid #7c55e6; 
 }
 
 .tab-button-inactive-settings:hover {
@@ -178,13 +271,21 @@
 
 /*new*/
 
+#different_tabs_0,
+#different_tabs_1{
+    display: flex;
+    align-items: center; /*centrado vertical*/
+    justify-content: center;
+}
+
+
 /* ESTILOS PARA AMBOS BLOQUES */
 .tabs-menu-container-settings-0,
 .tabs-menu-container-settings-1 {
     display: flex;
     background: rgb(39, 39, 39);
     border-bottom: 1px solid rgba(255,255,255,0.2);
-    user-select:none;
+    user-select:none; 
 }
 
 .tab-button-active-settings-0,
@@ -192,11 +293,11 @@
 .tab-button-active-settings-1,
 .tab-button-inactive-settings-1 {
     flex: 1;
-    padding: 12px;
+    padding: 6px 2px;
     background: transparent;
     border: none;
     color: rgba(255,255,255,0.6);
-    font-size: 15px;
+    font-size: 14px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -252,6 +353,42 @@
     color: rgba(255,255,255,0.8);
     text-align: center;
 }
+
+/*solucion*/
+.plus-modal-content-0,
+.plus-modal-content-1 {
+    display: flex;
+    flex-direction: column;
+    height: 80vh; /* o la altura que prefieras */
+    max-height: 600px; /* altura máxima del modal */
+    overflow: hidden; /* importante: evita scroll en el contenedor principal */
+}
+
+.plus-modal-header-0,
+.plus-modal-header-1 {
+    flex-shrink: 0; /* evita que el header se comprima */
+}
+
+.tabs-menu-container-settings-0,
+.tabs-menu-container-settings-1 {
+    display: flex;
+    background: rgb(39, 39, 39);
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    user-select: none;
+    flex-shrink: 0; /* IMPORTANTE: evita que los tabs se compriman */
+}
+
+/* Asegura que el contenedor de different_tabs ocupe el espacio restante */
+#different_tabs_0,
+#different_tabs_1 {
+    flex: 1;
+    overflow: hidden; /* evita scroll aquí */
+    min-height: 0;
+}
+
+
+
+
 
 
 /*segundo bloque*/
@@ -339,7 +476,7 @@
 #subcontent-regla{display:flex;background-color: rgb(48,48,48);position: relative;height:100%;box-sizing: border-box;width: 100%; flex: 1;flex-direction: column; } 
 .scroll-wrapper{width:100%;height:100%; overflow:auto;border:0;position: relative;flex: 1;
 min-height: 0;box-sizing: border-box;}  
-.contenedor{position:relative;background-color:transparent;border-top:2px solid rgb(25, 25, 25);box-sizing: border-box;  }/*quitar position relative*/
+.contenedor{position:relative;background-color:transparent;border-top:2px solid rgb(25, 25, 25,0.5);box-sizing: border-box;  }/*quitar position relative*/
  
  
 
@@ -463,7 +600,7 @@ min-height: 0;box-sizing: border-box;}
  
 .rectangulo-caja {
     position: absolute;
-    height: 45px;
+    height: 40px;/*45*/
     /*background: linear-gradient(135deg, #9874ff 0%, #7c55e6 50%, #532ebd 100%);*/
     background: #7c55e6; 
     transform: translateY(-50%);
@@ -512,7 +649,7 @@ min-height: 0;box-sizing: border-box;}
 .extremo-blanco {
     position: absolute;
     width: 15px;
-    height: 45px;
+    height: 40px;
     background: linear-gradient(135deg, #ffffff 0%, #e8e8e8 100%);
     top: 50%;
     transform: translateY(-50%);
@@ -630,7 +767,7 @@ min-height: 0;box-sizing: border-box;}
   margin-left: 7px;
 }
 
-.tabs-scroll-container{flex:1;display:flex;overflow-x:auto;overflow-y:hidden;white-space:nowrap}.tabs-scroll-container::-webkit-scrollbar{height:6px}.tabs-scroll-container::-webkit-scrollbar-thumb{background-color:#666;border-radius:3px}.tab{padding:10px 15px;background-color:rgb(25, 25, 25);color:#fff;cursor:pointer;border:none;border-right:1px solid #333;font-size:14px;white-space:nowrap;flex-shrink:0;transition:background-color .2s;width:auto}.tab:hover{background-color:#444}.tab.active{background-color:#7c55e6;text-shadow: 0 1px 2px rgba(0,0,0);}.tab-content{flex:1;padding:0px;display:none;align-items:center;justify-content:center;font-size:18px;color:#666}.tab-content.active{display:flex}
+.tabs-scroll-container{flex:1;display:flex;flex-direction: row-reverse; justify-content: flex-start; overflow-x:auto;overflow-y:hidden;white-space:nowrap}.tabs-scroll-container::-webkit-scrollbar{height:6px}.tabs-scroll-container::-webkit-scrollbar-thumb{background-color:#666;border-radius:3px}.tab{padding:10px 15px;background-color:rgb(25, 25, 25);color:#fff;cursor:pointer;border:none;border-right:1px solid #333;font-size:14px;white-space:nowrap;flex-shrink:0;transition:background-color .2s;width:auto}.tab:hover{background-color:#444}.tab.active{background-color:#7c55e6;text-shadow: 0 1px 2px rgba(0,0,0);}.tab-content{flex:1;padding:0px;display:none;align-items:center;justify-content:center;font-size:18px;color:#666}.tab-content.active{display:flex}
 
 #new_project{font-size:12px;padding:0 15px;background-color:transparent;border:none;border-right:1px solid rgb(70,70,70);color:rgb(255,255,255);cursor:pointer;}
 #new_project:hover{background-color:#444}
@@ -715,7 +852,7 @@ min-height: 0;box-sizing: border-box;}
 .general-main { 
     display: flex; 
     width: 100%; 
-    height: 51vh;  
+    height: 51vh;  	 
      
     background-color: transparent; 
     transition: height 0.3s ease;
@@ -768,10 +905,11 @@ height:40px;
     /*aspect-ratio: 16/9;*/ 
     max-height: 100%;
     height:100%;
-    padding:15px; 
+    padding:5px 5px 5px 5px; 
     background-color: rgb(48,48,48); 
 } 
 
+/* 
 .video-block {
     position: relative;
     width: 100%;
@@ -781,36 +919,54 @@ height:40px;
     align-items: center;
     justify-content: center;
     overflow: visible; 
-}
+} 
+*/
+ 
 
  
-.wrapper-multimedia { 
+.video-block {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
     display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center; 
-    height: 100%;
-    max-height: 100%;
-    max-width: 100%; 
-    aspect-ratio: 16/9;/*512/320*/
-    background-color: transparent;   
+    align-items: stretch;   
+    justify-content: center;
+    overflow: hidden;   
+}  
+
+ 
+ 
+
+ 
+.wrapper-multimedia { display: flex; flex-direction: column; align-items: stretch; justify-content: center; height: 100%; max-height: 100%; max-width: 100%; aspect-ratio: 16/9; background-color: transparent; }
+ 
+
+ 
+ 
+.video-content {
+display:block;
 } 
+ 
+#canvas { 
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+} 
+ 
+ 
+ 
+
+
+ 
+
  
     
 
  
 
  
-/*
-.video-content {
-    flex: 1;
-    min-height: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-*/
+ 
 
 .video-block video {
     width: 100%;
@@ -843,12 +999,14 @@ height:40px;
 }
 
  
+ 
 .video-block canvas {
     width: 100%;
     height: 100%;
     object-fit: contain;
     background-color: black; 
-} 
+}  
+
  
  
  
@@ -892,6 +1050,7 @@ height:40px;
     align-items: center;  
     width: 100%;
     height: calc(var(--empty-block-height, 49vh) - 0px);/*var(--empty-block-height, 49vh);*/  
+    height: calc(var(--empty-block-height, 49dvh) - 0px);;
     background-color: transparent; 
 }
 .empty-block {
@@ -1010,7 +1169,7 @@ height:40px;
 }
  
 #modal_box_dinamico {  
-  padding: 20px;
+  padding: 20px 20px 20px 20px;
   border-radius: 12px;
   display: inline-block;
   max-width: 90%;
@@ -1023,6 +1182,7 @@ height:40px;
    
   backdrop-filter: blur(10px);
   background-color: rgb(40,40,40);/*#1e4b82 #3e18a3*/
+  max-height: 90vh; 
 }
  
  
@@ -1112,6 +1272,21 @@ height:40px;
     z-index:4;	
 }
 
+
+#export-btn{
+   display:none;/*flex*/
+   padding:0 15px; 
+}
+
+#undo-redo-container-2{
+ display:none;/*flex*/
+ gap:15px;
+ padding:0 10px;
+}
+
+
+ 
+
  
 @media (max-width: 1150px) { 
     #user-menu{
@@ -1121,7 +1296,7 @@ height:40px;
   
 @media (max-width: 1000px) {
 
-    body{background-color:rgb(35, 45, 50)}
+    body{background-color:rgb(48, 48, 48)}
 
     #general-header{display:block} 
 
@@ -1136,12 +1311,12 @@ height:40px;
 	
     .general-main {
         flex-direction: row; /*column*/         
-        height: auto;   
+        height: auto;  
 	min-height:auto;              
     }
  
     .general-1{   
-        margin: 30px 0;
+        margin: 0;/*30px 0*/
         padding: 0;
         height: auto; 
     }   
@@ -1172,15 +1347,16 @@ height:40px;
  
  
     .wrapper-multimedia { 
-        height: auto;
+        height: auto; 
         width: 100%;
-        max-width: 100%;
-        aspect-ratio: 16/9;/*512/320*/ 
+        max-width: 100%;/*100% 650px*/
+        aspect-ratio: 16/9; 
     } 
-    
+
+    /*
     .video-content {
         aspect-ratio: 16 / 9;
-    }
+    }*/
     
     .second-main-container.plus-modal-content-0 {
         margin: 5px 0;	
@@ -1231,6 +1407,10 @@ height:40px;
     .general-main { 
     	padding: 0;
     }  
+    
+    #export-btn{ 
+   	padding:0 10px;
+    }
 
     .plus-modal-content-0,.plus-modal-content-1 { 
     	height: calc(100vh - 240px); 
@@ -1241,10 +1421,16 @@ height:40px;
         padding: 0;
         height: auto; 
     }  
+    .general-1 { 
+    	border-radius: 0;
+    }
 
     #general-0 { 
     	margin: auto 20px; 
     }
+    #undo-redo-container-2{
+	display:none;
+    }	
 
     .seccion-cuadrada {
     	width: 50px;
@@ -1254,6 +1440,7 @@ height:40px;
 
 @media (max-width: 450px) { 
  
+     
       
     .video-block video { 
     	border-radius: 0;
@@ -1279,7 +1466,7 @@ height:40px;
 
     .tabs-add-button{
 	flex:0 0 110px;/*40*/
-    }
+    } 
 
 
 }
@@ -1292,6 +1479,9 @@ height:40px;
     }
 } 
 */
+
+
+ 
 
 #item-loader{
 display:none;
@@ -1364,11 +1554,11 @@ display:none;
 
 .btn-close{
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -10px;/*-10px*/
+  right: -10px;/*-10px*/
   width: 34px;
   height: 34px;
-  font-size:29px;
+  font-size:29px;/*29*/
   border-radius: 50%;
   border: none;
   background: #fff;
@@ -1421,9 +1611,18 @@ display:none;
 display:none;
 }
  
-#canvas{
-aspect-ratio: 16/9;
-}
+
+ 
+
+ 
+
+
+ 
+ 
+ 
+
+
+
 
  
 
@@ -1473,11 +1672,16 @@ aspect-ratio: 16/9;
     background-color: transparent;
     border: none;
     cursor: pointer;
-    padding: 4px 0;
+    padding: 4px 0; 
     display: flex;
     align-items: center;
     justify-content: center;
     transition: opacity 0.2s ease;
+}
+
+#play,
+#pause{
+     margin:0 5px;
 }
 
 #play svg,
@@ -1524,6 +1728,7 @@ aspect-ratio: 16/9;
     margin:0 5px;
 }
 
+ 
 #undo,
 #redo {
     background-color: transparent;
@@ -1566,6 +1771,8 @@ aspect-ratio: 16/9;
     justify-content: center;
     transition: opacity 0.2s ease;
 }
+
+ 
 
 #zoom-out svg {
     width: 28px;
@@ -1653,7 +1860,7 @@ aspect-ratio: 16/9;
 
    
  			
-                </div>  
+                </div>   
             </div> 
         </div>
 
@@ -1801,7 +2008,7 @@ aspect-ratio: 16/9;
 		  <span class="text">Add file</span>
 		</button>
 		<button class="tabs-add-button" id="change_view" style="display:none;width:200px;"> 
-			Change view 
+			Properties 
 		</button>
 		<button class="tabs-add-button" id="export_video" style="display:none;background-color:#7c55e6;"> 
 			Export 
@@ -1834,6 +2041,40 @@ aspect-ratio: 16/9;
                 <button class="tabs-add-button" id="update" style="display:none;" translate="no">Update frames</button> 
 		<button class="tabs-add-button" id="plus-btn" translate="no">Shortcuts</button>
                 <div class="tabs-scroll-container" id="tabs-scroll-container">
+			<button class="tabs-add-button" id="export-btn" translate="no">
+		  <svg xmlns="http://www.w3.org/2000/svg"
+     width="30"
+     height="30"
+     viewBox="0 0 24 24"
+     fill="none"
+     stroke="white"
+     stroke-width="2"
+     stroke-linecap="round"
+     stroke-linejoin="round">
+  
+  <!-- Caja o contenedor -->
+  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+
+  <!-- Flecha hacia arriba (exportar) -->
+  <path d="M12 16V8"></path>
+  <polyline points="8 12 12 8 16 12"></polyline>
+</svg>
+
+
+		  <span class="text" style="font-size:16px;">Export</span>
+			</button>
+			<div id="undo-redo-container-2">
+            <button id="undo">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/>
+                </svg>
+            </button>
+            <button id="redo">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/>
+                </svg>
+            </button>
+        </div>
                 </div>
             </div>
             <div id="tab-contents">
@@ -1952,7 +2193,7 @@ aspect-ratio: 16/9;
     </div>
     <div class="tabs-menu-container-settings-0">
       <button class="tab-button-active-settings-0" data-tab="general-tab-content-settings-0" translate="no">Profile</button>
-      <button class="tab-button-inactive-settings-0" data-tab="advanced-tab-content-settings-0" translate="no">Projects</button>
+      <button class="tab-button-inactive-settings-0" data-tab="advanced-tab-content-settings-0" translate="no">Other</button>
       <button class="tab-button-inactive-settings-0" data-tab="team-tab-content-settings-0" translate="no">Tutorials</button>
       <button class="tab-button-inactive-settings-0" data-tab="upgrade-tab-content-settings-0" translate="no"></button>
     </div>
@@ -1968,9 +2209,9 @@ aspect-ratio: 16/9;
       <button class="plus-modal-close-1" id="plus-modal-close-1">&times;</button>
     </div>
     <div class="tabs-menu-container-settings-1">
-      <button class="tab-button-active-settings-1" data-tab="general-tab-content-settings-1" translate="no">General</button>
-      <button class="tab-button-inactive-settings-1" data-tab="advanced-tab-content-settings-1" translate="no">Comments</button>
-      <button class="tab-button-inactive-settings-1" data-tab="team-tab-content-settings-1" translate="no">Teams</button>
+      <button class="tab-button-active-settings-1" data-tab="general-tab-content-settings-1" translate="no">Color</button>
+      <button class="tab-button-inactive-settings-1" data-tab="advanced-tab-content-settings-1" translate="no">Entrepreneurs</button>
+      <button class="tab-button-inactive-settings-1" data-tab="team-tab-content-settings-1" translate="no">Freelancers</button>
     </div>
     <div id="different_tabs_1"></div>  
   </div> 
@@ -2029,6 +2270,7 @@ let userId = localStorage.getItem("useridManycaptions");
     localStorage.setItem("useridManycaptions", userId);
   }
  
+let split_position_global = 0;
 let current_scroll_x = 0;
 let current_filetype="scene";
 let current_filename;
@@ -2244,6 +2486,8 @@ confirmBtnNo.addEventListener('click', () => {
 });
 
 confirmBtnYes.addEventListener('click', () => {
+    console.log("confirmacion render");
+    return; 
     confirmModalOverlay.style.display = 'none';
     // Aquí se ejecutan las acciones del finish
     show_stepPreview();
@@ -2255,7 +2499,7 @@ confirmBtnYes.addEventListener('click', () => {
     const items_with_audio = extraerListasComoString(item_types, ["video","audio"], "/separator/");	
     console.log("items_with_audio: ",items_with_audio);
     const json_data = {"service":"update_video","itemName":current_timeline[3],"property":current_timeline[2],"params":"empty","items_with_audio":items_with_audio,"extra0":"","extra":""}; 
-    websocketClient.send(JSON.stringify(json_data));
+    //websocketClient.send(JSON.stringify(json_data));
     crear_loading_tab(); 
     finalizar(); 
 });
@@ -2270,6 +2514,10 @@ function ocultarPendientesYErrores() {
       el.style.display = "none";
     }
   });
+  const export_btn = document.getElementById("update_video");
+  if (export_btn){
+	export_btn.style.display="block";
+  }
 }
 
 
@@ -2299,8 +2547,16 @@ function renderPendientes(diccionario) {
   // opcional: limpiar antes
   ul.innerHTML = "";
 
+  const export_btn = document.getElementById("update_video");
+  if (export_btn){
+	export_btn.style.display="none";
+  }
   if (Object.keys(progress_visible_names).length == uploaded_names.length){
 	ocultarPendientesYErrores();
+	const export_btn = document.getElementById("update_video");
+  	if (export_btn){
+		export_btn.style.display="block";
+  	}
   }		
 
   Object.keys(diccionario).forEach(key => {
@@ -2315,7 +2571,7 @@ function renderPendientes(diccionario) {
 
     	ul.appendChild(li);
     }	
-  });
+  }); 
 }
 
  
@@ -2540,6 +2796,7 @@ websocketClient.send(JSON.stringify(json_data_02));
 	 
 
 let filename_url={};
+let filename_dic_url={};
 
 fileInput.addEventListener('change', (e) => {
   const files = e.target.files;
@@ -2820,7 +3077,7 @@ const SEGMENTO_BASE = 20;
 const CALIBRACION = 2;
 const SEGMENTO = SEGMENTO_BASE * CALIBRACION;
 const TOTAL_PUNTOS = MINUTOS_TOTALES*PASO_DELTA*60;
-const ALTURA_REGLA = 60;
+const ALTURA_REGLA = 50;//antes 60 
 const PADDING = 40; 
 const VALOR_SEGMENTO = 0.2;
 let ANCHO_VENTANA_VIRTUAL = window.innerWidth;
@@ -3148,7 +3405,10 @@ function resetOverlay() {
 
 
 function seleccionarRectangulo(rect) { 
- 
+    
+     
+ deseleccionar_continuo = true;
+
     if (selected_rect){
     	apply_rounded_corners(selected_rect); 
 	hide_rect_extrems(selected_rect);
@@ -3185,6 +3445,10 @@ function seleccionarRectangulo(rect) {
     
     // Seleccionar el nuevo
     rectanguloSeleccionado = rect;
+ 
+    if (rectanguloSeleccionado){ 
+	arreglar_posicion();
+    }	
       
 	if (rectanguloSeleccionado.dataset.start_value.includes("/%(bounce)%/")){
 		rect.style.background = 'rgb(255, 249, 105)';//rgb(65,134,191)
@@ -3202,8 +3466,11 @@ function seleccionarRectangulo(rect) {
 			console.log("rect.dataset.property MAL:",rect.dataset.property);
 			box_options = ["Delete_box","Add_box","keyframe_1","keyframe_2","bounce"];
 		}else{
+		     if (rect.dataset.filetype=="image"){
+			box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point"];
+		     } 		
 		     if (rect.dataset.filetype=="text"){
-			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes"];
+			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes","Text_color"];
 		     } 	
 		     if (rect.dataset.filetype=="audio"){
 			box_options = ["Delete_file","Add_file","Split"];
@@ -3230,14 +3497,19 @@ const generalMain = document.querySelector('.general-main');
 if (window.innerWidth > 1000) { 
     emptyBlockContainer.style.height = `calc(49vh - ${65}px)`;  
 } else {
-    if (generalMain) {
+    if (generalMain) { 
         const alturaGeneralMain = generalMain.offsetHeight;
-        emptyBlockContainer.style.height = `calc(100vh - ${65}px - ${alturaGeneralMain}px)`; 
+	//version anterior pero funciona bien
+        //emptyBlockContainer.style.height = `calc(100vh - ${65}px - ${alturaGeneralMain}px)`;  
+
+	const alturaViewport = window.innerHeight;
+	emptyBlockContainer.style.height = `calc(${alturaViewport}px - 65px - ${alturaGeneralMain}px)`;
     }
 }
 
     document.getElementById('segment_options').style.display = "flex"; 
     document.getElementById('botones-alineados').style.display = "flex";
+ 
  
     generarBotones(box_options);
  
@@ -3258,10 +3530,17 @@ if (window.innerWidth > 1000) {
 
 
 
+let deseleccionar_continuo = true;
 
 
+function deseleccionarRectangulo() { 
 
-function deseleccionarRectangulo() {
+    if (!deseleccionar_continuo){ 
+	return;
+    }
+
+    hide_rect_extrems(selected_rect);
+  
     if (selected_rect){
     	apply_rounded_corners(selected_rect); 
     }
@@ -3302,9 +3581,13 @@ const generalMain = document.querySelector('.general-main');
 if (window.innerWidth > 1000) { 
     emptyBlockContainer.style.height = `calc(49vh)`;  
 } else {
-    if (generalMain) {
+    if (generalMain) { 
         const alturaGeneralMain = generalMain.offsetHeight;
-        emptyBlockContainer.style.height = `calc(100vh - ${alturaGeneralMain}px)`; 
+	//version anterior pero funciona bien
+        //emptyBlockContainer.style.height = `calc(100vh - ${alturaGeneralMain}px)`;  
+
+	const alturaViewport = window.innerHeight;
+	emptyBlockContainer.style.height = `calc(${alturaViewport}px - ${alturaGeneralMain}px)`;
     }
 }
 	
@@ -3416,7 +3699,7 @@ function opacidad_reposo(rect) {
 
 
 
-const LONG_PRESS_TIME = 600;  
+const LONG_PRESS_TIME = 400;  
 let touchTimer = null;
 let touchStarted = 0;
 
@@ -3441,7 +3724,7 @@ function crearRectangulo(datos, indice_rect, index_row, index_global_row) {
 
     rect.style.display = "flex";
     rect.style.flexDirection = "column";  
-    rect.style.justifyContent = "flex-end"; 
+    rect.style.justifyContent = "flex-start"; 
     rect.style.boxSizing = "border-box"; 
     rect.style.position = "absolute";
  
@@ -3471,10 +3754,13 @@ rect.style.backgroundPositionY = "2px";
 rect.style.backgroundSize = "90px 40px";
 */
 
-
+console.log("datos.filetype:",datos.filetype);
 let nombre_visible_rect = "";
 if (current_view=="filename"){
-	nombre_visible_rect = datos.item_name + " - " + datos.start_value;
+	nombre_visible_rect = datos.item_name + " - " + datos.start_value; 
+	if (datos.filetype=="text"){
+		nombre_visible_rect = datos.item_name;
+	}
 }else{
 	nombre_visible_rect = datos.item_name + " - " + datos.property;
 }
@@ -3489,7 +3775,7 @@ labelBottom.textContent = nombre_visible_rect;//current_view+" ("+"video.mp4"+")
 labelBottom.style.color = "rgb(255,255,255)";//rgb(20,20,20)
 labelBottom.style.fontSize = "14px";
 labelBottom.style.fontWeight = "normal";
-labelBottom.style.marginBottom = "4px";
+labelBottom.style.marginTop = "4px";
 labelBottom.style.marginLeft = "16px";
 labelBottom.style.whiteSpace = "nowrap";
 labelBottom.style.overflow = "hidden";
@@ -3498,6 +3784,33 @@ labelBottom.style.pointerEvents = "none";
 labelBottom.style.userSelect = "none"; 
 
 rect.appendChild(labelBottom);
+
+
+if (datos.filetype=="text" || datos.filetype=="image"){
+// --- filetype text---
+const labelBottom2 = document.createElement('span'); 
+
+let valores_visibles = "";
+if (datos.property!="filename"){
+	valores_visibles = "("+datos.start_value+")";
+	if (datos.end_value!=""){
+	   valores_visibles = "("+datos.start_value+")  ("+datos.end_value+")";
+	} 
+}
+labelBottom2.textContent = valores_visibles; 
+labelBottom2.style.color = "rgb(255,255,255)";//rgb(20,20,20)
+labelBottom2.style.fontSize = "14px";
+labelBottom2.style.fontWeight = "normal";
+labelBottom2.style.marginTop = "2px";
+labelBottom2.style.marginLeft = "16px";
+labelBottom2.style.whiteSpace = "nowrap";
+labelBottom2.style.overflow = "hidden";
+labelBottom2.style.textOverflow = "ellipsis";
+labelBottom2.style.pointerEvents = "none";
+labelBottom2.style.userSelect = "none"; 
+
+rect.appendChild(labelBottom2);
+}
  
 
 /*
@@ -3587,7 +3900,9 @@ rect.appendChild(labelBottom);
         color: datos.color,
         start_value: datos.start_value,
         end_value: datos.end_value,
-	video_audio_value: datos.video_audio_value
+	video_audio_value: datos.video_audio_value,
+	color_rgb: datos.color_rgb,
+	anchor_point: datos.anchor_point
     });
     //rectangulos sera una sublist de rectangulos_current_view
     //rectangulos_current_view NO tiene la misma estructura que unica_regla.rectangulos
@@ -3651,7 +3966,7 @@ rect.addEventListener('touchstart', (e) => {
             arrastrando = true;
             console.log("Inicio arrastre Touch"); 
             iniciarArrastreTouch(e, rect);   
-        }
+        }  
  
     }
 
@@ -3666,7 +3981,11 @@ rect.addEventListener('touchstart', (e) => {
 
     //window.addEventListener('mousemove', onMove);
     //window.addEventListener('mouseup', onUp);
-    window.addEventListener('touchmove', onMove, { passive: false });
+
+    //comentar si uso el hold touch
+    window.addEventListener('touchstart', onMove);
+    //descomentar si uso "iniciarArrastreTouch_simple"	
+    //window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('touchend', onUp);
 }, { passive: false });
  
@@ -4127,7 +4446,9 @@ function add_box() {
         end: formatearTiempoDecimal(segundosFin),
         start_value: "",
         end_value: "",
-        video_audio_value: ""
+        video_audio_value: "",
+	color_rgb: "",
+	anchor_point: ""
     };
 
  
@@ -4164,7 +4485,9 @@ function add_box() {
                     end: formatearTiempoDecimal(segundosFin),
                     start_value: rect.start_value,
                     end_value: rect.end_value,
-                    video_audio_value: rect.video_audio_value
+                    video_audio_value: rect.video_audio_value,
+		    color_rgb: rect.color_rgb,
+		    anchor_point: rect.anchor_point
                 };
             }));
         }
@@ -4309,6 +4632,8 @@ function actualizarPosicionesVisuales() {
 }
 
 function actualizarEstadoGlobal() {
+  //lo puse cuando quite la restriccion de eliminar el utimo segmento filename
+  if (!selected_rect) return;
 
   const index_row = selected_rect.dataset.index_row;
   const index_global_row = selected_rect.dataset.index_global_row; 
@@ -4322,7 +4647,7 @@ function actualizarEstadoGlobal() {
     unica_regla.rectangulos[index_global_row] = [];
   }
 
-console.log("unica_regla CURRENT:",JSON.stringify(unica_regla) );
+//console.log("unica_regla CURRENT:",JSON.stringify(unica_regla) );
   unica_regla.rectangulos[index_global_row] = grupo.map(rect => {
 
     const posicion = parseFloat(rect.posicion);
@@ -4355,7 +4680,9 @@ console.log("unica_regla CURRENT:",JSON.stringify(unica_regla) );
       end   : formatearTiempoDecimal(segundosFin), 
       start_value      : rect.start_value,
       end_value        : rect.end_value,
-      video_audio_value: rect.video_audio_value
+      video_audio_value: rect.video_audio_value,
+      color_rgb: rect.color_rgb,
+      anchor_point: rect.anchor_point	
     };
   });
  
@@ -4524,6 +4851,7 @@ console.log("time_inicial: ",time_inicial);
 
 
 function inicializar() {
+console.log("aveces sale error crearPseudoRegla is not defined");
 /* 
     //descomentar
     crearPseudoRegla();
@@ -4544,12 +4872,14 @@ function inicializar() {
 
         const posicion = scrollWrapper.scrollLeft;  
         const pasos = Math.floor(posicion / 40);  
+	const split_position_0 = Math.round(posicion / 40);
+	split_position_global = parseFloat((split_position_0 * 0.2).toFixed(1));
         const cmExacto = parseFloat((pasos * 0.2).toFixed(1));
         current_scroll_x = cmExacto;
         const time = formatearTiempoDecimal(parseFloat(cmExacto));
   
  
-        //console.log("cinta position: ",time, ", ",cmExacto,", ",current_scroll_x);
+        //console.log("cinta position: ",time, ", ",cmExacto,", ",current_scroll_x,split_position_global);
         setTimeout(renderizarElementosVisibles, 20);
 
     }, { passive: true });
@@ -4560,15 +4890,40 @@ function inicializar() {
 	if (e.target.closest("#modal_overlay_dinamico") ||
       		e.target.closest("#modal_box_dinamico") || e.target.closest("#segment_options")) {
     		return;
-  	}
-	if (selected_rect){ 
+  	} 
+/*
+        //if (!e.target.closest(".scroll-wrapper")) 
+	if (
+	    !e.target.closest(".scroll-wrapper") &&  // fuera del scroll-wrapper
+	    !e.target.closest(".segment_options") 
+	){
+		resetOverlay();	 
+	        deseleccionarRectangulo();
+		hide_rect_extrems(selected_rect);
+        	console.log("fuera");  
+        } principal_view
+*/
+        if (e.target.closest("#principal_view")){
+		resetOverlay();	 
+	        	deseleccionarRectangulo();
+			//hide_rect_extrems(selected_rect);
+			console.log("fuera");  
+			deseleccionar_continuo = true; 
+			return;
+        }
+
+
+	if (selected_rect){ //selected_rect
 	   const index_row = selected_rect.dataset.index_row; 
 	   const indice = selected_rect.dataset.indice; 
            if (rectangulos[index_row][indice]){
 	        if (!rectangulos[index_row][indice].elemento.contains(e.target)){  
 			resetOverlay();	 
 	        	deseleccionarRectangulo();
-			hide_rect_extrems(selected_rect);
+			//hide_rect_extrems(selected_rect);
+			console.log("fuera");  
+			deseleccionar_continuo = true;
+			return;
 	        }
 	   }
 	}
@@ -4587,6 +4942,18 @@ function inicializar() {
 
 }
 
+ 
+ 
+/* 
+scrollWrapper.addEventListener('click', (e) => { 
+    if (e.target === scrollWrapper) {
+	resetOverlay();	 
+	deseleccionarRectangulo();
+	hide_rect_extrems(selected_rect); 
+        console.log("Click en el fondo del scrollWrapper");
+    }
+}); 
+*/
 
 function finalizar() {
     const contenedor = document.getElementById('contenedor');
@@ -4603,7 +4970,7 @@ function finalizar() {
  
  
 
-function resetear() {
+function resetear() { 
     // 1️⃣ Limpiar contenedor visual
     if (contenedor) {
         while (contenedor.firstChild) {
@@ -4618,7 +4985,7 @@ function resetear() {
     //OPCION A 	
     //rectangulos = [[],[]];
 
-    //OPCION B
+    //OPCION B 
     rectangulos.forEach(sublist => sublist.length = 0); 
 
     console.log("rectangulos rectangulos rectangulos: ",rectangulos);
@@ -4638,10 +5005,11 @@ function resetear() {
         crearRectangulo(rectData, index, 0);  
     });*/
  
+    console.log("unica_regla.rectangulos NUEVO:",JSON.stringify(unica_regla.rectangulos));
     if (current_view != "group"){
     let index_visible = 0; 
     unica_regla.rectangulos.forEach((rect_list, index_regla) => { 
-        console.log("index_regla: ",index_regla); 
+        //console.log("index_regla: ",index_regla); 
         if (rect_list[0].property == current_view){ 
 		for (let i=0; i < rect_list.length; i++){ 
 			console.log("i: ",i, index_visible);
@@ -4662,9 +5030,8 @@ function resetear() {
 	} 
     });
     }
-    console.log("lista0:",JSON.stringify(rectangulos)); 
-    //eliminarSublistasVacias();
-    console.log("lista despues0:",JSON.stringify(rectangulos));
+    //console.log("lista0:",JSON.stringify(rectangulos));  
+    //console.log("lista despues0:",JSON.stringify(rectangulos));
 
 /* 
     console.log("00 unica_regla.rectangulos: ",unica_regla.rectangulos);
@@ -4673,7 +5040,7 @@ function resetear() {
 	crearRectangulo(rectData, 1, ALTURA_REGLA);
     });	
 */ 
- 
+     
     // 5️⃣ Re-render
     renderizarElementosVisibles();
 }
@@ -5178,8 +5545,8 @@ function setSpeed(box){
 }
 
 
-//guardar valores
-function abrirModalDinamico(htmlString,sub_property) {
+//leer valores y ponerlos en el modal
+function abrirModalDinamico(htmlString,boton_id) {
 
   hide_vertical_line();
 
@@ -5189,6 +5556,17 @@ function abrirModalDinamico(htmlString,sub_property) {
   box.innerHTML = htmlString; // Insertar HTML dinámico
   setSpeed(box);
   document.getElementById('modal_overlay_dinamico').style.display = 'flex';
+  
+/* 
+  if (boton_id=="Anchor_point"){
+     setTimeout(() => {
+    requestAnimationFrame(() => {
+        initAnchorEvents();
+        loadAnchorImage();
+    });
+}, 50);
+  }
+*/
  
 
   console.log("current_timeline[2]: ",current_timeline[2]);
@@ -5196,6 +5574,12 @@ function abrirModalDinamico(htmlString,sub_property) {
   const indice = parseInt(selected_rect.dataset.indice);  
   const detalle = unica_regla.rectangulos[index_global_row][indice]; 
   let current_property_value = detalle.start_value;
+  if (boton_id=="Text_color"){
+	current_property_value = detalle.color_rgb;
+  } 
+  if (boton_id=="Anchor_point"){
+	current_property_value = detalle.anchor_point; 
+  } 
 
   const firstDiv = box.querySelector("div");
   console.log("firstDiv.className: ",firstDiv.className);	
@@ -5246,7 +5630,17 @@ function abrirModalDinamico(htmlString,sub_property) {
   }
 
   
-   
+  if (boton_id=="Anchor_point"){ 
+ 
+	requestAnimationFrame(() => {
+ 
+initAnchorEvents();  
+loadAnchorImage();
+});
+  
+ 
+  
+  }
  
 
 } 
@@ -5324,7 +5718,7 @@ function reset_variables(){
 }
 
 
-function request_new_project(){
+function request_new_project_0(){
 
     reset_variables(); 
 
@@ -5348,10 +5742,24 @@ function request_new_project(){
       if (tab.dataset.tabName !== 'scene') {
         tab.remove();
       }
-    });
- 
- 
+    }); 
 }
+
+function request_new_project(){
+
+    reset_variables(); 
+ 
+    console.log("eliminar todos los tabs y vaciar archivos subidos");
+    //closeModalDinamico();
+    const json_data =  {"service":"new_project","resolution":resolution_scene,"itemName":current_item,"property":"filename","params":"empty","file_type":selectedOption_item,"extra0":"","extra":""}; 
+    //websocketClient.send(JSON.stringify(json_data)); 
+    safeSend(JSON.stringify(json_data));
+ 
+     
+}
+
+
+
  
 function eliminarTabPorNombre(tabName) {
   const container = document.getElementById('tabs-scroll-container');
@@ -5390,14 +5798,14 @@ function eliminarTabPorNombre(tabName) {
 
  
 
-
+//guardar
 document.addEventListener("click", function (e) {
     if (e.target.matches("#delete_item")){
 	console.log("delete_item presionado");
 	eliminarTabPorNombre(current_item);
 	closeModalDinamico();
     } 
-
+/*
     if (e.target.matches("#log_in")){
 	console.log("log_in");
 	abrirModalDinamicoSimple(html_log_in);
@@ -5411,9 +5819,10 @@ document.addEventListener("click", function (e) {
     if (e.target.matches("#upgrade_plan")){
 	abrirModalDinamicoSimple(html_upgrade_plan);
     }
+*/
 
     if (e.target.matches("#update_video")){
-	request_render();
+	request_export();
     }
 
     if (e.target.matches("#create_new_project")){
@@ -5425,7 +5834,7 @@ document.addEventListener("click", function (e) {
     if (e.target.matches("#modal_overlay_dinamico")) { 
  
         e.target.style.display = "none"; 
-	closeModalDinamico();
+	closeModalDinamico(); 
 	console.log("✅✅✅✅ "+timestamp_and_duration+","+current_speed, " ",rectangulos); 
 
 	if (!selected_rect) return;
@@ -5460,7 +5869,10 @@ document.addEventListener("click", function (e) {
   	}
 
 	if (divPrincipal.className == "start_type"){  
-        	console.log("COMBINED =", inputs_combined);  
+        	console.log("COMBINED =", inputs_combined);
+		if (inputs_combined==","){
+			inputs_combined = "";//esto evita que salga "," como valor
+		}   
         	const valor = inputs_combined;
 		const indice = parseInt(selected_rect.dataset.indice);
 		 
@@ -5470,6 +5882,9 @@ document.addEventListener("click", function (e) {
   	}
 	if (divPrincipal.className == "end_type"){  
         	console.log("COMBINED =", inputs_combined);  
+		if (inputs_combined==","){
+			inputs_combined = "";
+		}
         	const valor = inputs_combined;
 		const indice = parseInt(selected_rect.dataset.indice);
 		unica_regla.rectangulos[index_global_row][indice].end_value = valor;
@@ -5477,7 +5892,10 @@ document.addEventListener("click", function (e) {
         	actualizarEstadoGlobal();
   	}
 	if (divPrincipal.className == "start_end_type"){  
-		console.log("COMBINED =", inputs_combined);  
+		console.log("COMBINED =", inputs_combined); 
+		if (inputs_combined==","){
+			inputs_combined = "";
+		} 
         	const valor = inputs_combined;
 		const indice = parseInt(selected_rect.dataset.indice);
 
@@ -5488,15 +5906,60 @@ document.addEventListener("click", function (e) {
 			unica_regla.rectangulos[index_global_row][indice].end_value = valor+",/%(bounce)%/";
         		rectangulos[index_row][indice].end_value = valor+",/%(bounce)%/";  	 
 		}else{
+			//if (divPrincipal.id != "start_end_type_color"){ 
 			unica_regla.rectangulos[index_global_row][indice].start_value = valor;
         		rectangulos[index_row][indice].start_value = valor;  
 		
 			unica_regla.rectangulos[index_global_row][indice].end_value = valor;
-        		rectangulos[index_row][indice].end_value = valor;  
+        		rectangulos[index_row][indice].end_value = valor; 
+			//} 
 		} 
+
+		if (divPrincipal.id == "start_end_type_color"){  
+			console.log("COMBINED =", inputs_combined); 
+			if (inputs_combined==","){
+				inputs_combined = "";
+			} 
+        		const valor = inputs_combined;
+			const indice = parseInt(selected_rect.dataset.indice);
+
+		 
+			unica_regla.rectangulos[index_global_row][indice].color_rgb = valor;
+        		rectangulos[index_row][indice].color_rgb = valor; 
+		}
 
         	actualizarEstadoGlobal();
 	}
+	if (divPrincipal.className == "start_end_type_textcolor"){  
+		console.log("COMBINED =", inputs_combined); 
+		if (inputs_combined==","){
+			inputs_combined = "";
+		} 
+        	const valor = inputs_combined;
+		const indice = parseInt(selected_rect.dataset.indice);
+
+		 
+		unica_regla.rectangulos[index_global_row][indice].color_rgb = valor;
+        	rectangulos[index_row][indice].color_rgb = valor;
+
+		actualizarEstadoGlobal();
+	}
+	if (divPrincipal.className == "start_end_type_anchorpoint"){  
+		console.log("COMBINED =", inputs_combined); 
+		if (inputs_combined==","){
+			inputs_combined = "";
+		} 
+        	const valor = inputs_combined;
+		const indice = parseInt(selected_rect.dataset.indice);
+
+		 
+		unica_regla.rectangulos[index_global_row][indice].anchor_point = valor;
+        	rectangulos[index_row][indice].anchor_point = valor;
+
+		actualizarEstadoGlobal();
+	}
+	 
+        resetear();//esto actualiza inmediatamente el texto del rectangulo
 	 
     }
 });
@@ -5530,8 +5993,17 @@ document.addEventListener("click", (e) => {
 });
 
  
+function eliminarRectangulosPorItem(item_name_value) {
+  unica_regla.rectangulos = unica_regla.rectangulos.filter(sublista =>
+    !sublista.some(obj => obj?.item_name === item_name_value)
+  );
+  rectangulos = rectangulos.filter(sublista =>
+    !sublista.some(obj => obj?.item_name === item_name_value)
+  );
+  selected_rect = null;
+}
 
-
+//leer
 
 const grupo = document.getElementById("grupo-botones");
 grupo.addEventListener("click", (e) => {
@@ -5582,8 +6054,16 @@ grupo.addEventListener("click", (e) => {
         const indice = parseInt(selected_rect.dataset.indice);
 
         if (filaUnica.length <= 1) {
-            showErrorModal('The last rectangle cannot be deleted.');
-            return;
+            //showErrorModal('The last rectangle cannot be deleted.');
+	    const item_name = selected_rect.dataset.item_name;
+	    const item_property = selected_rect.dataset.property;
+            if (item_property!="filename"){
+		showErrorModal('The last rectangle cannot be deleted.');
+		return;
+	    }
+	    eliminarRectangulosPorItem(item_name);
+	    console.log("unica_regla.rectangulos TIMELINE ELIMINADO:",JSON.stringify(unica_regla.rectangulos));
+            //return;
         } else {
             if (filaUnica.length == 2 && indice < filaUnica.length - 1) {
                 if (filaRectangulos[indice+1] && 
@@ -5630,6 +6110,7 @@ grupo.addEventListener("click", (e) => {
         renderizarElementosVisibles();
 
         actualizarEstadoGlobal(index_row); // ⬅️ si ahora recibe fila
+         
     } else {
         console.log("000: ", current_filetype);
         if (dic_dynamic_options?.[current_filetype]?.[current_property_id]?.[nombre_id]) {
@@ -5983,6 +6464,63 @@ function generarBotones(listaOpciones) {
 		   
 		`;
 	}
+
+
+	if (nombreVisible === "Anchor point") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
+  <!-- Líneas de la malla -->
+  <g stroke="#FFFFFF" stroke-width="1" stroke-linecap="round">
+    <!-- Horizontales -->
+    <line x1="6" y1="6" x2="18" y2="6"/>
+    <line x1="6" y1="12" x2="18" y2="12"/>
+    <line x1="6" y1="18" x2="18" y2="18"/>
+    <!-- Verticales -->
+    <line x1="6" y1="6" x2="6" y2="18"/>
+    <line x1="12" y1="6" x2="12" y2="18"/>
+    <line x1="18" y1="6" x2="18" y2="18"/>
+  </g>
+
+  <!-- Puntos (9) -->
+  <g fill="#FFFFFF">
+    <circle cx="6" cy="6" r="1.6"/>
+    <circle cx="12" cy="6" r="1.6"/>
+    <circle cx="18" cy="6" r="1.6"/>
+
+    <circle cx="6" cy="12" r="1.6"/>
+    <circle cx="12" cy="12" r="1.6"/>
+    <circle cx="18" cy="12" r="1.6"/>
+
+    <circle cx="6" cy="18" r="1.6"/>
+    <circle cx="12" cy="18" r="1.6"/>
+    <circle cx="18" cy="18" r="1.6"/>
+  </g>
+</svg> 
+		    <span class="label">Anchor point</span> 
+		  </span>
+		   
+		`;
+	}
+
+
+	if (nombreVisible === "Text color") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
+  <!-- Letra A -->
+  <path d="M7 18L12 5L17 18" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="9" y1="14" x2="15" y2="14" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Línea de color (un poco más larga y más separada) -->
+  <line x1="3" y1="22" x2="21" y2="22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"/>
+</svg>
+		    <span class="label">Text color</span> 
+		  </span>
+		   
+		`;
+	}
+	 
          
         //btn.textContent = nombreVisible;
         btn.style.width = anchoBoton + "px";
@@ -6112,6 +6650,8 @@ function connect(type_connection) {
     websocketClient.send(send_type_connection);
 
  
+    //ratio_9_16();
+    //ratio_16_9();
 
   });
 
@@ -6219,7 +6759,7 @@ tab.click();
  
 
 if (message_result === "all_chunks_received") {
-  console.log("✅ Subida completa:", currentFile.name);
+  console.log("✅ Subida completa:", currentFile.name); 
 
   // Quita el porcentaje: normaliza el value de progress_visible_names al key
   const baseName = currentFile.name.replace(/\.[^/.]+$/, "");
@@ -6232,6 +6772,7 @@ if (message_result === "all_chunks_received") {
   if (currentKey) {
     progress_visible_names[currentKey] = currentKey; // value idéntico al key
     console.log("progress_visible_names:", progress_visible_names); 
+    update_state(); 
   }
 
   // Añade a la lista de subidos (visible_names sigue igual que antes)
@@ -6266,6 +6807,11 @@ if (message_result === "all_chunks_received") {
 
 
 if (event.data instanceof ArrayBuffer) {
+
+   
+
+
+ 
 /*
   const bytes = new Uint8Array(event.data);
 
@@ -6337,6 +6883,7 @@ console.log("chunk: ", globalBuffer.length," ",Math.abs(firstInt));
       }
     }
   } else {
+     
     const duracion_video = firstInt;
     const secondInt = (bytes[4] << 24) >> 24;
  
@@ -6374,7 +6921,7 @@ console.log("chunk: ", frames.length);
         clearCircle();
       }
     }
-    n_seg = n_seg + 1;
+    n_seg = n_seg + 1; 	
   }
 */
 
@@ -6400,7 +6947,8 @@ if (posicion_en_segundos > 0) {
 
   // Asegurar tamaño del array y rellenar con "pendiente"
   asegurarPendientesHasta(indiceFinal);
-
+  
+  console.log("fotogramas_guardados.length",fotogramas_guardados.length);
   // Decodificar y colocar los frames
   decodeFrames(encodedFrames, TARGET_FPS).then((rawFrames) => {
     for (let i = 0; i < rawFrames.length; i++) {
@@ -6409,8 +6957,9 @@ if (posicion_en_segundos > 0) {
   }).catch(console.error);
 }
 */
+
 /*
-const bytes = new Uint8Array(event.data);
+  const bytes = new Uint8Array(event.data);
 
   const posicion_en_segundos =
     bytes[0] |
@@ -6419,7 +6968,7 @@ const bytes = new Uint8Array(event.data);
     (bytes[3] << 24);
 
 
-if (posicion_en_segundos < 0) {
+  if (posicion_en_segundos < 0) {
       
     console.log("chunk: ", globalBuffer.length," ",Math.abs(posicion_en_segundos));
  
@@ -6446,6 +6995,7 @@ if (posicion_en_segundos < 0) {
   while (fotogramas_guardados.length < indiceFinal) {
     fotogramas_guardados.push(PENDIENTE);
   }
+  console.log("fotogramas_guardados.length",fotogramas_guardados.length);
 
   decodeFrames(encodedFrames, TARGET_FPS)
     .then((rawFrames) => {
@@ -6454,12 +7004,13 @@ if (posicion_en_segundos < 0) {
       }
     })
     .catch(console.error);
-}
+  }
 */
 
-	/*
-	//bien
-	const bytes = new Uint8Array(event.data);
+
+/*
+//muy bien
+const bytes = new Uint8Array(event.data);
 const posicion_en_segundos =
   bytes[0] |
   (bytes[1] << 8) |
@@ -6512,8 +7063,8 @@ if (posicion_en_segundos < 0) {
 }
 */
 
-	/*
-	const bytes = new Uint8Array(event.data);
+/*
+const bytes = new Uint8Array(event.data);
 const posicion_en_segundos =
   bytes[0] |
   (bytes[1] << 8) |
@@ -6598,7 +7149,7 @@ if (posicion_en_segundos < 0) {
 
 
 /*
-	// Variable global para rastrear todas las promesas
+//LA MEJOR OPCION DE TODAS
 const decodificacionesActivas = [];
 
 const bytes = new Uint8Array(event.data);
@@ -6681,9 +7232,92 @@ if (posicion_en_segundos < 0) {
   decodificacionesActivas.push(decodificacionPromise);
 }
 */
+ 
 
-	/*
-	const bytes = new Uint8Array(event.data);
+ 
+/* ===========================
+   SISTEMA DE CACHE INTELIGENTE
+=========================== */
+  
+ 
+  const bytes = new Uint8Array(event.data);
+  const posicion_en_segundos =
+    bytes[0] |
+    (bytes[1] << 8) |
+    (bytes[2] << 16) |
+    (bytes[3] << 24); 
+
+  const secondInt = (bytes[4] << 24) >> 24;
+
+  if (posicion_en_segundos >= 0){
+    console.log("posicion_en_segundos:",posicion_en_segundos);
+    const chunk_data = bytes.subarray(5);
+     
+    // ✅ GUARDAR DIRECTAMENTE SIN DECODIFICAR
+    //eliminar_valor_pendiente(String(posicion_en_segundos));
+    if (valores_pendientes.includes(String(posicion_en_segundos))){
+    	if (posicion_en_segundos!=trozo_excepcion){
+		console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`); 
+    		trozos_guardados[posicion_en_segundos] = chunk_data; 
+    	}else{
+		console.log("trozo_excepcion:",trozo_excepcion);
+		trozo_excepcion = -1;     
+	}
+    }else{
+	if (valores_pendientes.length==0){
+		console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`); 
+    		trozos_guardados[posicion_en_segundos] = chunk_data;
+	}
+    } 
+/*
+    console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`); 
+    trozos_guardados[posicion_en_segundos] = chunk_data; 
+*/
+
+    eliminar_valor_pendiente(String(posicion_en_segundos));
+ 
+    
+     
+    console.log("progress_visible_names:",JSON.stringify(progress_visible_names));
+    console.log("valores_pendientes_globales:",JSON.stringify(valores_pendientes));
+  } 
+
+  const firstInt = posicion_en_segundos;
+  console.log("firstInt:",firstInt);
+  console.log("secondInt:",secondInt); 
+
+  if (firstInt < 0) {
+      
+     
+
+    if (secondInt == 1) { 
+	const expected_seconds = Math.abs(firstInt);
+	console.log("expected_seconds:",expected_seconds);
+	show_percent_export(expected_seconds+2);
+    } 
+    if (secondInt == 2) { 
+	console.log("chunk: ", globalBuffer.length," ",Math.abs(firstInt));
+ 
+    	const subBuffer = bytes.subarray(5);
+    	suma_final = suma_final + subBuffer.byteLength;
+    	const newBuffer = new Uint8Array(globalBuffer.length + subBuffer.length);
+    	newBuffer.set(globalBuffer, 0);
+    	newBuffer.set(subBuffer, globalBuffer.length);
+
+    	globalBuffer = newBuffer;
+    }
+
+    if (globalBuffer.length == Math.abs(firstInt)) {
+        console.log("FULL_VIDEO_RECEIVED"); 
+	ready_to_download = true;
+	show_download_button();
+	reset_export_progress();
+    }
+  }
+ 
+
+/*
+const bytes = new Uint8Array(event.data);
   const posicion_en_segundos =
     bytes[0] |
     (bytes[1] << 8) |
@@ -6720,23 +7354,13 @@ if (posicion_en_segundos < 0) {
           trozosEnProceso.delete(posicion_en_segundos);
         });
     }
-  }*/
+  }
+*/
+ 
 
-	const bytes = new Uint8Array(event.data);
-  const posicion_en_segundos =
-    bytes[0] |
-    (bytes[1] << 8) |
-    (bytes[2] << 16) |
-    (bytes[3] << 24);
 
-  if (posicion_en_segundos >= 0){
-    const chunk_data = bytes.subarray(5);
-    
-    // ✅ GUARDAR DIRECTAMENTE SIN DECODIFICAR
-    trozos_guardados[posicion_en_segundos] = chunk_data;
-    
-    console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`);
-  } 
+
+
 
 
 
@@ -6833,8 +7457,7 @@ contenedor.addEventListener('scroll', (event) => {
       ajustarContenedor();
 });
 */ 
-
-
+ 
 
 console.log("VideoDecoder:",'VideoDecoder' in window);
 console.log("VideoFrame:",'VideoFrame' in window);
@@ -6878,34 +7501,23 @@ verificarSoporteCodec().then(soportado => {
     // Aquí puedes mostrar un mensaje al usuario o usar un fallback
   }
 });
-	
-
+ 
 </script>
 
 
-<script src="../design4/general.js"> </script>
-<script src="../design4/send_files.js"> </script> 
-<script src="../design4/clipcontainer.js"> </script>  
-<script src="../design4/htmlstring.js"> </script>  
-<script src="../design4/expressions4.js"> </script>   
-<script src="../design4/panel_tabs.js"> </script>  
-<script src="../design4/reglas.js"> </script>  
-<script src="../design4/simplemenus.js"> </script> 
-<script src="../design4/interaccion_rectangulos.js"> </script> 
-<script src="../design4/organizar_reproduccion_precarga_bidireccional_full.js"> </script> 
+<script src="./design6/general.js"> </script>
+<script src="./design6/send_files.js"> </script> 
+<script src="./design6/clipcontainer.js"> </script>  
+<script src="./design6/htmlstring.js"> </script>  
+<script src="./design6/menu_options.js"> </script>   
+<script src="./design6/panel_tabs.js"> </script>  
+<script src="./design6/reglas.js"> </script>  
+<script src="./design6/simplemenus.js"> </script> 
+<script src="./design6/interaccion_rectangulos_full.js"> </script> 
+<script src="./design6/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js"> </script>  
+<script src="./design6/repintar4.js"> </script>  
+<script src="./design6/anchor_point.js"> </script> 
+<script src="./design6/color_grading.js"> </script> 
  
 </body>
 </html>  
-
-
-
-
-
-
-
-
-
-
-
-
-
