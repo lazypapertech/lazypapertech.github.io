@@ -10,11 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design6/menu_options.css">  
- <link rel="stylesheet" href="../design6/anchor_point.css">   
- <link rel="stylesheet" href="../design6/color_grading.css"> 
- <link rel="stylesheet" href="../design6/publicidad.css">    
- <link rel="stylesheet" href="../design6/freelancers.css">
+ <link rel="stylesheet" href="../design7/menu_options.css">  
+ <link rel="stylesheet" href="../design7/anchor_point.css">    
+ <link rel="stylesheet" href="../design7/freelancers.css">
+ <link rel="stylesheet" href="../design7/login_design.css"> 
 
 <style> 
 #general-header{display:none};
@@ -136,7 +135,8 @@ overflow: hidden;
 /*ver el 7_3.html*/
 .plus-modal-content-0,.plus-modal-content-1 {
     width: calc(100% - 30px);  /* ancho con margen */ 
-    background: rgb(48, 48, 48);
+    background-color: rgb(48, 48, 48); 
+    /*background: linear-gradient(135deg, #2a2a2e 0%, #1e1e22 100%);*/
     color: white;
     display: flex;
     flex-direction: column;
@@ -297,7 +297,7 @@ overflow: hidden;
     background: transparent;
     border: none;
     color: rgba(255,255,255,0.6);
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -767,6 +767,11 @@ min-height: 0;box-sizing: border-box;}
   margin-left: 7px;
 }
 
+.tab-export-button{background-color:transparent;text-shadow: 0 1px 2px rgba(0,0,0);color:#fff;border:none;cursor:pointer;border-right:1px solid rgb(70,70,70);display:flex;align-items:center;justify-content:center;height:40px;padding:0 7px;} 
+
+ 
+
+
 .tabs-scroll-container{flex:1;display:flex;flex-direction: row-reverse; justify-content: flex-start; overflow-x:auto;overflow-y:hidden;white-space:nowrap}.tabs-scroll-container::-webkit-scrollbar{height:6px}.tabs-scroll-container::-webkit-scrollbar-thumb{background-color:#666;border-radius:3px}.tab{padding:10px 15px;background-color:rgb(25, 25, 25);color:#fff;cursor:pointer;border:none;border-right:1px solid #333;font-size:14px;white-space:nowrap;flex-shrink:0;transition:background-color .2s;width:auto}.tab:hover{background-color:#444}.tab.active{background-color:#7c55e6;text-shadow: 0 1px 2px rgba(0,0,0);}.tab-content{flex:1;padding:0px;display:none;align-items:center;justify-content:center;font-size:18px;color:#666}.tab-content.active{display:flex}
 
 #new_project{font-size:12px;padding:0 15px;background-color:transparent;border:none;border-right:1px solid rgb(70,70,70);color:rgb(255,255,255);cursor:pointer;}
@@ -1043,7 +1048,7 @@ display:block;
     align-items: center;
 }
 .empty-block-container {
-    display: flex;
+    display: none;/*flex*/
     box-sizing: border-box;
     flex-direction: column;
     justify-content: flex-start;  
@@ -1408,7 +1413,7 @@ display:block;
     	padding: 0;
     }  
     
-    #export-btn{ 
+    #export-btn{  
    	padding:0 10px;
     }
 
@@ -1435,6 +1440,12 @@ display:block;
     .seccion-cuadrada {
     	width: 50px;
     	height: 50px;  
+    }
+    #undo-redo-container-2{
+	display:none;
+    }
+    #export_text{
+	display:none;
     }
 } 
 
@@ -1463,10 +1474,11 @@ display:block;
    .empty-block-container { 
     	justify-content: flex-start;  
     }
-
+/*
     .tabs-add-button{
 	flex:0 0 110px;/*40*/
     } 
+*/
 
 
 }
@@ -1990,8 +2002,8 @@ display:none;
 	<div id="item-loader">
 		<div class="tab-loader" style="margin-top: 70px; margin-bottom: 70px;">
 		    <div class="donut"></div>
-		    <p id="loader-text" style="color: #ffffff; text-align: center; margin-top: 20px; font-size: 18px;"> 
-			Loading item...
+		    <p id="loader-text" translate="no" style="color: #ffffff; text-align: center; margin-top: 20px; font-size: 18px;"> 
+			Loading timeline...
 		    </p>
 		 </div>
 	</div>
@@ -2000,7 +2012,7 @@ display:none;
 
         <div class="empty-block"> 
             <div class="tabs-container" id="tabs-container">
-		<button id="new_project" style="display:none;">New<br>Project</button>
+		<button translate="no" id="new_project" style="display:none;">New<br>Project</button>
 
 
                 <button class="tabs-add-button" id="create_item">
@@ -2041,7 +2053,7 @@ display:none;
                 <button class="tabs-add-button" id="update" style="display:none;" translate="no">Update frames</button> 
 		<button class="tabs-add-button" id="plus-btn" translate="no">Shortcuts</button>
                 <div class="tabs-scroll-container" id="tabs-scroll-container">
-			<button class="tabs-add-button" id="export-btn" translate="no">
+			<button class="tab-export-button" id="export-btn" translate="no">
 		  <svg xmlns="http://www.w3.org/2000/svg"
      width="30"
      height="30"
@@ -2061,7 +2073,7 @@ display:none;
 </svg>
 
 
-		  <span class="text" style="font-size:16px;">Export</span>
+		  <span id="export_text" class="text" style="font-size:16px;">Export</span>
 			</button>
 			<div id="undo-redo-container-2">
             <button id="undo">
@@ -2208,10 +2220,12 @@ display:none;
       <p class="plus-modal-title-1">Advanced</p>
       <button class="plus-modal-close-1" id="plus-modal-close-1">&times;</button>
     </div>
-    <div class="tabs-menu-container-settings-1">
-      <button class="tab-button-active-settings-1" data-tab="general-tab-content-settings-1" translate="no">Color</button>
-      <button class="tab-button-inactive-settings-1" data-tab="advanced-tab-content-settings-1" translate="no">Entrepreneurs</button>
+    <div class="tabs-menu-container-settings-1"> 
+      <button class="tab-button-active-settings-1" data-tab="general-tab-content-settings-1" translate="no">Freelancers</button> 
+      <button class="tab-button-inactive-settings-1" data-tab="advanced-tab-content-settings-1" translate="no">How it works</button> 
+<!--
       <button class="tab-button-inactive-settings-1" data-tab="team-tab-content-settings-1" translate="no">Freelancers</button>
+-->
     </div>
     <div id="different_tabs_1"></div>  
   </div> 
@@ -2252,23 +2266,7 @@ display:none;
 
 <script>
 
-function generateRandomUserId() {
-    const digits = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let userId = "";
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * digits.length);
-      userId += digits[randomIndex];
-    }
-    return userId;
-}
-
-let userId = localStorage.getItem("useridManycaptions");
-//userId = "0123456789";
-  
-  if (!userId) {
-    userId = generateRandomUserId();
-    localStorage.setItem("useridManycaptions", userId);
-  }
+ 
  
 let split_position_global = 0;
 let current_scroll_x = 0;
@@ -2413,7 +2411,7 @@ window.addEventListener('load', adaptPlusSection);
 
 <script>
 
-let websocketClient;
+ 
 let filenames_llenos = 0;
 let textnames_llenos = 0;
 let valores_predefinidos = [1];
@@ -3061,6 +3059,7 @@ let unica_regla_0 = {
 
 let rectangulos_0 = [[],[]];
 
+//poner un unico scroll_x para todo
 let unica_regla = { 
      scroll_x:{"filename":0,"group":0,"position":0,"scale":0,"rotation":0,"opacity":0},
      rectangulos:[]
@@ -3072,14 +3071,14 @@ let current_view="filename";
 
 let resolution_scene = "1280x720";
 const MINUTOS_TOTALES = 30;
-const PASO_DELTA = 5;//0.2 segundos
-const SEGMENTO_BASE = 20;
+const VALOR_SEGMENTO = 0.2;
 const CALIBRACION = 2;
+const PASO_DELTA = 1.0/VALOR_SEGMENTO;//5 y 0.2 segundos
+const SEGMENTO_BASE = 20; 
 const SEGMENTO = SEGMENTO_BASE * CALIBRACION;
 const TOTAL_PUNTOS = MINUTOS_TOTALES*PASO_DELTA*60;
 const ALTURA_REGLA = 50;//antes 60 
-const PADDING = 40; 
-const VALOR_SEGMENTO = 0.2;
+const PADDING = 40;  
 let ANCHO_VENTANA_VIRTUAL = window.innerWidth;
 
 let contenedor = document.getElementById('contenedor');
@@ -3258,6 +3257,7 @@ contenedor.addEventListener('wheel', (e) => {
 
 
 
+console.log("tiempo 0.2:",formatearTiempoDecimal(7325.88));
 
 
 
@@ -3406,8 +3406,7 @@ function resetOverlay() {
 
 function seleccionarRectangulo(rect) { 
     
-     
- deseleccionar_continuo = true;
+      
 
     if (selected_rect){
     	apply_rounded_corners(selected_rect); 
@@ -3447,8 +3446,12 @@ function seleccionarRectangulo(rect) {
     rectanguloSeleccionado = rect;
  
     if (rectanguloSeleccionado){ 
-	arreglar_posicion();
+	//arreglar_posicion();  
     }	
+    const distancia_to_segment = get_distancia();
+const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
+    const distanciaDesdeTop = rectAntes.top;
+  
       
 	if (rectanguloSeleccionado.dataset.start_value.includes("/%(bounce)%/")){
 		rect.style.background = 'rgb(255, 249, 105)';//rgb(65,134,191)
@@ -3465,6 +3468,9 @@ function seleccionarRectangulo(rect) {
 		if (rect.dataset.property!="filename"){
 			console.log("rect.dataset.property MAL:",rect.dataset.property);
 			box_options = ["Delete_box","Add_box","keyframe_1","keyframe_2","bounce"];
+			if (rect.dataset.property=="item_reveal"){
+				box_options = ["Delete_box","Add_box","select_mode"];
+			}
 		}else{
 		     if (rect.dataset.filetype=="image"){
 			box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point"];
@@ -3516,7 +3522,21 @@ if (window.innerWidth > 1000) {
    
     crearBotonMas(); 
 
-    console.log("SELECCIONADO"); 
+    console.log("SELECCIONADO");
+    requestAnimationFrame(() => {
+        const rectDespues = rectanguloSeleccionado.getBoundingClientRect();
+        const nuevaDistanciaDesdeTop = rectDespues.top;
+        
+        // Calcular cuánto subió el rectángulo
+        const cuantoSubio = distanciaDesdeTop - nuevaDistanciaDesdeTop;
+        
+        // Mover el scroll hacia arriba esa misma cantidad
+        scrollWrapper.scrollTop -= cuantoSubio;
+arreglar_posicion(distancia_to_segment);  
+    });
+    if (rectanguloSeleccionado){ 
+	//arreglar_posicion(distancia_to_segment);  
+    }	 
  
 }
 
@@ -3529,15 +3549,11 @@ if (window.innerWidth > 1000) {
 
 
 
-
-let deseleccionar_continuo = true;
+ 
 
 
 function deseleccionarRectangulo() { 
-
-    if (!deseleccionar_continuo){ 
-	return;
-    }
+ 
 
     hide_rect_extrems(selected_rect);
   
@@ -3699,7 +3715,7 @@ function opacidad_reposo(rect) {
 
 
 
-const LONG_PRESS_TIME = 400;  
+const LONG_PRESS_TIME = 300;  
 let touchTimer = null;
 let touchStarted = 0;
 
@@ -3714,7 +3730,7 @@ function crearRectangulo(datos, indice_rect, index_row, index_global_row) {
     //segundosFin  = Math.round(segundosFin  * 10) / 10;
     const posicion = PADDING + (segundosInicio / VALOR_SEGMENTO) * SEGMENTO;
     const ancho = ((segundosFin - segundosInicio) / VALOR_SEGMENTO) * SEGMENTO;
-
+console.log("posicion X:",posicion);
     const rect = document.createElement('div');
     rect.classList.add('rectangulo-caja'); 
     rect.style.left = `${posicion - offsetVirtual}px`;
@@ -3785,7 +3801,7 @@ labelBottom.style.userSelect = "none";
 
 rect.appendChild(labelBottom);
 
-
+let description_color = "rgb(255,255,255)";
 if (datos.filetype=="text" || datos.filetype=="image"){
 // --- filetype text---
 const labelBottom2 = document.createElement('span'); 
@@ -3796,9 +3812,25 @@ if (datos.property!="filename"){
 	if (datos.end_value!=""){
 	   valores_visibles = "("+datos.start_value+")  ("+datos.end_value+")";
 	} 
+	if (datos.property=="item_reveal"){
+	   valores_visibles = "("+datos.start_value+")";
+	   if (datos.start_value=="show"){
+		valores_visibles = "(hidden to visible)";
+		//datos.color = "rgb(230,0,38)"; 
+		//selected_rect.style.background = datos.color;
+	   }
+	   if (datos.start_value=="hide"){
+		valores_visibles = "(visible to hidden)";
+		//datos.color = "rgb(0,50,140)"; 
+		//selected_rect.style.background = datos.color;
+	   }    
+	} 
+}
+if (datos.property=="filename" && datos.filetype=="text"){
+	valores_visibles = datos.start_value;
 }
 labelBottom2.textContent = valores_visibles; 
-labelBottom2.style.color = "rgb(255,255,255)";//rgb(20,20,20)
+labelBottom2.style.color = description_color;//rgb(20,20,20)
 labelBottom2.style.fontSize = "14px";
 labelBottom2.style.fontWeight = "normal";
 labelBottom2.style.marginTop = "2px";
@@ -4434,6 +4466,7 @@ function add_box() {
     let segundosFin = segundosInicio + VALOR_SEGMENTO; 
     segundosInicio  = Math.round(segundosInicio  * 10) / 10;
     segundosFin  = Math.round(segundosFin  * 10) / 10;
+    /*
     const nuevoRect = {
 	item_name: selected_rect.dataset.item_name,
 	index_item: selected_rect.dataset.index_item,
@@ -4449,6 +4482,44 @@ function add_box() {
         video_audio_value: "",
 	color_rgb: "",
 	anchor_point: ""
+    };
+    */
+    const dic1 = {
+        "position": ["640,360", "640,360"],
+        "scale": ["1"],
+        "rotation": ["0"],
+        "opacity": ["255"],
+	"ratio": ["", ""],
+	"item_reveal": ["off"]
+    };
+    let new_start_value = "";
+    let new_end_value = "";
+    if (selected_rect.dataset.property=="position" || selected_rect.dataset.property=="ratio"){
+    	new_start_value = dic1[selected_rect.dataset.property][0];
+        new_end_value = dic1[selected_rect.dataset.property][1];
+    }else{
+	if (selected_rect.dataset.property!="filename"){
+		console.log("selected_rect.dataset.property ERROR:",selected_rect.dataset.property);
+		new_start_value = dic1[selected_rect.dataset.property][0];
+        	new_end_value = dic1[selected_rect.dataset.property][0];
+	}
+    } 	
+
+    const nuevoRect = {
+	item_name: selected_rect.dataset.item_name,
+	index_item: selected_rect.dataset.index_item,
+	property: selected_rect.dataset.property,
+	filetype: selected_rect.dataset.filetype,
+        index_global_row : selected_rect.dataset.index_global_row,
+        index_row : selected_rect.dataset.index_row,
+	color: selected_rect.dataset.color,
+        start: formatearTiempoDecimal(segundosInicio),
+        end: formatearTiempoDecimal(segundosFin),
+        start_value: new_start_value,
+        end_value: new_end_value,
+        video_audio_value: "",
+	color_rgb: "0,0,0",
+	anchor_point: "0.5,0.5"
     };
 
  
@@ -4624,7 +4695,7 @@ function actualizarPosicionesVisuales() {
      
     rectangulos.forEach(row => {
         //console.log("ERROR: ",rectangulos.length, row);
-        row.forEach(rect => {
+        row.forEach(rect => { 
         	rect.elemento.style.left = `${parseFloat(rect.posicion) - offsetVirtual}px`;
         	rect.elemento.style.width = `${rect.ancho}px`;
     	});
@@ -4716,7 +4787,7 @@ function actualizarEstadoGlobal_0() {
     websocketClient.send(JSON.stringify(json_data)); 
     console.log('Estado actualizado:', JSON.stringify(unica_regla, null, 2));
 
-     
+     undoRedoManager.saveState(unica_regla.rectangulos);
 }
 
 function renderizarElementosVisibles() {
@@ -4745,7 +4816,8 @@ todosLosMarcadores.forEach((data, index) => {
     if (data.x < minX || data.x > maxX) return; // fuera de rango
 
     // ✨ Saltamos múltiplos de 5
-    if (index % 5 === 0) {
+    const puntos_segundo = 5 * 0.5 * CALIBRACION;
+    if (index % puntos_segundo === 0) {
         // Si la bolita existía previamente en el DOM, la eliminamos
         if (marcadoresEnDOM.has(index)) {
             const marcadorExistente = marcadoresEnDOM.get(index);
@@ -4835,8 +4907,8 @@ function ajustarScrollWrapper() {
 }
 
 function cmToPx(cm) {
-  const pasos = Math.round(cm / 0.2); 
-  return pasos * 40;
+  const pasos = Math.round(cm / VALOR_SEGMENTO); //0.2
+  return pasos * SEGMENTO;//40
 }
 
 function setRulerPosition(cm) {
@@ -4848,7 +4920,7 @@ function setRulerPosition(cm) {
 const time_inicial = formatearTiempoDecimal(24); 
 console.log("time_inicial: ",time_inicial);
 
-
+ 
 
 function inicializar() {
 console.log("aveces sale error crearPseudoRegla is not defined");
@@ -4871,10 +4943,10 @@ console.log("aveces sale error crearPseudoRegla is not defined");
     scrollWrapper.addEventListener('scroll', () => {
 
         const posicion = scrollWrapper.scrollLeft;  
-        const pasos = Math.floor(posicion / 40);  
-	const split_position_0 = Math.round(posicion / 40);
-	split_position_global = parseFloat((split_position_0 * 0.2).toFixed(1));
-        const cmExacto = parseFloat((pasos * 0.2).toFixed(1));
+        const pasos = Math.floor(posicion / SEGMENTO);//40  
+	const split_position_0 = Math.round(posicion / SEGMENTO);//40
+	split_position_global = parseFloat((split_position_0 * VALOR_SEGMENTO).toFixed(1));//0.2
+        const cmExacto = parseFloat((pasos * VALOR_SEGMENTO).toFixed(1));//0.2
         current_scroll_x = cmExacto;
         const time = formatearTiempoDecimal(parseFloat(cmExacto));
   
@@ -4885,30 +4957,30 @@ console.log("aveces sale error crearPseudoRegla is not defined");
     }, { passive: true });
 
     	 
-         
-    document.addEventListener("click", (e) => {
+     
+        
+    document.addEventListener("mousedown", (e) => {
+	e.stopPropagation();
 	if (e.target.closest("#modal_overlay_dinamico") ||
       		e.target.closest("#modal_box_dinamico") || e.target.closest("#segment_options")) {
     		return;
   	} 
-/*
+/* 
         //if (!e.target.closest(".scroll-wrapper")) 
 	if (
-	    !e.target.closest(".scroll-wrapper") &&  // fuera del scroll-wrapper
-	    !e.target.closest(".segment_options") 
+	    e.target.closest(".scroll-wrapper") &&  // fuera del scroll-wrapper
+	    !e.target.closest(".rectangulo-caja") 
 	){
 		resetOverlay();	 
-	        deseleccionarRectangulo();
-		hide_rect_extrems(selected_rect);
+	        deseleccionarRectangulo(); 
         	console.log("fuera");  
-        } principal_view
-*/
+        } 
+*/ 
+ 
         if (e.target.closest("#principal_view")){
 		resetOverlay();	 
-	        	deseleccionarRectangulo();
-			//hide_rect_extrems(selected_rect);
-			console.log("fuera");  
-			deseleccionar_continuo = true; 
+	        	deseleccionarRectangulo(); 
+			console.log("fuera");   
 			return;
         }
 
@@ -4919,23 +4991,20 @@ console.log("aveces sale error crearPseudoRegla is not defined");
            if (rectangulos[index_row][indice]){
 	        if (!rectangulos[index_row][indice].elemento.contains(e.target)){  
 			resetOverlay();	 
-	        	deseleccionarRectangulo();
-			//hide_rect_extrems(selected_rect);
-			console.log("fuera");  
-			deseleccionar_continuo = true;
+	        	deseleccionarRectangulo(); 
+			console.log("fuera2");   
 			return;
 	        }
 	   }
 	}
-/*
+/* 
         if (!e.target.closest("#tab-contents")) {
         	console.log("fuera");  	
-		resetOverlay();	
-		//show_vertical_line();
-	        deseleccionarRectangulo();
-		hide_rect_extrems(selected_rect);
+		resetOverlay();	 
+	        deseleccionarRectangulo(); 
         } 
 */
+ 
     });
 
 
@@ -4944,16 +5013,41 @@ console.log("aveces sale error crearPseudoRegla is not defined");
 
  
  
-/* 
-scrollWrapper.addEventListener('click', (e) => { 
-    if (e.target === scrollWrapper) {
-	resetOverlay();	 
-	deseleccionarRectangulo();
-	hide_rect_extrems(selected_rect); 
-        console.log("Click en el fondo del scrollWrapper");
-    }
-}); 
-*/
+// Función para manejar el evento
+function manejarPresionFondo(e) {
+    e.stopPropagation();
+    if (e.target.closest("#modal_overlay_dinamico") ||
+        e.target.closest("#modal_box_dinamico") || 
+        e.target.closest("#segment_options")) {
+        return;
+    } 
+    if (e.target.closest("#principal_view")){
+		resetOverlay();	 
+	        	deseleccionarRectangulo(); 
+			console.log("fuera");   
+			return;
+        }
+
+
+	if (selected_rect){ //selected_rect
+	   const index_row = selected_rect.dataset.index_row; 
+	   const indice = selected_rect.dataset.indice; 
+           if (rectangulos[index_row][indice]){
+	        if (!rectangulos[index_row][indice].elemento.contains(e.target)){  
+			resetOverlay();	 
+	        	deseleccionarRectangulo(); 
+			console.log("fuera2");   
+			return;
+	        }
+	   }
+	} 
+}
+
+// Agregar ambos eventos
+document.addEventListener("mousedown", manejarPresionFondo);
+document.addEventListener("touchstart", manejarPresionFondo, { passive: false });
+
+
 
 function finalizar() {
     const contenedor = document.getElementById('contenedor');
@@ -5021,6 +5115,8 @@ function resetear() {
     }else{  	
     const current_index_item = selected_rect.dataset.index_item;
     let index_visible = 0; 
+    /*	
+    //esto solo hacia aparecer el primer dic
     unica_regla.rectangulos.forEach((rect_list, index_regla) => {  
 	console.log("MAL4:",rect_list[0].index_item,rect_list[0],"\n\n",index_visible,index_regla);
         if (rect_list[0].index_item == current_index_item && rect_list[0].property!="filename"){  
@@ -5028,6 +5124,20 @@ function resetear() {
 		crearRectangulo(rect_list[0],0, index_visible,index_regla);   
 		index_visible = index_visible + 1;   
 	} 
+    });
+    */
+    unica_regla.rectangulos.forEach((rect_list, index_regla) => {  
+        // Verificar si este sublist pertenece al grupo del filename actual
+        if (rect_list[0].index_item == current_index_item && rect_list[0].property != "filename") {  
+            rectangulos.push([]);
+        
+            // Recorrer TODOS los diccionarios del sublist, no solo el primero
+            rect_list.forEach((dic, index_en_lista) => {
+                crearRectangulo(dic, index_en_lista, index_visible, index_regla);   
+            });
+        
+            index_visible = index_visible + 1;   
+        } 
     });
     }
     //console.log("lista0:",JSON.stringify(rectangulos));  
@@ -5162,19 +5272,7 @@ function crear_loading_tab(){
 }
 
  
-function hide_loading_tab() { 
-    const empty_block = document.querySelector(".empty-block");
-            if (empty_block) {
-                empty_block.style.display = "flex";
-            }
-
-	const item_loader = document.getElementById("item-loader");
-            if (item_loader) {
-		console.log("exists");
-                item_loader.style.display = "none";
-            }
-}
-
+ 
  
 
  
@@ -5567,6 +5665,8 @@ function abrirModalDinamico(htmlString,boton_id) {
 }, 50);
   }
 */
+
+   
  
 
   console.log("current_timeline[2]: ",current_timeline[2]);
@@ -5630,11 +5730,30 @@ function abrirModalDinamico(htmlString,boton_id) {
   }
 
   
+  if (boton_id=="keyframe_1" || boton_id=="keyframe_2"){
+	if (selected_rect.dataset.property=="scale"){
+  		crearSliderDinamicoScale('input_dynamic_box_0');
+	}
+	if (selected_rect.dataset.property=="opacity"){
+		crearSliderDinamicoOpacity('input_dynamic_box_0');
+	} 
+	if (selected_rect.dataset.property=="rotation"){
+		crearSliderCircular('input_dynamic_box_0');
+	}
+	if (selected_rect.dataset.property=="position"){
+		//crearSliderCircular('input_dynamic_box_0'); 
+		crearControlPosicion2D('input_dynamic_box_0', 'input_dynamic_box_1', 1280, 720, 50);
+	}  
+  }
+  if (boton_id=="select_mode"){
+	crearSelectorReveal('input_dynamic_box_0');
+  }  
   if (boton_id=="Anchor_point"){ 
  
 	requestAnimationFrame(() => {
  
-initAnchorEvents();  
+initAnchorEvents(); // 👈 ahora sí existen los nodos
+//filename_url["gokutiger5.png"]
 loadAnchorImage();
 });
   
@@ -5745,6 +5864,7 @@ function request_new_project_0(){
     }); 
 }
 
+/*
 function request_new_project(){
 
     reset_variables(); 
@@ -5756,9 +5876,28 @@ function request_new_project(){
     safeSend(JSON.stringify(json_data));
  
      
+} 
+*/
+
+function request_new_project(){
+
+    //reset_variables(); 
+ 
+    console.log("eliminar todos los tabs y vaciar archivos subidos"); 
+    const json_data =  {"service":"new_project","resolution":resolution_scene,"itemName":"empty","property":"empty","params":"empty","file_type":"empty","extra0":"","extra":""}; 
+    //websocketClient.send(JSON.stringify(json_data)); 
+    safeSend(JSON.stringify(json_data));
+ 
+     
 }
 
 
+function eliminarTimelinePorNombre(current_item) {
+   
+  const json_data = {"service":"delete_item","item_to_delete":current_item,"itemName":current_item,"property":"empty","params":"empty","file_type":"empty","extra0":"","extra":""}; 
+  websocketClient.send(JSON.stringify(json_data)); 
+
+}
 
  
 function eliminarTabPorNombre(tabName) {
@@ -5831,7 +5970,7 @@ document.addEventListener("click", function (e) {
 
      
   
-    if (e.target.matches("#modal_overlay_dinamico")) { 
+    if (e.target.matches("#modal_overlay_dinamico") || e.target.matches(".btn-close") || e.target.closest(".btn-close")) { 
  
         e.target.style.display = "none"; 
 	closeModalDinamico(); 
@@ -5861,6 +6000,7 @@ document.addEventListener("click", function (e) {
 			}  
 		    } 	
 		}
+		if (id!="input_dynamic_box_0" && id!="input_dynamic_box_1") continue;// esto hace que solo se lea el primer input original del trozo html
     		console.log("save: ",id, value); 
 		inputs_combined=inputs_combined+value;
 		if (i<lista_inputs_and_selects.length-1){
@@ -6063,6 +6203,7 @@ grupo.addEventListener("click", (e) => {
 	    }
 	    eliminarRectangulosPorItem(item_name);
 	    console.log("unica_regla.rectangulos TIMELINE ELIMINADO:",JSON.stringify(unica_regla.rectangulos));
+	    eliminarTimelinePorNombre(item_name);	
             //return;
         } else {
             if (filaUnica.length == 2 && indice < filaUnica.length - 1) {
@@ -6112,7 +6253,7 @@ grupo.addEventListener("click", (e) => {
         actualizarEstadoGlobal(index_row); // ⬅️ si ahora recibe fila
          
     } else {
-        console.log("000: ", current_filetype);
+        console.log("nombre_id: ", nombre_id);
         if (dic_dynamic_options?.[current_filetype]?.[current_property_id]?.[nombre_id]) {
             let current_modal_html = dic_dynamic_options[current_filetype][current_property_id][nombre_id];
             if (current_filetype != "text" && current_property_id == "filename") {
@@ -6520,6 +6661,28 @@ function generarBotones(listaOpciones) {
 		   
 		`;
 	}
+
+	if (nombreVisible === "select mode") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg"
+     width="35" height="35" viewBox="0 0 40 40">
+  <!-- Rombo sólido con lados iguales -->
+  <polygon points="20,4 36,20 20,36 4,20" 
+           fill="#e0e0e0" 
+           stroke="none"/>
+  <!-- Número en el centro -->
+  <text x="20" y="22" font-size="20" font-family="Calibri, sans-serif"
+        text-anchor="middle" dominant-baseline="middle"
+        fill="rgb(48,48,48)" stroke="none">
+    1
+  </text>
+</svg>
+		    <span class="label">Select mode</span> 
+		  </span>
+		   
+		`;
+	}
 	 
          
         //btn.textContent = nombreVisible;
@@ -6588,16 +6751,11 @@ function actualizarRectangulo(indice, rectNuevo) {
 
 const array_real = [10,20,30];
 
+ 
+ 
 
+ 
 
-
-//crear_loading_tab();
-
-
-let reconnectTimeout = null;
-let isReconnecting = false;
-let reconnectAttempts = 0;
-const MAX_RECONNECT_ATTEMPTS = 100;
  
 function connect(type_connection) {
 
@@ -6659,6 +6817,8 @@ function connect(type_connection) {
     let message_result = event.data;
 
     if (typeof message_result === "string") {
+
+      handleWebSocketMessage(event.data);
  
 /* 
       console.log("MENSAJE: ",message_result);
@@ -7387,53 +7547,7 @@ const bytes = new Uint8Array(event.data);
 	scheduleReconnect();
   });
 }
-
-function scheduleReconnect() {
-
-  hide_loading_tab();
-  crear_loading_tab();
-
-  if (isReconnecting) return;
-  isReconnecting = true;
  
-  if (reconnectAttempts >= MAX_RECONNECT_ATTEMPTS) {
-    console.warn("Límite de reconexiones alcanzado");
-    return;
-  }
-
-  reconnectAttempts++; 
-
-  frameIndex = 0;
-  globalBuffer = new Uint8Array(0);
-  ocultarBarras();
-  n_seg = 0;
-
-  console.log(`Reintentando conexión (${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}) en 5s...`);
-
-  reconnectTimeout = setTimeout(() => {
-    connect("reconnecting");
-  }, 5000);
-}
-
-
-function scheduleReconnect_0() {
-
-  if (isReconnecting) return;
-  isReconnecting = true;
-
-  frameIndex = 0;
-  globalBuffer = new Uint8Array(0);
-  ocultarBarras();
-  n_seg = 0;
-
-  console.log("reconnecting in 5s...");
-
-  reconnectTimeout = setTimeout(() => {
-    connect("reconnecting");
-  }, 5000);
-}
-
-connect("initial_configuration");//connected
  
  
  
@@ -7504,21 +7618,84 @@ verificarSoporteCodec().then(soportado => {
  
 </script>
 
-
-<script src="../design6/general.js"> </script>
-<script src="../design6/send_files.js"> </script> 
-<script src="../design6/clipcontainer.js"> </script>  
-<script src="../design6/htmlstring.js"> </script>  
-<script src="../design6/menu_options.js"> </script>   
-<script src="../design6/panel_tabs.js"> </script>  
-<script src="../design6/reglas.js"> </script>  
-<script src="../design6/simplemenus.js"> </script> 
-<script src="../design6/interaccion_rectangulos_full.js"> </script> 
-<script src="../design6/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js"> </script>  
-<script src="../design6/repintar4.js"> </script>  
-<script src="../design6/anchor_point.js"> </script> 
-<script src="../design6/color_grading.js"> </script> 
+<script>
+    // Función para crear e insertar el modal dinámicamente
+    function createLoginModal() {
+        const modalHTML = `
+            <div class="modal-overlay-login" id="modalOverlayLogin">
+                <div class="modal-login">
+                    <button class="close-modal-btn-login" id="closeModalBtnLogin">✕</button>
+                    
+                    <div class="modal-header-login">
+                        <h1 class="modal-title-login">Log in or Sign up</h1>
+                        <p class="modal-subtitle-login">You'll get smarter responses and can upload files, images, and more.</p>
+                    </div>
+                    
+                    <button class="google-btn-login">Continue with Google</button>
+                    
+                    <div class="divider-login">
+                        <div class="divider-line-login"></div>
+                        <span class="divider-text-login">OR</span>
+                        <div class="divider-line-login"></div>
+                    </div>
+                    
+                    <div class="input-group-login">
+                        <input type="email" id="emailInputLogin" class="input-field-login" placeholder="Email address" autocomplete="email">
+                    </div>
+                    
+                    <button class="continue-btn-login" id="continueBtnLogin">Continue</button>
+                </div>
+            </div>
+        `;
+        
+        const generalWrapper = document.querySelector('.general-main');
+        if (generalWrapper) {
+            generalWrapper.insertAdjacentHTML('beforeend', modalHTML);
+        }
+    }
+    
+    // Ejecutar al cargar el DOM
+    document.addEventListener('DOMContentLoaded', function() {
+        // Crear el modal dinámicamente
+        createLoginModal();
+        
+        // Lógica para abrir y cerrar el modal
+        const modalOverlayLogin = document.getElementById('modalOverlayLogin');
+        
+        document.addEventListener("click", function (e) {
+            // Abrir modal al hacer clic en el botón de login
+            if (e.target.matches('.login-btn')) {
+                modalOverlayLogin.classList.add('active');
+            }
+            
+            // Cerrar modal al hacer clic en el botón X
+            if (e.target.matches('#closeModalBtnLogin')) {
+                modalOverlayLogin.classList.remove('active');
+            }
+            
+            // Cerrar modal al hacer clic fuera de él
+            if (e.target === modalOverlayLogin) {
+                modalOverlayLogin.classList.remove('active');
+            }
+        });
+    });
+</script>
+ 
+<script src="../design7/websocket_script.js"> </script> 
+<script src="../design7/general.js"> </script>
+<script src="../design7/send_files.js"> </script> 
+<script src="../design7/clipcontainer.js"> </script>  
+<script src="../design7/htmlstring.js"> </script>  
+<script src="../design7/menu_options.js"> </script>   
+<script src="../design7/panel_tabs.js"> </script>  
+<script src="../design7/reglas.js"> </script>  
+<script src="../design7/simplemenus.js"> </script> 
+<script src="../design7/interaccion_rectangulos_full.js"> </script> 
+<script src="../design7/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js"> </script>  
+<script src="../design7/repintar4.js"> </script>  
+<script src="../design7/anchor_point.js"> </script>   
+<script src="../design7/script_login.js"> </script> 
+<script src="../design7/undo_redo.js"> </script> 
  
 </body>
-</html>  
-
+</html> 
