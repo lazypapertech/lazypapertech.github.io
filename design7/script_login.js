@@ -47,7 +47,7 @@ console.log("RECIBIENDO CONFIRMACION");
         
         // Si recibimos "login_exitoso", redirigimos al dashboard
         else if (message.action === 'login_exitoso') {
-            window.location.href = GLOBAL_DOMAIN + '/responsive7_7.html?user=true';
+            window.location.href = GLOBAL_DOMAIN + '/editor.html?user=true';
         }
          
         // Si recibimos "login_error", mostramos el error
@@ -198,4 +198,5 @@ window.addEventListener('load', checkUserLogin);
 
 
  
+
 
