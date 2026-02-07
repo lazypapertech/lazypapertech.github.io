@@ -1,5 +1,5 @@
 // Variables globales
-const GLOBAL_DOMAIN = 'C:\\Users\\Rosa Garcia\\Downloads'; 
+const GLOBAL_DOMAIN = ''; 
   
 // Función para reintentar envío de mensaje
 function sendWithRetry(message, maxRetries = 3, delay = 1000) {
@@ -195,5 +195,6 @@ function checkUserLogin() {
 
 // Ejecutar cuando se cargue la página
 window.addEventListener('load', checkUserLogin);
+
 
  
