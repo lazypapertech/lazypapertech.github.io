@@ -1,5 +1,5 @@
 // Variables globales
-const GLOBAL_DOMAIN = ''; 
+const GLOBAL_DOMAIN = 'https://manycaptions.com/portuguese'; 
   
 // Función para reintentar envío de mensaje
 function sendWithRetry(message, maxRetries = 3, delay = 1000) {
@@ -198,3 +198,4 @@ window.addEventListener('load', checkUserLogin);
 
 
  
+
