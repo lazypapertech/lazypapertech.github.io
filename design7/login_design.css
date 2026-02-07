@@ -1,0 +1,165 @@
+.open-modal-btn-login {
+        padding: 12px 24px;
+        background-color: #7c55e6;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .open-modal-btn-login:hover {
+        background-color: #6844d4;
+    }
+
+    .modal-overlay-login {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .modal-overlay-login.active {
+        display: flex;
+    }
+
+    .modal-login {
+        background-color: #2a2a2a;
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 420px;
+        width: 100%;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        position: relative;
+    }
+
+    .close-modal-btn-login {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 32px;
+        height: 32px;
+        background-color: #ffffff;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: #000000;
+        transition: background-color 0.2s;
+    }
+
+    .close-modal-btn-login:hover {
+        background-color: #f0f0f0;
+    }
+
+    .modal-header-login {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .modal-title-login {
+        color: #ffffff;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .modal-subtitle-login {
+        color: #b0b0b0;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .google-btn-login {
+        width: 100%;
+        padding: 12px;
+        background-color: #ffffff;
+        color: #2a2a2a;
+        border: none;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-bottom: 20px;
+    }
+
+    .google-btn-login:hover {
+        background-color: #f0f0f0;
+    }
+
+    .divider-login {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .divider-line-login {
+        flex: 1;
+        height: 1px;
+        background-color: #4a4a4a;
+    }
+
+    .divider-text-login {
+        padding: 0 16px;
+        color: #888888;
+        font-size: 13px;
+    }
+
+    .input-group-login {
+        margin-bottom: 20px;
+    }
+
+    .input-field-login {
+        width: 100%;
+        padding: 12px 16px;
+        background-color: #1a1a1a;
+        border: 1px solid #4a4a4a;
+        border-radius: 6px;
+        color: #ffffff;
+        font-size: 15px;
+        transition: border-color 0.2s;
+    }
+
+    .input-field-login:focus {
+        outline: none;
+        border-color: #7c55e6;
+    }
+
+    .input-field-login::placeholder {
+        color: #666666;
+    }
+
+    .continue-btn-login {
+        width: 100%;
+        padding: 12px;
+        background-color: #7c55e6;
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .continue-btn-login:hover {
+        background-color: #6844d4;
+    }
+
+    .continue-btn-login:disabled {
+        background-color: #4a4a4a;
+        cursor: not-allowed;
+    }
