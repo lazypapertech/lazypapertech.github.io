@@ -2,6 +2,9 @@ User-agent: *
 Disallow: /design/
 Disallow: /design2/
 Disallow: /pricing.html  
+Disallow: /portuguese/create-account-password.html
+Disallow: /portuguese/login-password.html
+Disallow: /portuguese/editor.html
 User-agent: GPTBot
 Allow: /
 User-agent: ChatGPT-User
@@ -10,5 +13,6 @@ User-agent: Bingbot
 Allow: /  
 
 Sitemap: https://manycaptions.com/sitemap.xml
+
 
 
