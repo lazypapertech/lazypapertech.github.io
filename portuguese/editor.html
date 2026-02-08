@@ -10,10 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design7/menu_options.css">  
- <link rel="stylesheet" href="../design7/anchor_point.css">    
- <link rel="stylesheet" href="../design7/freelancers.css">
- <link rel="stylesheet" href="../design7/login_design.css"> 
+ <link rel="stylesheet" href="../design8/menu_options.css">  
+ <link rel="stylesheet" href="../design8/anchor_point.css">    
+ <link rel="stylesheet" href="../design8/freelancers.css">
+ <link rel="stylesheet" href="../design8/login_design.css"> 
 
 <style> 
 #general-header{display:none};
@@ -360,7 +360,7 @@ overflow: hidden;
     display: flex;
     flex-direction: column;
     height: 80vh; /* o la altura que prefieras */
-    max-height: 600px; /* altura máxima del modal */
+    /*max-height: 600px;*/  
     overflow: hidden; /* importante: evita scroll en el contenedor principal */
 }
 
@@ -3471,12 +3471,15 @@ const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
 			if (rect.dataset.property=="item_reveal"){
 				box_options = ["Delete_box","Add_box","select_mode"];
 			}
+			if (rect.dataset.property=="glow"){
+				box_options = ["Delete_box","Add_box","keyframe_1","keyframe_2"];
+			}
 		}else{
 		     if (rect.dataset.filetype=="image"){
-			box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point"];
+			box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point","Glow_color"];
 		     } 		
 		     if (rect.dataset.filetype=="text"){
-			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes","Text_color"];
+			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes","Text_color","Glow_color"];
 		     } 	
 		     if (rect.dataset.filetype=="audio"){
 			box_options = ["Delete_file","Add_file","Split"];
@@ -3934,6 +3937,7 @@ rect.appendChild(labelBottom);
         end_value: datos.end_value,
 	video_audio_value: datos.video_audio_value,
 	color_rgb: datos.color_rgb,
+	glow_color: datos.glow_color,
 	anchor_point: datos.anchor_point
     });
     //rectangulos sera una sublist de rectangulos_current_view
@@ -4484,14 +4488,7 @@ function add_box() {
 	anchor_point: ""
     };
     */
-    const dic1 = {
-        "position": ["640,360", "640,360"],
-        "scale": ["1"],
-        "rotation": ["0"],
-        "opacity": ["255"],
-	"ratio": ["", ""],
-	"item_reveal": ["off"]
-    };
+     
     let new_start_value = "";
     let new_end_value = "";
     if (selected_rect.dataset.property=="position" || selected_rect.dataset.property=="ratio"){
@@ -4519,6 +4516,7 @@ function add_box() {
         end_value: new_end_value,
         video_audio_value: "",
 	color_rgb: "0,0,0",
+	glow_color: "255,255,255",
 	anchor_point: "0.5,0.5"
     };
 
@@ -4558,6 +4556,7 @@ function add_box() {
                     end_value: rect.end_value,
                     video_audio_value: rect.video_audio_value,
 		    color_rgb: rect.color_rgb,
+		    glow_color: rect.glow_color,
 		    anchor_point: rect.anchor_point
                 };
             }));
@@ -4753,6 +4752,7 @@ function actualizarEstadoGlobal() {
       end_value        : rect.end_value,
       video_audio_value: rect.video_audio_value,
       color_rgb: rect.color_rgb,
+      glow_color: rect.glow_color,	
       anchor_point: rect.anchor_point	
     };
   });
@@ -5063,6 +5063,10 @@ function finalizar() {
 }
  
  
+function eliminarSublistasVacias() {
+  return rectangulos.filter(sublist => sublist.length > 0);
+}
+
 
 function resetear() { 
     // 1️⃣ Limpiar contenedor visual
@@ -5115,7 +5119,7 @@ function resetear() {
     }else{  	
     const current_index_item = selected_rect.dataset.index_item;
     let index_visible = 0; 
-    /*	
+    /* 
     //esto solo hacia aparecer el primer dic
     unica_regla.rectangulos.forEach((rect_list, index_regla) => {  
 	console.log("MAL4:",rect_list[0].index_item,rect_list[0],"\n\n",index_visible,index_regla);
@@ -5138,10 +5142,13 @@ function resetear() {
         
             index_visible = index_visible + 1;   
         } 
-    });
+    }); 
     }
-    //console.log("lista0:",JSON.stringify(rectangulos));  
-    //console.log("lista despues0:",JSON.stringify(rectangulos));
+ 
+    console.log("lista0:",JSON.stringify(rectangulos));  
+    //no es necesario esta funcion
+    //eliminarSublistasVacias(); 
+    console.log("lista despues0:",JSON.stringify(rectangulos));
 
 /* 
     console.log("00 unica_regla.rectangulos: ",unica_regla.rectangulos);
@@ -5258,7 +5265,7 @@ let lista_propiedades = ["filename","temperature"];
 
 function crear_loading_tab(){
 	deseleccionarRectangulo();
-	const empty_block = document.querySelector(".empty-block");
+	const empty_block = document.querySelector(".empty-block-container");
             if (empty_block) {
                 empty_block.style.display = "none";
             }
@@ -5677,6 +5684,9 @@ function abrirModalDinamico(htmlString,boton_id) {
   if (boton_id=="Text_color"){
 	current_property_value = detalle.color_rgb;
   } 
+  if (boton_id=="Glow_color"){
+	current_property_value = detalle.glow_color;
+  } 
   if (boton_id=="Anchor_point"){
 	current_property_value = detalle.anchor_point; 
   } 
@@ -6000,7 +6010,7 @@ document.addEventListener("click", function (e) {
 			}  
 		    } 	
 		}
-		if (id!="input_dynamic_box_0" && id!="input_dynamic_box_1") continue;// esto hace que solo se lea el primer input original del trozo html
+		if (id!="input_dynamic_box_0" && id!="input_dynamic_box_1" && id!="input_dynamic_box_2") continue;// esto hace que solo se lea el primer input original del trozo html
     		console.log("save: ",id, value); 
 		inputs_combined=inputs_combined+value;
 		if (i<lista_inputs_and_selects.length-1){
@@ -6054,7 +6064,7 @@ document.addEventListener("click", function (e) {
         		rectangulos[index_row][indice].end_value = valor; 
 			//} 
 		} 
-
+		/*
 		if (divPrincipal.id == "start_end_type_color"){  
 			console.log("COMBINED =", inputs_combined); 
 			if (inputs_combined==","){
@@ -6067,6 +6077,7 @@ document.addEventListener("click", function (e) {
 			unica_regla.rectangulos[index_global_row][indice].color_rgb = valor;
         		rectangulos[index_row][indice].color_rgb = valor; 
 		}
+		*/
 
         	actualizarEstadoGlobal();
 	}
@@ -6081,6 +6092,20 @@ document.addEventListener("click", function (e) {
 		 
 		unica_regla.rectangulos[index_global_row][indice].color_rgb = valor;
         	rectangulos[index_row][indice].color_rgb = valor;
+
+		actualizarEstadoGlobal();
+	}
+	if (divPrincipal.className == "start_end_type_glowcolor"){  
+		console.log("COMBINED =", inputs_combined); 
+		if (inputs_combined==","){
+			inputs_combined = "";
+		} 
+        	const valor = inputs_combined;
+		const indice = parseInt(selected_rect.dataset.indice);
+
+		 
+		unica_regla.rectangulos[index_global_row][indice].glow_color = valor;
+        	rectangulos[index_row][indice].glow_color = valor;
 
 		actualizarEstadoGlobal();
 	}
@@ -6201,6 +6226,9 @@ grupo.addEventListener("click", (e) => {
 		showErrorModal('The last rectangle cannot be deleted.');
 		return;
 	    }
+	    showErrorModal('The last rectangle cannot be deleted.');
+		return;
+	
 	    eliminarRectangulosPorItem(item_name);
 	    console.log("unica_regla.rectangulos TIMELINE ELIMINADO:",JSON.stringify(unica_regla.rectangulos));
 	    eliminarTimelinePorNombre(item_name);	
@@ -6661,6 +6689,27 @@ function generarBotones(listaOpciones) {
 		   
 		`;
 	}
+        if (nombreVisible === "Glow color") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
+  <!-- Rayos de brillo -->
+  <path d="M12 3V6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <path d="M12 18V21" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <path d="M3 12H6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 12H21" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Núcleo de color -->
+  <circle cx="12" cy="12" r="4" fill="#FFFFFF"/>
+</svg>
+
+
+		    <span class="label">Glow color</span> 
+		  </span>
+		   
+		`;
+	}
+
 
 	if (nombreVisible === "select mode") {
 		btn.innerHTML = `
@@ -7681,22 +7730,21 @@ verificarSoporteCodec().then(soportado => {
     });
 </script>
  
-<script src="../design7/websocket_script.js"> </script> 
-<script src="../design7/general.js"> </script>
-<script src="../design7/send_files.js"> </script> 
-<script src="../design7/clipcontainer.js"> </script>  
-<script src="../design7/htmlstring.js"> </script>  
-<script src="../design7/menu_options.js"> </script>   
-<script src="../design7/panel_tabs.js"> </script>  
-<script src="../design7/reglas.js"> </script>  
-<script src="../design7/simplemenus.js"> </script> 
-<script src="../design7/interaccion_rectangulos_full.js"> </script> 
-<script src="../design7/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js"> </script>  
-<script src="../design7/repintar4.js"> </script>  
-<script src="../design7/anchor_point.js"> </script>   
-<script src="../design7/script_login.js"> </script> 
-<script src="../design7/undo_redo.js"> </script> 
+<script src="../design8/websocket_script.js"> </script> 
+<script src="../design8/general.js"> </script>
+<script src="../design8/send_files.js"> </script> 
+<script src="../design8/clipcontainer.js"> </script>  
+<script src="../design8/htmlstring.js"> </script>  
+<script src="../design8/menu_options.js"> </script>   
+<script src="../design8/panel_tabs.js"> </script>  
+<script src="../design8/reglas.js"> </script>  
+<script src="../design8/simplemenus.js"> </script> 
+<script src="../design8/interaccion_rectangulos_full.js"> </script> 
+<script src="../design8/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js"> </script>  
+<script src="../design8/repintar4.js"> </script>  
+<script src="../design8/anchor_point.js"> </script>   
+<script src="../design8/script_login.js"> </script> 
+<script src="../design8/undo_redo.js"> </script> 
  
 </body>
 </html> 
-
