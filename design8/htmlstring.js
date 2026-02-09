@@ -84,6 +84,11 @@ let html_2 = `
             style="flex:1; min-width:75px; max-width:85px; padding:8px 4px;font-size:16px; border-radius:6px;"
         >
     </div>
+    <div style="display:flex; justify-content:center; width:100%; margin-top:10px;">
+    	<button class="reset_position_value" style="padding:10px 20px; font-size:14px; font-weight:600; border-radius:8px; background-color:rgba(124,85,230,0.8); color:white; border:1px solid rgba(124,85,230,1); cursor:pointer; transition:all 0.2s;">
+        Reset Position
+    	</button>
+    </div>	
 </div> 
 `;
 
