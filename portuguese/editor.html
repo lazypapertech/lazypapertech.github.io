@@ -7518,9 +7518,10 @@ if (posicion_en_segundos < 0) {
 
     if (globalBuffer.length == Math.abs(firstInt)) {
         console.log("FULL_VIDEO_RECEIVED"); 
-	ready_to_download = true;
-	show_download_button();
-	reset_export_progress();
+	    ready_to_download = true;
+	    show_download_button();
+	    reset_export_progress();
+		safeSend("full_video_received_" + video_tag);
     }
   }
  
@@ -7748,4 +7749,5 @@ verificarSoporteCodec().then(soportado => {
  
 </body>
 </html> 
+
 
