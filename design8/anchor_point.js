@@ -795,9 +795,9 @@ function crearControlPosicion2D(idInputX, idInputY, lienzo_width, lienzo_height,
         cursor: default;
     `;
     
-    zoomContainer.appendChild(zoomLabel);
+    //zoomContainer.appendChild(zoomLabel);
     zoomContainer.appendChild(sliderZoomDiv);
-    zoomContainer.appendChild(displayZoom);
+    //zoomContainer.appendChild(displayZoom);
     
     contenedor.appendChild(canvasContainer);
     contenedor.appendChild(zoomContainer);
@@ -806,8 +806,8 @@ function crearControlPosicion2D(idInputX, idInputY, lienzo_width, lienzo_height,
     input_x.parentNode.parentNode.insertBefore(contenedor, input_x.parentNode);
     
     // Hacer inputs readonly
-    input_x.readOnly = true;
-    input_y.readOnly = true;
+    //input_x.readOnly = true;
+    //input_y.readOnly = true;
     input_x.style.cssText = 'flex:1; min-width:75px; max-width:85px; padding:8px 4px; font-size:16px; border-radius:6px; background-color: rgba(65,65,65,0.6); border: 1px solid rgba(124,85,230,0.3); color: white; text-align: center; cursor: default;';
     input_y.style.cssText = 'flex:1; min-width:75px; max-width:85px; padding:8px 4px; font-size:16px; border-radius:6px; background-color: rgba(65,65,65,0.6); border: 1px solid rgba(124,85,230,0.3); color: white; text-align: center; cursor: default;';
     
