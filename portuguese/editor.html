@@ -10,10 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design8/menu_options.css?v=1.8.0">  
- <link rel="stylesheet" href="../design8/anchor_point.css?v=1.8.0">    
- <link rel="stylesheet" href="../design8/freelancers.css?v=1.8.0">
- <link rel="stylesheet" href="../design8/login_design.css?v=1.8.0"> 
+ <link rel="stylesheet" href="../design8/menu_options.css?v=1.9.0">  
+ <link rel="stylesheet" href="../design8/anchor_point.css?v=1.9.0">    
+ <link rel="stylesheet" href="../design8/freelancers.css?v=1.9.0">
+ <link rel="stylesheet" href="../design8/login_design.css?v=1.9.0"> 
 
 <style> 
 #general-header{display:none};
@@ -3454,7 +3454,7 @@ const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
   
       
 	if (rectanguloSeleccionado.dataset.start_value.includes("/%(bounce)%/")){
-		rect.style.background = 'rgb(255, 249, 105)';//rgb(65,134,191)
+		//rect.style.background = 'rgb(255, 249, 105)';//rgb(65,134,191)
 		box_options=["Delete_box","bounce_parameters"];
 	}else{
         	//rect.style.background = '#02f57c';//#02f57c verde claro
@@ -3814,6 +3814,11 @@ if (datos.property!="filename"){
 	valores_visibles = "("+datos.start_value+")";
 	if (datos.end_value!=""){
 	   valores_visibles = "("+datos.start_value+")  ("+datos.end_value+")";
+	   if (datos.start_value.includes("%(bounce)%")){ 
+		const elem1=datos.start_value.split(",")[0];
+		const elem2=datos.start_value.split(",")[1]; 
+	   	valores_visibles = "("+elem1+","+elem2+")";
+           }
 	} 
 	if (datos.property=="item_reveal"){
 	   valores_visibles = "("+datos.start_value+")";
@@ -4095,7 +4100,7 @@ function crear_bounce_rectangle() {
 	filetype: selected_rect.dataset.filetype,
         index_global_row : selected_rect.dataset.index_global_row,
         index_row : selected_rect.dataset.index_row,
-        color: "rgb(255, 249, 105)",
+        color: selected_rect.dataset.color,//"rgb(255, 249, 105)" 
         start: formatearTiempoDecimal(segundosInicio),
         end: formatearTiempoDecimal(segundosFin),
         start_value: "3,0.4,/%(bounce)%/",
@@ -4132,7 +4137,7 @@ function crear_bounce_rectangle() {
  		    filetype: rect.filetype,
 		    index_global_row : selected_rect.dataset.index_global_row,
         	    index_row : selected_rect.dataset.index_row,
-		    color: "rgb(255, 249, 105)",
+		    color: selected_rect.dataset.color,//"rgb(255, 249, 105)" 
                     start: formatearTiempoDecimal(segundosInicio),
                     end: formatearTiempoDecimal(segundosFin),
                     start_value: rect.start_value,
@@ -4492,13 +4497,17 @@ function add_box() {
     let new_start_value = "";
     let new_end_value = "";
     if (selected_rect.dataset.property=="position" || selected_rect.dataset.property=="ratio"){
-    	new_start_value = dic1[selected_rect.dataset.property][0];
-        new_end_value = dic1[selected_rect.dataset.property][1];
+    	//new_start_value = dic1[selected_rect.dataset.property][0];
+        //new_end_value = dic1[selected_rect.dataset.property][1];
+	new_start_value = selected_rect.dataset.end_value;
+        new_end_value = selected_rect.dataset.end_value;
     }else{
 	if (selected_rect.dataset.property!="filename"){
 		console.log("selected_rect.dataset.property ERROR:",selected_rect.dataset.property);
-		new_start_value = dic1[selected_rect.dataset.property][0];
-        	new_end_value = dic1[selected_rect.dataset.property][0];
+		//new_start_value = dic1[selected_rect.dataset.property][0];
+        	//new_end_value = dic1[selected_rect.dataset.property][0];
+		new_start_value = selected_rect.dataset.end_value;
+        	new_end_value = selected_rect.dataset.end_value;
 	}
     } 	
 
@@ -5909,6 +5918,27 @@ function eliminarTimelinePorNombre(current_item) {
 
 }
 
+let request_project = false;
+function checkUserExample() {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('user') === 'project') {
+    console.log("logueado4");
+    request_project = true;
+  }
+}
+
+// Ejecutar cuando se cargue la página
+window.addEventListener('load', checkUserExample);
+
+
+function get_saved_timeline() {
+  console.log("SOLICITANDO PROYECTO GUARDADO"); 
+  const json_data = {"service":"get_saved_timeline","itemName":"empty","property":"empty","params":"empty","file_type":"empty","extra0":"","extra":""}; 
+  safeSend(JSON.stringify(json_data)); 
+
+}
+
+
  
 function eliminarTabPorNombre(tabName) {
   const container = document.getElementById('tabs-scroll-container');
@@ -6859,6 +6889,9 @@ function connect(type_connection) {
  
     //ratio_9_16();
     //ratio_16_9();
+    if (request_project){
+	//get_saved_timeline();
+    }
 
   });
 
@@ -6866,8 +6899,12 @@ function connect(type_connection) {
     let message_result = event.data;
 
     if (typeof message_result === "string") {
-
-      handleWebSocketMessage(event.data);
+ 
+      if (event.data.includes("rectangulos") && event.data.includes("Timeline")){
+	console.log("proyecto recibido:",message_result);
+      }else{
+	handleWebSocketMessage(event.data);
+      }
  
 /* 
       console.log("MENSAJE: ",message_result);
@@ -7518,10 +7555,10 @@ if (posicion_en_segundos < 0) {
 
     if (globalBuffer.length == Math.abs(firstInt)) {
         console.log("FULL_VIDEO_RECEIVED"); 
-	    ready_to_download = true;
-	    show_download_button();
-	    reset_export_progress();
-		safeSend("full_video_received_" + video_tag);
+	ready_to_download = true;
+	show_download_button();
+	reset_export_progress();
+	safeSend("full_video_received_" + video_tag);
     }
   }
  
@@ -7731,23 +7768,21 @@ verificarSoporteCodec().then(soportado => {
     });
 </script>
  
-<script src="../design8/websocket_script.js?v=1.8.0"> </script> 
-<script src="../design8/general.js?v=1.8.0"> </script>
-<script src="../design8/send_files.js?v=1.8.0"> </script> 
-<script src="../design8/clipcontainer.js?v=1.8.0"> </script>  
-<script src="../design8/htmlstring.js?v=1.8.0"> </script>  
-<script src="../design8/menu_options.js?v=1.8.0"> </script>   
-<script src="../design8/panel_tabs.js?v=1.8.0"> </script>  
-<script src="../design8/reglas.js?v=1.8.0"> </script>  
-<script src="../design8/simplemenus.js?v=1.8.0"> </script> 
-<script src="../design8/interaccion_rectangulos_full.js?v=1.8.0"> </script> 
-<script src="../design8/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=1.8.0"> </script>  
-<script src="../design8/repintar4.js?v=1.8.0"> </script>  
-<script src="../design8/anchor_point.js?v=1.8.0"> </script>   
-<script src="../design8/script_login.js?v=1.8.0"> </script> 
-<script src="../design8/undo_redo.js?v=1.8.0"> </script> 
+<script src="../design8/websocket_script.js?v=1.9.0"> </script> 
+<script src="../design8/general.js?v=1.9.0"> </script>
+<script src="../design8/send_files.js?v=1.9.0"> </script> 
+<script src="../design8/clipcontainer.js?v=1.9.0"> </script>  
+<script src="../design8/htmlstring.js?v=1.9.0"> </script>  
+<script src="../design8/menu_options.js?v=1.9.0"> </script>   
+<script src="../design8/panel_tabs.js?v=1.9.0"> </script>  
+<script src="../design8/reglas.js?v=1.9.0"> </script>  
+<script src="../design8/simplemenus.js?v=1.9.0"> </script> 
+<script src="../design8/interaccion_rectangulos_full.js?v=1.9.0"> </script> 
+<script src="../design8/organizar_reproduccion_precarga_bidireccional_full_2_ligero.js?v=1.9.0"> </script>  
+<script src="../design8/repintar4.js?v=1.9.0"> </script>  
+<script src="../design8/anchor_point.js?v=1.9.0"> </script>   
+<script src="../design8/script_login.js?v=1.9.0"> </script> 
+<script src="../design8/undo_redo.js?v=1.9.0"> </script> 
  
 </body>
 </html> 
-
-
