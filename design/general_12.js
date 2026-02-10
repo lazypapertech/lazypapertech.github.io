@@ -2652,12 +2652,12 @@ function scheduleReconnect() {
   
   window.onerror = function (mensaje, url, linea, columna, error) {
     console.log("error");
-    redirect();
+    /*redirect();*/
   };
  
   window.addEventListener("unhandledrejection", function (event) {
     console.log("Unhandled promise rejection:");
-    /*redirect();*/
+     /*redirect(); */
   }); 
   
   function abrirVideo() {
@@ -2688,3 +2688,4 @@ function scheduleReconnect() {
 
 
  
+
