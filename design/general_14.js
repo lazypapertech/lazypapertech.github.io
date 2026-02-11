@@ -2512,6 +2512,7 @@ function scheduleReconnect() {
  
   
   function toggleExportDropdown(event) {
+return;
     let export_dropdownContent = document.getElementById(
       "exportDropdown-content"
     );
@@ -2703,6 +2704,4 @@ content.style.display="block";
  
 
 
-
- 
 
