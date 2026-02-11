@@ -2503,11 +2503,13 @@ function scheduleReconnect() {
     } else {
       dropdownContent.style.display = "block";
     }
-  
+  /*
     if (event && event.stopPropagation) {
       event.stopPropagation();
     }
+*/
   }
+ 
   
   function toggleExportDropdown(event) {
     let export_dropdownContent = document.getElementById(
@@ -2689,9 +2691,14 @@ function scheduleReconnect() {
     
 
 
-
+document.addEventListener("click", function (e) { 
+if (e.target.matches(".exportDropdown") || e.target.closest(".exportDropdown")){
+toggleDropdown(e);
+}
+});
 
  
 
 
 
+ 
