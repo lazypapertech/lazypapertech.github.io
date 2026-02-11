@@ -2693,12 +2693,16 @@ function scheduleReconnect() {
 
 document.addEventListener("click", function (e) { 
 if (e.target.matches(".exportDropdown") || e.target.closest(".exportDropdown")){
-toggleDropdown(e);
+console.log("export presionado");
+const content = document.getElementById('exportDropdown-content'); 
+if (content){
+content.style.display="block"; 
+}
 }
 });
-
  
 
 
 
  
+
