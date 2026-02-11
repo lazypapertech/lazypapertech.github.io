@@ -2607,7 +2607,7 @@ function scheduleReconnect() {
     const limitMessage = document.getElementById("limit_size_message");
   
     limitMessage.innerText =
-      "Press Render Video\n\nStep 1: Transcription\nStep2: Edit subtitles\nStep3: Render video\nStep 4: Export video";
+      "Press render video before exporting.\n\nIMPORTANT:\nEach text entry represents 0.5 seconds, do not write too long text in a single box. Recommended maximum 15 characters in each entry.";
     modal_limit_size.style.display = "block";
   }
   
@@ -2688,5 +2688,6 @@ function scheduleReconnect() {
 
 
  
+
 
 
