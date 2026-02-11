@@ -2478,10 +2478,10 @@ function scheduleReconnect() {
     });
   
     document.addEventListener("click", function (event) {
-      var export_dropdownContent = document.getElementById(
+      let export_dropdownContent = document.getElementById(
         "exportDropdown-content"
       );
-      var export_dropdownBtn = document.getElementById("exportDropdown-button");
+      let export_dropdownBtn = document.getElementById("exportDropdown-button");
   
       if (
         event.target !== export_dropdownContent &&
@@ -2489,11 +2489,14 @@ function scheduleReconnect() {
       ) {
         export_dropdownContent.style.display = "none";
       }
+      if (event.target.matches("#exportDropdown-button") || event.target.closest("#exportDropdown-button")){
+          toggleExportDropdown(event);
+      }  
     });
   });
   
   function toggleDropdown(event) {
-    var dropdownContent = document.getElementById("dropdown-content");
+    let dropdownContent = document.getElementById("dropdown-content");
     if (dropdownContent.style.display === "block") {
       dropdownContent.style.display = "none";
     } else {
@@ -2506,7 +2509,7 @@ function scheduleReconnect() {
   }
   
   function toggleExportDropdown(event) {
-    var export_dropdownContent = document.getElementById(
+    let export_dropdownContent = document.getElementById(
       "exportDropdown-content"
     );
     if (export_dropdownContent.style.display === "block") {
@@ -2531,7 +2534,7 @@ function scheduleReconnect() {
   };
   
   function send_to_translate(lang) {
-    var text = getTextareaValue();
+    let text = getTextareaValue();
     const user_id = localStorage.getItem("useridManycaptions");
     websocketClient.send(
       "translate_client_" + user_id + "_client_" + text + "_client_" + lang
@@ -2539,8 +2542,8 @@ function scheduleReconnect() {
   }
   
   function selectOption(option) {
-    var dropdownBtn = document.getElementById("dropdown-btn");
-    var dropdownContent = document.getElementById("dropdown-content");
+    let dropdownBtn = document.getElementById("dropdown-btn");
+    let dropdownContent = document.getElementById("dropdown-content");
     dropdownContent.style.display = "none";
   
     dropdownBtn.disabled = true;
@@ -2688,6 +2691,7 @@ function scheduleReconnect() {
 
 
  
+
 
 
 
