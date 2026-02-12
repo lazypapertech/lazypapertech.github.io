@@ -2477,7 +2477,7 @@ function scheduleReconnect() {
         dropdownContent.style.display = "none";
       }
     });
-  
+/*
     document.addEventListener("click", function (event) {
       let export_dropdownContent = document.getElementById(
         "exportDropdown-content"
@@ -2494,6 +2494,7 @@ function scheduleReconnect() {
           toggleExportDropdown(event);
       }  
     });
+*/
   });
   
   function toggleDropdown(event) {
@@ -2704,4 +2705,4 @@ content.style.display="block";
  
 
 
-
+  
