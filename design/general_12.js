@@ -586,25 +586,25 @@ function isNotUser() {
   }
   
   function hide_step0() {
-    var step0 = document.getElementById("step0");
+    let step0 = document.getElementById("step0");
     if (step0) {
       step0.style.display = "none";
     }
   }
   function hide_stepLoading() {
-    var stepLoading = document.getElementById("stepLoading");
+    let stepLoading = document.getElementById("stepLoading");
     if (stepLoading) {
       stepLoading.style.display = "none";
     }
   }
   function hide_stepPreview() {
-    var stepPreview = document.getElementById("stepPreview");
+    let stepPreview = document.getElementById("stepPreview");
     if (stepPreview) {
       stepPreview.style.display = "none";
     }
   }
   function hide_step_1_2() {
-    var step_1_2 = document.getElementById("step_1_2");
+    let step_1_2 = document.getElementById("step_1_2");
     if (step_1_2) {
       step_1_2.style.display = "none";
     }
@@ -710,6 +710,7 @@ function isNotUser() {
   
     if (el) {
       el.innerHTML = item.content;
+      el.classList.add("notranslate");
     }
   });
   
@@ -719,7 +720,7 @@ function isNotUser() {
     hide_stepLoading();
     hide_step_1_2();
     hide_stepPreview();
-    var step0 = document.getElementById("step0");
+    let step0 = document.getElementById("step0");
     if (step0) {
       step0.style.display = "block";
     }
@@ -728,7 +729,7 @@ function isNotUser() {
     hide_step0();
     hide_step_1_2();
     hide_stepPreview();
-    var stepLoading = document.getElementById("stepLoading");
+    let stepLoading = document.getElementById("stepLoading");
     if (stepLoading) {
       stepLoading.style.display = "block";
     }
@@ -737,7 +738,7 @@ function isNotUser() {
     hide_step0();
     hide_step_1_2();
     hide_stepLoading();
-    var stepPreview = document.getElementById("stepPreview");
+    let stepPreview = document.getElementById("stepPreview");
     if (stepPreview) {
       stepPreview.style.display = "block";
     }
@@ -765,14 +766,14 @@ function isNotUser() {
     hide_step0();
     hide_stepLoading();
     hide_stepPreview();
-    var step_1_2 = document.getElementById("step_1_2");
+    let step_1_2 = document.getElementById("step_1_2");
     if (step_1_2) {
       step_1_2.style.display = "flex";
       clearInterval(interval);
       reset_percentage();
       generarInputs_captions(captions_video);
     }
-    var circular_animation = document.querySelector(".circular");
+    let circular_animation = document.querySelector(".circular");
     if (circular_animation) {
       circular_animation.style.animation = "none";
     }
@@ -782,7 +783,7 @@ function isNotUser() {
   }
   
   function show_export_mp4() {
-    var button_export_mp4 = document.getElementById("exportDropdown-mp4");
+    let button_export_mp4 = document.getElementById("exportDropdown-mp4");
     if (button_export_mp4) {
       button_export_mp4.style.display = "flex";
     }
@@ -804,7 +805,7 @@ function isNotUser() {
   }
   
   function scrollToElement(element) {
-    var container = document.querySelector(".form-container");
+    let container = document.querySelector(".form-container");
     if (container) {
       container.scrollTop =
         element.offsetTop -
@@ -814,19 +815,19 @@ function isNotUser() {
     }
   }
   
-  var videoElement = document.getElementById("my-video-2");
+  let videoElement = document.getElementById("my-video-2");
   if (videoElement) {
     videoElement.setAttribute("controlsList", "nodownload");
   
     videoElement.addEventListener("timeupdate", function () {
-      var currentTime = videoElement.currentTime;
+      let currentTime = videoElement.currentTime;
   
-      var hours = Math.floor(currentTime / 3600);
-      var minutes = Math.floor((currentTime - hours * 3600) / 60);
-      var seconds = Math.floor(currentTime - hours * 3600 - minutes * 60);
-      var totalSeconds = Math.floor(currentTime);
+      let hours = Math.floor(currentTime / 3600);
+      let minutes = Math.floor((currentTime - hours * 3600) / 60);
+      let seconds = Math.floor(currentTime - hours * 3600 - minutes * 60);
+      let totalSeconds = Math.floor(currentTime);
   
-      var index_irregular_timestamps = indiceAcumuladoHasta(
+      let index_irregular_timestamps = indiceAcumuladoHasta(
         totalSeconds + 1,
         irregular_timestamp
       );
@@ -888,8 +889,8 @@ function isNotUser() {
   }
   
   function start_percentage(type_loading) {
-    var delta_seconds = 1200;
-    var time_increment = 1;
+    let delta_seconds = 1200;
+    let time_increment = 1;
     if (type_loading == 1) {
       delta_seconds = 1000;
       if (current_duration < 62) {
@@ -1085,9 +1086,9 @@ function isNotUser() {
   
     const delta_float_percent = (100 * chunkSize) / totalSize;
   
-    var offset = 0;
-    var n = 0;
-    var float_percentage = 0;
+    let offset = 0;
+    let n = 0;
+    let float_percentage = 0;
     while (offset < totalSize) {
       const end = offset + chunkSize;
       const chunk =
@@ -1099,7 +1100,7 @@ function isNotUser() {
       await enviarMensaje(websocketClient, chunk);
   
       if (float_percentage <= 100) {
-        var round_percentage = float_percentage.toFixed(1);
+        let round_percentage = float_percentage.toFixed(1);
         document.querySelector(
           ".percentage"
         ).textContent = `${round_percentage}%`;
@@ -1181,7 +1182,7 @@ function isNotUser() {
   
       const filePath = URL.createObjectURL(video_file);
   
-      var normal_size = 350000000;
+      let normal_size = 350000000;
   
       if (video_file.size < normal_size) {
         if (!selectedFile.name.toLowerCase().endsWith(".mp4")) {
@@ -1222,10 +1223,10 @@ function isNotUser() {
   }
   
   function generarInputs_captions_05seg(frases) {
-    var form = document.getElementById("form-container");
+    let form = document.getElementById("form-container");
     form.innerHTML = "";
   
-    var arrayFrases = frases.split("-o-");
+    let arrayFrases = frases.split("-o-");
     while (arrayFrases.length > 0 && arrayFrases[arrayFrases.length - 1] === "") {
       arrayFrases.pop();
     }
@@ -1242,14 +1243,14 @@ function isNotUser() {
     }
   
     for (let i = 0; i < arrayFrases.length; i += 2) {
-      var rowDiv = document.createElement("div");
+      let rowDiv = document.createElement("div");
       rowDiv.style.display = "flex";
       rowDiv.style.marginBottom = "4px";
       rowDiv.style.marginRight = "4px";
       rowDiv.style.marginLeft = "4px";
       rowDiv.style.gap = "4px";
   
-      var textarea1 = document.createElement("textarea");
+      let textarea1 = document.createElement("textarea");
       textarea1.classList.add("flexible-captions");
       textarea1.setAttribute("rows", "1");
       textarea1.setAttribute("cols", "50");
@@ -1287,11 +1288,11 @@ function isNotUser() {
   }
   
   function generarInputs_captions_1seg(frases) {
-    var form = document.getElementById("form-container");
+    let form = document.getElementById("form-container");
   
     form.innerHTML = "";
   
-    var arrayFrases = frases.split("-o-");
+    let arrayFrases = frases.split("-o-");
     while (arrayFrases.length > 0 && arrayFrases[arrayFrases.length - 1] === "") {
       arrayFrases.pop();
     }
@@ -1308,7 +1309,7 @@ function isNotUser() {
     }
   
     arrayFrases.forEach(function (frase, index) {
-      var textarea = document.createElement("textarea");
+      let textarea = document.createElement("textarea");
       textarea.classList.add("flexible-captions");
       textarea.setAttribute("rows", "1");
       textarea.setAttribute("cols", "50");
@@ -1339,10 +1340,10 @@ function isNotUser() {
   }
   
   function generateSRT(phrases) {
-    var srt = "";
-    var startTime = 0;
-    var step = 0.5;
-    var step0 = parseFloat(localStorage.getItem("caption_length"));
+    let srt = "";
+    let startTime = 0;
+    let step = 0.5;
+    let step0 = parseFloat(localStorage.getItem("caption_length"));
     if (step) {
       step = step0;
     } else {
@@ -1350,7 +1351,7 @@ function isNotUser() {
     }
   
     phrases.forEach((phrase, index) => {
-      var endTime = startTime + step;
+      let endTime = startTime + step;
   
       srt += `${index + 1}\n`;
       srt += `${formatTime(startTime)} --> ${formatTime(endTime)}\n`;
@@ -1381,12 +1382,12 @@ function isNotUser() {
   }
   
   function downloadTXT() {
-    var current_captions_str = getTextareaValue();
-    var phrases_list_str = current_captions_str.split("-o-");
-    var randomdownload = Math.floor(1000 + Math.random() * 9000);
-    var randomstring = randomdownload.toString();
-    var filename_srt = "manycaptions" + randomstring + ".txt";
-    var content_srt = generateSRT(phrases_list_str);
+    let current_captions_str = getTextareaValue();
+    let phrases_list_str = current_captions_str.split("-o-");
+    let randomdownload = Math.floor(1000 + Math.random() * 9000);
+    let randomstring = randomdownload.toString();
+    let filename_srt = "manycaptions" + randomstring + ".txt";
+    let content_srt = generateSRT(phrases_list_str);
   
     const blob_str = new Blob([content_srt], {
       type: "text/plain;charset=iso-8859-1",
@@ -1402,12 +1403,12 @@ function isNotUser() {
     URL.revokeObjectURL(url_str);
   }
   function downloadSRT(extension) {
-    var current_captions_str = getTextareaValue();
-    var phrases_list_str = current_captions_str.split("-o-");
-    var randomdownload = Math.floor(1000 + Math.random() * 9000);
-    var randomstring = randomdownload.toString();
-    var filename_srt = "manycaptions" + randomstring + extension;
-    var content_srt = phrases_list_str.join(" ");
+    let current_captions_str = getTextareaValue();
+    let phrases_list_str = current_captions_str.split("-o-");
+    let randomdownload = Math.floor(1000 + Math.random() * 9000);
+    let randomstring = randomdownload.toString();
+    let filename_srt = "manycaptions" + randomstring + extension;
+    let content_srt = phrases_list_str.join(" ");
     if (extension == ".srt") {
       content_srt = generateSRT(phrases_list_str);
     }
@@ -1506,7 +1507,7 @@ function isNotUser() {
   function check_edited_captions_next() {
     new_captions_video = getTextareaValue();
   
-    var modalContent = document.querySelector(".modal-content p");
+    let modalContent = document.querySelector(".modal-content p");
     console.log("new_captions_video: ", new_captions_video);
     console.log("captions_video: ", captions_video);
     if (lastPressedButton == 1) {
@@ -1528,15 +1529,15 @@ function isNotUser() {
       error_connection_2.style.display = "none";
     }
   
-    var sendFont = localStorage.getItem("selected-font");
-    var sendColor = localStorage.getItem("selected-color");
-    var sendPositionSub = selectedPositionSub;
-    var sendTextGlowSub = selectedTextGlowSub;
-    var sendAudioSub = selectedAudioSub;
+    let sendFont = localStorage.getItem("selected-font");
+    let sendColor = localStorage.getItem("selected-color");
+    let sendPositionSub = selectedPositionSub;
+    let sendTextGlowSub = selectedTextGlowSub;
+    let sendAudioSub = selectedAudioSub;
   
     captions_video = new_captions_video;
   
-    var send_settings =
+    let send_settings =
       "tocreate_client_" +
       user_id +
       "_client_" +
@@ -1557,7 +1558,7 @@ function isNotUser() {
       video_tag;
   
     if (received_durations != -1) {
-      var durations_string = received_durations.join("_");
+      let durations_string = received_durations.join("_");
       send_settings = send_settings + "_client_" + durations_string;
     }
   
@@ -1700,7 +1701,7 @@ function connect(type_connection) {
     });
   
     websocketClient.addEventListener("message", (event) => {
-      var message_result = event.data;
+      let message_result = event.data;
   
       if (typeof message_result === "string") {
         handleServerResponse(message_result);
@@ -1731,13 +1732,13 @@ function connect(type_connection) {
         }
   
         if (message_result.split("_client_")[0] == "translated") {
-          var translated_captions = message_result.split("_client_")[1];
+          let translated_captions = message_result.split("_client_")[1];
           new_captions_video = translated_captions;
   
           generarInputs_captions(translated_captions);
           toggleEditability(0);
   
-          var dropdownBtn = document.getElementById("dropdown-btn");
+          let dropdownBtn = document.getElementById("dropdown-btn");
           dropdownBtn.innerHTML = current_output_language + " &#x025BE;";
           dropdownBtn.disabled = false;
         }
@@ -2273,7 +2274,7 @@ function scheduleReconnect() {
   
   saveColorsToLocalStorageMono("#FFFFFF");
   
-  var selectedColors = ["#0FF764", "#FFFF00", "#469AFA"];
+  let selectedColors = ["#0FF764", "#FFFF00", "#469AFA"];
   
   saveColorsToLocalStorage({ multiColor: selectedColors });
   
@@ -2469,30 +2470,30 @@ function scheduleReconnect() {
   
   document.addEventListener("DOMContentLoaded", function () {
     document.addEventListener("click", function (event) {
-      var dropdownContent = document.getElementById("dropdown-content");
-      var dropdownBtn = document.getElementById("dropdown-btn");
+      let dropdownContent = document.getElementById("dropdown-content");
+      let dropdownBtn = document.getElementById("dropdown-btn");
   
       if (event.target !== dropdownContent && event.target !== dropdownBtn) {
         dropdownContent.style.display = "none";
       }
     });
-  
+ 
     document.addEventListener("click", function (event) {
       let export_dropdownContent = document.getElementById(
         "exportDropdown-content"
       );
       let export_dropdownBtn = document.getElementById("exportDropdown-button");
   
-      if (
-        event.target !== export_dropdownContent &&
-        event.target !== export_dropdownBtn
-      ) {
+      if (event.target !== export_dropdownBtn) {
         export_dropdownContent.style.display = "none";
       }
+/*
       if (event.target.matches("#exportDropdown-button") || event.target.closest("#exportDropdown-button")){
           toggleExportDropdown(event);
       }  
+*/
     });
+ 
   });
   
   function toggleDropdown(event) {
@@ -2502,13 +2503,16 @@ function scheduleReconnect() {
     } else {
       dropdownContent.style.display = "block";
     }
-  
+  /*
     if (event && event.stopPropagation) {
       event.stopPropagation();
     }
+*/
   }
+ 
   
   function toggleExportDropdown(event) {
+return;
     let export_dropdownContent = document.getElementById(
       "exportDropdown-content"
     );
@@ -2688,10 +2692,16 @@ function scheduleReconnect() {
     
 
 
-
-
+document.addEventListener("click", function (e) { 
+if (e.target.matches(".exportDropdown") || e.target.closest(".exportDropdown")){
+console.log("export presionado");
+const content = document.getElementById('exportDropdown-content'); 
+if (content){
+content.style.display="block"; 
+}
+}
+});
  
 
 
-
-
+  
