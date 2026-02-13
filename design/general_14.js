@@ -469,13 +469,19 @@ function isNotUser() {
                 <div id="settings-position-sub" class="settings-font-block"></div>
             </li>
         `;
+    const nuevoItem2 = `
+            <li>
+                <div id="settings-tutorial-sub" class="settings-font-block"></div>
+            </li>
+        `;
     settingsList.insertAdjacentHTML("beforeend", nuevoItem);
+    settingsList.insertAdjacentHTML("afterbegin", nuevoItem2); 
   }
   
   const div_text = `<div id="positionModalSub" class="positionModalSub">
             <div class="position-modal-content-sub">
                 <span class="position-close-btn-sub">&times;</span>
-    
+      
                 <div id="position-sub-title" class="option-sub-title"></div>
                 <div id="bar-position-container" class="bar-option-container">  
                      <div class="labels">
@@ -499,7 +505,7 @@ function isNotUser() {
                     <div class="circle" id="textglow-circle"></div> 
                 </div>
                 
-    
+    	
                 <div id="audio-sub-title" class="option-sub-title"></div>
                 <div id="bar-audio-container" class="bar-option-container">  
                      <div class="labels">
@@ -516,9 +522,54 @@ function isNotUser() {
     
             </div>
         </div>`;
+
+  const div_tutorial = `<div id="tutorialModalSub" class="tutorialModalSub"> 
+            <div class="tutorial-modal-content-sub">
+ 		  <span class="tutorial-close-btn-sub">&times;</span>
+		  <div style="background-color:#7c55e6; padding:40px; text-align:center; font-family:Arial, sans-serif; border-radius:12px;">
+
+    <p style="color:#ffffff; font-size:32px; font-weight:bold; margin-bottom:15px;">
+        Tutorial
+    </p>
+
+    <p style="color:#ffffff; font-size:16px; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
+    Este tutorial permite utilizar 
+    <span style="font-weight:700; color:rgb(20,20,20) !important;">
+        características avanzadas
+    </span> 
+    para mejorar los subtitulos.
+</p>
+
+
+    <p>
+        <a href="https://www.youtube.com/watch?v=xzrvYINTVwY" target="_blank"
+           style="background-color:#ffffff; 
+                  color:#7c55e6; 
+                  padding:14px 28px; 
+                  text-decoration:none; 
+                  font-weight:bold; 
+                  border-radius:8px; 
+                  font-size:16px; 
+                  display:inline-block;
+                  transition:0.3s;">
+            Ver Tutorial
+        </a>
+    </p>
+
+</div>
+
+	
+            </div>
+        </div>`;
   const principalContainer = document.querySelector(".card-container");
   if (principalContainer) {
-    principalContainer.insertAdjacentHTML("beforeend", div_text);
+    principalContainer.insertAdjacentHTML("beforeend", div_text); 
+    principalContainer.insertAdjacentHTML("afterbegin", div_tutorial);
+/*
+    const contenidoOriginal = principalContainer.innerHTML; 
+    principalContainer.innerHTML = div_tutorial + div_text + contenidoOriginal;
+*/
+
   }
   
   const div_presentation = `<div class="start-video-preview">
@@ -671,8 +722,10 @@ function isNotUser() {
     },
     { selector: ".settings-title", content: "Settings" },
   
+    { id: "settings-tutorial-sub", content: "Advanced tutorial" },
     { id: "settings-font", content: "Text font" },
     { id: "settings-color", content: "Text color" },
+    { id: "settings-position-sub", content: "Text design" },
   
     { id: "position-down", content: "Down" },
     { id: "position-center", content: "Center" },
@@ -685,12 +738,12 @@ function isNotUser() {
     { id: "audio-down", content: "1" },
     { id: "audio-center", content: "2" },
     { id: "audio-up", content: "3" },
-  
+     
     { id: "position-sub-title", content: "Position of subtitles" },
     { id: "textglow-sub-title", content: "Text Glow" },
     { id: "audio-sub-title", content: "Simultaneous lines" },
   
-    { id: "settings-position-sub", content: "Text design" },
+     
     { id: "monoColor", content: "Monocolor" },
     { id: "multiColor", content: "Multicolor" },
     { id: "saveColor", content: "Save" },
@@ -2043,10 +2096,12 @@ function scheduleReconnect() {
   document.addEventListener("DOMContentLoaded", function () {
     const settingsOpenModalBtn = document.getElementById("settings-openModalBtn");
     const settingsModal = document.getElementById("settingsModal");
+    const myModal_limit_size = document.getElementById("myModal_limit_size");
     const settingsCloseBtn = document.querySelector(".settings-close-btn");
     const fontElement = document.getElementById("settings-font");
     const colorElement = document.getElementById("settings-color");
     const positionElementSub = document.getElementById("settings-position-sub");
+    const tutorialElementSub = document.getElementById("settings-tutorial-sub");
   
     if (
       settingsOpenModalBtn &&
@@ -2054,7 +2109,8 @@ function scheduleReconnect() {
       settingsCloseBtn &&
       fontElement &&
       colorElement &&
-      positionElementSub
+      positionElementSub &&
+      tutorialElementSub	
     ) {
       settingsOpenModalBtn.addEventListener("click", function () {
         settingsModal.style.display = "block";
@@ -2069,6 +2125,11 @@ function scheduleReconnect() {
           settingsModal.style.display = "none";
         }
       });
+      myModal_limit_size.addEventListener("click", function (event) {
+        if (event.target === myModal_limit_size) {
+          myModal_limit_size.style.display = "none";
+        }
+      });
   
       fontElement.addEventListener("click", function () {
         settingsModal.style.display = "none";
@@ -2080,6 +2141,11 @@ function scheduleReconnect() {
   
       if (positionElementSub && settingsModal) {
         positionElementSub.addEventListener("click", function () {
+          settingsModal.style.display = "none";
+        });
+      }
+      if (tutorialElementSub && settingsModal) {
+        tutorialElementSub.addEventListener("click", function () {
           settingsModal.style.display = "none";
         });
       }
@@ -2188,6 +2254,7 @@ function scheduleReconnect() {
     });
   });
   
+ 
   document.addEventListener("DOMContentLoaded", function () {
     const openPositionModalBtn = document.getElementById("settings-position-sub");
     const positionModalSub = document.getElementById("positionModalSub");
@@ -2195,20 +2262,45 @@ function scheduleReconnect() {
   
     if (openPositionModalBtn && positionModalSub && closeBtnPosition) {
       openPositionModalBtn.addEventListener("click", function () {
-        positionModalSub.style.display = "block";
-      });
-  
-      closeBtnPosition.addEventListener("click", function () {
-        positionModalSub.style.display = "none";
-      });
+        positionModalSub.style.display = "block"; 
+      }); 
   
       positionModalSub.addEventListener("click", function (event) {
         if (event.target === positionModalSub) {
           positionModalSub.style.display = "none";
         }
       });
+
+      closeBtnPosition.addEventListener("click", function () {
+        positionModalSub.style.display = "none";
+      });
     }
   });
+
+ 
+  document.addEventListener("DOMContentLoaded", function () {
+    const openTutorialModalBtn = document.getElementById("settings-tutorial-sub");
+    const tutorialModalSub = document.getElementById("tutorialModalSub");
+    const closeBtnTutorial = document.querySelector(".tutorial-close-btn-sub");
+  
+    if (openTutorialModalBtn && tutorialModalSub && closeBtnTutorial) {
+      openTutorialModalBtn.addEventListener("click", function () {
+        tutorialModalSub.style.display = "block"; 
+      }); 
+ 
+      tutorialModalSub.addEventListener("click", function (event) {
+        if (event.target === tutorialModalSub) {
+          tutorialModalSub.style.display = "none";
+        }
+      });
+
+      closeBtnTutorial.addEventListener("click", function () {
+        tutorialModalSub.style.display = "none";
+      });
+ 
+    }
+  });
+ 
   
   document.addEventListener("DOMContentLoaded", function () {
     const openModalBtn = document.getElementById("settings-font");
@@ -2706,4 +2798,4 @@ content.style.display="block";
  
 
 
- 
+  
