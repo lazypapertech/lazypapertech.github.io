@@ -280,7 +280,7 @@ function isNotUser() {
   }
   
   const canvas = document.getElementById("liveCanvas");
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { alpha: true });
   const dpr = window.devicePixelRatio || 1;
   console.log("dpr principal: ", dpr);
   ctx.scale(dpr, dpr);
@@ -352,13 +352,13 @@ function isNotUser() {
     tempCanvas.style.width = canvasWidth + "px";
     tempCanvas.style.height = canvasHeight + "px";
   
-    const ctx = tempCanvas.getContext("2d");
+    const ctx = tempCanvas.getContext("2d", { alpha: true });
     ctx.scale(dpr, dpr);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
   
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    //ctx.fillStyle = "black";
+    //ctx.fillRect(0, 0, canvasWidth, canvasHeight);
   
     const canvasAspect = canvasWidth / canvasHeight;
     const frameAspect = frameWidth / frameHeight;
@@ -532,12 +532,12 @@ function isNotUser() {
         Tutorial
     </p>
 
-    <p style="color:#ffffff; font-size:16px; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
-    Este tutorial permite utilizar 
-    <span style="font-weight:700; color:rgb(20,20,20) !important;">
-        características avanzadas
+    <p style="color:#000; font-size:16px; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
+    This tutorial allows users to use 
+    <span style="font-weight:700; color:rgb(255,255,255) !important;">
+        advanced features
     </span> 
-    para mejorar los subtitulos.
+    to improve the subtitles.
 </p>
 
 
@@ -552,7 +552,7 @@ function isNotUser() {
                   font-size:16px; 
                   display:inline-block;
                   transition:0.3s;">
-            Ver Tutorial
+            Watch Tutorial
         </a>
     </p>
 
@@ -2796,6 +2796,22 @@ content.style.display="block";
 }
 });
  
+ 
+
+
+function iniciarAnimacionBoton() {
+  const boton = document.getElementById('settings-openModalBtn');
+  
+  setInterval(() => {
+    boton.classList.add('neon-glow');
+    setTimeout(() => {
+      boton.classList.remove('neon-glow');
+    }, 1000);  
+  }, 7000);
+}
+
+iniciarAnimacionBoton();
+
 
 
   
