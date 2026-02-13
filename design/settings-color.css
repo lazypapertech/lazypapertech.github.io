@@ -1,3 +1,50 @@
+#liveCanvas{
+	background:transparent !important;
+}
+
+#settings-openModalBtn {
+  position: relative; 
+}
+
+ 
+#settings-openModalBtn::before {
+  content: '';
+  position: absolute;
+  inset: -4px;  
+  border-radius: 12px;  
+  padding: 4px;  
+  background: linear-gradient(90deg, #39ff14, transparent, transparent, transparent);
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  filter: blur(10px) brightness(2);  
+}
+ 
+#settings-openModalBtn.neon-glow::before {
+  opacity: 1;
+  animation: border-race 1s linear;
+}
+
+@keyframes border-race {
+  0% { background: linear-gradient(0deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  12.5% { background: linear-gradient(45deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  25% { background: linear-gradient(90deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  37.5% { background: linear-gradient(135deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  50% { background: linear-gradient(180deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  62.5% { background: linear-gradient(225deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  75% { background: linear-gradient(270deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  87.5% { background: linear-gradient(315deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+  100% { background: linear-gradient(360deg, #39ff14 0%, #32cd32 25%, transparent 50%); }
+}
+
+.language-block { 
+    transition:0.1s !important;
+}
+ 
+
 .colorModal {
     display: none;
     position: fixed;
@@ -274,3 +321,4 @@
 }
  
  
+
