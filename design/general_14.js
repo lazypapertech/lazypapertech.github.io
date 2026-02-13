@@ -2477,24 +2477,25 @@ function scheduleReconnect() {
         dropdownContent.style.display = "none";
       }
     });
-/*
+ 
     document.addEventListener("click", function (event) {
       let export_dropdownContent = document.getElementById(
         "exportDropdown-content"
-      );
-      let export_dropdownBtn = document.getElementById("exportDropdown-button");
-  
-      if (
-        event.target !== export_dropdownContent &&
-        event.target !== export_dropdownBtn
-      ) {
-        export_dropdownContent.style.display = "none";
+      ); 
+      //#exportDropdown-button	
+      if (!event.target.closest(".exportDropdown")) { 
+        if (export_dropdownContent){
+		export_dropdownContent.style.display = "none";
+		console.log("fuera");
+	} 
       }
+/*
       if (event.target.matches("#exportDropdown-button") || event.target.closest("#exportDropdown-button")){
           toggleExportDropdown(event);
       }  
-    });
 */
+    });
+ 
   });
   
   function toggleDropdown(event) {
@@ -2705,4 +2706,4 @@ content.style.display="block";
  
 
 
-  
+ 
