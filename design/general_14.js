@@ -722,7 +722,7 @@ function isNotUser() {
     },
     { selector: ".settings-title", content: "Settings" },
   
-    { id: "settings-tutorial-sub", content: "Advanced tutorial" },
+    { id: "settings-tutorial-sub", content: "Advanced" },
     { id: "settings-font", content: "Text font" },
     { id: "settings-color", content: "Text color" },
     { id: "settings-position-sub", content: "Text design" },
@@ -1480,6 +1480,49 @@ function isNotUser() {
     URL.revokeObjectURL(url_str);
   }
   
+/*
+  function toggleEditability(option) {
+    const textareas = document.querySelectorAll(".flexible-captions");
+  
+    if (option == 0) {
+      textareas.forEach((textarea) => {
+        textarea.readOnly = true;
+        textarea.style.border = "1px solid rgba(177, 177, 177,0.2)";
+        textarea.style.color = "rgba(50, 50, 50,1)";
+      });
+    } else {
+      textareas.forEach((textarea) => {
+        textarea.readOnly = false;
+        textarea.style.border = "1px solid #7c55e6";
+        textarea.style.color = "rgba(0, 0, 0,1)";
+      });
+    }
+  
+    const saveButton = document.getElementById("saveButton");
+    const editButton = document.getElementById("editButton");
+  
+    if (saveButton && editButton) {
+      if (option === 0) {
+        saveButton.style.color = "white";
+        editButton.style.color = "black";
+        lastPressedButton = 0;
+        saveButton.classList.remove("red-button");
+        saveButton.classList.add("lila-button");
+        editButton.classList.remove("lila-button");
+        editButton.classList.add("red-button"); 	
+      } else if (option === 1) { 
+        saveButton.style.color = "black";
+        editButton.style.color = "white";
+        lastPressedButton = 1;
+        editButton.classList.remove("red-button");
+        editButton.classList.add("lila-button");
+        saveButton.classList.remove("lila-button");
+        saveButton.classList.add("red-button"); 
+      }
+    }
+  }
+  
+*/
   function toggleEditability(option) {
     const textareas = document.querySelectorAll(".flexible-captions");
   
@@ -1509,7 +1552,11 @@ function isNotUser() {
         saveButton.classList.add("lila-button");
         editButton.classList.remove("lila-button");
         editButton.classList.add("red-button");
+
+ 	editButton.style.display = "inline-block";
+        saveButton.style.display = "none";	
       } else if (option === 1) {
+console.log("EDIT 2");
         saveButton.style.color = "black";
         editButton.style.color = "white";
         lastPressedButton = 1;
@@ -1517,10 +1564,15 @@ function isNotUser() {
         editButton.classList.add("lila-button");
         saveButton.classList.remove("lila-button");
         saveButton.classList.add("red-button");
+
+	saveButton.style.display = "inline-block";
+	editButton.style.display = "none";
+        saveButton.style.backgroundColor = "#7c55e6";
+	saveButton.style.color = "white";
       }
     }
   }
-  
+
   let connectionTimeout;
   function check_edited_captions() {
     const btn = document.getElementById("createVideo");
@@ -1608,12 +1660,16 @@ function isNotUser() {
       "_client_" +
       sendAudioSub +
       "_client_" +
-      video_tag;
-  
+      parametros_ia +
+      "_client_"+
+      video_tag	
+      ;
+    /*
     if (received_durations != -1) {
       let durations_string = received_durations.join("_");
       send_settings = send_settings + "_client_" + durations_string;
     }
+    */
   
     websocketClient.send(send_settings);
   
@@ -1701,6 +1757,7 @@ let isReconnecting = false;
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 120;
  
+let parametros_ia = "";
 
 function connect(type_connection) {
 
@@ -1756,8 +1813,20 @@ function connect(type_connection) {
     websocketClient.addEventListener("message", (event) => {
       let message_result = event.data;
   
-      if (typeof message_result === "string") {
+      if (typeof message_result === "string") { 
         handleServerResponse(message_result);
+
+        if (message_result.includes("intensidad_resplandor")){
+		console.log("parametros_ia:",message_result);
+		if (message_result!="error:intensidad_resplandor"){
+			parametros_ia = jsonToCustomString(message_result);
+			console.log("parametros_ia 2:",parametros_ia);
+			procesarRespuestaPrompt("completo");
+		}else{
+			procesarRespuestaPrompt("error");
+			console.log("error instruction");
+		}
+	}
   
         if (message_result=="session_duplicated"){
             console.log("session_duplicated received");
@@ -2638,6 +2707,26 @@ return;
       "translate_client_" + user_id + "_client_" + text + "_client_" + lang
     );
   }
+
+  function getTextareaValue_2() {  
+    let list_captions = []
+    const textareas = document.querySelectorAll(".flexible-captions");
+    textareas.forEach((textarea) => {
+        let new_line = textarea.value;  
+        list_captions.push(new_line); 
+    });
+  
+    return JSON.stringify(list_captions);
+  }
+
+  function send_to_ai(instruction) {
+    let text = getTextareaValue();
+    console.log("text:",text);
+    const user_id = localStorage.getItem("useridManycaptions");
+    websocketClient.send(
+      "ai_option_client_" + user_id + "_client_" + text + "_client_" + instruction
+    );
+  }
   
   function selectOption(option) {
     let dropdownBtn = document.getElementById("dropdown-btn");
@@ -2807,11 +2896,533 @@ function iniciarAnimacionBoton() {
     setTimeout(() => {
       boton.classList.remove('neon-glow');
     }, 1000);  
-  }, 7000);
+  }, 4000);
 }
 
 iniciarAnimacionBoton();
 
 
 
+ 
+ 
+
+// Variable global
+let prompt_actual = '';
+
+function insertarBotonIA() {
+  // Buscar el contenedor principal
+  const subContainer = document.getElementById('sub-container');
+  
+  if (!subContainer) {
+    console.error('No se encontró el elemento con id "sub-container"');
+    return;
+  }
+  
+  // Buscar el elemento con clase "dropdown" dentro del contenedor
+  const dropdown = subContainer.querySelector('.dropdown');
+  
+  if (!dropdown) {
+    console.error('No se encontró el elemento con clase "dropdown"');
+    return;
+  }
+  
+  // Crear el nuevo botón
+  const botonIA = document.createElement('button');
+  botonIA.id = 'ai_option';
+  botonIA.className = 'custom-button';
+  botonIA.innerHTML = "AI Editor";
+  
+  // Insertar el botón justo después del dropdown
+  dropdown.parentNode.insertBefore(botonIA, dropdown.nextSibling);
+
+  // Crear botón al inicio
+const botonPrincipal = document.createElement('button');
+botonPrincipal.id = 'principal_view_content';
+botonPrincipal.className = 'custom-button';
+botonPrincipal.style.display = 'none';
+botonPrincipal.innerHTML = `
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 16px; height: 16px; display: inline-block; vertical-align: middle; margin-right: 4px;">
+    <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  Back
+`;
+
+// Insertar al inicio del sub-container
+subContainer.insertBefore(botonPrincipal, subContainer.firstChild);
+  
+  // Crear el elemento ai_section
+  const aiSection = document.createElement('div');
+  aiSection.id = 'ai_section';
+  aiSection.className = 'form-container';
+  aiSection.style.display = 'none';
+  
+  // Crear el panel
+  aiSection.innerHTML = `
+    <style>
+       
+      #ai_section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+      
+      #ai_chat_panel {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(124, 85, 230, 0.1);
+        max-width: 600px;
+        width: 100%;
+      }
+      
+      #ai_header {
+        text-align: center;
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
+      }
+      
+      #ai_header.hidden {
+        display: none;
+      }
+      
+      #ai_title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+        margin: 0 0 8px 0;
+      }
+      
+      #ai_description {
+        font-size: 14px;
+        color: #666;
+        margin: 0;
+      }
+      
+      #ai_current_prompt {
+  display: none;
+  font-family: "Open Sans",sans-serif;
+  background: transparent;
+  border-radius: 12px;
+  border: 1px solid #7c55e6;
+  margin-bottom: 20px;
+  color: white;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(124, 85, 230, 0.2);
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+#ai_prompt_content {
+  padding: 12px 16px;
+  color: #000000;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+#ai_current_prompt::-webkit-scrollbar {
+  width: 8px;
+}
+
+#ai_current_prompt::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+#ai_current_prompt::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+#ai_current_prompt::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+      
+      #ai_current_prompt.visible {
+        display: block;
+      }
+      
+      #ai_input_container {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+        background: #f8f8f8;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 10px 14px;
+        transition: all 0.2s;
+      }
+      
+      #ai_input_container:focus-within {
+        border-color: #7c55e6;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(124, 85, 230, 0.1);
+      }
+      
+      #ai_prompt_input {
+        flex: 1;
+        border: none;
+        background: transparent;
+        outline: none;
+        font-size: 14px;
+        font-family: inherit;
+        resize: none;
+        max-height: 96px;
+        min-height: 24px;
+        line-height: 24px;
+        overflow-y: auto;
+      }
+      
+      #ai_prompt_input::placeholder {
+        color: #999;
+      }
+      
+      #ai_prompt_input::-webkit-scrollbar {
+        width: 6px;
+      }
+      
+      #ai_prompt_input::-webkit-scrollbar-thumb {
+        background: #d0d0d0;
+        border-radius: 3px;
+      }
+      
+      #ai_send_btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        background: #7c55e6;
+        cursor: pointer;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        padding: 0;
+        flex-shrink: 0;
+      }
+      
+      #ai_send_btn:hover {
+        background: #6941d4;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(124, 85, 230, 0.3);
+      }
+      
+      #ai_send_btn:active {
+        transform: scale(0.98);
+      }
+      
+      #ai_send_btn svg {
+        width: 20px;
+        height: 20px;
+        fill: white;
+      }
+      
+      #ai_send_btn:disabled {
+        background: #d0d0d0;
+        cursor: not-allowed;
+        transform: none;
+      }
+    </style>
+    
+    <div id="ai_chat_panel">
+      <div id="ai_header">
+        <h3 id="ai_title">AI Editor</h3>
+        <p id="ai_description">Describe what you want to modify</p>
+      </div>
+      
+      <div id="ai_current_prompt">
+  <div id="ai_prompt_content"></div>
+</div>
+      
+      <div id="ai_input_container">
+        <textarea 
+          id="ai_prompt_input" 
+          placeholder="Type your instructions..."
+          rows="1"
+        ></textarea>
+        
+        <button id="ai_send_btn">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+  
+  // Insertar ai_section al final del sub-container
+  subContainer.appendChild(aiSection);
+  
+  console.log('Botón de IA y sección insertados correctamente');
+}
+
+
+
+function procesarRespuestaPrompt(estado) {
+  const input = document.getElementById('ai_prompt_input');
+  const sendBtn = document.getElementById('ai_send_btn');
+  const currentPromptDiv = document.getElementById('ai_current_prompt');
+  const feedbackMsg = document.getElementById('ai_feedback_message');
+  
+  // Remover mensaje de loading del prompt
+  const promptContent = currentPromptDiv?.querySelector('#ai_prompt_content');
+  
+  // Remover mensaje de feedback anterior si existe
+  if (feedbackMsg) {
+    feedbackMsg.remove();
+  }
+  
+  // Reactivar botón de envío
+  if (sendBtn) {
+    sendBtn.disabled = false;
+    sendBtn.style.opacity = '1';
+  }
+  
+  if (estado === 'completo') {
+    console.log('Prompt válido - mostrando en pantalla');
+    
+    // Mostrar el prompt en pantalla
+    if (promptContent) {
+      promptContent.textContent = prompt_actual;
+    }
+    if (currentPromptDiv) {
+      currentPromptDiv.classList.add('visible');
+    }
+    
+    // Crear mensaje de éxito PERMANENTE
+    const mensajeExito = document.createElement('div');
+    mensajeExito.id = 'ai_feedback_message';
+    mensajeExito.style.cssText = `
+      background: #4caf50;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      text-align: center;
+    `;
+    mensajeExito.textContent = 'Instruction saved, press "render video" to continue';
+    
+    // Insertar después del prompt actual
+    const chatPanel = document.getElementById('ai_chat_panel');
+    const inputContainer = document.getElementById('ai_input_container');
+    if (chatPanel && inputContainer) {
+      chatPanel.insertBefore(mensajeExito, inputContainer);
+    }
+    
+  } else if (estado === 'error') {
+    console.log('Prompt inválido - mostrando error');
+    
+    // Ocultar el prompt
+    if (currentPromptDiv) {
+      currentPromptDiv.classList.remove('visible');
+    }
+    
+    // Crear mensaje de error PERMANENTE
+    const mensajeError = document.createElement('div');
+    mensajeError.id = 'ai_feedback_message';
+    mensajeError.style.cssText = `
+      background: #f44336;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      text-align: center;
+    `;
+    mensajeError.textContent = 'Enter an instruction related to editing the subtitles';
+    
+    // Insertar antes del input
+    const chatPanel = document.getElementById('ai_chat_panel');
+    const inputContainer = document.getElementById('ai_input_container');
+    if (chatPanel && inputContainer) {
+      chatPanel.insertBefore(mensajeError, inputContainer);
+    }
+    
+    // Restaurar el input con el prompt original para que el usuario pueda editarlo
+    if (input) {
+      input.value = prompt_actual;
+      input.style.height = '24px';
+      input.style.height = Math.min(input.scrollHeight, 96) + 'px';
+    }
+  }
+  
+  console.log('Procesamiento de respuesta completado:', estado);
+}
+
+
+
+
+// Event delegation global
+document.addEventListener('click', function(e) {
+  // Botón de envío 
+if (e.target.closest('#ai_send_btn')) {
+  console.log('Click en send button');
+  const input = document.getElementById('ai_prompt_input');
+  const header = document.getElementById('ai_header');
+  const currentPromptDiv = document.getElementById('ai_current_prompt');
+  const sendBtn = e.target.closest('#ai_send_btn');
+  
+  if (!input) return;
+  
+  const text = input.value.trim();
+  if (text) {
+    console.log('Enviando prompt:', text);
+    
+    // Actualizar prompt actual
+    prompt_actual = text;
+    
+    // Ocultar header si es el primer envío
+    if (header && !header.classList.contains('hidden')) {
+      header.classList.add('hidden');
+      console.log('Header ocultado');
+    }
+    
+    // Mostrar "Loading..." en lugar del prompt
+    if (currentPromptDiv) {
+      const promptContent = currentPromptDiv.querySelector('#ai_prompt_content');
+      if (promptContent) {
+        promptContent.textContent = 'Loading...';
+      }
+      currentPromptDiv.classList.add('visible');
+    }
+    
+    // Desactivar botón de envío
+    if (sendBtn) {
+      sendBtn.disabled = true;
+      sendBtn.style.opacity = '0.5';
+    }
+    
+    // Limpiar input
+    input.value = '';
+    input.style.height = '24px';
+    
+    // Enviar a AI 
+    const ai_feedback_message = document.getElementById('ai_feedback_message');
+    if (ai_feedback_message){
+	ai_feedback_message.style.display = "none";
+    }
+    send_to_ai(text);
+    
+  } else {
+    console.log('Input vacío, no se envía');
+  }
+}
+  if (e.target.closest('#ai_option')) {
+	mostrarVistaAI();
+  }
+  if (e.target.closest('#principal_view_content')) {
+     	mostrarVistaPrincipal();
+  }
+});
+
+// Input event para auto-resize
+document.addEventListener('input', function(e) {
+  if (e.target.matches('#ai_prompt_input')) {
+    console.log('Input en textarea');
+    e.target.style.height = '24px';
+    const newHeight = Math.min(e.target.scrollHeight, 96);
+    e.target.style.height = newHeight + 'px';
+    console.log('Textarea resized:', newHeight);
+  }
+});
+
+// Keydown para Enter
+document.addEventListener('keydown', function(e) {
+  if (e.target.matches('#ai_prompt_input')) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const sendBtn = document.getElementById('ai_send_btn');
+      if (sendBtn) {
+        sendBtn.click();
+        console.log('Enter presionado - enviando');
+      }
+    }
+  }
+});
+
+// Llamar la función
+insertarBotonIA();
+
+
+
+
+
+
+
+
+function mostrarVistaAI() {
+  console.log('Mostrando vista AI');
+  
+  // Mostrar
+  const botonPrincipal = document.getElementById('principal_view_content');
+  const aiSection = document.getElementById('ai_section');
+  if (botonPrincipal) botonPrincipal.style.display = '';
+  if (aiSection) aiSection.style.display = '';
+  
+  // Ocultar
+  const editButton = document.getElementById('editButton');
+  const saveButton = document.getElementById('saveButton');
+  const dropdown = document.querySelector('.dropdown');
+  const aiOption = document.getElementById('ai_option');
+  const formContainer = document.getElementById('form-container');
+  
+  if (editButton) editButton.style.display = 'none';
+  if (saveButton) saveButton.style.display = 'none';
+  if (dropdown) dropdown.style.display = 'none';
+  if (aiOption) aiOption.style.display = 'none';
+  if (formContainer) formContainer.style.display = 'none';
+  
+  console.log('Vista AI mostrada');
+}
+
+function mostrarVistaPrincipal() {
+  console.log('Mostrando vista principal');
+  
+  // Ocultar
+  const botonPrincipal = document.getElementById('principal_view_content');
+  const aiSection = document.getElementById('ai_section');
+  if (botonPrincipal) botonPrincipal.style.display = 'none';
+  if (aiSection) aiSection.style.display = 'none';
+  
+  // Mostrar 
+  const saveButton = document.getElementById('saveButton');
+  const dropdown = document.querySelector('.dropdown');
+  const aiOption = document.getElementById('ai_option');
+  const formContainer = document.getElementById('form-container');
+   
+  if (saveButton) saveButton.style.display = '';
+  if (dropdown) dropdown.style.display = '';
+  if (aiOption) aiOption.style.display = '';
+  if (formContainer) formContainer.style.display = '';
+  
+  console.log('Vista principal mostrada');
+}
+
+
+const miStringJSON = '[{"indice_original":4,"color_hex":"FF0000","intensidad_resplandor":"normal","size_preset":"normal","incremento_delta":0},{"indice_original":8,"color_hex":"FF0000","intensidad_resplandor":"normal","size_preset":"normal","incremento_delta":0}]';
+
+
+
+function jsonToCustomString(jsonString) {
+  if (typeof jsonString !== "string") {
+    throw new Error("El input debe ser un string JSON");
+  }
+
+  const data = JSON.parse(jsonString);
+
+  if (!Array.isArray(data)) {
+    throw new Error("El JSON debe representar un array de objetos");
+  }
+
+  return data
+    .map(obj => {
+      return Object.entries(obj)
+        .map(([key, value]) => `${key}:${value}`)
+        .join("%element%");
+    })
+    .join("%json%");
+}
+
+ 
   
