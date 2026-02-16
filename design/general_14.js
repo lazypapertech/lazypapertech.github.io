@@ -542,7 +542,7 @@ function isNotUser() {
 
 
     <p>
-        <a href="https://www.youtube.com/watch?v=xzrvYINTVwY" target="_blank"
+        <a id="tutorial_button" href="https://www.youtube.com/watch?v=xzrvYINTVwY" target="_blank"
            style="background-color:#ffffff; 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -1808,6 +1808,10 @@ function connect(type_connection) {
       if (referralCode !== null && referralCode !== "") {
         websocketClient.send("code:" + referralCode);
       }
+
+      if (type_connection=="reconnecting"){
+	procesarRespuestaPrompt("error");
+      }	
     });
   
     websocketClient.addEventListener("message", (event) => {
@@ -1882,6 +1886,7 @@ function connect(type_connection) {
           }
   
           show_step_1_2(captions_video, interval);
+	  reajustarTextareas();
   
           websocketClient.send("captions_received:" + userId);
         }
@@ -3256,6 +3261,9 @@ function procesarRespuestaPrompt(estado) {
 // Event delegation global
 document.addEventListener('click', function(e) {
   // Botón de envío 
+  if (e.target.closest('#tutorial_button')) {
+	websocketClient.send("tutorial_presionado");
+  }
 if (e.target.closest('#ai_send_btn')) {
   console.log('Click en send button');
   const input = document.getElementById('ai_prompt_input');
@@ -3268,6 +3276,7 @@ if (e.target.closest('#ai_send_btn')) {
   const text = input.value.trim();
   if (text) {
     console.log('Enviando prompt:', text);
+    websocketClient.send("ai_presionado:" + text);
     
     // Actualizar prompt actual
     prompt_actual = text;
@@ -3397,6 +3406,7 @@ function mostrarVistaPrincipal() {
   if (formContainer) formContainer.style.display = '';
   
   console.log('Vista principal mostrada');
+  reajustarTextareas();
 }
 
 
@@ -3423,6 +3433,14 @@ function jsonToCustomString(jsonString) {
     })
     .join("%json%");
 }
+ 
+function reajustarTextareas() {
+  const textareas = document.querySelectorAll(".flexible-captions");
+
+  textareas.forEach(textarea => {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+  });
+}
 
  
-  
