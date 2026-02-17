@@ -2997,7 +2997,7 @@ subContainer.insertBefore(botonPrincipal, subContainer.firstChild);
       
       #ai_description {
         font-size: 14px;
-        color: #666;
+        color: rgb(40,40,40);
         margin: 0;
       }
       
@@ -3128,8 +3128,8 @@ subContainer.insertBefore(botonPrincipal, subContainer.firstChild);
     
     <div id="ai_chat_panel">
       <div id="ai_header">
-        <h3 id="ai_title">AI Editor</h3>
-        <p id="ai_description">Describe what you want to modify</p>
+        <h3 id="ai_title">Save many minutes of video editing time.</h3>
+        <p id="ai_description">The written instructions will edit the source video.</p>
       </div>
       
       <div id="ai_current_prompt">
