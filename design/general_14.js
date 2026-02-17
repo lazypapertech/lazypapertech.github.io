@@ -527,13 +527,10 @@ function isNotUser() {
             <div class="tutorial-modal-content-sub">
  		  <span class="tutorial-close-btn-sub">&times;</span>
 		  <div style="background-color:#7c55e6; padding:40px; text-align:center; font-family:Arial, sans-serif; border-radius:12px;">
-
-    <p style="color:#ffffff; font-size:32px; font-weight:bold; margin-bottom:15px;">
-        Tutorial
-    </p>
+ 
 
     <p style="color:#000; font-size:16px; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
-    This tutorial allows users to use 
+    Video editor with
     <span style="font-weight:700; color:rgb(255,255,255) !important;">
         advanced features
     </span> 
@@ -552,7 +549,7 @@ function isNotUser() {
                   font-size:16px; 
                   display:inline-block;
                   transition:0.3s;">
-            Watch Tutorial
+            How it works
         </a>
     </p>
 
@@ -3443,4 +3440,4 @@ function reajustarTextareas() {
   });
 }
 
- 
+  
