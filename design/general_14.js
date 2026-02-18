@@ -549,7 +549,7 @@ function isNotUser() {
                   font-size:16px; 
                   display:inline-block;
                   transition:0.3s;">
-            How it works
+            Continue
         </a>
     </p>
 
@@ -3441,3 +3441,4 @@ function reajustarTextareas() {
 }
 
   
+
