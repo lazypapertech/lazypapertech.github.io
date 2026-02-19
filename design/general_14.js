@@ -3442,7 +3442,7 @@ function reajustarTextareas() {
 }
 
 
-function actualizarMenuUrls() {
+function actualizarMenuUrls_0() {
     document.getElementById("login-btn").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
     document.getElementById("li-home").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
     document.getElementById("li-features").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
@@ -3450,6 +3450,27 @@ function actualizarMenuUrls() {
     document.getElementById("li-questions").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
 }
 
+function actualizarMenuUrls() {
+
+    const ids = [
+        "login-btn",
+        "li-home",
+        "li-features",
+        "li-tutorial",
+        "li-questions"
+    ];
+
+    ids.forEach(function(id) {
+        let elemento = document.getElementById(id);
+
+        if (elemento) {   // 👈 por si no existe
+            elemento.href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+        }
+    });
+}
+
+
   
+
 
 
