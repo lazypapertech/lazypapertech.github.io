@@ -558,13 +558,16 @@
   });
 
   async function convertirWebMtoMP4(file) {
+    console.log("1. Iniciando load...");
     await ffmpeg.load({
-  coreURL:   await toBlobURL(`${BASE}/core-mt/ffmpeg-core.js`,        "text/javascript"),
-  wasmURL:   "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm/ffmpeg-core.wasm",
-  workerURL: await toBlobURL(`${BASE}/core-mt/ffmpeg-core.worker.js`, "text/javascript"),
-});
+      coreURL:   await toBlobURL(`${BASE}/core-mt/ffmpeg-core.js`,        "text/javascript"),
+      wasmURL:   "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm/ffmpeg-core.wasm",
+      workerURL: await toBlobURL(`${BASE}/core-mt/ffmpeg-core.worker.js`, "text/javascript"),
+    });
+    console.log("2. FFmpeg cargado");
 
     await ffmpeg.writeFile("input.webm", await fetchFile(file));
+    console.log("3. Archivo escrito");
 
     await ffmpeg.exec([
       "-i", "input.webm",
@@ -573,13 +576,16 @@
       "-movflags", "+faststart",
       "output.mp4"
     ]);
+    console.log("4. Conversión hecha");
 
     const data = await ffmpeg.readFile("output.mp4");
+    console.log("5. Archivo leído");
+
     const videoBlob = new Blob([data.buffer], { type: "video/mp4" });
     const url = URL.createObjectURL(videoBlob);
-    console.log("Conversión completada ✅");
+    console.log("6. Conversión completada ✅");
     return { blob: videoBlob, url };
-  }
+}
 
   window.convertirWebMtoMP4 = convertirWebMtoMP4;
 </script>
@@ -595,6 +601,7 @@
 </html>
  
   
+
 
 
 
