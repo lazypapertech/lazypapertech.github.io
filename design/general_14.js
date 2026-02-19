@@ -2155,6 +2155,7 @@ function scheduleReconnect() {
     show_stepLoading();
     connect("connected");
     monoColorButton.click();
+	  actualizarMenuUrls();
   });
   
   window.addEventListener("beforeunload", () => {
@@ -3440,5 +3441,15 @@ function reajustarTextareas() {
   });
 }
 
+
+function actualizarMenuUrls() {
+    document.getElementById("login-btn").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+    document.getElementById("li-home").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+    document.getElementById("li-features").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+    document.getElementById("li-tutorial").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+    document.getElementById("li-questions").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+}
+
   
+
 
