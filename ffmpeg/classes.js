@@ -93,18 +93,21 @@ export class FFmpeg {
      * @category FFmpeg
      * @returns `true` if ffmpeg core is loaded for the first time.
      */
-    load = (config = {}) => {
-        if (!this.#worker) {
-            this.#worker = new Worker(new URL("./worker.js", import.meta.url), {
-                type: "module",
-            });
-            this.#registerHandlers();
-        }
-        return this.#send({
-            type: FFMessageType.LOAD,
-            data: config,
-        });
-    };
+    load = async (config = {}) => {
+    if (!this.#worker) {
+        const workerURL = URL.createObjectURL(
+            await fetch("https://manycaptions.com/ffmpeg/worker.js")
+                .then(r => r.blob())
+                .then(b => new Blob([b], { type: "text/javascript" }))
+        );
+        this.#worker = new Worker(workerURL, { type: "module" });
+        this.#registerHandlers();
+    }
+    return this.#send({
+        type: FFMessageType.LOAD,
+        data: config,
+    });
+};
     /**
      * Execute ffmpeg command.
      *
