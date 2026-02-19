@@ -545,11 +545,11 @@
 
 </div>
 <script type="module">
-  import { FFmpeg } from "https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js";
-  import { fetchFile } from "https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js";
+  import { FFmpeg } from "./npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js";
+  import { fetchFile } from "https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js"; // opcional, puedes descargar util también
 
   const ffmpeg = new FFmpeg({
-    corePath: './ffmpeg/ffmpeg-core.js', // tu archivo local
+    corePath: './ffmpeg-core.js', // tu archivo local
     noWorker: true,
     log: true
   });
@@ -581,6 +581,7 @@
 </html>
  
   
+
 
 
 
