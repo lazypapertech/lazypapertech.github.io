@@ -135,15 +135,7 @@ export const downloadWithProgress = async (url, cb) => {
     }
     return buf;
 };
-/**
- * toBlobURL fetches data from an URL and return a blob URL.
- *
- * Example:
- *
- * ```ts
- * await toBlobURL("http://localhost:3000/ffmpeg.js", "text/javascript");
- * ```
- */
+ 
 export const toBlobURL = async (url, mimeType, progress = false, cb) => {
     const buf = progress
         ? await downloadWithProgress(url, cb)
