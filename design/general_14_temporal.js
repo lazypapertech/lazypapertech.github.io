@@ -3287,6 +3287,7 @@ document.addEventListener('click', function(e) {
 	websocketClient.send("tutorial_presionado");
   }
 if (e.target.closest('#ai_send_btn')) {
+	console.log("URL MP4 00000:", mp4Url);
 convertirWebMtoMP4(videoPreviewBlob).then(result => {
     const videoMP4Blob = result.blob;
     const mp4Url = result.url;
@@ -3920,3 +3921,4 @@ const html_finish = `
 
 
  
+
