@@ -558,10 +558,10 @@
 
   async function convertirWebMtoMP4(file) {
     await ffmpeg.load({
-      coreURL:   await toBlobURL(`${BASE}/ffmpeg-core.js`,        "text/javascript"),
-      wasmURL:   await toBlobURL(`${BASE}/ffmpeg-core.wasm`,      "application/wasm"),
-      workerURL: await toBlobURL(`${BASE}/ffmpeg-core.worker.js`, "text/javascript"),
-    });
+  coreURL:   await toBlobURL(`${BASE}/core-mt/ffmpeg-core.js`,        "text/javascript"),
+  wasmURL:   "https://unpkg.com/@ffmpeg/core-mt@0.12.6/dist/esm/ffmpeg-core.wasm",
+  workerURL: await toBlobURL(`${BASE}/core-mt/ffmpeg-core.worker.js`, "text/javascript"),
+});
 
     await ffmpeg.writeFile("input.webm", await fetchFile(file));
 
@@ -594,6 +594,7 @@
 </html>
  
   
+
 
 
 
