@@ -543,60 +543,9 @@
 
 </div>
 
-</div>
-    <script src="coi-serviceworker.js"></script>
-<script type="module">
-  import { FFmpeg } from "https://manycaptions.com/ffmpeg/index.js";
-  import { fetchFile, toBlobURL } from "https://manycaptions.com/ffmpeg/util/index.js";
+</div> 
 
-  const BASE = "https://manycaptions.com/ffmpeg";
-  const ffmpeg = new FFmpeg();
-
-  ffmpeg.on("log", ({ message }) => console.log(message));
-  ffmpeg.on("progress", ({ progress }) => {
-    console.log(`Progreso: ${(progress * 100).toFixed(2)}%`);
-  });
-
-  async function convertirWebMtoMP4(file) {
-    console.log("1. Iniciando load...");
-    try {
-      await ffmpeg.load({
-        coreURL:   await toBlobURL(`${BASE}/ffmpeg-core.js`,        "text/javascript"),
-        wasmURL:   await toBlobURL(`${BASE}/ffmpeg-core.wasm`,      "application/wasm"),
-        workerURL: await toBlobURL(`${BASE}/ffmpeg-core.worker.js`, "text/javascript"),
-      });
-    } catch(e) {
-      console.error("Error en load:", e);
-      return;
-    }
-    console.log("2. FFmpeg cargado");
-
-    await ffmpeg.writeFile("input.webm", await fetchFile(file));
-    console.log("3. Archivo escrito");
-
-    await ffmpeg.exec([
-      "-i", "input.webm",
-      "-c:v", "libx264",
-      "-preset", "veryfast",
-      "-movflags", "+faststart",
-      "output.mp4"
-    ]);
-    console.log("4. Conversión hecha");
-
-    const data = await ffmpeg.readFile("output.mp4");
-    console.log("5. Archivo leído");
-
-    const videoBlob = new Blob([data.buffer], { type: "video/mp4" });
-    const url = URL.createObjectURL(videoBlob);
-    console.log("6. Conversión completada ✅");
-    return { blob: videoBlob, url };
-}
-
-  window.convertirWebMtoMP4 = convertirWebMtoMP4;
-</script>
-
-
-<script src="../design/general_14_temporal.js?v=1.12.0"></script>
+<script src="../design/general_14.js?v=1.12.0"></script>
 <script src="../design/menu_pages.js?v=1.4.0"></script> 
 <script src="../design/load_clips.js?v=1.4.0"></script> 
 <script src="../design/extra.js?v=1.0.0"></script>     
@@ -606,6 +555,7 @@
 </html>
  
   
+
 
 
 
