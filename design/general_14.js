@@ -3465,12 +3465,15 @@ function actualizarMenuUrls() {
 
         if (elemento) {   // 👈 por si no existe
             elemento.href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+			elemento.target = "_blank"; 
+            elemento.rel = "noopener noreferrer";
         }
     });
 }
 
 
   
+
 
 
 
