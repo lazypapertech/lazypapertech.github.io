@@ -545,18 +545,32 @@
 
 </div>
 <script type="module">
-  import { FFmpeg } from "./npm/@ffmpeg/ffmpeg@0.12.15/dist/esm/index.js";
-  import { fetchFile } from "https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js"; // opcional, puedes descargar util también
+  import { FFmpeg } from "https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js";
+  import { fetchFile, toBlobURL } from "https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js";
 
-  const ffmpeg = new FFmpeg({
-    corePath: './ffmpeg-core.js', // tu archivo local
-    noWorker: true,
-    log: true
-  });
+  const ffmpeg = new FFmpeg();
+  ffmpeg.on("log", ({ message }) => console.log(message));
 
-  window.convertirWebMtoMP4 = async function(videoBlob) {
-    await ffmpeg.load();
-    await ffmpeg.writeFile('input.webm', await fetchFile(videoBlob));
+  async function convertirWebMtoMP4(file) {
+    console.log("Cargando FFmpeg...");
+
+    const baseURL = "https://manycaptions.com/ffmpeg"; // 👈 tu dominio
+
+    await ffmpeg.load({
+      coreURL:   await toBlobURL(`${baseURL}/ffmpeg-core.js`,   "text/javascript"),
+      wasmURL:   await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, "application/wasm"),
+      workerURL: await toBlobURL(`${baseURL}/ffmpeg-core.worker.js`, "text/javascript"),
+    });
+
+    console.log("FFmpeg cargado");
+
+    ffmpeg.on("progress", ({ progress }) => {
+      console.log(`Progreso: ${(progress * 100).toFixed(2)}%`);
+    });
+
+    await ffmpeg.writeFile("input.webm", await fetchFile(file));
+    console.log("Archivo cargado, convirtiendo...");
+
     await ffmpeg.exec([
       "-i", "input.webm",
       "-c:v", "libx264",
@@ -564,10 +578,13 @@
       "-movflags", "+faststart",
       "output.mp4"
     ]);
-    const data = await ffmpeg.readFile('output.mp4');
-    const blob = new Blob([data.buffer], { type: 'video/mp4' });
-    return { blob, url: URL.createObjectURL(blob) };
-  };
+
+    const data = await ffmpeg.readFile("output.mp4");
+    const videoBlob = new Blob([data.buffer], { type: "video/mp4" });
+    const url = URL.createObjectURL(videoBlob);
+    console.log("Conversión completada ✅");
+    return { blob: videoBlob, url };
+  }
 </script>
 
 
@@ -581,6 +598,7 @@
 </html>
  
   
+
 
 
 
