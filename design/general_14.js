@@ -539,7 +539,7 @@ function isNotUser() {
 
 
     <p>
-        <a id="tutorial_button" href="https://www.youtube.com/watch?v=xzrvYINTVwY" target="_blank"
+        <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
            style="background-color:#ffffff; 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -3262,6 +3262,10 @@ document.addEventListener('click', function(e) {
   if (e.target.closest('#tutorial_button')) {
 	websocketClient.send("tutorial_presionado");
   }
+  if (e.target.closest('#li-features') || e.target.closest('#li-tutorial') || e.target.closest('#li-questions')){ 
+	websocketClient.send("tutorial_presionado");
+  }
+
 if (e.target.closest('#ai_send_btn')) {
   console.log('Click en send button');
   const input = document.getElementById('ai_prompt_input');
@@ -3450,11 +3454,17 @@ function actualizarMenuUrls_0() {
     document.getElementById("li-questions").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
 }
 
+/*
+tutorial 1
+https://www.youtube.com/watch?v=xzrvYINTVwY 
+tutorial 2
+https://www.youtube.com/watch?v=duhp1fln2gQ
+*/
 function actualizarMenuUrls() {
 
     const ids = [
-        "login-btn",
-        "li-home",
+        //"login-btn",
+        //"li-home",
         "li-features",
         "li-tutorial",
         "li-questions"
@@ -3463,9 +3473,9 @@ function actualizarMenuUrls() {
     ids.forEach(function(id) {
         let elemento = document.getElementById(id);
 
-        if (elemento) {   // 👈 por si no existe
+        if (elemento) { 
             elemento.href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
-			elemento.target = "_blank"; 
+	    elemento.target = "_blank"; 
             elemento.rel = "noopener noreferrer";
         }
     });
@@ -3473,7 +3483,6 @@ function actualizarMenuUrls() {
 
 
   
-
 
 
 
