@@ -10,10 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design8/menu_options.css?v=1.9.0">  
- <link rel="stylesheet" href="../design8/anchor_point.css?v=1.9.0">    
- <link rel="stylesheet" href="../design8/freelancers.css?v=1.9.0">
- <link rel="stylesheet" href="../design8/login_design.css?v=1.9.0"> 
+ <link rel="stylesheet" href="../design9/menu_options.css?v=2.1.0">  
+ <link rel="stylesheet" href="../design9/anchor_point.css?v=2.1.0">    
+ <link rel="stylesheet" href="../design9/freelancers.css?v=2.1.0">
+ <link rel="stylesheet" href="../design9/login_design.css?v=2.1.0"> 
 
 <style> 
 #general-header{display:none};
@@ -22,6 +22,7 @@
 
 .logo-container-menu{display:flex;align-items:center;justify-content:center}.logo-container-menu p{margin:auto;font-size:18px;font-weight:bolder;color:rgb(245,245,245)}.logo-menu{height:30px;margin-right:10px;border-radius:50%;object-fit:cover}#languageModal,.side-menu{position:fixed;height:100%}.hamburger{font-size:25px;font-weight:700;cursor:pointer;padding:5px;color:rgb(255,255,255);}.side-menu{top:45px;left:-100%;width:150px;color:#444;padding:20px;box-shadow:2px 0 5px rgba(0,0,0,.3);transition:left .3s;z-index:12}.side-menu.active{left:0}#openModalBtn,#save-lang{background-color:#7c55e6;color:#fff}.side-menu nav ul{list-style:none;padding:0}.side-menu nav ul li{margin:20px 0;padding:10px 5px}.side-menu nav ul li a{color:#fff;text-decoration:none;font-size:18px}
 
+ 
  
 
 /*anchor point*/
@@ -3069,10 +3070,11 @@ let rectangulos = [];
 let current_view="filename";
 
 
-let resolution_scene = "1280x720";
-const MINUTOS_TOTALES = 30;
+let resolution_scene = "1920x1080";
+//let resolution_scene = "1280x720";
+const MINUTOS_TOTALES = 120;
 const VALOR_SEGMENTO = 0.2;
-const CALIBRACION = 2;
+const CALIBRACION = 4;
 const PASO_DELTA = 1.0/VALOR_SEGMENTO;//5 y 0.2 segundos
 const SEGMENTO_BASE = 20; 
 const SEGMENTO = SEGMENTO_BASE * CALIBRACION;
@@ -5761,7 +5763,9 @@ function abrirModalDinamico(htmlString,boton_id) {
 	}
 	if (selected_rect.dataset.property=="position"){
 		//crearSliderCircular('input_dynamic_box_0'); 
-		crearControlPosicion2D('input_dynamic_box_0', 'input_dynamic_box_1', 1280, 720, 50);
+		const resolution_width = parseInt(resolution_scene.split("x")[0]);
+		const resolution_height = parseInt(resolution_scene.split("x")[1]);
+		crearControlPosicion2D('input_dynamic_box_0', 'input_dynamic_box_1', resolution_width, resolution_height, 50);
 	}  
   }
   if (boton_id=="select_mode"){
@@ -5976,6 +5980,22 @@ function eliminarTabPorNombre(tabName) {
 
 
  
+function contieneExportContainer() {
+    const modal = document.getElementById("modal_box_dinamico");
+    
+    if (!modal) {
+        return false; // Si no existe el div, devolvemos false
+    }
+
+    return modal.querySelector(".export-container") !== null;
+}
+
+function cancel_export() {
+   console.log("CANCELING EXPORT...");
+  const json_data = {"service":"cancel_export","itemName":"empty","property":"empty","params":"empty","file_type":"empty","extra0":"","extra":""}; 
+  safeSend(JSON.stringify(json_data)); 
+
+}
 
 //guardar
 document.addEventListener("click", function (e) {
@@ -6008,10 +6028,12 @@ document.addEventListener("click", function (e) {
 	request_new_project();
     }
 
-     
+    if (e.target.matches("#btn-close-export") || e.target.closest("#btn-close-export")){
+	cancel_export();
+    }
   
     if (e.target.matches("#modal_overlay_dinamico") || e.target.matches(".btn-close") || e.target.closest(".btn-close")) { 
- 
+ 	if (contieneExportContainer()) return;
         e.target.style.display = "none"; 
 	closeModalDinamico(); 
 	console.log("✅✅✅✅ "+timestamp_and_duration+","+current_speed, " ",rectangulos); 
@@ -7768,21 +7790,21 @@ verificarSoporteCodec().then(soportado => {
     });
 </script>
  
-<script src="../design8/websocket_script.js?v=1.9.0"> </script> 
-<script src="../design8/general.js?v=1.9.0"> </script>
-<script src="../design8/send_files.js?v=1.9.0"> </script> 
-<script src="../design8/clipcontainer.js?v=1.9.0"> </script>  
-<script src="../design8/htmlstring.js?v=1.9.0"> </script>  
-<script src="../design8/menu_options.js?v=1.9.0"> </script>   
-<script src="../design8/panel_tabs.js?v=1.9.0"> </script>  
-<script src="../design8/reglas.js?v=1.9.0"> </script>  
-<script src="../design8/simplemenus.js?v=1.9.0"> </script> 
-<script src="../design8/interaccion_rectangulos_full.js?v=1.9.0"> </script> 
-<script src="../design8/organizar_reproduccion_precarga_bidireccional_full_2_ligero.js?v=1.9.0"> </script>  
-<script src="../design8/repintar4.js?v=1.9.0"> </script>  
-<script src="../design8/anchor_point.js?v=1.9.0"> </script>   
-<script src="../design8/script_login.js?v=1.9.0"> </script> 
-<script src="../design8/undo_redo.js?v=1.9.0"> </script> 
+<script src="../design9/websocket_script.js?v=2.1.0"> </script> 
+<script src="../design9/general.js?v=2.1.0"> </script>
+<script src="../design9/send_files.js?v=2.1.0"> </script> 
+<script src="../design9/clipcontainer.js?v=2.1.0"> </script>  
+<script src="../design9/htmlstring.js?v=2.1.0"> </script>  
+<script src="../design9/menu_options.js?v=2.1.0"> </script>   
+<script src="../design9/panel_tabs.js?v=2.1.0"> </script>  
+<script src="../design9/reglas.js?v=2.1.0"> </script>  
+<script src="../design9/simplemenus.js?v=2.1.0"> </script> 
+<script src="../design9/interaccion_rectangulos_full.js?v=2.1.0"> </script> 
+<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.1.0"> </script>  
+<script src="../design9/repintar4.js?v=2.1.0"> </script>  
+<script src="../design9/anchor_point.js?v=2.1.0"> </script>   
+<script src="../design9/script_login.js?v=2.1.0"> </script> 
+<script src="../design9/undo_redo.js?v=2.1.0"> </script> 
  
 </body>
-</html> 
+</html>  
