@@ -217,10 +217,26 @@ function resetAnchorPosition() {
 }
 
  
+window.addEventListener('wheel', function(e) {
+  const zona = document.getElementById('marcadores_fijos');
+  const rect = zona.getBoundingClientRect();
+  
+  const dentroDeZona = 
+    e.clientX >= rect.left &&
+    e.clientX <= rect.right &&
+    e.clientY >= rect.top &&
+    e.clientY <= rect.bottom;
+
+  if (dentroDeZona) {
+    e.preventDefault();
+    document.querySelector('.scroll-wrapper').scrollLeft += e.deltaY;
+  }
+}, { passive: false });
+//window.addEventListener('wheel', (e) => console.log("ERROR WHEEL",e.clientX, e.clientY));
 
 /*scale*/
 
-function crearSliderDinamicoScale(idInput) {
+function crearSliderDinamicoScale(idInput,property_name) {
     const input_original = document.getElementById(idInput);
     
     if (!input_original) {
@@ -230,6 +246,15 @@ function crearSliderDinamicoScale(idInput) {
     
     // Leer el valor original (flotante entre 0 y 1)
     let valorFlotante = parseFloat(input_original.value) || 0.5;
+    if (property_name=="glow"){
+	if (parseFloat(input_original.value)<0.02){
+		valorFlotante = 0;
+	}
+	if (parseFloat(input_original.value)>=0.7){
+		valorFlotante = 1;
+	}
+    }
+     
     
     // Convertir a porcentaje (0.44 → 44)
     let valorPorcentaje = Math.round(valorFlotante * 100);
@@ -250,7 +275,11 @@ function crearSliderDinamicoScale(idInput) {
     slider.type = 'range';
     slider.min = '0';
     slider.max = '100';
+    if (property_name=="scale"){
+	slider.max = '200';
+    }
     slider.value = valorPorcentaje;
+ 
     slider.style.cssText = `
         width: 100%;
         height: 6px;
@@ -260,6 +289,24 @@ function crearSliderDinamicoScale(idInput) {
         -webkit-appearance: none;
         cursor: pointer;
     `;
+ 
+if (property_name=="scale"){
+slider.style.cssText = `
+    width: 100%;
+    height: 6px;
+    border-radius: 10px;
+    background: linear-gradient(
+        to right,
+        #7c55e6 0%,
+        #7c55e6 ${(valorPorcentaje / 200) * 100}%,
+        rgba(255,255,255,0.2) ${(valorPorcentaje / 200) * 100}%,
+        rgba(255,255,255,0.2) 100%
+    );
+    outline: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+`;
+}
     
     sliderContainer.appendChild(slider);
     
@@ -307,11 +354,29 @@ function crearSliderDinamicoScale(idInput) {
 		valorFlotante = 0.001;
 	}
         input_original.value = valorFlotante;
+	if (property_name=="glow"){
+		input_original.value = valorFlotante*0.7;
+		if (valorFlotante<0.02){
+			input_original.value = 0.01;
+		}
+	}
         
         console.log('Porcentaje:', valorPorcentaje + '% → Flotante:', valorFlotante);
         
-        // Actualizar gradiente del slider
+        // Actualizar gradiente del slider 
         this.style.background = `linear-gradient(to right, #7c55e6 0%, #7c55e6 ${valorPorcentaje}%, rgba(255,255,255,0.2) ${valorPorcentaje}%, rgba(255,255,255,0.2) 100%)`;
+	if (property_name=="scale"){
+    	const porcentajeVisual = (valorPorcentaje / 200) * 100; 
+    	this.style.background = `
+        	linear-gradient(
+            	to right,
+            	#7c55e6 0%,
+            	#7c55e6 ${porcentajeVisual}%,
+            	rgba(255,255,255,0.2) ${porcentajeVisual}%,
+            	rgba(255,255,255,0.2) 100%
+        	)
+    	`;
+	}
     });
     
     console.log('Slider creado correctamente');
