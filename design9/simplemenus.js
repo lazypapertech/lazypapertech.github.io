@@ -544,17 +544,18 @@ function handleSingleFileUpload(file) {
   const files = [file];
   const filesToUpload = []; // Solo archivos que no sean duplicados
   for (const file of files) {
-    const fileIdentifier = `${file.name}-${file.size}-${file.lastModified}`;
+    const file_name = file.name.replace(/\s+/g, "");
+    const fileIdentifier = `${file_name}-${file.size}-${file.lastModified}`;
 
     if (uniqueFiles.includes(fileIdentifier)) {
-      console.log(`⚠️ Archivo duplicado, ya subido: ${file.name}`);
+      console.log(`⚠️ Archivo duplicado, ya subido: ${file_name}`);
       continue; // No agregar ni a visible_names ni a filesToUpload
     }
 
     uniqueFiles.push(fileIdentifier);
 
-    const baseName = file.name.replace(/\.[^/.]+$/, "");
-    const extension = file.name.match(/\.[^/.]+$/)?.[0] || "";
+    const baseName = file_name.replace(/\.[^/.]+$/, "");
+    const extension = file_name.match(/\.[^/.]+$/)?.[0] || "";
 
     if (!nameCounters[baseName]) nameCounters[baseName] = 1;
 
@@ -636,8 +637,9 @@ async function get_duration_file(selectedOption_item) {
                 const media = document.createElement(selectedOption_item);
                 media.preload = 'metadata';
                 media.src = URL.createObjectURL(file);
-		filename_url[file.name] = media.src;
-		filename_dic_url[file.name] = {"blob_url":media.src,"filetype":selectedOption_item};
+		const file_name = file.name.replace(/\s+/g, "");
+		filename_url[file_name] = media.src; 
+		filename_dic_url[file_name] = {"blob_url":media.src,"filetype":selectedOption_item};
 
                 media.onloadedmetadata = () => {
                     const duration = media.duration; // en segundos (con decimales)
@@ -657,7 +659,8 @@ async function get_duration_file(selectedOption_item) {
  		     	
 
                     //URL.revokeObjectURL(media.src);//Not allowed to load local resource
-                    resolve([file.name, duration,selectedOption_item]);
+		    const file_name = file.name.replace(/\s+/g, "");	
+                    resolve([file_name, duration,selectedOption_item]);
                 };
 
                 media.onerror = () => {
@@ -667,9 +670,10 @@ async function get_duration_file(selectedOption_item) {
             } else {
                 // Para imagen 
 		const blobUrl = URL.createObjectURL(file);
-  		filename_url[file.name] = blobUrl;
-		//poner en la funcion "crearMedia"
-		filename_dic_url[file.name] = {"blob_url":blobUrl,"filetype":selectedOption_item};
+		const file_name = file.name.replace(/\s+/g, "");
+  		filename_url[file_name] = blobUrl;
+		//poner en la funcion "crearMedia" 
+		filename_dic_url[file_name] = {"blob_url":blobUrl,"filetype":selectedOption_item};
 
     		const img = new Image();
     		img.src = blobUrl; 
@@ -683,7 +687,8 @@ async function get_duration_file(selectedOption_item) {
 			if (!timeline_creado){
 				resolution_scene = String(width)+"x"+String(height);
 			}
-			resolve([file.name, "",selectedOption_item]); 
+			const file_name = file.name.replace(/\s+/g, "");
+			resolve([file_name, "",selectedOption_item]); 
     		};
                 //resolve([file.name, "",selectedOption_item]);
             }
@@ -1330,4 +1335,4 @@ function check_file_type(file) {
     
     return null; // No es ninguno de los tres
 }
-*/
+*/ 
