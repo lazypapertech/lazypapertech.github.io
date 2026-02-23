@@ -1535,6 +1535,7 @@ function agregarAnterior(lista) {
   return [...lista];
 }
 
+let pendiente_renderizar=false;
 
 let trozo_excepcion=-1;
 function update_state(){
@@ -1570,8 +1571,21 @@ function update_state(){
   	request_render(valores_pendientes);
   } 
 */
+console.log("pendiente_renderizar:",pendiente_renderizar);
+  if (pendiente_renderizar){
+	if (Object.keys(progress_visible_names).length === uploaded_names.length){
+		request_render(valores_pendientes);
+		pendiente_renderizar = false;
+	}
+  }
   if (nuevos_valores.length > 0){
-  	request_render(valores_pendientes);
+	if (Object.keys(progress_visible_names).length === uploaded_names.length){
+  		request_render(valores_pendientes);
+		pendiente_renderizar = false;
+	}else{
+		pendiente_renderizar = true;
+	}
+
   } 
 }
   
