@@ -16,15 +16,17 @@ function handleFileUpload_mal(event) {
   const files = event.target.files;
 
   for (const file of files) {
-    const fileIdentifier = `${file.name}-${file.size}-${file.lastModified}`;
+    file_name = file.name.replace(/\s+/g, "");
+    const fileIdentifier = `${file_name}-${file.size}-${file.lastModified}`;
     if (uniqueFiles.includes(fileIdentifier)){
-	console.log(`⚠️ Archivo duplicado, ya subido: ${file.name}`);
+	console.log(`⚠️ Archivo duplicado, ya subido: ${file_name}`);
 	continue;
     }
     uniqueFiles.push(fileIdentifier);
 
-    const baseName = file.name.replace(/\.[^/.]+$/, "");
-    const extension = file.name.match(/\.[^/.]+$/)?.[0] || "";
+    let baseName = file_name.replace(/\.[^/.]+$/, "");
+    //baseName = baseName.replace(/\s+/g, "");
+    const extension = file_name.match(/\.[^/.]+$/)?.[0] || "";
 
     if (!nameCounters[baseName]) nameCounters[baseName] = 1;
 
@@ -56,17 +58,19 @@ function handleFileUpload(event) {
   const filesToUpload = []; // Solo archivos que no sean duplicados
 
   for (const file of files) {
-    const fileIdentifier = `${file.name}-${file.size}-${file.lastModified}`;
+    const file_name = file.name.replace(/\s+/g, "");
+    console.log("file_name_00:",file_name);
+    const fileIdentifier = `${file_name}-${file.size}-${file.lastModified}`;
 
     if (uniqueFiles.includes(fileIdentifier)) {
-      console.log(`⚠️ Archivo duplicado, ya subido: ${file.name}`);
+      console.log(`⚠️ Archivo duplicado, ya subido: ${file_name}`);
       continue; // No agregar ni a visible_names ni a filesToUpload
     }
 
     uniqueFiles.push(fileIdentifier);
 
-    const baseName = file.name.replace(/\.[^/.]+$/, "");
-    const extension = file.name.match(/\.[^/.]+$/)?.[0] || "";
+    const baseName = file_name.replace(/\.[^/.]+$/, "");
+    const extension = file_name.match(/\.[^/.]+$/)?.[0] || "";
 
     if (!nameCounters[baseName]) nameCounters[baseName] = 1;
 
@@ -78,6 +82,7 @@ function handleFileUpload(event) {
 
     visible_names[displayName] = fileIdentifier;
     nameCounters[baseName]++;
+    console.log("displayName:",displayName);
     
     //solo se mostrara en files pendientes los que key!=valor
     const displayName_2 = displayName.replace(/(\.[^/.]+$)/, `(${0}%)$1`);
@@ -123,9 +128,9 @@ function processNextUpload() {
 // =====================
 function sendTotalSize(selectedFile) {
   const totalSize = selectedFile.size;
-
+  const selectedFile_name = selectedFile.name.replace(/\s+/g, "");
   // Identificador único del archivo
-  const fileIdentifier = `${selectedFile.name}-${selectedFile.size}-${selectedFile.lastModified}`;
+  const fileIdentifier = `${selectedFile_name}-${selectedFile.size}-${selectedFile.lastModified}`;
 
   // Buscar el nombre visible (key) que corresponde a este fileIdentifier
   const visibleKey = Object.keys(visible_names).find(
@@ -144,6 +149,8 @@ console.log("uniqueFiles:",uniqueFiles);
 // Subida por fragmentos
 // =====================
 async function sendFile(selectedFile) {
+  const selectedFile_name = selectedFile.name.replace(/\s+/g, "");
+  console.log("selectedFile_name_8457:",selectedFile_name);
   const totalSize = selectedFile.size;
   let chunkKB = 125;
   const maxKB = 2000;
@@ -183,9 +190,9 @@ async function sendFile(selectedFile) {
 
     // Calcula porcentaje y actualiza el nombre visible
     const percent = ((offset / totalSize) * 100).toFixed(1); 
-    //updateVisibleNameProgress(selectedFile.name, percent);
-    const baseName = selectedFile.name.replace(/\.[^/.]+$/, "");
-const extension = selectedFile.name.match(/\.[^/.]+$/)?.[0] || "";
+    //updateVisibleNameProgress(selectedFile_name, percent);
+    const baseName = selectedFile_name.replace(/\.[^/.]+$/, "");
+const extension = selectedFile_name.match(/\.[^/.]+$/)?.[0] || "";
 
 // Busca la key correspondiente en progress_visible_names
 const currentKey = Object.keys(progress_visible_names).find(k =>
@@ -305,7 +312,8 @@ function removeProgressFromVisibleName_mal(originalName) {
 
 // Actualiza el porcentaje para el archivo correcto
 function updateVisibleNameProgress(selectedFile, percent) {
-  const fileIdentifier = `${selectedFile.name}-${selectedFile.size}-${selectedFile.lastModified}`;
+  const selectedFile_name = selectedFile.name.replace(/\s+/g, "");
+  const fileIdentifier = `${selectedFile_name}-${selectedFile.size}-${selectedFile.lastModified}`;
 
   // Busca el nombre visible correspondiente a este archivo
   const currentKey = Object.keys(visible_names).find(k => visible_names[k] === fileIdentifier);
