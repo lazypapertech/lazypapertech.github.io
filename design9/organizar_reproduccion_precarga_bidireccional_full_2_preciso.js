@@ -1820,6 +1820,7 @@ function agregarEspacioScroll() {
 const exportBtn = document.getElementById('export-btn');
  
 exportBtn.onclick = () => {  
+	return;
     console.log("uploadedFiles: ",uniqueFiles.length); 
     abrirModalDinamicoSimple(html_finish);
     renderPendientes(progress_visible_names); 
@@ -3140,3 +3141,4 @@ this.ctx.fillText('Streaming mode', centerX, 10);
 const reproductorTrozos = new ReproductorTrozos(canvas_principal);
  
 //esta version evita precargas repetidas
+
