@@ -10,10 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design9/menu_options.css?v=2.1.0">  
- <link rel="stylesheet" href="../design9/anchor_point.css?v=2.1.0">    
- <link rel="stylesheet" href="../design9/freelancers.css?v=2.1.0">
- <link rel="stylesheet" href="../design9/login_design.css?v=2.1.0"> 
+ <link rel="stylesheet" href="../design9/menu_options.css?v=2.2.0">  
+ <link rel="stylesheet" href="../design9/anchor_point.css?v=2.2.0">    
+ <link rel="stylesheet" href="../design9/freelancers.css?v=2.2.0">
+ <link rel="stylesheet" href="../design9/login_design.css?v=2.2.0"> 
 
 <style> 
 #general-header{display:none};
@@ -3807,7 +3807,7 @@ labelBottom.style.userSelect = "none";
 rect.appendChild(labelBottom);
 
 let description_color = "rgb(255,255,255)";
-if (datos.filetype=="text" || datos.filetype=="image"){
+if (datos.filetype=="text" || datos.filetype=="image" || datos.filetype=="video"){
 // --- filetype text---
 const labelBottom2 = document.createElement('span'); 
 
@@ -5753,11 +5753,14 @@ function abrirModalDinamico(htmlString,boton_id) {
   
   if (boton_id=="keyframe_1" || boton_id=="keyframe_2"){
 	if (selected_rect.dataset.property=="scale"){
-  		crearSliderDinamicoScale('input_dynamic_box_0');
+  		crearSliderDinamicoScale('input_dynamic_box_0',"scale");
 	}
 	if (selected_rect.dataset.property=="opacity"){
 		crearSliderDinamicoOpacity('input_dynamic_box_0');
 	} 
+	if (selected_rect.dataset.property=="glow"){
+  		crearSliderDinamicoScale('input_dynamic_box_0',"glow");
+	}
 	if (selected_rect.dataset.property=="rotation"){
 		crearSliderCircular('input_dynamic_box_0');
 	}
@@ -7790,21 +7793,21 @@ verificarSoporteCodec().then(soportado => {
     });
 </script>
  
-<script src="../design9/websocket_script.js?v=2.1.0"> </script> 
-<script src="../design9/general.js?v=2.1.0"> </script>
-<script src="../design9/send_files.js?v=2.1.0"> </script> 
-<script src="../design9/clipcontainer.js?v=2.1.0"> </script>  
-<script src="../design9/htmlstring.js?v=2.1.0"> </script>  
-<script src="../design9/menu_options.js?v=2.1.0"> </script>   
-<script src="../design9/panel_tabs.js?v=2.1.0"> </script>  
-<script src="../design9/reglas.js?v=2.1.0"> </script>  
-<script src="../design9/simplemenus.js?v=2.1.0"> </script> 
-<script src="../design9/interaccion_rectangulos_full.js?v=2.1.0"> </script> 
-<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.1.0"> </script>  
-<script src="../design9/repintar4.js?v=2.1.0"> </script>  
-<script src="../design9/anchor_point.js?v=2.1.0"> </script>   
-<script src="../design9/script_login.js?v=2.1.0"> </script> 
-<script src="../design9/undo_redo.js?v=2.1.0"> </script> 
+<script src="../design9/websocket_script.js?v=2.2.0"> </script> 
+<script src="../design9/general.js?v=2.2.0"> </script>
+<script src="../design9/send_files.js?v=2.2.0"> </script> 
+<script src="../design9/clipcontainer.js?v=2.2.0"> </script>  
+<script src="../design9/htmlstring.js?v=2.2.0"> </script>  
+<script src="../design9/menu_options.js?v=2.2.0"> </script>   
+<script src="../design9/panel_tabs.js?v=2.2.0"> </script>  
+<script src="../design9/reglas.js?v=2.2.0"> </script>  
+<script src="../design9/simplemenus.js?v=2.2.0"> </script> 
+<script src="../design9/interaccion_rectangulos_full.js?v=2.2.0"> </script> 
+<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.2.0"> </script>  
+<script src="../design9/repintar4.js?v=2.2.0"> </script>  
+<script src="../design9/anchor_point.js?v=2.2.0"> </script>   
+<script src="../design9/script_login.js?v=2.2.0"> </script> 
+<script src="../design9/undo_redo.js?v=2.2.0"> </script> 
  
 </body>
-</html>  
+</html> 
