@@ -850,6 +850,7 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
   }
   if (e.target.matches("#create_item") || e.target.closest("#create_item")){
 	abrirModalDinamicoSimple(html_create_item);
+	renderPendientesAddFile(progress_visible_names);
   }	
   if (e.target.matches("#change_view")){
 	abrirModalDinamicoSimple(html_change_view);	 
@@ -960,12 +961,12 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
 				let current_params = "filetype="+selectedOption_item; 
 
 				const json_data = {"service":"change_item_view","itemName":customName,"property":"empty","params":current_params,"file_type":selectedOption_item,"resolution":resolution_scene,"extra0":"0","extra":"0"}; 
-				websocketClient.send(JSON.stringify(json_data));
+				safeSend(JSON.stringify(json_data));
 
 				if (true){
 				 
 				const json_data_2 =  {"service":"save_item_data","itemName":customName,"property":"filename","params":"empty", "rectangulos":[first_rect],"extra":"clip"}; 
-        			websocketClient.send(JSON.stringify(json_data_2)); 
+        			safeSend(JSON.stringify(json_data_2)); 
 				console.log("ENVIADO4");
 				}
 
@@ -1029,7 +1030,7 @@ crearReglaIndividual(parseInt(index_item));
 			//websocketClient.send(JSON.stringify(json_data));
 			safeSend(JSON.stringify(json_data));
 			const json_data_2 =  {"service":"save_item_data","itemName":customName,"property":"filename","params":"empty", "rectangulos":[first_rect],"extra":"text"}; 
-        		websocketClient.send(JSON.stringify(json_data_2));
+        		safeSend(JSON.stringify(json_data_2));
 
 			undoRedoManager.saveState(unica_regla.rectangulos); 
  
