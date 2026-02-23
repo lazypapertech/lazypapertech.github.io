@@ -812,6 +812,30 @@ let html_create_item = `
 
   </button>
 
+<div>  
+<span id="error_subidas_pendientes" style="display: inline-block; background-color:rgb(200,20,10); padding:16px; border-radius:8px; font-size:16px; color:#ffffff; margin:8px; width:calc(100% - 16px); box-sizing: border-box;">
+  Wait for the upload to finish before continuing to upload more files.
+</span>
+
+<div id="pendientes_de_subir_0" style="display:flex; flex-wrap:wrap; align-items:center; margin-bottom:10px; gap:8px; width:100%;">
+ 
+<ul id="pendientes_de_subir"style="
+  width:100%;
+  max-height:140px;
+  overflow-y:auto;
+  margin:10px;
+  padding:8px 12px 8px 28px;  
+  list-style-position: inside; 
+  border-radius:10px;
+  border:1px solid rgba(180,180,180,0.4);
+  background:rgba(255,255,255,0.08);
+">
+     
+  </ul>
+</div>
+</div>
+ 
+
   <div class="actions">
     <!-- IMAGE -->
 <button class="btn-confirm" id="image-item">
