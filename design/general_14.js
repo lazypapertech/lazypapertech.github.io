@@ -3463,8 +3463,8 @@ https://www.youtube.com/watch?v=duhp1fln2gQ
 function actualizarMenuUrls() {
 
     const ids = [
-        //"login-btn",
-        //"li-home",
+        "login-btn",
+        "li-home",
         "li-features",
         "li-tutorial",
         "li-questions"
@@ -3474,15 +3474,19 @@ function actualizarMenuUrls() {
         let elemento = document.getElementById(id);
 
         if (elemento) { 
-            elemento.href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
-	    elemento.target = "_blank"; 
+	    if (id=="login-btn" || id=="li-home"){
+				elemento.href = "https://www.youtube.com/@spoiler_infinito";
+	    }else{	
+            	elemento.href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+	    }
+	    	elemento.target = "_blank"; 
             elemento.rel = "noopener noreferrer";
         }
     });
 }
 
-
   
+
 
 
 
