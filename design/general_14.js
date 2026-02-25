@@ -530,16 +530,16 @@ function isNotUser() {
  
 
     <p style="color:#000; font-size:16px; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
-    Video editor with
+    Try
     <span style="font-weight:700; color:rgb(255,255,255) !important;">
-        advanced features
+        Motion Graphics
     </span> 
-    to improve the subtitles.
+    editor.
 </p>
 
 
     <p>
-        <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
+        <a id="tutorial_button" href="https://www.youtube.com/watch?v=Sh8FeTo759M" target="_blank"
            style="background-color:#ffffff; 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -3477,7 +3477,7 @@ function actualizarMenuUrls() {
 	    if (id=="login-btn" || id=="li-home"){
 				elemento.href = "https://www.youtube.com/@spoiler_infinito";
 	    }else{	
-            	elemento.href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+            	elemento.href = "https://www.youtube.com/watch?v=Sh8FeTo759M";
 	    }
 	    	elemento.target = "_blank"; 
             elemento.rel = "noopener noreferrer";
@@ -3486,6 +3486,7 @@ function actualizarMenuUrls() {
 }
 
   
+
 
 
 
