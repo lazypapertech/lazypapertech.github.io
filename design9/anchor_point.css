@@ -240,4 +240,22 @@
 
 #anchor-point {
     touch-action: none; /* Previene scroll mientras arrastras */
+
+}
+
+
+
+ 
+#input_dynamic_box_0::-webkit-scrollbar {
+    width: 7px;
+}
+#input_dynamic_box_0::-webkit-scrollbar-track {
+    background: transparent;
+}
+#input_dynamic_box_0::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+}
+#input_dynamic_box_0::-webkit-scrollbar-button {
+    display: none;
 }
