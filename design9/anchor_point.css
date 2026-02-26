@@ -259,3 +259,6 @@
 #input_dynamic_box_0::-webkit-scrollbar-button {
     display: none;
 }
+#input_dynamic_box_0::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
