@@ -10,10 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design9/menu_options.css?v=2.5.1">  
- <link rel="stylesheet" href="../design9/anchor_point.css?v=2.5.0">    
- <link rel="stylesheet" href="../design9/freelancers.css?v=2.5.0">
- <link rel="stylesheet" href="../design9/login_design.css?v=2.5.0"> 
+ <link rel="stylesheet" href="../design9/menu_options.css?v=2.5.4">  
+ <link rel="stylesheet" href="../design9/anchor_point.css?v=2.5.4">    
+ <link rel="stylesheet" href="../design9/freelancers.css?v=2.5.4">
+ <link rel="stylesheet" href="../design9/login_design.css?v=2.5.4"> 
 
 <style> 
 #general-header{display:none};
@@ -2739,6 +2739,7 @@ function limpiarEspacios(texto) {
 
 const modo = e.currentTarget.dataset.modo;
 if (modo != 'delete_item') {
+console.log("ESTE SAVE ITEM NO DEBERIA EJECUTARSE");
 console.log("MAL: ",current_item);
 const json_data_02 =  {"service":"save_item_data","itemName":current_item,"property":current_property_id,"params":"time="+current_scroll_x, "rectangulos":unica_regla.rectangulos,"extra":"change1"}; 
 websocketClient.send(JSON.stringify(json_data_02)); 
@@ -3120,8 +3121,11 @@ let unica_regla_0 = {
 let rectangulos_0 = [[],[]];
 
 //poner un unico scroll_x para todo
+let resolution_scene = "1920x1080";
+//let resolution_scene = "1280x720";
 let unica_regla = { 
      scroll_x:{"filename":0,"group":0,"position":0,"scale":0,"rotation":0,"opacity":0},
+     resolution_scene:resolution_scene, 
      rectangulos:[]
 }; 
 let rectangulos = [];
@@ -3129,8 +3133,7 @@ let rectangulos = [];
 let current_view="filename";
 
 
-let resolution_scene = "1920x1080";
-//let resolution_scene = "1280x720";
+ 
 const MINUTOS_TOTALES = 120;
 const VALOR_SEGMENTO = 0.2;
 const CALIBRACION = 4;
@@ -3537,10 +3540,14 @@ const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
 			}
 		}else{
 		     if (rect.dataset.filetype=="image"){
-			box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point","Glow_color"];
+			if (!loaded_project){
+				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point","Glow_color"];
+			}else{
+				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Glow_color"];
+			}
 		     } 		
 		     if (rect.dataset.filetype=="text"){
-			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes","Text_color","Glow_color"];
+			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes","Text_color","Glow_color","Instruction"];
 		     } 	
 		     if (rect.dataset.filetype=="audio"){
 			box_options = ["Delete_file","Add_file","Split"];
@@ -3843,6 +3850,9 @@ if (current_view=="filename"){
 	}
 }else{
 	nombre_visible_rect = datos.item_name + " - " + datos.property;
+	if (datos.property=="ratio"){
+		nombre_visible_rect = datos.item_name + " - " + "custom size";
+	}
 }
 
 
@@ -3999,6 +4009,8 @@ rect.appendChild(labelBottom);
         index_global_row : index_global_row,
         index_row : index_row,
         color: datos.color,
+        start: datos.start,
+	end: datos.end,
         start_value: datos.start_value,
         end_value: datos.end_value,
 	video_audio_value: datos.video_audio_value,
@@ -4828,6 +4840,7 @@ function actualizarEstadoGlobal() {
   });
  
     send_rectangles("actualizarEstadoGlobal"); 
+    //update_state();//va lento 	
  
 }
 
@@ -5820,6 +5833,9 @@ function abrirModalDinamico(htmlString,boton_id) {
 	if (selected_rect.dataset.property=="glow"){
   		crearSliderDinamicoScale('input_dynamic_box_0',"glow");
 	}
+	if (selected_rect.dataset.property=="blur"){
+  		crearSliderDinamicoBlur('input_dynamic_box_0');
+	}
 	if (selected_rect.dataset.property=="rotation"){
 		crearSliderCircular('input_dynamic_box_0');
 	}
@@ -6094,10 +6110,10 @@ document.addEventListener("click", function (e) {
 	cancel_export();
     }
   
-    if (e.target.matches("#modal_overlay_dinamico") || e.target.matches(".btn-close") || e.target.closest(".btn-close")) { 
+    if (e.target.matches(".btn-close") || e.target.closest(".btn-close")) {//e.target.matches("#modal_overlay_dinamico")  
  	if (contieneExportContainer()) return;
         e.target.style.display = "none"; 
-	closeModalDinamico(); 
+	closeModalDinamico();  
 	console.log("✅✅✅✅ "+timestamp_and_duration+","+current_speed, " ",rectangulos); 
 
 	if (!selected_rect) return;
@@ -6816,11 +6832,53 @@ function generarBotones(listaOpciones) {
   <!-- Núcleo de color -->
   <circle cx="12" cy="12" r="4" fill="#FFFFFF"/>
 </svg>
+ 
 
 
 		    <span class="label">Glow color</span> 
 		  </span>
 		   
+		`;
+	}
+   
+        if (nombreVisible === "Instruction") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
+
+  <!-- Escalado 30% desde el centro -->
+  <g transform="translate(12 12) scale(1.3) translate(-12 -12)">
+
+    <!-- Letra A -->
+    <path d="M6.5 16 L9.5 8 L12.5 16 M8 13 H11"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+    <!-- Letra I vertical -->
+    <line x1="17" y1="8" x2="17" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea superior -->
+    <line x1="15.5" y1="8" x2="18.5" y2="8"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea inferior -->
+    <line x1="15.5" y1="16" x2="18.5" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+  </g>
+
+</svg>
+		     <span class="label">Prompt</span> 
+		  </span>
 		`;
 	}
 
@@ -6909,6 +6967,11 @@ function actualizarRectangulo(indice, rectNuevo) {
 
 
 
+function agregarSublistas(cantidad) {
+  for (let i = 0; i < cantidad; i++) {
+    rectangulos.push([]);
+  } 
+}
 
 
 
@@ -6927,6 +6990,7 @@ let isReconnecting = false;
 let reconnectAttempts = 0;
 const MAX_RECONNECT_ATTEMPTS = 100;
 
+let loaded_project = false;
  
 function connect(type_connection) {
 
@@ -6992,8 +7056,23 @@ function connect(type_connection) {
 
     if (typeof message_result === "string") {
  
-      if (event.data.includes("rectangulos") && event.data.includes("Timeline")){
-	console.log("proyecto recibido:",message_result);
+      if (event.data.includes("Timeline")){
+	//proviene de currentrectangles, change_item_view
+	if (event.data.includes("-|") && !loaded_project){
+	   loaded_project = true;
+	   console.log("proyecto recibido:",message_result);
+	   const parsedJson = hjsonNoQuotesToJson(message_result);
+
+           resolution_scene = parsedJson.resolution_scene;
+	   
+	   unica_regla.rectangulos=parsedJson.rectangulos; 
+	   //rectangulos=[[],[],[],[]];
+	   agregarSublistas(unica_regla.rectangulos.length);
+	   inicializar();  
+	   update_state();
+           console.log("JSON parseado_2:", JSON.stringify(parsedJson, null, 2));
+	   console.log("type:",JSON.stringify(unica_regla));
+	}
       }else{
 	handleWebSocketMessage(event.data);
       }
@@ -7097,8 +7176,9 @@ tab.click();
  
 
 if (message_result === "all_chunks_received") {
-  console.log("✅ Subida completa:", currentFile.name);  
-  const currentFile_name = currentFile.name.replace(/\s+/g, ""); 
+  console.log("✅ Subida completa:", currentFile.name); 
+  const currentFile_name = currentFile.name.replace(/\s+/g, "");
+
   // Quita el porcentaje: normaliza el value de progress_visible_names al key
   const baseName = currentFile_name.replace(/\.[^/.]+$/, "");
   const extension = currentFile_name.match(/\.[^/.]+$/)?.[0] || "";
@@ -7921,23 +8001,22 @@ verificarSoporteCodec().then(soportado => {
             }
         });
     });
-</script>
+</script> 
   
-<script src="../design9/general.js?v=2.5.0"> </script>
-<script src="../design9/send_files.js?v=2.5.1"> </script> 
-<script src="../design9/clipcontainer.js?v=2.5.0"> </script>  
-<script src="../design9/htmlstring.js?v=2.5.0"> </script>  
-<script src="../design9/menu_options.js?v=2.5.0"> </script>   
-<script src="../design9/panel_tabs.js?v=2.5.0"> </script>  
-<script src="../design9/reglas.js?v=2.5.0"> </script>  
-<script src="../design9/simplemenus.js?v=2.5.1"> </script> 
-<script src="../design9/interaccion_rectangulos_full.js?v=2.5.0"> </script> 
-<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.5.0"> </script>  
-<script src="../design9/repintar4.js?v=2.5.0"> </script>  
-<script src="../design9/anchor_point.js?v=2.5.0"> </script>   
-<script src="../design9/script_login.js?v=2.5.0"> </script> 
-<script src="../design9/undo_redo.js?v=2.5.0"> </script> 
+<script src="../design9/general.js?v=2.5.4"> </script>
+<script src="../design9/send_files.js?v=2.5.4"> </script> 
+<script src="../design9/clipcontainer.js?v=2.5.4"> </script>  
+<script src="../design9/htmlstring.js?v=2.5.4"> </script>  
+<script src="../design9/menu_options.js?v=2.5.4"> </script>   
+<script src="../design9/panel_tabs.js?v=2.5.4"> </script>  
+<script src="../design9/reglas.js?v=2.5.4"> </script>  
+<script src="../design9/simplemenus.js?v=2.5.4"> </script> 
+<script src="../design9/interaccion_rectangulos_full.js?v=2.5.4"> </script> 
+<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.5.4"> </script>  
+<script src="../design9/repintar4.js?v=2.5.4"> </script>  
+<script src="../design9/anchor_point.js?v=2.5.4"> </script>   
+<script src="../design9/script_login.js?v=2.5.4"> </script> 
+<script src="../design9/undo_redo.js?v=2.5.4"> </script> 
  
 </body>
 </html> 
-
