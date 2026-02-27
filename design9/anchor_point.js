@@ -383,6 +383,104 @@ slider.style.cssText = `
 }
 
 
+function crearSliderDinamicoBlur(idInput) {
+    const input_original = document.getElementById(idInput);
+    
+    if (!input_original) {
+        console.error('No se encontró el input con id:', idInput);
+        return;
+    }
+    
+    // Leer el valor original (flotante entre 0 y 1)
+    let valorFlotante = parseFloat(input_original.value) || 0; 
+     
+    
+    // Convertir a porcentaje (0.44 → 44)
+    let valorPorcentaje = Math.round(valorFlotante * 100);
+    
+    console.log('Valor flotante leído:', valorFlotante);
+    console.log('Convertido a porcentaje:', valorPorcentaje);
+    
+    // Crear contenedor para slider y display
+    const contenedor = document.createElement('div');
+    contenedor.style.cssText = 'display:flex; flex-direction:column; gap:12px; width:100%;';
+    
+    // Crear el slider
+    const sliderContainer = document.createElement('div');
+    sliderContainer.style.cssText = 'position:relative; width:100%; padding:10px 0;';
+    
+    const slider = document.createElement('input');
+    slider.id = 'slider_scale_dynamic';
+    slider.type = 'range';
+    slider.min = '0';
+    slider.max = '100'; 
+    slider.value = valorPorcentaje;
+ 
+    slider.style.cssText = `
+        width: 100%;
+        height: 6px;
+        border-radius: 10px;
+        background: linear-gradient(to right, #7c55e6 0%, #7c55e6 ${valorPorcentaje}%, rgba(255,255,255,0.2) ${valorPorcentaje}%, rgba(255,255,255,0.2) 100%);
+        outline: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+    `;
+ 
+ 
+    
+    sliderContainer.appendChild(slider);
+    
+    // Crear display visual (muestra el porcentaje)
+    const displayVisual = document.createElement('input');
+    displayVisual.id = 'display_scale_visual';
+    displayVisual.type = 'text';
+    displayVisual.readOnly = true;
+    displayVisual.value = valorPorcentaje + '%';
+    displayVisual.style.cssText = `
+        width:100%; 
+        padding:12px; 
+        font-size:16px; 
+        border-radius:8px; 
+        background-color: rgba(65,65,65,0.6);
+        border: 1px solid rgba(124,85,230,0.3);
+        color: white;
+        text-align: center;
+        font-weight: 500;
+        cursor: default;
+    `;
+    
+    // Agregar slider y display al contenedor
+    contenedor.appendChild(sliderContainer);
+    contenedor.appendChild(displayVisual);
+    
+    // Insertar ANTES del input original
+    input_original.parentNode.insertBefore(contenedor, input_original);
+    
+    // Ocultar el input original (pero mantenerlo funcional)
+    input_original.style.display = 'none';
+    
+    // Evento cuando se mueve el slider
+    slider.addEventListener('input', function() {
+        const valorPorcentaje = this.value;
+        
+        // Actualizar display visual con porcentaje
+        displayVisual.value = valorPorcentaje + '%';
+        
+        // Convertir de porcentaje a flotante (67 → 0.67)
+        let valorFlotante = valorPorcentaje / 100;
+        
+         
+        input_original.value = valorFlotante; 
+        
+        console.log('Porcentaje:', valorPorcentaje + '% → Flotante:', valorFlotante);
+        
+        // Actualizar gradiente del slider 
+        this.style.background = `linear-gradient(to right, #7c55e6 0%, #7c55e6 ${valorPorcentaje}%, rgba(255,255,255,0.2) ${valorPorcentaje}%, rgba(255,255,255,0.2) 100%)`;
+	 
+    });
+    
+    console.log('Slider creado correctamente');
+}
 
 
 function crearSliderDinamicoOpacity(idInput) {
