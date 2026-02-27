@@ -599,7 +599,7 @@ function actualizar_reproduccion_global_1(lista) {
   }
   
   actualizarTimeline();
-  /*
+   
   //lento renderFrames multiples
   return Promise.all(promesasCarga)
     .then(() => {
@@ -609,7 +609,8 @@ function actualizar_reproduccion_global_1(lista) {
       // Este catch ya casi nunca debería ejecutarse
       console.error('❌ Error inesperado en carga:', error);
     });
-  */ 
+   
+/* 
    return Promise.all(promesasCarga)
   .then(() => {
     console.log('✅ Flujo preparado:', mediaPools.length, 'líneas');
@@ -618,6 +619,7 @@ function actualizar_reproduccion_global_1(lista) {
   .catch(error => {
     console.error('❌ Error inesperado en carga:', error);
   });
+*/
 }
 
  
@@ -729,7 +731,7 @@ function loop(timestamp) {
 
   renderFrames();
   actualizarTimeline();
-  actualizarScroll();
+  //actualizarScroll();//lento renderFrames
   requestAnimationFrame(loop);
 }
 
@@ -858,9 +860,18 @@ mediaPools_local.forEach((linea, indexLinea) => {
         item.started = true;
       }
       
+      /*
+      //lento renderFrames
       if (!previewOnly && playing && !esImagen && item.media.paused) {
         item.media.play().catch(e => console.log('Error al reproducir:', e));
       }
+      */	
+      if (!previewOnly && playing && !esImagen && item.media.paused) {
+  // Guardia: verificar que el elemento aún tiene src válido
+  if (item.media.src && item.media.src !== '' && item.media.readyState > 0) {
+    item.media.play().catch(e => console.log('Error al reproducir:', e));
+  }
+}
       
       const esVideoOImagen = item.media.tagName === 'VIDEO' || esImagen;
       
@@ -1269,10 +1280,16 @@ function sincronizarMedias() {
         item.started = true;
       } else {
         item.started = false;
+        /*
+	//lento renderFrames
         if (!esImagen) {
           // Solo pausar videos/audios
           item.media.pause();
         }
+	*/
+	if (!esImagen && item.media && item.media.src !== '') {
+    		item.media.pause();
+  	}
       }
     });
   });
@@ -1904,6 +1921,8 @@ async function precargarDosSegundos_0(tiempoInicio) {
   console.log(`✅ ${promesas.length} sub-trozos precargados`);
 }
 
+/*
+//bien
 async function precargarDosSegundos(tiempoInicio) {
   const segundoInicio = Math.floor(tiempoInicio);
   
@@ -1947,6 +1966,50 @@ async function precargarDosSegundos(tiempoInicio) {
   await Promise.all(promesas);
   console.log(`✅ ${promesas.length} sub-trozos precargados`);
 }
+*/
+async function precargarDosSegundos(tiempoInicio) {
+  const segundoInicio = Math.floor(tiempoInicio);
+  
+  const segundosDisponibles = [];
+  let segundoBuscado = segundoInicio;
+  const maxBusqueda = segundoInicio + 100;
+  
+  while (segundosDisponibles.length < 2 && segundoBuscado <= maxBusqueda) {
+    if (trozos_guardados[segundoBuscado]) {
+      segundosDisponibles.push(segundoBuscado);
+    }
+    segundoBuscado++;
+  }
+  
+  if (segundosDisponibles.length === 0) {
+    console.log('⚠️ No hay trozos disponibles para precargar');
+    return;
+  }
+  
+  const promesas = [];
+  
+  segundosDisponibles.forEach(segundo => {
+    const chunk_data = trozos_guardados[segundo];
+    const encodedFrames = getChunks(chunk_data);
+    
+    if (!encodedFrames || encodedFrames.length === 0) return;
+    
+    // ✅ Calcular sub-trozos reales según frames disponibles en ese segundo
+    const totalSubTrozos = Math.ceil(encodedFrames.length / reproductorTrozos.FRAMES_POR_SUBTROZO);
+    
+    for (let subIndex = 0; subIndex < totalSubTrozos; subIndex++) {
+      const frameInicio = subIndex * reproductorTrozos.FRAMES_POR_SUBTROZO;
+      const subKey = reproductorTrozos.getSubTrozoKey(segundo, frameInicio);
+      
+      if (!reproductorTrozos.subTrozos.has(subKey)) {
+        promesas.push(reproductorTrozos.cargarSubTrozo(segundo, frameInicio));
+      }
+    }
+  });
+  
+  await Promise.all(promesas);
+  console.log(`✅ ${promesas.length} sub-trozos precargados`);
+}
 
 
 /* ===========================
@@ -1980,6 +2043,16 @@ class ReproductorTrozos {
   });
   
   this.decodificacionesEnCurso.clear();
+  // ✅ AÑADIR: limpiar sub-trozos que quedaron en estado cargando
+  // para que no bloqueen futuras decodificaciones
+  this.subTrozos.forEach((data, key) => {
+    if (data.cargando) {
+      if (data.frames) {
+        data.frames.forEach(f => { if (f && f.close) f.close(); });
+      }
+      this.subTrozos.delete(key);
+    }
+  });
 }
   
   // ✅ NUEVA FUNCIÓN: Detectar dirección del movimiento
@@ -2283,6 +2356,8 @@ this.ctx.fillText('Streaming mode', centerX, 10);
   this.ctx.restore();
 }
   
+  /*
+  //funciona bien pero precarga 2 en lugr de 1
   // ✅ FUNCIÓN MODIFICADA: Solo precargar si no está ya en cache
   precargarSiguientesSegundos(segundoActual) {
     let segundo1, segundo2;
@@ -2372,6 +2447,54 @@ this.ctx.fillText('Streaming mode', centerX, 10);
     
     clavesAEliminar.forEach(clave => this.segundosPrecargados.delete(clave));
   } 
+  */
+precargarSiguientesSegundos(segundoActual) {
+  // Determinar hasta qué segundo queremos tener listo
+  const meta = this.direccion === 1 
+    ? segundoActual + 2 
+    : segundoActual - 2;
+  
+  // Iterar solo los segundos que faltan
+  const inicio = this.direccion === 1 ? segundoActual + 1 : meta;
+  const fin    = this.direccion === 1 ? meta : segundoActual - 1;
+  
+  for (let s = inicio; s <= fin; s++) {
+    if (!trozos_guardados[s]) continue;
+    
+    const chunk_data = trozos_guardados[s];
+    const encodedFrames = getChunks(chunk_data);
+    if (!encodedFrames || encodedFrames.length === 0) continue;
+    
+    const totalSubTrozos = Math.ceil(encodedFrames.length / this.FRAMES_POR_SUBTROZO);
+    
+    for (let subIndex = 0; subIndex < totalSubTrozos; subIndex++) {
+      const frameInicio = subIndex * this.FRAMES_POR_SUBTROZO;
+      const subKey = this.getSubTrozoKey(s, frameInicio);
+      
+      // ✅ Clave por sub-trozo individual, no por par de segundos
+      if (!this.subTrozos.has(subKey) && !this.segundosPrecargados.has(subKey)) {
+        this.segundosPrecargados.add(subKey); // marcar antes de cargar
+        this.cargarSubTrozo(s, frameInicio);
+      }
+    }
+  }
+  
+  // Limpieza de sub-trozos lejanos
+  this.subTrozos.forEach((data, key) => {
+    const [seg] = key.split('-').map(Number);
+    const debeEliminar = this.direccion === 1 
+      ? seg < segundoActual - 1 
+      : seg > segundoActual + 1;
+    
+    if (debeEliminar) {
+      if (data.frames) {
+        data.frames.forEach(f => { if (f && f.close) f.close(); });
+      }
+      this.subTrozos.delete(key);
+      this.segundosPrecargados.delete(key); // ✅ limpiar también el Set
+    }
+  });
+} 
   
   esFrameNegro(bitmap) {
     try {
@@ -2618,6 +2741,9 @@ this.ctx.fillText('Streaming mode', centerX, 10);
     }
     this.ultimoFrameValido = null;
     this.segundosPrecargados.clear();
+    //nuevo
+    this.segundosPrecargados.clear();  
+    this.ultimoSegundo = null;   
   }
 }
 
@@ -2673,4 +2799,4 @@ function limpiarMediaPoolsConChunks() {
       mediaPools.splice(i, 1);
     }
   }
-} 
+}
