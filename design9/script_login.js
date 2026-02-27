@@ -189,11 +189,12 @@ function checkUserLogin() {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.get('user') === 'true') {
     console.log("logueado2");
-    user_saved_projects = ['project 1','project 2','project 3'];
+    user_saved_projects = ['ABBA'];
   }
 }
 
 // Ejecutar cuando se cargue la página
 window.addEventListener('load', checkUserLogin);
+
 
  
