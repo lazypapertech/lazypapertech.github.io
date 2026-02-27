@@ -601,6 +601,44 @@ let html_glowcolor = `
 </div>
  
 `;
+ 
+let html_ai_instruction = ` 
+<div class="start_end_type" style="display:flex; flex-direction:column; align-items:center; gap:12px;">
+    <div> 
+	<button class="btn-close">
+	    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+	      <path d="M19 5L5 19M5 5l14 14"
+	            stroke="#000"
+	            stroke-width="5"
+	            stroke-linecap="round"/>
+	    </svg>
+	</button> 
+    </div> 
+    <div style="display:flex;width:100%;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 0 2px;"> 
+    	<strong style="font-size:20px; margin-bottom:6px; font-weight:700; color:#fff; letter-spacing:0.3px;">Instruction</strong>
+    	<span style="font-size:16px; color:rgba(255,255,255,0.7); margin-bottom:2px; max-width:250px; line-height:1.4;">This action affects only the interval of the selected segment.</span>
+    </div>  
+     
+    <div style="display:flex; flex-direction:column; height:200px; width:100%; background:rgba(124,85,230,0.08); border:1.5px solid rgba(124,85,230,0.28); border-radius:14px; padding:10px 10px 10px 14px; gap:8px; box-shadow:0 2px 16px rgba(124,85,230,0.10); box-sizing:border-box;">
+    <textarea
+        id="input_dynamic_box_0"
+        placeholder="Write your instruction..."
+        style="flex:1; background:transparent; border:none; outline:none; resize:none; font-size:18px; color:#f0ecff; line-height:1.55; font-family:inherit; caret-color:#7c55e6; width:100%;"
+    ></textarea>
+    <div style="display:flex; justify-content:flex-end;">
+        <button id="ai_instruction" style="flex-shrink:0; width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#7c55e6,#5b3dbf); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 10px rgba(124,85,230,0.45); transition:transform 0.15s,box-shadow 0.15s;"
+            onmouseover="this.style.transform='scale(1.08)';this.style.boxShadow='0 4px 16px rgba(124,85,230,0.65)'"
+            onmouseout="this.style.transform='scale(1)';this.style.boxShadow='0 2px 10px rgba(124,85,230,0.45)'">
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none">
+              <line x1="12" y1="19" x2="12" y2="5" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="5"  y1="12" x2="12" y2="5" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="19" y1="12" x2="12" y2="5" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+</div>
+</div> 
+`;
 
 
 
@@ -1490,6 +1528,7 @@ dic_dynamic_options.text.ratio ??= {};
 dic_dynamic_options["text"]["filename"]["Text_input"]=html_8;//antes iba value 
 dic_dynamic_options["text"]["filename"]["Text_color"]=html_textcolor;
 dic_dynamic_options["text"]["filename"]["Glow_color"]=html_glowcolor;
+dic_dynamic_options["text"]["filename"]["Instruction"]=html_ai_instruction;
 dic_dynamic_options["text"]["position"]["keyframe_1"]=html_1;
 dic_dynamic_options["text"]["position"]["keyframe_2"]=html_2;
 dic_dynamic_options["text"]["position"]["bounce_parameters"]=html_9;
@@ -1525,6 +1564,7 @@ dic_dynamic_options.image.opacity ??= {};
 dic_dynamic_options.image.layer_order ??= {};
 dic_dynamic_options.image.item_reveal ??= {};
 dic_dynamic_options.image.glow ??= {};
+dic_dynamic_options.image.blur ??= {};
 dic_dynamic_options.image.ratio ??= {};
 dic_dynamic_options["image"]["filename"]["value"]=html_7;   
 dic_dynamic_options["image"]["filename"]["Anchor_point"]=html_anchorpoint;
@@ -1548,6 +1588,9 @@ dic_dynamic_options["image"]["item_reveal"]["value"]=html_6;
 
 dic_dynamic_options["image"]["glow"]["keyframe_1"]=html_3;
 dic_dynamic_options["image"]["glow"]["keyframe_2"]=html_4;
+
+dic_dynamic_options["image"]["blur"]["keyframe_1"]=html_3;
+dic_dynamic_options["image"]["blur"]["keyframe_2"]=html_4;
 
 dic_dynamic_options["image"]["ratio"]["keyframe_1"]=html_10;
 dic_dynamic_options["image"]["ratio"]["keyframe_2"]=html_11;
