@@ -864,7 +864,7 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
 	send_instruction();	
 	closeModalDinamico();  
   }
-  if (e.target.closest("#Ejemplo1") || e.target.closest("#zoom-in")){ 
+  if (e.target.closest("#ABBA") || e.target.closest("#zoom-in")){ 
 	get_project();
   }
 
@@ -1601,3 +1601,4 @@ function check_file_type(file) {
     return null; // No es ninguno de los tres
 }
 */
+
