@@ -686,7 +686,7 @@ async function get_duration_file(selectedOption_item) {
             			height = 600;
         		}
 			if (!timeline_creado){
-				resolution_scene = String(width)+"x"+String(height);
+				//resolution_scene = String(width)+"x"+String(height);
 			}
 			const file_name = file.name.replace(/\s+/g, "");
 			resolve([file_name, "",selectedOption_item]); 
@@ -962,7 +962,7 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
             			//createTab(customName);
             			console.log('Tab creado con nombre:', customName); 
 
-				if (!timeline_creado && unica_regla.rectangulos.length>=0){
+				if (!loaded_project && !timeline_creado && unica_regla.rectangulos.length>=0){
 					//forzarFondoTransparente();
 					console.log("SOLICITANDO NUEVO PROYECTO");
 					request_new_project();
@@ -1045,7 +1045,7 @@ crearReglaIndividual(parseInt(index_item));
 			resetear(); 
 			closeModalDinamico();
 
-			if (!timeline_creado && unica_regla.rectangulos.length>=0){
+			if (!loaded_project && !timeline_creado && unica_regla.rectangulos.length>=0){
 				//forzarFondoTransparente();
 				console.log("SOLICITANDO NUEVO PROYECTO");
 				request_new_project();
@@ -1600,5 +1600,4 @@ function check_file_type(file) {
     
     return null; // No es ninguno de los tres
 }
-*/
-
+*/ 
