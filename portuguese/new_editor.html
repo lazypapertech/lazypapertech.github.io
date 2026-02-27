@@ -4059,7 +4059,7 @@ rect.addEventListener('mousedown', (e) => {
 });
 
 
-
+/*
 // Además, para móviles, hacemos lo mismo que el mousedown pero con touchstart
 rect.addEventListener('touchstart', (e) => {
     if (e.cancelable) {
@@ -4102,7 +4102,20 @@ rect.addEventListener('touchstart', (e) => {
     //window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('touchend', onUp);
 }, { passive: false });
- 
+*/
+	
+rect.addEventListener('touchstart', (e) => {
+    if (e.cancelable) e.preventDefault();
+
+    if (!e.target.classList.contains('extremo-blanco')) {
+        seleccionarRectangulo(rect); 
+        show_rect_extrems(rect);
+    }
+
+    iniciarArrastreTouch(e, rect); 
+
+}, { passive: false });
+	
 
 
 
@@ -8020,4 +8033,5 @@ verificarSoporteCodec().then(soportado => {
  
 </body>
 </html>  
+
 
