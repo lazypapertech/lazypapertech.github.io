@@ -495,10 +495,11 @@ const dic1 = {
 	"ratio": ["", ""],
 	"item_reveal": ["off"],
 	"glow": ["0.01"],
+	"blur": ["0"],
     };
 
 const dic2 = {
-        "image": ["position", "scale", "rotation", "opacity","ratio","glow"],
+        "image": ["position", "scale", "rotation", "opacity","ratio","glow","blur"],
         "video": ["position", "scale", "rotation"],
 	"audio": [],
 	"text": ["position", "scale", "rotation", "opacity","item_reveal","glow"]
@@ -784,6 +785,37 @@ function forzarFondoTransparente() {
 }
 
 
+function save_project() {
+   console.log("SAVING PROJECT...");
+   unica_regla.resolution_scene=resolution_scene;
+   //const hjsonText = jsonToHjsonNoQuotes(unica_regla.rectangulos);
+   const hjsonText = jsonToHjsonNoQuotes(unica_regla);
+   console.log("hjsonText_2:",hjsonText);
+  const json_data = {"service":"save_project","project_name":"cancion","json_text":hjsonText,"itemName":"empty","property":"empty","params":"empty","file_type":"empty","extra0":"","extra":""}; 
+  safeSend(JSON.stringify(json_data)); 
+
+   
+
+}
+
+function get_project() {
+   console.log("RECEIVING PROJECT..."); 
+  const json_data = {"service":"get_project","project_name":"cancion","itemName":"empty","property":"empty","params":"empty","file_type":"empty","extra0":"","extra":""}; 
+  safeSend(JSON.stringify(json_data));  
+
+}
+
+function send_instruction(){
+    const instruction_value = document.getElementById("input_dynamic_box_0").value; 
+    const index_global_row = selected_rect.dataset.index_global_row;
+    const indice = parseInt(selected_rect.dataset.indice);  
+    const detalle = unica_regla.rectangulos[index_global_row][indice];
+    const index_item = detalle.index_item;
+    const start = timeToSeconds(detalle.start);
+    const end = timeToSeconds(detalle.end); 
+    console.log("instruction_value:",instruction_value,"interval:",index_item,start,end);
+}
+
 let rewind_forward_activo=false;
 
 document.addEventListener("click", function (e) { 
@@ -828,6 +860,14 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
 			renderPendientes(progress_visible_names);
 		}
   }
+  if (e.target.closest("#ai_instruction")){ 
+	send_instruction();	
+	closeModalDinamico();  
+  }
+  if (e.target.closest("#Ejemplo1") || e.target.closest("#zoom-in")){ 
+	get_project();
+  }
+
 /* 
   if (e.target.matches("#undo") || e.target.closest("#undo")){
 	console.log("undo_action");
@@ -1220,6 +1260,231 @@ document.addEventListener('drop', (e) => {
 });
 
 
+
+
+
+
+
+
+
+// ===== Ejemplo completo =====
+const jsonObj = {
+  usuarios:  [[{"item_name":"Timeline_1","index_item":"1","property":"filename","filetype":"text","index_row":"0","index_global_row":"0","color":"#7c55e6","start":"00:00:01","end":"00:00:02","start_value":"jjuj","end_value":"jjuj","video_audio_value":"","color_rgb":"0,0,0","glow_color":"255,255,255","anchor_point":"0.5,0.5"},{"item_name":"Timeline_1","index_item":"1","property":"filename","filetype":"text","index_row":"0","index_global_row":"0","color":"#7c55e6","start":"00:00:02.1","end":"00:00:02.3","start_value":"ij9i89u9","end_value":"ij9i89u9","video_audio_value":"","color_rgb":"0,0,0","glow_color":"255,255,255","anchor_point":"0.5,0.5"}],[{"item_name":"Timeline_1","index_item":"1","property":"position","filetype":"text","start":"00:00:00.0","end":"00:00:01.0","start_value":"960,540","end_value":"960,540","video_audio_value":"","color":"#7c55e6","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_1","index_item":"1","property":"scale","filetype":"text","start":"00:00:00.0","end":"00:00:01.0","start_value":"1","end_value":"1","video_audio_value":"","color":"#7c55e6","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_1","index_item":"1","property":"rotation","filetype":"text","start":"00:00:00.0","end":"00:00:01.0","start_value":"0","end_value":"0","video_audio_value":"","color":"#7c55e6","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_1","index_item":"1","property":"opacity","filetype":"text","start":"00:00:00.0","end":"00:00:01.0","start_value":"255","end_value":"255","video_audio_value":"","color":"#7c55e6","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_1","index_item":"1","property":"item_reveal","filetype":"text","start":"00:00:00.0","end":"00:00:01.0","start_value":"off","end_value":"off","video_audio_value":"","color":"#7c55e6","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_1","index_item":"1","property":"glow","filetype":"text","start":"00:00:00.0","end":"00:00:01.0","start_value":"0.01","end_value":"0.01","video_audio_value":"","color":"#7c55e6","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_2","index_item":"2","property":"filename","filetype":"image","start":"00:00:00.0","end":"00:00:01.0","start_value":"motion_graphics.png","end_value":"","video_audio_value":"","color":"rgb(195,136,35)","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_2","index_item":"2","property":"position","filetype":"image","start":"00:00:00.0","end":"00:00:01.0","start_value":"960,540","end_value":"960,540","video_audio_value":"","color":"rgb(195,136,35)","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_2","index_item":"2","property":"scale","filetype":"image","start":"00:00:00.0","end":"00:00:01.0","start_value":"1","end_value":"1","video_audio_value":"","color":"rgb(195,136,35)","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_2","index_item":"2","property":"rotation","filetype":"image","start":"00:00:00.0","end":"00:00:01.0","start_value":"0","end_value":"0","video_audio_value":"","color":"rgb(195,136,35)","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_2","index_item":"2","property":"opacity","filetype":"image","start":"00:00:00.0","end":"00:00:01.0","start_value":"255","end_value":"255","video_audio_value":"","color":"rgb(195,136,35)","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_2","index_item":"2","property":"ratio","filetype":"image","start":"00:00:00.0","end":"00:00:01.0","start_value":"","end_value":"","video_audio_value":"","color":"rgb(195,136,35)","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}],[{"item_name":"Timeline_2","index_item":"2","property":"glow","filetype":"image","start":"00:00:00.0","end":"00:00:01.0","start_value":"0.01","end_value":"0.01","video_audio_value":"","color":"rgb(195,136,35)","anchor_point":"0.5,0.5","color_rgb":"0,0,0","glow_color":"255,255,255"}]]
+};
+
+ 
+
+ 
+/*
+// ===== JSON → HJSON sin comillas =====
+function jsonToHjsonNoQuotes(obj, indent = 0) {
+  const space = '  '.repeat(indent);
+  let result = '';
+  if (Array.isArray(obj)) {
+    for (const item of obj) {
+      if (typeof item === 'object' && item !== null) {
+        result += `${space}-|${jsonToHjsonNoQuotes(item, indent + 1)}`;
+      } else {
+        result += `${space}- ${item}|`;
+      }
+    }
+  } else if (typeof obj === 'object' && obj !== null) {
+    for (const key in obj) {
+      const value = obj[key];
+      if (Array.isArray(value)) {
+        result += `${space}${key}:|${jsonToHjsonNoQuotes(value, indent + 1)}`;
+      } else if (typeof value === 'object' && value !== null) {
+        result += `${space}${key}:|${jsonToHjsonNoQuotes(value, indent + 1)}`;
+      } else {
+        result += `${space}${key}: ${value}|`; 
+      }
+    }
+  }
+  return result;
+}
+
+// ===== HJSON sin comillas → JSON =====
+function hjsonNoQuotesToJson(hjsonText) {
+  const lines = hjsonText.split('|').filter(l => l.trim() !== '');
+  function getIndent(line) {
+    return line.match(/^(\s*)/)[1].length;
+  }
+  function parseValue(raw) {
+    if (raw.startsWith('~')) return raw.slice(1);
+    if (raw === 'true') return true;
+    if (raw === 'false') return false;
+    if (raw === 'null') return null;
+    return raw;
+  }
+  function parseBlock(lines, start, minIndent) {
+    if (start >= lines.length) return [{}, start];
+    const firstLine = lines[start].trim();
+    const isArray = /^-/.test(firstLine);
+    if (isArray) {
+      const arr = [];
+      let i = start;
+      while (i < lines.length) {
+        const line = lines[i];
+        const ind = getIndent(line);
+        if (ind < minIndent) break;
+        const trimmed = line.trim();
+        if (/^-\s*$/.test(trimmed)) {
+          const [obj, next] = parseBlock(lines, i + 1, ind + 1);
+          arr.push(obj);
+          i = next;
+        } else {
+          const m = trimmed.match(/^-\s+(.+)$/);
+          if (m) {
+            arr.push(parseValue(m[1]));
+            i++;
+          } else {
+            break;
+          }
+        }
+      }
+      return [arr, i];
+    } else {
+      const obj = {};
+      let i = start;
+      while (i < lines.length) {
+        const line = lines[i];
+        const ind = getIndent(line);
+        if (ind < minIndent) break;
+        const trimmed = line.trim();
+        const keyOnly = trimmed.match(/^([^:]+):\s*$/); 
+        const keyValue = trimmed.match(/^([^:]+):\s+(.+)$/);
+        if (keyOnly) {
+          const key = keyOnly[1].trim();
+          const [child, next] = parseBlock(lines, i + 1, ind + 1);
+          obj[key] = child;
+          i = next;
+        } else if (keyValue) {
+          const key = keyValue[1].trim();
+          obj[key] = parseValue(keyValue[2].trim());
+          i++;
+        } else {
+          i++;
+        }
+      }
+      return [obj, i];
+    }
+  }
+  const [result] = parseBlock(lines, 0, 0);
+  return result;
+}
+*/
+
+// ===== JSON → HJSON sin comillas =====
+function jsonToHjsonNoQuotes(obj, indent = 0) {
+  const space = '  '.repeat(indent);
+  let result = '';
+  if (Array.isArray(obj)) {
+    for (const item of obj) {
+      if (typeof item === 'object' && item !== null) {
+        result += `${space}-|${jsonToHjsonNoQuotes(item, indent + 1)}`;
+      } else {
+        result += `${space}- ${item === '' ? '__EMPTY__' : item}|`;
+      }
+    }
+  } else if (typeof obj === 'object' && obj !== null) {
+    for (const key in obj) {
+      const value = obj[key];
+      if (Array.isArray(value)) {
+        result += `${space}${key}:|${jsonToHjsonNoQuotes(value, indent + 1)}`;
+      } else if (typeof value === 'object' && value !== null) {
+        result += `${space}${key}:|${jsonToHjsonNoQuotes(value, indent + 1)}`;
+      } else {
+        result += `${space}${key}: ${value === '' ? '__EMPTY__' : value}|`;
+      }
+    }
+  }
+  return result;
+}
+
+// ===== HJSON sin comillas → JSON =====
+function hjsonNoQuotesToJson(hjsonText) {
+  const lines = hjsonText.split('|').filter(l => l.trim() !== '');
+  function getIndent(line) {
+    return line.match(/^(\s*)/)[1].length;
+  }
+  function parseValue(raw) {
+    if (raw === '__EMPTY__') return '';
+    if (raw.startsWith('~')) return raw.slice(1);
+    if (raw === 'true') return true;
+    if (raw === 'false') return false;
+    if (raw === 'null') return null;
+    return raw;
+  }
+  function parseBlock(lines, start, minIndent) {
+    if (start >= lines.length) return [{}, start];
+    const firstLine = lines[start].trim();
+    const isArray = /^-/.test(firstLine);
+    if (isArray) {
+      const arr = [];
+      let i = start;
+      while (i < lines.length) {
+        const line = lines[i];
+        const ind = getIndent(line);
+        if (ind < minIndent) break;
+        const trimmed = line.trim();
+        if (/^-\s*$/.test(trimmed)) {
+          const [obj, next] = parseBlock(lines, i + 1, ind + 1);
+          arr.push(obj);
+          i = next;
+        } else {
+          const m = trimmed.match(/^-\s+(.+)$/);
+          if (m) {
+            arr.push(parseValue(m[1]));
+            i++;
+          } else {
+            break;
+          }
+        }
+      }
+      return [arr, i];
+    } else {
+      const obj = {};
+      let i = start;
+      while (i < lines.length) {
+        const line = lines[i];
+        const ind = getIndent(line);
+        if (ind < minIndent) break;
+        const trimmed = line.trim();
+        const keyOnly = trimmed.match(/^([^:]+):$/);
+        const keyValue = trimmed.match(/^([^:]+):\s+(.*)$/);
+        if (keyOnly) {
+          const key = keyOnly[1].trim();
+          const [child, next] = parseBlock(lines, i + 1, ind + 1);
+          obj[key] = child;
+          i = next;
+        } else if (keyValue) {
+          const key = keyValue[1].trim();
+          obj[key] = parseValue(keyValue[2].trim());
+          i++;
+        } else {
+          i++;
+        }
+      }
+      return [obj, i];
+    }
+  }
+  const [result] = parseBlock(lines, 0, 0);
+  return result;
+}
+ 
+
+const hjsonText = jsonToHjsonNoQuotes(jsonObj);
+console.log("HJSON sin comillas:\n" + hjsonText);
+
+const parsedJson = hjsonNoQuotesToJson(hjsonText);
+console.log("JSON parseado:", JSON.stringify(parsedJson, null, 2));
+
+
+
+
+
+
+
 /*
 // Prevenir drop en toda la página
 document.addEventListener('dragover', (e) => {
@@ -1335,4 +1600,4 @@ function check_file_type(file) {
     
     return null; // No es ninguno de los tres
 }
-*/ 
+*/
