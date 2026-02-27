@@ -405,8 +405,9 @@ content_html = `<div style="background: transparent; padding: 0; border-radius: 
       if (user_saved_projects.length > 0) {
         content_html = '<div class="profile-grid">';
         user_saved_projects.forEach(project_name => {
+          project_name = limpiarEspaciosYReemplazar(project_name);
           content_html += `
-            <div class="grid-item project-item" data-project-name="${project_name}">
+            <div id="${project_name}" class="grid-item project-item" data-project-name="${project_name}">
               <div class="grid-icon">
                 <svg width="100%" height="100%" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path
