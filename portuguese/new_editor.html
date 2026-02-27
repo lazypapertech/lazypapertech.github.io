@@ -10,10 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design9/menu_options.css?v=2.5.4">  
- <link rel="stylesheet" href="../design9/anchor_point.css?v=2.5.4">    
- <link rel="stylesheet" href="../design9/freelancers.css?v=2.5.4">
- <link rel="stylesheet" href="../design9/login_design.css?v=2.5.4"> 
+ <link rel="stylesheet" href="../design9/menu_options.css?v=2.5.7">  
+ <link rel="stylesheet" href="../design9/anchor_point.css?v=2.5.7">    
+ <link rel="stylesheet" href="../design9/freelancers.css?v=2.5.7">
+ <link rel="stylesheet" href="../design9/login_design.css?v=2.5.7"> 
 
 <style> 
 #general-header{display:none};
@@ -3528,7 +3528,7 @@ const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
 		//rect.style.filter = 'grayscale(0.8) brightness(0.7)';
 		//rect.style.filter = 'grayscale(0.8) brightness(1.5)'; 
 
-		box_options = ["Delete_file","Add_file","Split","Add_keyframes"];
+		box_options = ["Delete_file","Add_file","Split","Add_keyframes","Instruction"];
 		if (rect.dataset.property!="filename"){
 			console.log("rect.dataset.property MAL:",rect.dataset.property);
 			box_options = ["Delete_box","Add_box","keyframe_1","keyframe_2","bounce"];
@@ -3541,9 +3541,9 @@ const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
 		}else{
 		     if (rect.dataset.filetype=="image"){
 			if (!loaded_project){
-				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point","Glow_color"];
+				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point","Glow_color","Instruction"];
 			}else{
-				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Glow_color"];
+				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Glow_color","Instruction"];
 			}
 		     } 		
 		     if (rect.dataset.filetype=="text"){
@@ -8003,24 +8003,20 @@ verificarSoporteCodec().then(soportado => {
     });
 </script> 
   
-<script src="../design9/general.js?v=2.5.4"> </script>
-<script src="../design9/send_files.js?v=2.5.4"> </script> 
-<script src="../design9/clipcontainer.js?v=2.5.4"> </script>  
-<script src="../design9/htmlstring.js?v=2.5.5"> </script>  
-<script src="../design9/menu_options.js?v=2.5.5"> </script>   
-<script src="../design9/panel_tabs.js?v=2.5.4"> </script>  
-<script src="../design9/reglas.js?v=2.5.4"> </script>  
-<script src="../design9/simplemenus.js?v=2.5.5"> </script> 
-<script src="../design9/interaccion_rectangulos_full.js?v=2.5.4"> </script> 
-<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.5.6"> </script>  
-<script src="../design9/repintar4.js?v=2.5.4"> </script>  
-<script src="../design9/anchor_point.js?v=2.5.4"> </script>   
-<script src="../design9/script_login.js?v=2.5.4"> </script> 
-<script src="../design9/undo_redo.js?v=2.5.4"> </script> 
+<script src="../design9/general.js?v=2.5.7"> </script>
+<script src="../design9/send_files.js?v=2.5.7"> </script> 
+<script src="../design9/clipcontainer.js?v=2.5.7"> </script>  
+<script src="../design9/htmlstring.js?v=2.5.7"> </script>  
+<script src="../design9/menu_options.js?v=2.5.7"> </script>   
+<script src="../design9/panel_tabs.js?v=2.5.7"> </script>  
+<script src="../design9/reglas.js?v=2.5.7"> </script>  
+<script src="../design9/simplemenus.js?v=2.5.7"> </script> 
+<script src="../design9/interaccion_rectangulos_full.js?v=2.5.7"> </script> 
+<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.5.7"> </script>  
+<script src="../design9/repintar4.js?v=2.5.7"> </script>  
+<script src="../design9/anchor_point.js?v=2.5.7"> </script>   
+<script src="../design9/script_login.js?v=2.5.7"> </script> 
+<script src="../design9/undo_redo.js?v=2.5.7"> </script> 
  
 </body>
-</html> 
-
-
-
-
+</html>  
