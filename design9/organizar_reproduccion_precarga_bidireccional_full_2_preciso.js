@@ -288,7 +288,7 @@ function actualizar_reproduccion_global(lista) {
 
 //incluye reproduccion para imagenes y texto
 //SI NO ENCUENTRA UN FILE ESE FILE LO CONSIDERA COMO TEXTO VACIO
-function actualizar_reproduccion_global_0(lista) {
+function actualizar_reproduccion_global(lista) {
   console.log('🧹 Iniciando limpieza...');
   
   cancelarTodasAnimaciones();
@@ -450,7 +450,7 @@ function actualizar_reproduccion_global_0(lista) {
 }
 
 
-function actualizar_reproduccion_global(lista) {
+function actualizar_reproduccion_global_1(lista) {
   console.log('🧹 Iniciando limpieza...');
   
   cancelarTodasAnimaciones();
@@ -599,7 +599,8 @@ function actualizar_reproduccion_global(lista) {
   }
   
   actualizarTimeline();
-  
+  /*
+  //lento renderFrames multiples
   return Promise.all(promesasCarga)
     .then(() => {
       console.log('✅ Flujo preparado:', mediaPools.length, 'líneas');
@@ -608,6 +609,15 @@ function actualizar_reproduccion_global(lista) {
       // Este catch ya casi nunca debería ejecutarse
       console.error('❌ Error inesperado en carga:', error);
     });
+  */ 
+   return Promise.all(promesasCarga)
+  .then(() => {
+    console.log('✅ Flujo preparado:', mediaPools.length, 'líneas');
+    limpiarMediaPoolsConChunks();
+  })
+  .catch(error => {
+    console.error('❌ Error inesperado en carga:', error);
+  });
 }
 
  
@@ -748,7 +758,8 @@ async function renderFrames(previewOnly = false) {
     canvas_principal.height = rect.height;
     
     // ✅ Reproducir trozo codificado 
-  
+/*  
+//lento renderFrames multiples
 if (trozos_guardados[segundo]) {
   const exito = await reproductorTrozos.reproducirFrame(segundo, frameEnSegundo);
   
@@ -792,6 +803,28 @@ if (trozos_guardados[segundo]) {
     
     return;
   }
+}
+*/
+if (trozos_guardados[segundo]) {
+  const exito = await reproductorTrozos.reproducirFrame(segundo, frameEnSegundo);
+  
+  // Con chunks disponibles: pausar todos los media y salir
+  // independientemente de si el frame se dibujó o no
+  mediaPools.flat().forEach(o => {
+    if (o.media && typeof o.media.pause === 'function') {
+      o.media.pause();
+    }
+    o.started = false;
+  });
+  
+  if (exito) {
+    return;
+  }
+  
+  // Chunk existe pero frame aún no decodificado → mostrar loading y salir
+  // NO iterar mediaPools para dibujar
+  reproductorTrozos.dibujarLoadingAnimado(frameIndex, "Loading");
+  return;
 }
  
  
@@ -1093,12 +1126,8 @@ function update_state(){
   console.log("valores_pendientes_globales:",JSON.stringify(valores_pendientes));
 
   estado_actual = nuevo_estado;
-/*
-  if (valores_pendientes.length > 0){
-  	request_render(valores_pendientes);
-  } 
-*/
-console.log("pendiente_renderizar:",pendiente_renderizar);
+ 
+  console.log("pendiente_renderizar:",pendiente_renderizar);
   if (pendiente_renderizar){
 	if (Object.keys(progress_visible_names).length === uploaded_names.length){
 		request_render(valores_pendientes);
@@ -1125,14 +1154,9 @@ playBtn.onclick = async () => {
     console.log("NINGUN ARCHIVO SUBIDO");
     return;
   }
-  
-  //frame_indice = 0;
+   
     
-  update_state();
-/*
-  const files_reproducir_0 = filtrarSublistasPorProperty();
-  const files_reproducir = transformList(files_reproducir_0);
-*/
+  update_state(); 
 
   const files_reproducir_0 = filtrarSublistasPorProperty_all_files();  
   const files_reproducir = transformList_all_files(files_reproducir_0); 
@@ -1191,16 +1215,7 @@ pauseBtn.onclick = () => {
 =========================== */
 
  
-let dragging = false;
-/*
-handle.addEventListener('mousedown', e => {
-  dragging = true;
-  pausar_video_global();        // Pausar la reproducción
-  pauseBtn.style.display = 'none'; // Mostrar botón play
-  playBtn.style.display = 'inline'; 
-  renderFrames(true);
-});
-*/
+let dragging = false; 
 handle.addEventListener('mousedown', e => {
   dragging = true;
   pausar_video_global();
@@ -1236,26 +1251,7 @@ document.addEventListener('mouseup', e => {
 
 /* ===========================
    SINCRONIZAR MEDIOS
-=========================== */
-/*
-function sincronizarMedias() {
-  mediaPools.forEach(linea => {
-    linea.forEach(item => {
-      const activo = globalTime >= item.global_start && globalTime < item.end;
-      
-      if (activo) {
-        // Calcular el tiempo correcto dentro del clip y cuantizarlo
-        const tiempoEnClip = (globalTime - item.global_start) + item.relative_start;
-        item.media.currentTime = cuantizarTiempo(tiempoEnClip); // ← Cuantizar aquí
-        item.started = true;
-      } else {
-        item.started = false;
-        item.media.pause();
-      }
-    });
-  });
-}
-*/
+=========================== */ 
 
 //incluye reproduccion para imagenes
 function sincronizarMedias() {
@@ -1293,20 +1289,7 @@ document.addEventListener('mousemove', e => {
   actualizarTimeline(); 
 });
 
-/*
-timeline.addEventListener('click', e => {
-  const rect = timeline.getBoundingClientRect();
-  let percent = (e.clientX - rect.left) / rect.width;
-  percent = Math.min(Math.max(percent, 0), 1);
-  globalTime = cuantizarTiempo(percent * globalDuration); // ← Cuantizar aquí
-  sincronizarMedias();
-  pausar_video_global();
-  pauseBtn.style.display = 'none';
-  playBtn.style.display = 'inline';
-  renderFrames(true);
-  actualizarTimeline();
-});
-*/
+ 
 
 timeline.addEventListener('click', e => {
   const rect = timeline.getBoundingClientRect();
@@ -1333,19 +1316,14 @@ timeline.addEventListener('click', e => {
  
 
 
-function agregarEspacioScroll() {
-    const alturaExtra = 100;
-    if (scrollWrapper.dataset.scrollExtra === "true") return;
+ 
 
-    scrollWrapper.style.paddingBottom = `${alturaExtra}px`;
-    scrollWrapper.dataset.scrollExtra = "true";
-}
+
 
 
 
  
-const exportBtn = document.getElementById('export-btn');
- 
+const exportBtn = document.getElementById('export-btn'); 
 exportBtn.onclick = () => {  
 //save_project();
 return;
@@ -1355,39 +1333,10 @@ return;
     check_last_video();
     console.log("guardar ejemplo_json:",JSON.stringify(unica_regla.rectangulos));
 	 
-/*
-    //console.log("✅Exporting video");
-    const item_name = "random";
-    const property = "filename";
-    const items_with_audio = extraerListasComoString(item_types, ["video","audio"], "/separator/");	
-    console.log("items_with_audio: ",items_with_audio);
-    console.log("item_types:",item_types);
-  
-    const json_data = {"service":"export_video","itemName":item_name,"property":property,"params":"empty","items_with_audio":items_with_audio,"extra0":"","extra":""}; 
-    //websocketClient.send(JSON.stringify(json_data)); 
-*/
+ 
 }; 
 
-
-/*
-updateBtn.onclick = () => { 
-	agregarEspacioScroll();
-	const resultado = agruparEmpleados(unica_regla.rectangulos);
-	console.log("nuevo0:",JSON.stringify(unica_regla.rectangulos, null, 2));
-	console.log("nuevo:",JSON.stringify(resultado, null, 2));
-	//update_state();
-	 
-	console.log("uploadedFiles: ",uniqueFiles.length); 
-    			abrirModalDinamicoSimple(html_finish);
-			renderPendientes(progress_visible_names); 
-	 
-}; 
-*/
-
-
-
-
-
+ 
 function update_timeline_render() { 
   update_state();
 } 
@@ -2614,6 +2563,8 @@ this.ctx.fillText('Streaming mode', centerX, 10);
           const segundoActual = Math.floor(globalTime / (1/TARGET_FPS)) / TARGET_FPS;
           const segundoActualInt = Math.floor(Math.floor(globalTime / FRAME_DURATION) / TARGET_FPS);
           
+	  /*
+	  //lento renderFrames multiples
           if (segundoActualInt === segundo) {
             console.log(`🔄 Forzando re-render porque terminó decodificación del segundo actual`);
             requestAnimationFrame(() => {
@@ -2621,6 +2572,11 @@ this.ctx.fillText('Streaming mode', centerX, 10);
               renderFrames(true);
             });
           }
+	  */
+	  if (segundoActualInt === segundo) {
+  		console.log(`🔄 Marcando re-render pendiente por decodificación completada`);
+  		ultimoFrameDibujado = -1; // suficiente, el loop principal lo recogerá
+	  }
 	
             resolve();
           })
@@ -2669,3 +2625,52 @@ this.ctx.fillText('Streaming mode', centerX, 10);
 const reproductorTrozos = new ReproductorTrozos(canvas_principal);
  
 //esta version evita precargas repetidas
+
+
+
+function agregarEspacioScroll() {
+    const alturaExtra = 100;
+    if (scrollWrapper.dataset.scrollExtra === "true") return;
+
+    scrollWrapper.style.paddingBottom = `${alturaExtra}px`;
+    scrollWrapper.dataset.scrollExtra = "true";
+}
+
+function limpiarMediaPoolsConChunks() {
+  mediaPools.forEach(linea => {
+    for (let i = linea.length - 1; i >= 0; i--) {
+      const item = linea[i];
+      const segundoInicio = Math.floor(item.global_start);
+      const segundoFin = Math.floor(item.global_start + item.duration);
+      
+      // Verificar si TODOS los segundos de este clip ya tienen chunk
+      let todosConChunk = true;
+      for (let s = segundoInicio; s <= segundoFin; s++) {
+        if (!trozos_guardados[s]) {
+          todosConChunk = false;
+          break;
+        }
+      }
+      
+      if (todosConChunk) {
+        const esImagen = item.media.dataset?.esImagen === 'true';
+        if (!esImagen && item.media) {
+          item.media.pause();
+          item.media.src = '';
+          item.media.load();
+          item.media.remove();
+        }
+        item.media = null;
+        linea.splice(i, 1);
+        console.log(`🧹 Media liberada (chunk disponible): ${item.filename}`);
+      }
+    }
+  });
+  
+  // Limpiar líneas vacías
+  for (let i = mediaPools.length - 1; i >= 0; i--) {
+    if (mediaPools[i].length === 0) {
+      mediaPools.splice(i, 1);
+    }
+  }
+} 
