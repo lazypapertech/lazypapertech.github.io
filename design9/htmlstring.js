@@ -1569,6 +1569,7 @@ dic_dynamic_options.image.ratio ??= {};
 dic_dynamic_options["image"]["filename"]["value"]=html_7;   
 dic_dynamic_options["image"]["filename"]["Anchor_point"]=html_anchorpoint;
 dic_dynamic_options["image"]["filename"]["Glow_color"]=html_glowcolor;
+dic_dynamic_options["image"]["filename"]["Instruction"]=html_ai_instruction;
 dic_dynamic_options["image"]["position"]["keyframe_1"]=html_1;
 dic_dynamic_options["image"]["position"]["keyframe_2"]=html_2;
 dic_dynamic_options["image"]["position"]["bounce_parameters"]=html_9;
@@ -1610,6 +1611,7 @@ dic_dynamic_options.video.opacity ??= {};
 dic_dynamic_options.video.layer_order ??= {};
 dic_dynamic_options.video.item_reveal ??= {};
 dic_dynamic_options["video"]["filename"]["value"]=html_7; 
+dic_dynamic_options["video"]["filename"]["Instruction"]=html_ai_instruction;
 dic_dynamic_options["video"]["position"]["keyframe_1"]=html_1;
 dic_dynamic_options["video"]["position"]["keyframe_2"]=html_2;
 dic_dynamic_options["video"]["position"]["bounce_parameters"]=html_9;
@@ -2262,3 +2264,4 @@ function reset_export_progress() {
     }
 }
 
+ 
