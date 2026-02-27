@@ -38,73 +38,8 @@ let lastFrameTime = null;
 
 /* ===========================
    UTILIDADES
-=========================== */
-/* 
-function crearMedia(item) {
-  const el = document.createElement(
-    item.filename.match(/\.(mp3|wav)$/i) ? 'audio' : 'video'
-  );
+=========================== */ 
   
-  // Usar Blob URL si existe, sino usar filename original
-  console.log("item.filename:",item.filename); 
-  el.src = filename_url[item.filename];
-  
-  el.preload = 'auto';
-  el.style.display = 'none';
-  el.volume = item.volume / 100;
-  el.playbackRate = item.speed;
-  
-  if (el.tagName === 'VIDEO') {
-    el.setAttribute('playsinline', '');
-  }
-  
-  document.body.appendChild(el);
-  return el;
-}
-*/
- 
-
-/* 
-//incluye reproduccion para imagenes 
-function crearMedia(item) {
-  const filename = item.filename;
-  
-  // Detectar tipo de archivo
-  if (filename.match(/\.(jpg|jpeg|png|gif|webp|bmp|svg)$/i)) {
-    // ES UNA IMAGEN
-    const img = new Image();
-    img.dataset.esImagen = 'true';
-    img.dataset.filename = filename;
-    // NO asignar src aquí - se hace en la promesa
-    return img;
-  } 
-  else if (filename.match(/\.(mp3|wav|ogg|aac)$/i)) {
-    // ES AUDIO
-    const audio = document.createElement('audio');
-    audio.src = filename_url[filename];
-    audio.preload = 'auto';
-    audio.style.display = 'none';
-    audio.volume = item.volume / 100;
-    audio.playbackRate = item.speed;
-    document.body.appendChild(audio);
-    return audio;
-  } 
-  else {
-    // ES VIDEO (por defecto)
-    const video = document.createElement('video');
-    video.src = filename_url[filename];
-    video.preload = 'auto';
-    video.style.display = 'none';
-    video.volume = item.volume / 100;
-    video.playbackRate = item.speed;
-    video.setAttribute('playsinline', '');
-    video.loop = false;
-    document.body.appendChild(video);
-    return video;
-  }
-}
-*/
-
 //incluye reproduccion para imagenes y texto
 function crearMedia(item) {
   const filename = item.filename;
@@ -149,9 +84,19 @@ function crearMedia(item) {
     document.body.appendChild(video);
     return video;
   }
-  else {
+  else { 
+    /*
+    //detiene la reproduccion si no encuentra el file
     console.error(`❌ Tipo de archivo desconocido: ${filetype}`);
     return null;
+    */
+    //SI NO ENCUENTRA UN FILE ESE FILE LO CONSIDERA COMO TEXTO VACIO
+    console.warn(`⚠️ Tipo desconocido para ${filename}, tratando como texto vacío`);
+    const img = new Image();
+    img.dataset.esImagen = 'true';
+    img.dataset.esTexto = 'true';
+    img.dataset.filename = '';
+    return img;
   }
 }
  
@@ -199,231 +144,12 @@ function get_globalDuration_no_audio() {
     return duracion;
 }
 
-/*
-function actualizar_reproduccion_global(lista) {
-  console.log('🧹 Iniciando limpieza...');
-  
-  // ===== PASO 1: CANCELAR ANIMACIONES =====
-  cancelarTodasAnimaciones(); // ← ESTO ES CRÍTICO
-  retrocediendoActivo = false;
-  
-  // ===== PASO 2: LIMPIEZA COMPLETA DE MEDIAS =====
-  mediaPools.flat().forEach(o => {
-    if (o.media) {
-      // Pausar
-      o.media.pause();
-      
-      // Guardar la URL para revocarla
-      const blobUrl = o.media.src;
-      
-      // Limpiar source
-      o.media.src = '';
-      o.media.srcObject = null;
-      o.media.load(); // Libera el buffer
-        
-      // Remover del DOM
-      o.media.remove();
-      o.media = null;
-    }
-  });
-  
-  mediaPools = [];
-  const globalTimePrevio = globalTime;
-  globalDuration = 0;
-  globalDuration = get_globalDuration();
-  console.log("globalDuration:",globalDuration);
-  const promesasCarga = [];
-  
-  lista.forEach(linea => {
-    const pool = [];
-    linea.forEach(item => {
-      const media = crearMedia(item);
-      
-      const promesaCarga = new Promise((resolve, reject) => {
-        // ← TIMEOUT para evitar promesas colgadas
-        const timeoutId = setTimeout(() => {
-          reject(new Error(`Timeout cargando: ${item.filename}`));
-        }, 10000);
-        
-        const onMetadata = () => {
-          clearTimeout(timeoutId);
-          media.currentTime = item.relative_start;
-        };
-        
-        const onSeeked = () => {
-          clearTimeout(timeoutId);
-          resolve();
-        };
-        
-        const onError = () => {
-          clearTimeout(timeoutId);
-          reject(new Error(`Error cargando: ${item.filename}`));
-        };
-        
-        media.addEventListener('loadedmetadata', onMetadata, { once: true });
-        media.addEventListener('seeked', onSeeked, { once: true });
-        media.addEventListener('error', onError, { once: true });
-      });
-      
-      promesasCarga.push(promesaCarga);
-      
-      pool.push({
-        ...item,
-        media,
-        end: item.global_start + item.duration,
-        started: false
-      }); 
-    });
-    mediaPools.push(pool);
-  });
-  
-  if(globalTimePrevio < globalDuration) {
-    globalTime = globalTimePrevio;
-  }
-  
-  actualizarTimeline();
-  
-  return Promise.all(promesasCarga)
-    .then(() => {
-      console.log('✅ Flujo preparado:', mediaPools.length, 'líneas');
-    })
-    .catch(error => {
-      console.error('❌ Error en carga:', error);
-      throw error; // Re-lanzar para el .catch() externo
-    });
-}
-*/
  
-
+ 
  
 /*
-//incluye reproduccion para imagenes
-function actualizar_reproduccion_global(lista) {
-  console.log('🧹 Iniciando limpieza...');
-  
-  // ===== PASO 1: CANCELAR ANIMACIONES =====
-  cancelarTodasAnimaciones();
-  retrocediendoActivo = false;
-  
-  // ===== PASO 2: LIMPIEZA COMPLETA DE MEDIAS =====
-  mediaPools.flat().forEach(o => {
-    if (o.media) {
-      const esImagen = o.media.dataset?.esImagen === 'true';
-      
-      if (!esImagen) {
-        // Si es video/audio
-        o.media.pause();
-        o.media.src = '';
-        o.media.srcObject = null;
-        o.media.load();
-        o.media.remove();
-      } 
-      
-      o.media = null;
-    }
-  });
-  
-  mediaPools = [];
-  const globalTimePrevio = globalTime;
-  globalDuration = 0;
-  globalDuration = get_globalDuration();
-  console.log("globalDuration:", globalDuration);
-  
-  const promesasCarga = [];
-  
-  lista.forEach(linea => {
-    const pool = [];
-    linea.forEach(item => {
-      const media = crearMedia(item);
-      const esImagen = media.dataset?.esImagen === 'true';
-      
-      const promesaCarga = new Promise((resolve, reject) => {
-        const timeoutId = setTimeout(() => {
-          reject(new Error(`Timeout cargando: ${item.filename}`));
-        }, 10000);
-        
-        if (esImagen) {
-          // MANEJO DE IMÁGENES
-          const onLoad = () => {
-            clearTimeout(timeoutId);
-            console.log(`✅ Imagen cargada: ${item.filename}`);
-            resolve();
-          };
-          
-          const onError = (e) => {
-            clearTimeout(timeoutId);
-            console.error('Error real de imagen:', e);
-	    console.error('❌ Error cargando imagen:', item.filename);
-    	    console.error('   URL intentada:', media.src);
-    	    console.error('   filename_url[item.filename]:', filename_url[item.filename]);
-    	    console.error('   Evento error:', e);
-            reject(new Error(`Error cargando imagen: ${item.filename}`));
-          };
-          
-          media.addEventListener('load', onLoad, { once: true });
-          media.addEventListener('error', onError, { once: true });
-          
-	  console.log('🔄 Asignando src a imagen:', item.filename);
-  	  console.log('   URL que voy a usar:', filename_url[item.filename]);
-
-          // ASIGNAR SRC DESPUÉS de los event listeners
-          media.src = filename_url[item.filename];
-          
-        } else {
-          // MANEJO DE VIDEO/AUDIO
-          const onMetadata = () => {
-            clearTimeout(timeoutId);
-            media.currentTime = item.relative_start;
-          };
-          
-          const onSeeked = () => {
-            clearTimeout(timeoutId);
-            resolve();
-          };
-          
-          const onError = () => {
-            clearTimeout(timeoutId);
-            reject(new Error(`Error cargando: ${item.filename}`));
-          };
-          
-          media.addEventListener('loadedmetadata', onMetadata, { once: true });
-          media.addEventListener('seeked', onSeeked, { once: true });
-          media.addEventListener('error', onError, { once: true });
-        }
-      });
-      
-      promesasCarga.push(promesaCarga);
-      
-      pool.push({
-        ...item,
-        media,
-        end: item.global_start + item.duration,
-        started: false,
-        esImagen
-      }); 
-    });
-    mediaPools.push(pool);
-  });
-  
-  if (globalTimePrevio < globalDuration) {
-    globalTime = globalTimePrevio;
-  }
-  
-  actualizarTimeline();
-  
-  return Promise.all(promesasCarga)
-    .then(() => {
-      console.log('✅ Flujo preparado:', mediaPools.length, 'líneas');
-    })
-    .catch(error => {
-      console.error('❌ Error en carga:', error);
-      throw error;
-    });
-} 
-*/
-
-
 //incluye reproduccion para imagenes y texto
+//si no encuentra un file detiene la reproduccion
 function actualizar_reproduccion_global(lista) {
   console.log('🧹 Iniciando limpieza...');
   
@@ -558,29 +284,333 @@ function actualizar_reproduccion_global(lista) {
       throw error;
     });
 }
+*/
 
-
-function crearImagenTexto_0(texto) {
-  const svg = `
-    <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
-      <rect width="640" height="360" fill="none" opacity="0"/>
-      <text 
-        x="50%" 
-        y="50%" 
-        dominant-baseline="middle" 
-        text-anchor="middle" 
-        fill="white" 
-        font-family="Arial, sans-serif" 
-        font-size="24"
-        style="word-wrap: break-word; max-width: 90%;">
-        ${texto}
-      </text>
-    </svg>
-  `;
+//incluye reproduccion para imagenes y texto
+//SI NO ENCUENTRA UN FILE ESE FILE LO CONSIDERA COMO TEXTO VACIO
+function actualizar_reproduccion_global_0(lista) {
+  console.log('🧹 Iniciando limpieza...');
   
-  const blob = new Blob([svg], { type: 'image/svg+xml' });
-  return URL.createObjectURL(blob);
+  cancelarTodasAnimaciones();
+  retrocediendoActivo = false;
+  
+  mediaPools.flat().forEach(o => {
+    if (o.media) {
+      const esImagen = o.media.dataset?.esImagen === 'true';
+      
+      if (!esImagen) {
+        o.media.pause();
+        o.media.src = '';
+        o.media.srcObject = null;
+        o.media.load();
+        o.media.remove();
+      }
+      
+      o.media = null;
+    }
+  });
+  
+  mediaPools = [];
+  const globalTimePrevio = globalTime;
+  globalDuration = 0;
+  globalDuration = get_globalDuration();
+  console.log("globalDuration:", globalDuration);
+  
+  const promesasCarga = [];
+  
+  lista.forEach(linea => {
+    const pool = [];
+    linea.forEach(item => {
+      const media = crearMedia(item);
+      
+      if (!media) {
+        console.error(`❌ No se pudo crear media para: ${item.filename}`);
+        return;
+      }
+      
+      const esImagen = media.dataset?.esImagen === 'true';
+      const esTexto = media.dataset?.esTexto === 'true';
+      
+      const promesaCarga = new Promise((resolve, reject) => {
+        const timeoutId = setTimeout(() => {
+          console.warn(`⚠️ Timeout cargando: ${item.filename}, usando texto vacío`);
+          resolve(); // ← resolvemos en lugar de rechazar
+        }, 10000);
+        
+        if (esImagen || esTexto) {
+          // MANEJO DE IMÁGENES Y TEXTO
+          const onLoad = () => {
+            clearTimeout(timeoutId);
+            console.log(`✅ ${esTexto ? 'Texto' : 'Imagen'} cargada: ${item.filename}`);
+            resolve();
+          };
+          
+          const onError = (e) => {
+            clearTimeout(timeoutId);
+            console.warn(`⚠️ No se pudo cargar ${esTexto ? 'texto' : 'imagen'}: ${item.filename}, usando texto vacío`);
+            // Quitar listeners anteriores para evitar loops
+            media.removeEventListener('error', onError);
+            media.removeEventListener('load', onLoad);
+            // Cargar texto vacío y resolver
+            media.dataset.esTexto = 'true';
+            media.addEventListener('load', () => resolve(), { once: true });
+            media.addEventListener('error', () => resolve(), { once: true }); // por si falla incluso el SVG vacío
+            media.src = crearImagenTexto('');
+          };
+          
+          media.addEventListener('load', onLoad, { once: true });
+          media.addEventListener('error', onError, { once: true });
+          /*
+          if (esTexto) {
+            console.log('🔄 Creando imagen de texto:', item.filename);
+            media.src = crearImagenTexto(item.filename);
+          } else {
+            console.log('🔄 Asignando src a imagen:', item.filename);
+            console.log('   URL que voy a usar:', filename_url[item.filename]);
+            // Si la URL no existe, el onError se encargará
+            media.src = filename_url[item.filename] || '';
+          }
+	  */
+	  if (esTexto) {
+  console.log('🔄 Creando imagen de texto:', item.filename);
+  media.src = crearImagenTexto(item.filename);
+} else {
+  const url = filename_url[item.filename];
+  if (!url) {
+    // Sin URL → ir directo a placeholder transparente, sin pasar por onError
+    console.warn(`⚠️ URL no encontrada para: ${item.filename}, usando placeholder`);
+    media.removeEventListener('error', onError);
+    media.removeEventListener('load', onLoad);
+    media.addEventListener('load', () => resolve(), { once: true });
+    media.addEventListener('error', () => resolve(), { once: true });
+    media.src = crearImagenTexto('Loading project...');
+  } else {
+    console.log('🔄 Asignando src a imagen:', item.filename);
+    console.log('   URL que voy a usar:', url);
+    media.src = url;
+  }
 }
+          
+        } else {
+          // MANEJO DE VIDEO/AUDIO
+          const onMetadata = () => {
+            clearTimeout(timeoutId);
+            media.currentTime = item.relative_start;
+          };
+          
+          const onSeeked = () => {
+            clearTimeout(timeoutId);
+            resolve();
+          };
+          
+          const onError = () => {
+            clearTimeout(timeoutId);
+            console.warn(`⚠️ No se pudo cargar video/audio: ${item.filename}, se omitirá`);
+            resolve(); // ← resolvemos en lugar de rechazar
+          };
+          
+          media.addEventListener('loadedmetadata', onMetadata, { once: true });
+          media.addEventListener('seeked', onSeeked, { once: true });
+          media.addEventListener('error', onError, { once: true });
+        }
+      });
+      
+      promesasCarga.push(promesaCarga);
+      
+      const duration = parseFloat(item.duration);
+      const global_start = parseFloat(item.global_start);
+      
+      pool.push({
+        ...item,
+        duration,
+        global_start,
+        media,
+        end: global_start + duration,
+        started: false,
+        esImagen: esImagen || esTexto
+      }); 
+    });
+    mediaPools.push(pool);
+  });
+  
+  if (globalTimePrevio < globalDuration) {
+    globalTime = globalTimePrevio;
+  }
+  
+  actualizarTimeline();
+  
+  return Promise.all(promesasCarga)
+    .then(() => {
+      console.log('✅ Flujo preparado:', mediaPools.length, 'líneas');
+    })
+    .catch(error => {
+      console.error('❌ Error en carga:', error);
+      throw error;
+    });
+}
+
+
+function actualizar_reproduccion_global(lista) {
+  console.log('🧹 Iniciando limpieza...');
+  
+  cancelarTodasAnimaciones();
+  retrocediendoActivo = false;
+  
+  mediaPools.flat().forEach(o => {
+    if (o.media) {
+      const esImagen = o.media.dataset?.esImagen === 'true';
+      if (!esImagen) {
+        o.media.pause();
+        o.media.src = '';
+        o.media.srcObject = null;
+        o.media.load();
+        o.media.remove();
+      }
+      o.media = null;
+    }
+  });
+  
+  mediaPools = [];
+  const globalTimePrevio = globalTime;
+  globalDuration = 0;
+  globalDuration = get_globalDuration();
+  console.log("globalDuration:", globalDuration);
+  
+  const promesasCarga = [];
+  
+  lista.forEach(linea => {
+    const pool = [];
+    linea.forEach(item => {
+      const media = crearMedia(item);
+      
+      if (!media) {
+        console.warn(`⚠️ No se pudo crear media para: ${item.filename}, se omite`);
+        return;
+      }
+      
+      const esImagen = media.dataset?.esImagen === 'true';
+      const esTexto = media.dataset?.esTexto === 'true';
+      const filetype = item.filetype;
+      
+      const promesaCarga = new Promise((resolve) => { // ← nunca reject, siempre resolve
+        const timeoutId = setTimeout(() => {
+          console.warn(`⚠️ Timeout cargando: ${item.filename}, se omite`);
+          resolve();
+        }, 10000);
+
+        const resolverConPlaceholder = () => {
+          clearTimeout(timeoutId);
+          media.dataset.esTexto = 'true';
+          media.addEventListener('load', () => resolve(), { once: true });
+          media.addEventListener('error', () => resolve(), { once: true });
+          media.src = crearImagenTexto('');
+        };
+
+        if (esImagen || esTexto) {
+          // ── IMAGEN O TEXTO ──────────────────────────────
+          const onLoad = () => {
+            clearTimeout(timeoutId);
+            console.log(`✅ ${esTexto ? 'Texto' : 'Imagen'} cargada: ${item.filename}`);
+            resolve();
+          };
+
+          const onError = () => {
+            console.warn(`⚠️ Error cargando ${esTexto ? 'texto' : 'imagen'}: ${item.filename}, usando placeholder`);
+            media.removeEventListener('load', onLoad);
+            resolverConPlaceholder();
+          };
+
+          media.addEventListener('load', onLoad, { once: true });
+          media.addEventListener('error', onError, { once: true });
+
+          if (esTexto) {
+            media.src = crearImagenTexto(item.filename);
+          } else {
+            const url = filename_url[item.filename];
+            if (!url) {
+              // ← URL no existe: ir directo a placeholder sin pasar por error
+              console.warn(`⚠️ URL no encontrada para imagen: ${item.filename}`);
+              media.removeEventListener('load', onLoad);
+              media.removeEventListener('error', onError);
+              resolverConPlaceholder();
+            } else {
+              media.src = url;
+            }
+          }
+
+        } else if (filetype === 'audio' || filetype === 'video') {
+          // ── VIDEO O AUDIO ───────────────────────────────
+          const url = filename_url[item.filename];
+          if (!url) {
+            // ← URL no existe: resolver inmediatamente sin tocar el elemento
+            console.warn(`⚠️ URL no encontrada para ${filetype}: ${item.filename}, se omite`);
+            clearTimeout(timeoutId);
+            resolve();
+            return;
+          }
+
+          const onMetadata = () => {
+            media.currentTime = item.relative_start;
+          };
+
+          const onSeeked = () => {
+            clearTimeout(timeoutId);
+            resolve();
+          };
+
+          const onError = () => {
+            clearTimeout(timeoutId);
+            console.warn(`⚠️ Error cargando ${filetype}: ${item.filename}, se omite`);
+            resolve(); // ← omitir sin romper
+          };
+
+          media.addEventListener('loadedmetadata', onMetadata, { once: true });
+          media.addEventListener('seeked', onSeeked, { once: true });
+          media.addEventListener('error', onError, { once: true });
+
+        } else {
+          // ── TIPO DESCONOCIDO ─────────────────────────────
+          clearTimeout(timeoutId);
+          console.warn(`⚠️ Tipo desconocido: ${filetype}, se omite`);
+          resolve();
+        }
+      });
+      
+      promesasCarga.push(promesaCarga);
+      
+      const duration = parseFloat(item.duration);
+      const global_start = parseFloat(item.global_start);
+      
+      pool.push({
+        ...item,
+        duration,
+        global_start,
+        media,
+        end: global_start + duration,
+        started: false,
+        esImagen: esImagen || esTexto
+      });
+    });
+    mediaPools.push(pool);
+  });
+  
+  if (globalTimePrevio < globalDuration) {
+    globalTime = globalTimePrevio;
+  }
+  
+  actualizarTimeline();
+  
+  return Promise.all(promesasCarga)
+    .then(() => {
+      console.log('✅ Flujo preparado:', mediaPools.length, 'líneas');
+    })
+    .catch(error => {
+      // Este catch ya casi nunca debería ejecutarse
+      console.error('❌ Error inesperado en carga:', error);
+    });
+}
+
+ 
 function crearImagenTexto(texto) {
   const svg = `
     <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg">
@@ -607,6 +637,41 @@ function crearImagenTexto(texto) {
   `;
   
   const blob = new Blob([svg], { type: 'image/svg+xml' });
+  return URL.createObjectURL(blob);
+}
+ 
+
+
+function crearImagenTexto_0(texto) {
+  const contenido = texto
+    ? `<div xmlns="http://www.w3.org/1999/xhtml" style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 70px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        padding: 10px;
+        box-sizing: border-box;
+        background: transparent;
+      ">${texto}</div>`
+    : `<div xmlns="http://www.w3.org/1999/xhtml" style="background: transparent; width:100%; height:100%;"></div>`;
+
+  const svg = `
+    <svg width="640" height="360" xmlns="http://www.w3.org/2000/svg" style="background: transparent;">
+      <rect width="640" height="360" fill="none"/>
+      <foreignObject x="50" y="0" width="540" height="360">
+        ${contenido}
+      </foreignObject>
+    </svg>
+  `;
+  
+  const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
   return URL.createObjectURL(blob);
 }
 
@@ -666,88 +731,8 @@ let frame_indice = 0;
 let ultimoTiempoCuantizado = null; 
 let ultimoFrameDibujado = -1; 
  
-let HEIGHT_CONTEXT = parseInt(resolution_scene.split("x")[1]);
-//const HEIGHT_CONTEXT = 720;
-
-
-async function renderFrames_0(previewOnly = false) {
-  const frameIndex = Math.floor(globalTime / FRAME_DURATION);
-  const segundo = Math.floor(frameIndex / TARGET_FPS);
-  const frameEnSegundo = frameIndex % TARGET_FPS;
+let HEIGHT_CONTEXT = parseInt(resolution_scene.split("x")[1]); 
   
-  console.log(`frameIndex: ${frameIndex}, segundo: ${segundo}, frame: ${frameEnSegundo}`);
-  
-  if (frameIndex !== ultimoFrameDibujado) {
-    ultimoFrameDibujado = frameIndex;
-    
-    const rect = canvas_principal.getBoundingClientRect();
-    canvas_principal.width = rect.width;
-    canvas_principal.height = rect.height;
-    
-    // ✅ Reproducir trozo codificado
-    if (trozos_guardados[segundo]) {
-      const exito = await reproductorTrozos.reproducirFrame(segundo, frameEnSegundo);
-      
-      if (exito) {
-        console.log(`✓ Frame ${frameIndex} reproducido`);
-        return;
-      } else {
-        // Frame no listo - NO BORRAR CANVAS, mantener último frame
-        console.log(`⏳ Frame ${frameIndex} cargando...`);
-        return;
-      }
-    }
-    
-    // Solo limpiar si NO existe el trozo
-    //ctx_principal.clearRect(0, 0, rect.width, rect.height);
-    //draw_text("Updating frame...", rect);
-  }
-
-  // Videos originales
-  let videoDibujado = false;
-  mediaPools.forEach(linea => {
-    linea.forEach(item => {
-      const activo = globalTime >= item.global_start && globalTime < item.end;
-
-      if (activo) {
-        const tiempoEnClip = (globalTime - item.global_start) + item.relative_start;
-        const tiempoCuantizado = cuantizarTiempo(tiempoEnClip);
-
-        if (!item.started) {
-          if (Math.abs(item.media.currentTime - tiempoCuantizado) > FRAME_DURATION) {
-            item.media.currentTime = tiempoCuantizado;
-          }
-          item.started = true;
-        }
-
-        if (!previewOnly && playing && item.media.paused) {
-          item.media.play().catch(e => console.log('Error al reproducir:', e));
-        }
-
-        if (!videoDibujado && item.media.tagName === 'VIDEO' && 
-            tiempoCuantizado !== ultimoTiempoCuantizado) {
-          ultimoTiempoCuantizado = tiempoCuantizado;
-
-          if (!trozos_guardados[segundo]) {
-            const rect = canvas_principal.getBoundingClientRect();
-            canvas_principal.width = rect.width;
-            canvas_principal.height = rect.height;
-            
-            ctx_principal.drawImage(item.media, 0, 0, rect.width, rect.height);
-            draw_text("Updating frame...", rect);
-          }
-
-          videoDibujado = true;
-        }
-
-      } else {
-        item.started = false;
-        if (!previewOnly) item.media.pause();
-      }
-    });
-  });
-}
-
 async function renderFrames(previewOnly = false) {
   const frameIndex = Math.floor(globalTime / FRAME_DURATION);
   const segundo = Math.floor(frameIndex / TARGET_FPS);
@@ -762,23 +747,8 @@ async function renderFrames(previewOnly = false) {
     canvas_principal.width = rect.width;
     canvas_principal.height = rect.height;
     
-    // ✅ Reproducir trozo codificado
-/* 
-    if (trozos_guardados[segundo]) {
-      const exito = await reproductorTrozos.reproducirFrame(segundo, frameEnSegundo);
-      
-      if (exito) {
-        //console.log(`✓ Frame ${frameIndex} reproducido`);
-        return;
-      } else {
-        // Frame no listo - NO BORRAR CANVAS, mantener último frame
-        //console.log(`⏳ Frame ${frameIndex} cargando...`);
-        return;
-      }
-    }
-*/
- 
- 
+    // ✅ Reproducir trozo codificado 
+  
 if (trozos_guardados[segundo]) {
   const exito = await reproductorTrozos.reproducirFrame(segundo, frameEnSegundo);
   
@@ -824,325 +794,17 @@ if (trozos_guardados[segundo]) {
   }
 }
  
-
-/*
-else {
-      // ✅ NO EXISTE EL TROZO - Mostrar último frame válido + loading
-      console.log(`❌ Trozo ${segundo} no existe`);
-      
-      if (reproductorTrozos.ultimoFrameValido) {
-        ctx_principal.drawImage(
-          reproductorTrozos.ultimoFrameValido,
-          0, 0,
-          rect.width,
-          rect.height
-        );
-      }
-      
-      // ✅ Dibujar loading encima
-      reproductorTrozos.dibujarLoadingAnimado(frameIndex);
-      return;
-    }
-*/
-    
-    // Solo limpiar si NO existe el trozo
-    //ctx_principal.clearRect(0, 0, rect.width, rect.height);
-    //draw_text("Updating frame...", rect);
-  }
-
-  // Videos originales 
-/* 
-  let videoDibujado = false;
-  mediaPools.forEach(linea => {
-    linea.forEach(item => {
-      const activo = globalTime >= item.global_start && globalTime < item.end;
-
-      if (activo) {
-        const tiempoEnClip = (globalTime - item.global_start) + item.relative_start;
-        const tiempoCuantizado = cuantizarTiempo(tiempoEnClip);
  
-        if (!item.started) {
-          if (Math.abs(item.media.currentTime - tiempoCuantizado) > FRAME_DURATION) {
-            item.media.currentTime = tiempoCuantizado;
-          }
-          item.started = true;
-        }
-
-        if (!previewOnly && playing && item.media.paused) {
-          item.media.play().catch(e => console.log('Error al reproducir:', e));
-        }
-
-        if (!videoDibujado && item.media.tagName === 'VIDEO' && 
-            tiempoCuantizado !== ultimoTiempoCuantizado) {
-          ultimoTiempoCuantizado = tiempoCuantizado;
-
-          if (!trozos_guardados[segundo]) { 
-            const rect = canvas_principal.getBoundingClientRect();
-            canvas_principal.width = rect.width;
-            canvas_principal.height = rect.height;
-            
-            ctx_principal.drawImage(item.media, 0, 0, rect.width, rect.height); 
-	    const nombreArchivo = item.filename || 'Video sin nombre'; 
-            let visible_text = progress_visible_names[nombreArchivo];
-	    if (visible_text==nombreArchivo){
-	    	visible_text = "Updating frame"; 
-	    }
-	    reproductorTrozos.dibujarLoadingAnimado(frameIndex,visible_text);  
-          }
-
-          videoDibujado = true;
-        } 
-
-      } else {
-        item.started = false;
-        if (!previewOnly) item.media.pause();
-      }
-    });
-  });
-*/ 
+  }
  
-//imagenes 
-/*
-  let videoDibujado = false;
   
-  mediaPools.forEach(linea => {
-    if (videoDibujado) {
-    linea.forEach(item => {
-      item.started = false;
-      if (!previewOnly) item.media.pause();
-    });
-    return; // ✅ Saltar al siguiente forEach (equivalente a continue)
-  }
-
-    linea.forEach(item => {
-      const activo = globalTime >= item.global_start && globalTime < item.end;
-      
-      if (activo) { 
-        const esImagen = item.media.dataset?.esImagen === 'true';
-        const tiempoEnClip = (globalTime - item.global_start) + item.relative_start;
-        const tiempoCuantizado = cuantizarTiempo(tiempoEnClip);
-        
-        if (!item.started) {
-          if (!esImagen) {
-            // Solo ajustar currentTime para videos/audios
-            if (Math.abs(item.media.currentTime - tiempoCuantizado) > FRAME_DURATION) {
-              item.media.currentTime = tiempoCuantizado;
-            }
-          }
-          item.started = true;
-        }
-        
-        // Reproducir solo videos/audios
-        if (!previewOnly && playing && !esImagen && item.media.paused) {
-          item.media.play().catch(e => console.log('Error al reproducir:', e));
-        }
-        
-        // DIBUJAR EN CANVAS (videos e imágenes)
-        if (!videoDibujado && tiempoCuantizado !== ultimoTiempoCuantizado) {
-          const esVideoOImagen = item.media.tagName === 'VIDEO' || esImagen;
-          
-          if (esVideoOImagen) {
-            ultimoTiempoCuantizado = tiempoCuantizado;
-            
-            if (!trozos_guardados[segundo]) { 
-              const rect = canvas_principal.getBoundingClientRect();
-              canvas_principal.width = rect.width;
-              canvas_principal.height = rect.height;
-              
-              // Dibujar video o imagen
-              ctx_principal.drawImage(item.media, 0, 0, rect.width, rect.height);
-              
-              const nombreArchivo = item.filename || (esImagen ? 'Imagen sin nombre' : 'Video sin nombre'); 
-              let visible_text = progress_visible_names[nombreArchivo];
-              
-              if (visible_text == nombreArchivo) {
-                visible_text = esImagen ? "Mostrando imagen" : "Updating frame"; 
-              }
-              
-              reproductorTrozos.dibujarLoadingAnimado(frameIndex, visible_text);  
-            }
-            videoDibujado = true;
-          }
-        } 
-      } else { 
-        item.started = false;
-        // Solo pausar videos/audios
-        if (!previewOnly && item.media.tagName !== 'IMG') {
-          item.media.pause();
-        }
-      }
-    });
-  }); 
-*/
-
-/*  
-  //sin parpadeos
-  // ✅ Resetear solo si cambiamos de frame
-  let videoDibujado = (videoDibujadoEnEsteFrame === frameIndex);
-  
-  // Videos originales
-  mediaPools.forEach((linea, indexLinea) => {
-    linea.forEach(item => {
-      const activo = globalTime >= item.global_start && globalTime < item.end;
-      
-      if (activo) { 
-        const esImagen = item.media.dataset?.esImagen === 'true';
-        const tiempoEnClip = (globalTime - item.global_start) + item.relative_start;
-        const tiempoCuantizado = cuantizarTiempo(tiempoEnClip);
-        
-        if (!item.started) {
-          if (!esImagen) {
-            if (Math.abs(item.media.currentTime - tiempoCuantizado) > FRAME_DURATION) {
-              item.media.currentTime = tiempoCuantizado;
-            }
-          }
-          item.started = true;
-        }
-        
-        if (!previewOnly && playing && !esImagen && item.media.paused) {
-          item.media.play().catch(e => console.log('Error al reproducir:', e));
-        }
-        
-        const esVideoOImagen = item.media.tagName === 'VIDEO' || esImagen;
-        
-        if (esVideoOImagen && !videoDibujado && tiempoCuantizado !== ultimoTiempoCuantizado && !trozos_guardados[segundo]) {
-          console.log(`✅ DIBUJANDO Línea ${indexLinea}: ${item.filename}`);
-          
-          ultimoTiempoCuantizado = tiempoCuantizado;
-          
-          const rect = canvas_principal.getBoundingClientRect();
-          canvas_principal.width = rect.width;
-          canvas_principal.height = rect.height;
-          
-          ctx_principal.drawImage(item.media, 0, 0, rect.width, rect.height);
-          
-          const nombreArchivo = item.filename || (esImagen ? 'Imagen sin nombre' : 'Video sin nombre'); 
-          let visible_text = progress_visible_names[nombreArchivo];
-	  if (!visible_text){
-		visible_text = "Updating frame.";
-	  }
-          
-          if (visible_text == nombreArchivo) {
-            visible_text = "Updating frame"; 
-          }
-          
-          reproductorTrozos.dibujarLoadingAnimado(frameIndex, visible_text);
-          
-          videoDibujado = true;
-          videoDibujadoEnEsteFrame = frameIndex; // ✅ Guardar en qué frame dibujamos
-        }
-        
-      } else { 
-        item.started = false;
-        if (!previewOnly && item.media.tagName !== 'IMG') {
-          item.media.pause();
-        }
-      }
-    });
-  });
-*/
-
-/*
-//garantiza transparencia (pero no tiene canvas_principal.width = rect.width;)
-// ✅ Resetear solo si cambiamos de frame
-let videoDibujado = (videoDibujadoEnEsteFrame === frameIndex);
-
-// ✅ Recolectar qué items deben dibujarse en este frame
-const itemsADibujar = [];
-
-mediaPools.forEach((linea, indexLinea) => {
-  linea.forEach(item => {
-    const activo = globalTime >= item.global_start && globalTime < item.end;
-    
-    if (activo) { 
-      const esImagen = item.media.dataset?.esImagen === 'true';
-      const tiempoEnClip = (globalTime - item.global_start) + item.relative_start;
-      const tiempoCuantizado = cuantizarTiempo(tiempoEnClip);
-      
-      if (!item.started) {
-        if (!esImagen) {
-          if (Math.abs(item.media.currentTime - tiempoCuantizado) > FRAME_DURATION) {
-            item.media.currentTime = tiempoCuantizado;
-          }
-        }
-        item.started = true;
-      }
-      
-      if (!previewOnly && playing && !esImagen && item.media.paused) {
-        item.media.play().catch(e => console.log('Error al reproducir:', e));
-      }
-      
-      const esVideoOImagen = item.media.tagName === 'VIDEO' || esImagen;
-      
-      if (esVideoOImagen && tiempoCuantizado !== ultimoTiempoCuantizado && !trozos_guardados[segundo]) {
-        itemsADibujar.push({
-          item,
-          indexLinea,
-          tiempoCuantizado,
-          esImagen
-        });
-      }
-      
-    } else { 
-      item.started = false;
-      if (!previewOnly && item.media.tagName !== 'IMG') {
-        item.media.pause();
-      }
-    }
-  });
-});
-
-// ✅ DIBUJAR en orden inverso: líneas mayores primero, líneas menores después
-itemsADibujar.sort((a, b) => b.indexLinea - a.indexLinea);
-
-itemsADibujar.forEach((data, idx) => {
-  const { item, indexLinea, tiempoCuantizado, esImagen } = data;
-  
-  const rect = canvas_principal.getBoundingClientRect();
-  
-  // Solo limpiar en el primer item
-  if (idx === 0) {
-    canvas_principal.width = rect.width;
-    canvas_principal.height = rect.height;
-    ultimoTiempoCuantizado = tiempoCuantizado;
-    videoDibujadoEnEsteFrame = frameIndex;
-  } 
-  
-  console.log(`🎨 Pintando Línea ${indexLinea}: ${item.filename}`);
-  
-  // ✅ Dibujar SIN save/restore
-  ctx_principal.globalCompositeOperation = 'source-over';
-  ctx_principal.drawImage(item.media, 0, 0, rect.width, rect.height);
-  
-  // Loading solo en la última capa dibujada
-  if (idx === itemsADibujar.length - 1) {
-    const nombreArchivo = item.filename || (esImagen ? 'Imagen sin nombre' : 'Video sin nombre'); 
-    let visible_text = progress_visible_names[nombreArchivo];
-    if (!visible_text){
-      visible_text = "Updating frame.";
-    }
-    
-    if (visible_text == nombreArchivo) {
-      visible_text = "Updating frame"; 
-    }
-    
-    reproductorTrozos.dibujarLoadingAnimado(frameIndex, visible_text);
-  }
-});
-*/
 
 // ✅ Resetear solo si cambiamos de frame
 let videoDibujado = (videoDibujadoEnEsteFrame === frameIndex);
 
 // ✅ Recolectar qué items deben dibujarse en este frame
 const itemsADibujar = [];
-
-//esto va junt con 
- 
-/*
-mediaPools.forEach((linea, indexLinea) => {
-*/
-
+  
 const mediaPools_local = [...mediaPools].reverse();  
 mediaPools_local.forEach((linea, indexLinea) => {
 
@@ -1191,100 +853,9 @@ mediaPools_local.forEach((linea, indexLinea) => {
     }
   });
 });
+ 
 
-/* 
-// ✅ DIBUJAR en orden inverso: líneas mayores primero, líneas menores después
-itemsADibujar.sort((a, b) => b.indexLinea - a.indexLinea);
-
-itemsADibujar.forEach((data, idx) => {
-  const { item, indexLinea, tiempoCuantizado, esImagen } = data;
-  
-  const rect = canvas_principal.getBoundingClientRect();
-  
-  // Solo limpiar en el primer item
-  if (idx === 0) {
-    canvas_principal.width = rect.width;
-    canvas_principal.height = rect.height;
-    ultimoTiempoCuantizado = tiempoCuantizado;
-    videoDibujadoEnEsteFrame = frameIndex;
-  } 
-   
-  // Dibujar SIN save/restore
-  ctx_principal.globalCompositeOperation = 'source-over';
-  ctx_principal.drawImage(item.media, 0, 0, rect.width, rect.height);
-  
-  // Loading solo en la última capa dibujada
-  if (idx === itemsADibujar.length - 1) {
-    const nombreArchivo = item.filename || (esImagen ? 'Imagen sin nombre' : 'Video sin nombre'); 
-    let visible_text = progress_visible_names[nombreArchivo];
-    if (!visible_text){
-      visible_text = "Updating frame.";
-    }
-    
-    if (visible_text == nombreArchivo) {
-      visible_text = "Updating frame"; 
-    }
-    
-    reproductorTrozos.dibujarLoadingAnimado(frameIndex, visible_text);
-  }
-});
-*/
-
-/* 
-//funciona bien pero solo conserva el size original en imagenes
-//Esta version conserva el size original de la imagen y lo reduce a la mitad
-// ✅ DIBUJAR en orden inverso: líneas mayores primero, líneas menores después
-itemsADibujar.sort((a, b) => b.indexLinea - a.indexLinea);
-
-itemsADibujar.forEach((data, idx) => {
-  const { item, indexLinea, tiempoCuantizado, esImagen } = data;
-  
-  const rect = canvas_principal.getBoundingClientRect();
-  
-  // Solo limpiar en el primer item
-  if (idx === 0) {
-    canvas_principal.width = rect.width;
-    canvas_principal.height = rect.height;
-    ultimoTiempoCuantizado = tiempoCuantizado;
-    videoDibujadoEnEsteFrame = frameIndex;
-  } 
-  
-  ctx_principal.globalCompositeOperation = 'source-over';
-  
-  // ✅ DIFERENCIAR entre imagen y video
-  if (esImagen) {
-    // IMAGEN: tamaño original centrado
-    const imgWidth = 0.5*item.media.naturalWidth || item.media.width;
-    const imgHeight = 0.5*item.media.naturalHeight || item.media.height;
-    
-    // Calcular posición centrada
-    const x = (rect.width - imgWidth) / 2;
-    const y = (rect.height - imgHeight) / 2;
-    
-    console.log(`🖼️ Imagen centrada: ${item.filename} (${imgWidth}x${imgHeight}) en (${x}, ${y})`);
-    
-    ctx_principal.drawImage(item.media, x, y, imgWidth, imgHeight);
-  } else {
-    // VIDEO: redimensionar al canvas completo
-    ctx_principal.drawImage(item.media, 0, 0, rect.width, rect.height);
-  }
-  
-  // Loading solo en la última capa dibujada
-  if (idx === itemsADibujar.length - 1) {
-    const nombreArchivo = item.filename || (esImagen ? 'Imagen sin nombre' : 'Video sin nombre'); 
-    let visible_text = progress_visible_names[nombreArchivo];
-    if (!visible_text){
-      visible_text = "Updating frame.";
-    }
-    
-    if (visible_text == nombreArchivo) {
-      visible_text = "Updating frame..."; 
-    }
-    
-    reproductorTrozos.dibujarLoadingAnimado(frameIndex, visible_text);
-  }
-});
-*/ 
+ 
 
   
 itemsADibujar.sort((a, b) => b.indexLinea - a.indexLinea); 
@@ -1372,44 +943,10 @@ itemsADibujar.forEach((data, idx) => {
 
 }
  
-function mostrarIndicadorCarga() {
-    const rect = canvas_principal.getBoundingClientRect();
-    
-    // Opción 1: Overlay semi-transparente
-    ctx_principal.fillStyle = 'rgba(0, 0, 0, 0.3)';
-    ctx_principal.fillRect(0, 0, rect.width, rect.height);
-    
-    // Opción 2: Texto de carga
-    ctx_principal.fillStyle = 'white';
-    ctx_principal.font = '20px Arial';
-    ctx_principal.textAlign = 'center';
-    ctx_principal.fillText('⏳ Cargando...', rect.width / 2, rect.height / 2);
-}
 
 /* ===========================
    RESETEAR ESTADO
 =========================== */
- 
-//genera desincronizacion
-function resetearEstadoMedias_0() {
-  mediaPools.flat().forEach(item => {
-    item.started = false;
-    item.media.pause();
-  });
-}
-
-function resetearEstadoMedias_1() {
-  mediaPools.flat().forEach(item => {
-    item.started = false;
-    item.media.pause();
-    
-    // Resetear al tiempo inicial del clip
-    const esImagen = item.media.dataset?.esImagen === 'true';
-    if (!esImagen) {
-      item.media.currentTime = item.relative_start;
-    }
-  });
-}
  
 function resetearEstadoMedias() {
   mediaPools.flat().forEach(item => {
@@ -1451,16 +988,6 @@ function reproducir_video_global() {
  
  
  
-/* 
-function pausar_video_global() {
-  playing = false;
-  mediaPools.flat().forEach(o => o.media.pause());
-  cancelAnimationFrame(animationId);  // ← AGREGAR
-  timelineControlaScroll = false;  // ← AGREGAR
-
-  //videoPlayer.cleanup(); 
-} 
-*/
  
  
 //incluye reproduccion para imagenes
@@ -1820,7 +1347,8 @@ function agregarEspacioScroll() {
 const exportBtn = document.getElementById('export-btn');
  
 exportBtn.onclick = () => {  
-	return;
+//save_project();
+return;
     console.log("uploadedFiles: ",uniqueFiles.length); 
     abrirModalDinamicoSimple(html_finish);
     renderPendientes(progress_visible_names); 
@@ -1863,7 +1391,7 @@ updateBtn.onclick = () => {
 function update_timeline_render() { 
   update_state();
 } 
-setInterval(update_timeline_render, 20000);
+setInterval(update_timeline_render, 10000);
 
 
 
@@ -2717,7 +2245,7 @@ dibujarIndicador() {
 
   ctx.save();
 
-  const radius = 7;
+  const radius = 9;
   const marginTop = 5;
   const marginRight = 5;
 
@@ -3141,4 +2669,3 @@ this.ctx.fillText('Streaming mode', centerX, 10);
 const reproductorTrozos = new ReproductorTrozos(canvas_principal);
  
 //esta version evita precargas repetidas
-
