@@ -216,7 +216,7 @@ function resetAnchorPosition() {
     console.log('Anchor point reseteado al centro:', anchorState.x, anchorState.y);
 }
 
- 
+/* 
 window.addEventListener('wheel', function(e) {
   const zona = document.getElementById('marcadores_fijos');
   const rect = zona.getBoundingClientRect();
@@ -233,6 +233,11 @@ window.addEventListener('wheel', function(e) {
   }
 }, { passive: false });
 //window.addEventListener('wheel', (e) => console.log("ERROR WHEEL",e.clientX, e.clientY));
+*/
+document.getElementById('marcadores_fijos').addEventListener('wheel', function(e) {
+  e.preventDefault();
+  document.querySelector('.scroll-wrapper').scrollLeft += e.deltaY;
+}, { passive: false, capture: true });
 
 /*scale*/
 
@@ -1268,3 +1273,4 @@ console.log("crearSelectorReveal");
     
     console.log('Selector de reveal creado correctamente');
 }
+
