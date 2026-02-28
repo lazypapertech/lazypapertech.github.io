@@ -530,11 +530,7 @@ function isNotUser() {
  
 
     <p style="color:#000; font-size:16px; margin-bottom:30px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">
-    Try
-    <span style="font-weight:700; color:rgb(255,255,255) !important;">
-        Motion Graphics
-    </span> 
-    editor.
+    Advanced settings
 </p>
 
 
@@ -3486,6 +3482,7 @@ function actualizarMenuUrls() {
 }
 
   
+
 
 
 
