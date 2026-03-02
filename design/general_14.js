@@ -212,6 +212,11 @@ function isNotUser() {
     videoPreviewBlob = new Blob([globalBuffer], { type: type_video });
     videoElement.src = URL.createObjectURL(videoPreviewBlob);
     globalBuffer = new Uint8Array(0);
+     
+    const export_btn = document.getElementById("exportDropdown-button");
+    if (export_btn){
+	export_btn.style.backgroundColor = "#66f88b";
+    }
   }
   
   function resizeCanvas() {
@@ -1572,6 +1577,10 @@ console.log("EDIT 2");
     if (btn) {
       btn.disabled = true;
     }
+    const modal_limit_size = document.getElementById("myModal_limit_size");
+    if (modal_limit_size){
+	modal_limit_size.style.display = "none";
+    }
   
     const mensaje = "request";
     websocketClient.send(mensaje + ":" + lastPressedButton);
@@ -2795,8 +2804,28 @@ return;
     const modal_limit_size = document.getElementById("myModal_limit_size");
     const limitMessage = document.getElementById("limit_size_message");
   
-    limitMessage.innerText =
+    //limitMessage.innerText =
       "Press render video before exporting.\n\nIMPORTANT:\nEach text entry represents 0.5 seconds, do not write too long text in a single box. Recommended maximum 15 characters in each entry.";
+    limitMessage.innerHTML = `
+  <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
+	Press render video before exporting.
+    <button id="createVideo-2" class="btn">Render video</button>
+    <a id="tutorial_button" href="https://www.youtube.com/watch?v=q-8Y7XjbjAM" target="_blank"
+           style="background-color:rgb(230,230,230); 
+                  color:#7c55e6; 
+                  padding:14px 28px; 
+                  text-decoration:none; 
+                  font-weight:bold; 
+                  border-radius:8px; 
+                  font-size:16px; 
+                  display:inline-block;
+		  border-radius:5px;
+                  transition:0.3s;">
+            Tutorial
+        </a>
+    <p style="margin-top:15px;">Each text entry represents 0.5 seconds, do not write too long text in a single box. Recommended maximum 15 characters in each entry.</p>
+  </div>
+`; 	
     modal_limit_size.style.display = "block";
   }
   
@@ -2875,6 +2904,10 @@ return;
 
 
 document.addEventListener("click", function (e) { 
+
+if(e.target.closest("#createVideo-2")){ 
+check_edited_captions(); 
+}
 if (e.target.matches(".exportDropdown") || e.target.closest(".exportDropdown")){
 console.log("export presionado");
 const content = document.getElementById('exportDropdown-content'); 
@@ -3146,6 +3179,20 @@ subContainer.insertBefore(botonPrincipal, subContainer.firstChild);
           </svg>
         </button>
       </div>
+      <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
+           style="background-color: #7c55e6; 
+                  color:rgb(230,230,230); 
+                  padding:7px 7px; 
+		  margin:4px;
+                  text-decoration:none; 
+                  font-weight:bold; 
+                  border-radius:8px; 
+                  font-size:14px; 
+                  display:inline-block;
+		  border-radius:5px;
+                  transition:0.3s;">
+            Tutorial
+        </a>
     </div>
   `;
   
@@ -3488,4 +3535,4 @@ function actualizarMenuUrls() {
 
 
 
-
+  
