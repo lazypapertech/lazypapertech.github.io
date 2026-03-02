@@ -57,7 +57,7 @@
 #exportDropdown-button {
     color:black;
     border: 1px solid #66f88b; 
-    background-color: #66f88b;
+    background-color: rgb(255,255,255);
     border: none;
     cursor: pointer;
     padding: 10px;
@@ -118,3 +118,4 @@
     color:white;
     background-color: #7c55e6;
 } 
+
