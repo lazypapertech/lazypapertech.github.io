@@ -540,7 +540,7 @@ function isNotUser() {
 
 
     <p>
-        <a id="tutorial_button" href="https://www.youtube.com/watch?v=q-8Y7XjbjAM" target="_blank"
+        <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
            style="background-color:#ffffff; 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -2810,7 +2810,7 @@ return;
   <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
 	Press render video before exporting.
     <button id="createVideo-2" class="btn">Render video</button>
-    <a id="tutorial_button" href="https://www.youtube.com/watch?v=q-8Y7XjbjAM" target="_blank"
+    <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
            style="background-color:rgb(230,230,230); 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -3179,7 +3179,7 @@ subContainer.insertBefore(botonPrincipal, subContainer.firstChild);
           </svg>
         </button>
       </div>
-      <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
+      <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
            style="background-color: #7c55e6; 
                   color:rgb(230,230,230); 
                   padding:7px 7px; 
@@ -3490,19 +3490,15 @@ function reajustarTextareas() {
 
 
 function actualizarMenuUrls_0() {
-    document.getElementById("login-btn").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
-    document.getElementById("li-home").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
-    document.getElementById("li-features").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
-    document.getElementById("li-tutorial").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
-    document.getElementById("li-questions").href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
+    document.getElementById("login-btn").href = "https://www.youtube.com";
+    document.getElementById("li-home").href = "https://www.youtube.com";
+    document.getElementById("li-features").href = "https://www.youtube.com";
+    document.getElementById("li-tutorial").href = "https://www.youtube.com";
+    document.getElementById("li-questions").href = "https://www.youtube.com";
 }
 
-/*
-tutorial 1
-https://www.youtube.com/watch?v=xzrvYINTVwY 
-tutorial 2
-https://www.youtube.com/watch?v=duhp1fln2gQ
-*/
+ 
+
 function actualizarMenuUrls() {
 
     const ids = [
@@ -3518,9 +3514,9 @@ function actualizarMenuUrls() {
 
         if (elemento) { 
 	    if (id=="login-btn" || id=="li-home"){
-				elemento.href = "https://www.youtube.com/@spoiler_infinito";
+				elemento.href = "https://www.youtube.com";
 	    }else{	
-            	elemento.href = "https://www.youtube.com/watch?v=q-8Y7XjbjAM";
+            	elemento.href = "https://www.youtube.com";
 	    }
 	    	elemento.target = "_blank"; 
             elemento.rel = "noopener noreferrer";
