@@ -60,7 +60,7 @@ function isNotUser() {
   
   let current_video_width = null;
   let current_video_height = null;
-  let type_video = "video/webm";
+  let type_video = "application/octet-stream";//video/webm
   let video_extension = ".webm";
   let videoPreviewBlob = null;
   
@@ -1951,7 +1951,7 @@ function connect(type_connection) {
           const secondInt = (bytes[4] << 24) >> 24;
   
           if (secondInt >= 0) {
-            type_video = "video/webm";
+            type_video = "application/octet-stream";//video/webm
             video_extension = ".webm";
           } else {
             type_video = "video/mp4";
