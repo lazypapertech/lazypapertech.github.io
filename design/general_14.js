@@ -73,6 +73,7 @@ function isNotUser() {
   let frameIndex = 0;
   let currentTimestamp = 0;
   let video_tag = "mp4";
+  let duracion_video_global = 1;
   
   function checkSupport() {
     const video = document.createElement("video");
@@ -2043,6 +2044,7 @@ function connect(type_connection) {
  
         } else {
           const duracion_video = firstInt;
+	  duracion_video_global = Math.abs(duracion_video);
           const secondInt = (bytes[4] << 24) >> 24;
   
           //console.log("frameIndex: ", frameIndex);
@@ -2201,6 +2203,7 @@ function connect(type_connection) {
     });
   }
 
+ 
 
 function scheduleReconnect() {
  
@@ -3462,7 +3465,7 @@ function request_export_mp4(){
     globalBufferMP4_temporal = new Uint8Array(0);
     show_percent_export(100); 
     waiting_mp4 = 1;
-    const expected_duration = "5";
+    const expected_duration = duracion_video_global;
     websocketClient.send("webm_to_mp4:"+expected_duration);
 }
  
