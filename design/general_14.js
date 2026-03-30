@@ -157,6 +157,27 @@ function isNotUser() {
       }
     }
   }
+  function downloadVideoMP4() {
+    if (globalBufferMP4) {
+      const randomdownload = Math.floor(1000 + Math.random() * 9000);
+      const randomstring = randomdownload.toString();
+
+      const videoMP4BlobGlobal = new Blob([globalBufferMP4], { type: "video/mp4" });
+      videoElement.src = URL.createObjectURL(videoMP4BlobGlobal);
+      globalBuffer = new Uint8Array(0);
+
+      const url = URL.createObjectURL(videoMP4BlobGlobal);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "manycaptions" + randomstring + ".mp4";
+      a.click();
+      URL.revokeObjectURL(url);
+      if (websocketClient.readyState === WebSocket.OPEN) {
+        websocketClient.send("exported");
+      }
+    }
+  }
+ 
   
   function getChunks(bytes) {
     const chunks = [];
@@ -674,7 +695,8 @@ function isNotUser() {
     { id: "french-dropdown", content: "French" },
     { id: "german-dropdown", content: "German" },
     { id: "italian-dropdown", content: "Italian" },
-    { id: "exportDropdown-mp4", content: "Video" },
+    { id: "exportDropdown-mp4", content: "MP4" },
+    { id: "exportDropdown-webm", content: "WEBM" },
     { id: "exportDropdown-srt", content: "SRT File" },
     { id: "exportDropdown-txt", content: "Transcription" },
     { id: "choose_video_p", content: "Choose video" },
@@ -753,7 +775,7 @@ function isNotUser() {
         "This video exceeds 350MB of free plan. Use an online video compressor",
     },
   ];
-  
+/*  
   start_elements.forEach((item) => {
     const el = item.id
       ? document.getElementById(item.id)
@@ -764,6 +786,7 @@ function isNotUser() {
       el.classList.add("notranslate");
     }
   });
+*/
   
   let url_websocket = "rndomg84pbrg.onrender.com";
   
@@ -830,6 +853,7 @@ function isNotUser() {
     }
     toggleEditability(1);
     show_export_mp4();
+    show_export_webm();
     update_languages();
   }
   
@@ -839,6 +863,12 @@ function isNotUser() {
       button_export_mp4.style.display = "flex";
     }
   }
+  function show_export_webm() {
+    let button_export_webm = document.getElementById("exportDropdown-webm");
+    if (button_export_webm) {
+      button_export_webm.style.display = "flex";
+    }
+  } 
   
   function hasValueNotEqualToOne(list) {
     return list.some((element) => element !== 1);
@@ -1678,6 +1708,8 @@ console.log("EDIT 2");
     video_received = 0;
   
     show_export_mp4();
+    show_export_webm();
+
     if (video_tag == "webm") {
       show_stepPreview();
       start_loading();
@@ -1949,7 +1981,7 @@ function connect(type_connection) {
   
         if (firstInt < 0) {
           const secondInt = (bytes[4] << 24) >> 24;
-  
+           
           if (secondInt >= 0) {
             type_video = "application/octet-stream";//video/webm
             video_extension = ".webm";
@@ -2006,6 +2038,9 @@ function connect(type_connection) {
               error_connection_2.style.display = "block";
             }
           }
+
+	   
+ 
         } else {
           const duracion_video = firstInt;
           const secondInt = (bytes[4] << 24) >> 24;
@@ -2044,6 +2079,58 @@ function connect(type_connection) {
           }
           n_seg = n_seg + 1;
         }
+      }
+
+
+      if (waiting_mp4 == 1){
+	const bytes = new Uint8Array(event.data);
+  const posicion_en_segundos =
+    bytes[0] |
+    (bytes[1] << 8) |
+    (bytes[2] << 16) |
+    (bytes[3] << 24); 
+
+  const secondInt = (bytes[4] << 24) >> 24;
+ 
+  const firstInt = posicion_en_segundos;
+  console.log("firstInt:",firstInt);
+  console.log("secondInt:",secondInt); 
+
+  if (firstInt < 0) {
+      
+     
+
+    if (secondInt == 1) { 
+	const expected_seconds = Math.abs(firstInt);
+	console.log("expected_seconds:",expected_seconds);
+	show_percent_export(expected_seconds+2);
+    } 
+    if (secondInt == 2) { 
+	console.log("chunk: ", globalBufferMP4_temporal.length," ",Math.abs(firstInt));
+ 
+    	const subBuffer = bytes.subarray(5);
+    	suma_final = suma_final + subBuffer.byteLength;
+    	const newBuffer = new Uint8Array(globalBufferMP4_temporal.length + subBuffer.length);
+    	newBuffer.set(globalBufferMP4_temporal, 0);
+    	newBuffer.set(subBuffer, globalBufferMP4_temporal.length);
+
+    	globalBufferMP4_temporal = newBuffer;
+    }
+
+    if (globalBufferMP4_temporal.length == Math.abs(firstInt)) {
+        console.log("FULL_VIDEO_RECEIVED MP4"); 
+	waiting_mp4 = 0;
+	globalBufferMP4 = globalBufferMP4_temporal; 
+	ready_to_download = true;
+	show_download_button();
+	reset_export_progress();
+	websocketClient.send("full_video_received_" + video_tag);
+    }
+  }
+
+
+
+
       }
     });
   
@@ -2160,7 +2247,34 @@ function scheduleReconnect() {
     show_stepLoading();
     connect("connected");
     monoColorButton.click();
-	  actualizarMenuUrls();
+    actualizarMenuUrls();
+
+    const div_modal = `
+    <div id="modal_overlay_dinamico">
+      <div id="modal_box_dinamico"></div>
+    </div>`; 
+    const principalContent = document.getElementById("content-enhanced");
+    if (principalContent) {
+	document.body.insertAdjacentHTML("beforeend", div_modal);
+    }
+     
+    const div_modal_webm = `<div id="exportDropdown-webm" class="exportDropdown-item notranslate">WEBM</div>`; 
+    const exportDropdown = document.getElementById("exportDropdown-content");
+    if (exportDropdown) {
+	exportDropdown.insertAdjacentHTML("beforeend", div_modal_webm);
+    }
+    start_elements.forEach((item) => {
+        const el = item.id
+          ? document.getElementById(item.id)
+          : document.querySelector(item.selector);
+  
+        if (el) {
+          el.innerHTML = item.content;
+          el.classList.add("notranslate");
+        }
+    });
+     
+
   });
   
   window.addEventListener("beforeunload", () => {
@@ -2396,6 +2510,7 @@ function scheduleReconnect() {
       "font8",
       "font9",
       "font10",
+      "font11",
     ];
   
     openModalBtn.addEventListener("click", function () {
@@ -2421,8 +2536,8 @@ function scheduleReconnect() {
         const fontBlock = document.createElement("div");
   
         fontBlock.classList.add("font-block");
-        fontBlock.style.fontFamily = font;
-        fontBlock.textContent = `${index + 1}. Subtitle`;
+        fontBlock.style.fontFamily = font; 
+        fontBlock.textContent = `${index + 1}. Subtitle`; 
         fontBlock.style.paddingTop = "5px";
         fontBlock.style.paddingRight = "0";
         fontBlock.style.paddingBottom = "5px";
@@ -2833,12 +2948,25 @@ return;
     const exportDropdown_txt = document.getElementById("exportDropdown-txt");
     const exportDropdown_srt = document.getElementById("exportDropdown-srt");
     const exportDropdown_mp4 = document.getElementById("exportDropdown-mp4");
-  
-    if (exportDropdown_srt && exportDropdown_mp4 && exportDropdown_txt) {
+    const exportDropdown_webm = document.getElementById("exportDropdown-webm");
+
+    if (exportDropdown_srt && exportDropdown_mp4 && exportDropdown_txt && exportDropdown_webm) {
       exportDropdown_srt.addEventListener("click", () => {
         downloadSRT(".srt");
       });
       exportDropdown_mp4.addEventListener("click", () => {
+	console.log("exporting MP4");
+        if (current_step == 2) {
+          abrirModalDinamicoSimple(html_finish);
+	  renderPendientes(progress_visible_names); 
+          check_last_video();
+	  //show_percent_export(10);
+        } else {
+          show_modal_error();
+        }
+      });
+      exportDropdown_webm.addEventListener("click", () => {
+        console.log("exporting WEBM");
         if (current_step == 2) {
           downloadVideo();
         } else {
@@ -3297,8 +3425,48 @@ function procesarRespuestaPrompt(estado) {
 }
 
 
+function reset_export_progress() {
+/*
+    const close_export_modal = document.getElementById('close-export-modal');
+    if (close_export_modal) { 
+	close_export_modal.textContent = 'Cancel'; 
+	close_export_modal.style.fontSize = '16px';
+	close_export_modal.style.borderRadius = '10px';
+	close_export_modal.style.height = 'auto'; 
+        close_export_modal.style.width = 'auto'; 
+        close_export_modal.style.padding = '10px';
+    }
+*/
+    progress_export = 0;
+    //ready_to_download = false;
+    
+    const progressContainer = document.getElementById('export_progress');
+    if (progressContainer) {
+        progressContainer.remove();
+    }
+    
+    const renderBtn = document.getElementById('update_video');
+    if (renderBtn) {
+        renderBtn.style.display = 'flex';
+    }
+}
 
 
+
+let globalBufferMP4 = new Uint8Array(0); 
+let globalBufferMP4_temporal = new Uint8Array(0); 
+let waiting_mp4 = 0;
+function request_export_mp4(){ 
+    reset_export_progress(); 
+    //globalBufferMP4 = new Uint8Array(0); 
+    globalBufferMP4_temporal = new Uint8Array(0);
+    show_percent_export(100); 
+    waiting_mp4 = 1;
+    const expected_duration = "5";
+    websocketClient.send("webm_to_mp4:"+expected_duration);
+}
+ 
+ 
 // Event delegation global
 document.addEventListener('click', function(e) {
   // Botón de envío 
@@ -3308,6 +3476,17 @@ document.addEventListener('click', function(e) {
   if (e.target.closest('#li-features') || e.target.closest('#li-tutorial') || e.target.closest('#li-questions')){ 
 	websocketClient.send("tutorial_presionado");
   }
+  if (e.target.closest('.close-export-btn')) { 
+  	closeModalDinamico();
+	websocketClient.send("cancel_task:" + userId);
+  }
+  if (e.target.closest('#download_last_video')) { 
+  	downloadVideoMP4();
+  }
+  if (e.target.closest('#update_video')) { 
+  	request_export_mp4();
+  } 
+   
 
 if (e.target.closest('#ai_send_btn')) {
   console.log('Click en send button');
@@ -3487,6 +3666,468 @@ function reajustarTextareas() {
     textarea.style.height = textarea.scrollHeight + "px";
   });
 }
+
+
+
+function abrirModalDinamicoSimple(htmlString) { 
+  const box = document.getElementById('modal_box_dinamico');
+  box.innerHTML = htmlString; 
+  document.getElementById('modal_overlay_dinamico').style.display = 'flex'; 
+} 
+
+
+const uploaded_names = [];       // archivos totalmente subidos (keys de visible_names)
+const progress_visible_names = {};
+
+function renderPendientes(diccionario) {
+  const ul = document.getElementById("pendientes_de_subir");
+  if (!ul){return;}	
+  ul.style.display="block";
+  // opcional: limpiar antes
+  ul.innerHTML = "";
+
+  const export_btn = document.getElementById("update_video");
+  if (export_btn){
+	export_btn.style.display="none";
+  }
+  if (Object.keys(diccionario).length == uploaded_names.length){
+	ocultarPendientesYErrores();
+	const export_btn = document.getElementById("update_video");
+  	if (export_btn){
+		export_btn.style.display="block";
+  	}
+  }		
+
+  Object.keys(diccionario).forEach(key => {
+    const value = diccionario[key]; // siempre string
+    if (key!=value){	 
+	console.log("key:",key,", value:",value);
+
+    	const li = document.createElement("li");
+    	li.textContent = value;
+    	li.style.padding = "6px 4px";
+    	li.style.borderBottom = "1px solid rgba(255,255,255,0.15)";
+
+    	ul.appendChild(li);
+    }	
+  }); 
+}
+
+function ocultarPendientesYErrores() {
+  const ids = ["error_subidas_pendientes", "pendientes_de_subir"];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.display = "none";
+    }
+  });
+  const export_btn = document.getElementById("update_video");
+  if (export_btn){
+	export_btn.style.display="block";
+  }
+}
+
+function closeModalDinamico() { 
+  document.getElementById('modal_overlay_dinamico').style.display = 'none';  	 
+}
+
+
+
+
+// Variables globales
+let ready_to_download = false;
+let progress_export = 0;
+
+function check_last_video() {
+    // Solo mostrar botón si está listo para descargar 
+    if (!ready_to_download) {
+        return;
+    } 
+/*
+    const close_export_modal = document.getElementById('close-export-modal');
+    if (close_export_modal) { 
+	close_export_modal.textContent = 'x'; 
+	close_export_modal.style.fontSize = '25px';
+	close_export_modal.style.borderRadius = '50%';
+	close_export_modal.style.height = '32px'; 
+        close_export_modal.style.width = '32px'; 
+        close_export_modal.style.padding = '0px';
+    }
+*/
+    show_download_button();
+}
+
+function show_download_button() {
+    const placeholder = document.querySelector('.video-preview-placeholder');
+    if (placeholder) {
+        placeholder.innerHTML = `
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <button class="btn-download" id="download_last_video">
+                Download Video
+            </button>
+        `;
+        
+        // Agregar clase para estilos especiales
+        placeholder.classList.add('has-video');
+    }
+
+    // Mostrar botón de render nuevamente
+    const renderBtn = document.getElementById('update_video');
+    if (renderBtn) {
+        renderBtn.style.display = 'flex';
+    }
+
+    // Ocultar indicador de progreso si existe
+    const progressIndicator = document.getElementById('export_progress');
+    if (progressIndicator) {
+        progressIndicator.style.display = 'none';
+    }
+}
+function show_percent_export(total_progress) {
+    // Incrementar progreso
+    progress_export++;
+
+    // Calcular porcentaje
+    const percentage = Math.round((progress_export / total_progress) * 100);
+
+    // Obtener o crear el contenedor de progreso
+    let progressContainer = document.getElementById('export_progress');
+    const renderBtn = document.getElementById('update_video');
+
+    if (!progressContainer) {
+        // Crear contenedor de progreso si no existe
+        progressContainer = document.createElement('div');
+        progressContainer.id = 'export_progress';
+        progressContainer.className = 'export-progress-container';
+	progressContainer.style.color = "#000000";
+
+        
+        // Insertar después del botón de render
+        if (renderBtn && renderBtn.parentNode) {
+            renderBtn.parentNode.insertBefore(progressContainer, renderBtn.nextSibling);
+        }
+    }
+
+    // Ocultar botón de render
+    if (renderBtn) {
+        renderBtn.style.display = 'none';
+    }
+
+    // Mostrar contenedor de progreso
+    progressContainer.style.display = 'flex';
+
+    // Actualizar contenido del progreso
+    progressContainer.innerHTML = ` 
+      <div class="progress-info">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spinner">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+            </svg>
+            <span class="progress-text">Exporting video...</span>
+            <span class="progress-percentage">${percentage}%</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: ${percentage}%"></div>
+        </div> 
+    `;
+
+    // Si llegamos al 100%, preparar para mostrar el botón de descarga
+/*
+    if (percentage >= 100) {
+        setTimeout(() => {
+            ready_to_download = true;
+            show_download_button();
+        }, 500);
+    }
+*/
+}
+
+const html_finish = `
+<div class="export-container">
+    <button id="close-export-modal" class="close-export-btn" aria-label="Close">
+    x
+</button>
+    <h2 class="export-title">Export Video</h2>
+    
+    <div id="error_subidas_pendientes" class="alert-error">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="min-width:20px;">
+            <path d="M10 0C4.48 0 0 4.48 0 10s4.48 10 10 10 10-4.48 10-10S15.52 0 10 0zm1 15H9v-2h2v2zm0-4H9V5h2v6z" fill="currentColor"/>
+        </svg>
+        <span>There are still files that have not finished uploading.</span>
+    </div>
+    
+    <div class="pending-files-section">
+        <ul id="pendientes_de_subir" class="pending-files-list"></ul>
+        
+        <button class="btn-render" id="update_video"> 
+            New Export
+        </button>
+    </div>
+    
+    <div class="last-video-section">
+        <h3 class="section-subtitle">Last Video</h3>
+        <div class="video-preview-placeholder">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+                <line x1="7" y1="2" x2="7" y2="22"></line>
+                <line x1="17" y1="2" x2="17" y2="22"></line>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <line x1="2" y1="7" x2="7" y2="7"></line>
+                <line x1="2" y1="17" x2="7" y2="17"></line>
+                <line x1="17" y1="17" x2="22" y2="17"></line>
+                <line x1="17" y1="7" x2="22" y2="7"></line>
+            </svg>
+            <p style="font-size:16px;">Your exported video will appear here</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.export-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px;
+    /*background: rgba(255, 255, 255, 0.02);*/
+    background: rgb(243, 245, 247);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.export-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.8);
+    text-align: center;
+    letter-spacing: -0.5px;
+}
+
+.alert-error {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(220, 38, 38, 0.08));
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    color: #fca5a5;
+    font-size: 14px;
+    line-height: 1.5;
+    backdrop-filter: blur(8px);
+}
+
+.pending-files-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pending-files-list {
+    width: 100%;
+    max-height: 160px;
+    overflow-y: auto;
+    margin: 0;
+    padding: 16px;
+    list-style: none;
+    border-radius: 12px;
+    border: 1px solid rgba(124, 85, 230, 0.15);
+    background: rgba(124, 85, 230, 0.05);
+    backdrop-filter: blur(8px);
+}
+
+.pending-files-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.pending-files-list::-webkit-scrollbar-track {
+    background: rgba(124, 85, 230, 0.08);
+    border-radius: 3px;
+}
+
+.pending-files-list::-webkit-scrollbar-thumb {
+    background: rgba(124, 85, 230, 0.3);
+    border-radius: 3px;
+}
+
+.pending-files-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(124, 85, 230, 0.5);
+}
+
+.pending-files-list li {
+    padding: 8px 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    border-bottom: 1px solid rgba(124, 85, 230, 0.1);
+}
+
+.pending-files-list li:last-child {
+    border-bottom: none;
+}
+
+.btn-render {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid rgba(124, 85, 230, 0.4);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 85, 230, 0.8) 0%,
+        rgba(109, 70, 210, 0.9) 100%
+    );
+    box-shadow: 0 4px 12px rgba(124, 85, 230, 0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+}
+
+.btn-render:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 85, 230, 0.3);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 85, 230, 0.9) 0%,
+        rgba(109, 70, 210, 1) 100%
+    );
+}
+
+.btn-render:active {
+    transform: translateY(0);
+}
+
+.last-video-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.video-preview-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    border: 2px dashed rgba(124, 85, 230, 0.25);
+    background: rgba(124, 85, 230, 0.05);
+    color: rgba(0, 0, 0, 0.7);
+    text-align: center;
+    min-height: 140px;
+}
+
+.video-preview-placeholder p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgba(124, 85, 230, 0.4);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 85, 230, 0.8) 0%,
+        rgba(109, 70, 210, 0.9) 100%
+    );
+    box-shadow: 0 4px 12px rgba(124, 85, 230, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 85, 230, 0.4);
+    background: linear-gradient(
+        135deg,
+        rgba(124, 85, 230, 0.9) 0%,
+        rgba(109, 70, 210, 1) 100%
+    );
+}
+
+.btn-download:active {
+    transform: translateY(0);
+}
+
+.video-preview-placeholder.has-video {
+    border-style: solid;
+    border-color: rgba(124, 85, 230, 0.3);
+    background: rgba(124, 85, 230, 0.05);
+}
+
+
+
+.export-container {
+    position: relative; /* necesario para posicionar el botón */
+}
+
+.close-export-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgb(210,210,210);
+    color: #000000;
+    font-size: 25px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.close-export-btn:hover {
+    background-color: #cfcfcf;
+}
+
+.close-export-btn:active {
+    transform: scale(0.95);
+}
+
+</style>
+`;
+
+
+
+
+
+
+
+
+
 
 
 function actualizarMenuUrls_0() {
