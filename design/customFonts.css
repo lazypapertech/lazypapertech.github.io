@@ -58,3 +58,9 @@
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'font11';
+    src: url('https://raw.githubusercontent.com/manyresources/resourcespage/main/fonts/montserrat.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
