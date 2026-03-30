@@ -6,6 +6,36 @@
   position: relative; 
 }
 
+#modal_overlay_dinamico {
+  position: fixed;
+  inset: 0;  
+  display: none;
+  align-items: center;
+  justify-content: center; 
+  overflow: auto;
+  box-sizing: border-box;
+  background-color: rgb(20,20,20,0.4); 
+  backdrop-filter: blur(2px); 
+  z-index:20;
+}
+ 
+#modal_box_dinamico {  
+  padding: 20px 20px 20px 20px;
+  border-radius: 12px;
+  display: inline-block;
+  max-width: 90%;
+  box-sizing: border-box; 
+  color:white;
+   
+ 
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  
+   
+  backdrop-filter: blur(10px);
+  background-color: rgb(255,255,255);/*#1e4b82 #3e18a3*/
+  max-height: 90vh; 
+  z-index:21;
+}
  
 #settings-openModalBtn::before {
   content: '';
