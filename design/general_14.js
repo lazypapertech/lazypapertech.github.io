@@ -1420,7 +1420,52 @@ function isNotUser() {
       return false;
     }
   }
+
+  function limpiarSRT(srtTexto) {
+  const bloques = srtTexto.trim().split(/\n\s*\n/);
+  const nuevos = [];
+  let indice = 1;
+
+  for (const bloque of bloques) {
+    const lineas = bloque.trim().split("\n");
+
+    if (lineas.length < 3) continue;
+
+    const tiempo = lineas[1].trim();
+    const texto = lineas.slice(2).join(" ").trim();
+
+    // saltar si no hay texto
+    if (!texto) continue;
+
+    nuevos.push(`${indice}\n${tiempo}\n${texto}`);
+    indice++;
+  }
+
+  return nuevos.join("\n\n");
+}
   
+function limpiarSRTManteniendoHuecos(srtTexto) {
+  const bloques = srtTexto.trim().split(/\n\s*\n/);
+  let nuevos = [];
+  let indice = 1;
+
+  bloques.forEach(bloque => {
+    const lineas = bloque.trim().split("\n");
+    if (lineas.length < 3) return; // inválido
+
+    const tiempo = lineas[1].trim();
+    const texto = lineas.slice(2).join(" ").trim();
+
+    // ✅ ignorar solo si texto está completamente vacío
+    if (!texto) return;
+
+    nuevos.push(`${indice}\n${tiempo}\n${texto}`);
+    indice++;
+  });
+
+  return nuevos.join("\n\n");
+}
+
   function generateSRT(phrases) {
     let srt = "";
     let startTime = 0;
@@ -1470,6 +1515,7 @@ function isNotUser() {
     let randomstring = randomdownload.toString();
     let filename_srt = "manycaptions" + randomstring + ".txt";
     let content_srt = generateSRT(phrases_list_str);
+    //content_srt = limpiarSRT(content_srt);
   
     const blob_str = new Blob([content_srt], {
       type: "text/plain;charset=iso-8859-1",
@@ -1492,7 +1538,8 @@ function isNotUser() {
     let filename_srt = "manycaptions" + randomstring + extension;
     let content_srt = phrases_list_str.join(" ");
     if (extension == ".srt") {
-      content_srt = generateSRT(phrases_list_str);
+        content_srt = generateSRT(phrases_list_str);
+	content_srt = limpiarSRTManteniendoHuecos(content_srt);
     }
   
     const blob_str = new Blob(["\uFEFF" + content_srt], {
@@ -4175,4 +4222,4 @@ return;
 
 
 
-  
+   
