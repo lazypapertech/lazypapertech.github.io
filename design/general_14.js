@@ -562,7 +562,7 @@ function isNotUser() {
 
 
     <p>
-        <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
+        <a id="tutorial_button" href="https://www.youtube.com/watch?v=Sh8FeTo759M" target="_blank"
            style="background-color:#ffffff; 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -2975,7 +2975,7 @@ return;
   <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
 	Press render video before exporting.
     <button id="createVideo-2" class="btn">Render video</button>
-    <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
+    <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
            style="background-color:rgb(230,230,230); 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -3357,7 +3357,7 @@ subContainer.insertBefore(botonPrincipal, subContainer.firstChild);
           </svg>
         </button>
       </div>
-      <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
+      <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
            style="background-color: #7c55e6; 
                   color:rgb(230,230,230); 
                   padding:7px 7px; 
@@ -3898,7 +3898,7 @@ function show_percent_export(total_progress) {
 
 const html_finish = `
 <div class="export-container">
-    <button id="close-export-modal" class="close-export-btn" aria-label="Close">
+    <button id="close-export-modal" class="close-export-btn" translate="no" aria-label="Close">
     x
 </button>
     <h2 class="export-title">Export Video</h2>
@@ -4205,9 +4205,9 @@ return;
 
         if (elemento) { 
 	    if (id=="login-btn" || id=="li-home"){
-				elemento.href = "https://www.youtube.com";
+				elemento.href = "https://www.youtube.com/@spoiler_infinito";
 	    }else{	
-            	elemento.href = "https://www.youtube.com";
+            	elemento.href = "https://www.youtube.com/watch?v=duhp1fln2gQ";
 	    }
 	    	elemento.target = "_blank"; 
             elemento.rel = "noopener noreferrer";
