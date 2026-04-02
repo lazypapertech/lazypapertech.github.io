@@ -4191,7 +4191,7 @@ function actualizarMenuUrls_0() {
  
 
 function actualizarMenuUrls() {
-return;
+//return;
     const ids = [
         "login-btn",
         "li-home",
