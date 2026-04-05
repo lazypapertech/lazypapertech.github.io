@@ -562,7 +562,7 @@ function isNotUser() {
 
 
     <p>
-        <a id="tutorial_button" href="https://www.youtube.com/watch?v=Sh8FeTo759M" target="_blank"
+        <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
            style="background-color:#ffffff; 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -2975,7 +2975,7 @@ return;
   <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
 	Press render video before exporting.
     <button id="createVideo-2" class="btn">Render video</button>
-    <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
+    <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
            style="background-color:rgb(230,230,230); 
                   color:#7c55e6; 
                   padding:14px 28px; 
@@ -3357,7 +3357,7 @@ subContainer.insertBefore(botonPrincipal, subContainer.firstChild);
           </svg>
         </button>
       </div>
-      <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
+      <a id="tutorial_button" href="https://www.youtube.com" target="_blank"
            style="background-color: #7c55e6; 
                   color:rgb(230,230,230); 
                   padding:7px 7px; 
@@ -4191,7 +4191,7 @@ function actualizarMenuUrls_0() {
  
 
 function actualizarMenuUrls() {
-//return;
+return;
     const ids = [
         "login-btn",
         "li-home",
