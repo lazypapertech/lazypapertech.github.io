@@ -10,10 +10,10 @@
      
  
 <link rel="icon" href="https://raw.githubusercontent.com/manyresources/resourcespage/main/logos/newlogo/favicon.ico" type="image/x-icon">
- <link rel="stylesheet" href="../design9/menu_options.css?v=2.5.7">  
- <link rel="stylesheet" href="../design9/anchor_point.css?v=2.5.7">    
- <link rel="stylesheet" href="../design9/freelancers.css?v=2.5.7">
- <link rel="stylesheet" href="../design9/login_design.css?v=2.5.7"> 
+ <link rel="stylesheet" href="../design10/menu_options.css">  
+ <link rel="stylesheet" href="../design10/anchor_point.css">    
+ <link rel="stylesheet" href="../design10/freelancers.css">
+ <link rel="stylesheet" href="../design10/login_design.css"> 
 
 <style> 
 #general-header{display:none};
@@ -1497,7 +1497,7 @@ display:block;
  
 
 #item-loader{
-display:none;
+display:none;  
 }
 
 #liveCanvas{
@@ -3136,7 +3136,7 @@ let current_view="filename";
  
 const MINUTOS_TOTALES = 120;
 const VALOR_SEGMENTO = 0.2;
-const CALIBRACION = 4;
+const CALIBRACION = 4;//ideal 2
 const PASO_DELTA = 1.0/VALOR_SEGMENTO;//5 y 0.2 segundos
 const SEGMENTO_BASE = 20; 
 const SEGMENTO = SEGMENTO_BASE * CALIBRACION;
@@ -3326,7 +3326,7 @@ console.log("tiempo 0.2:",formatearTiempoDecimal(7325.88));
 
 
 
-function formatearTiempoDecimal(totalSegundos) {
+function formatearTiempoDecimal_0(totalSegundos) {
     /*const totalSeg = Number(totalSegundos);*/
     const totalSeg = Number(totalSegundos.toFixed(2));//toFixed(1)
 
@@ -3341,7 +3341,8 @@ function formatearTiempoDecimal(totalSegundos) {
     const minutos = Math.floor((redondeado % 3600) / 60);
     const segundos = Math.floor(redondeado % 60);
 
-    const decima = Math.round((redondeado * 10) % 10);
+    //const decima = Math.round((redondeado * 10) % 10);
+    const decima = Math.round(redondeado * 10) % 10; 
 
     let resultado =
         [horas.toString().padStart(2, '0'),
@@ -3353,6 +3354,96 @@ function formatearTiempoDecimal(totalSegundos) {
     return resultado;
 }
  
+function formatearTiempoDecimal_1(totalSegundos, paso = 0.05) {
+    const pasoEntero = Math.round(paso * 100);
+    const rawEntero  = Math.round(totalSegundos * 100);
+    const redondeado = (Math.round(rawEntero / pasoEntero) * pasoEntero) / 100;
+
+    const horas      = Math.floor(redondeado / 3600);
+    const minutos    = Math.floor((redondeado % 3600) / 60);
+    const segundos   = Math.floor(redondeado % 60);
+    const centesimas = Math.round(redondeado * 100) % 100;
+
+    let resultado = [
+        horas.toString().padStart(2, '0'),
+        minutos.toString().padStart(2, '0'),
+        segundos.toString().padStart(2, '0')
+    ].join(':');
+
+    if (centesimas > 0) {
+        // Quita ceros finales: 10 → "1", 05 → "5", 15 → "15"
+        const dec = centesimas.toString().padStart(2, '0').replace(/0+$/, '');
+        resultado += '.' + dec;
+    }
+    return resultado;
+} 
+
+function formatearTiempoDecimal_2(totalSegundos, paso = 0.05) {
+    // Precisión dinámica según el paso 
+    const decimalesPaso = (paso.toString().split('.')[1] || '').length;
+    const factor = Math.pow(10, decimalesPaso);
+
+    // Redondeo a múltiplo de paso
+    const pasoEntero = Math.round(paso * factor);
+    const rawEntero  = Math.round(totalSegundos * factor);
+    const redondeado = (Math.round(rawEntero / pasoEntero) * pasoEntero) / factor;
+
+    const horas      = Math.floor(redondeado / 3600);
+    const minutos    = Math.floor((redondeado % 3600) / 60);
+    const segundos   = Math.floor(redondeado % 60);
+
+    // Parte decimal como string, sin ceros finales
+    const decimalStr = redondeado.toFixed(decimalesPaso).split('.')[1] || '0';
+    const decRecortado = decimalStr.replace(/0+$/, '');
+
+    let resultado = [
+        horas.toString().padStart(2, '0'),
+        minutos.toString().padStart(2, '0'),
+        segundos.toString().padStart(2, '0')
+    ].join(':');
+
+    if (decRecortado.length > 0 && parseInt(decRecortado) > 0)
+        resultado += '.' + decRecortado;
+
+    return resultado;
+}
+
+function redondearAPaso(valor) { 
+    const paso = 0.4/CALIBRACION;
+    const decimalesPaso = (paso.toString().split('.')[1] || '').length;
+    const factor = Math.pow(10, decimalesPaso);
+    const pasoEntero = Math.round(paso * factor);
+    const rawEntero  = Math.round(valor * factor);
+    return (Math.round(rawEntero / pasoEntero) * pasoEntero) / factor;
+} 
+
+
+function formatearTiempoDecimal(totalSegundos, paso = 0.05) {
+    paso = 0.4/CALIBRACION;
+    const redondeado = redondearAPaso(totalSegundos);
+
+    const horas    = Math.floor(redondeado / 3600);
+    const minutos  = Math.floor((redondeado % 3600) / 60);
+    const segundos = Math.floor(redondeado % 60);
+
+    // Extraer decimales de forma segura: vía string del paso
+    const decimalesPaso = (paso.toString().split('.')[1] || '').length;
+    // Forzar el número de decimales correcto DESPUÉS de redondear
+    const segConDec = (redondeado % 60).toFixed(decimalesPaso);
+    const partes = segConDec.split('.');
+    const decRecortado = (partes[1] || '0').replace(/0+$/, '');
+
+    let resultado = [
+        horas.toString().padStart(2, '0'),
+        minutos.toString().padStart(2, '0'),
+        Math.floor(Number(segConDec)).toString().padStart(2, '0')
+    ].join(':');
+
+    if (decRecortado.length > 0 && parseInt(decRecortado) > 0)
+        resultado += '.' + decRecortado;
+console.log("resultado error:",totalSegundos,", ",resultado);
+    return resultado;
+}
 
 function sumarTiempo(timestamp, segundosFlotante, velocidad = 1) {
     // Parsear HH:MM:SS(.d)?
@@ -3413,7 +3504,8 @@ function timeToSeconds(timeStr) {
     const minutos = parseInt(parts[1]);
     const segundosPartes = parts[2].split('.');
     const segundos = parseInt(segundosPartes[0]);
-    const decima = segundosPartes[1] ? parseInt(segundosPartes[1]) / 10 : 0;
+    //const decima = segundosPartes[1] ? parseInt(segundosPartes[1]) / 10 : 0;
+    const decima = segundosPartes[1] ? parseInt(segundosPartes[1]) / Math.pow(10, segundosPartes[1].length) : 0;
     return horas * 3600 + minutos * 60 + segundos + decima;
 }
 
@@ -3528,7 +3620,7 @@ const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
 		//rect.style.filter = 'grayscale(0.8) brightness(0.7)';
 		//rect.style.filter = 'grayscale(0.8) brightness(1.5)'; 
 
-		box_options = ["Delete_file","Add_file","Split","Add_keyframes","Instruction"];
+		box_options = ["Delete_file","Add_file","Split","Add_keyframes","Instruction","ai_filter_btn","ai_mask_btn"];
 		if (rect.dataset.property!="filename"){
 			console.log("rect.dataset.property MAL:",rect.dataset.property);
 			box_options = ["Delete_box","Add_box","keyframe_1","keyframe_2","bounce"];
@@ -3538,16 +3630,19 @@ const rectAntes = rectanguloSeleccionado.getBoundingClientRect();
 			if (rect.dataset.property=="glow"){
 				box_options = ["Delete_box","Add_box","keyframe_1","keyframe_2"];
 			}
+			if (rect.dataset.property=="ai_filter" || rect.dataset.property=="ai_mask"){
+				box_options = ["Delete_box","Add_box","Select_instruction"];
+			} 
 		}else{
 		     if (rect.dataset.filetype=="image"){
 			if (!loaded_project){
-				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point","Glow_color","Instruction"];
+				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Anchor_point","Glow_color","Instruction","ai_filter_btn","ai_mask_btn"];
 			}else{
-				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Glow_color","Instruction"];
+				box_options = ["Delete_file","Add_file","Split","Add_keyframes","Glow_color","Instruction","ai_filter_btn","ai_mask_btn"];
 			}
 		     } 		
 		     if (rect.dataset.filetype=="text"){
-			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes","Text_color","Glow_color","Instruction"];
+			box_options = ["Delete_file","Add_box","Text_input","Split","Add_keyframes","Text_color","Glow_color","Instruction","ai_filter_btn","ai_mask_btn"];
 		     } 	
 		     if (rect.dataset.filetype=="audio"){
 			box_options = ["Delete_file","Add_file","Split"];
@@ -3607,7 +3702,9 @@ arreglar_posicion(distancia_to_segment);
     });
     if (rectanguloSeleccionado){ 
 	//arreglar_posicion(distancia_to_segment);  
-    }	 
+    }	
+
+//update_rectangles(); 
  
 }
 
@@ -3853,6 +3950,9 @@ if (current_view=="filename"){
 	if (datos.property=="ratio"){
 		nombre_visible_rect = datos.item_name + " - " + "custom size";
 	}
+	if (datos.start_value.includes("%(bounce)%")){
+		nombre_visible_rect = datos.item_name + " - " + "Bounce";
+	}	
 }
 
 
@@ -3967,7 +4067,7 @@ rect.appendChild(labelBottom);
     rect.style.borderLeft = '1px solid rgb(35, 45, 50)';
     rect.style.borderRight = '1px solid rgb(35, 45, 50)';
   
-     
+    rect.dataset.bg_id = datos.bg_id;
     rect.dataset.item_name = datos.item_name; 
     rect.dataset.indice = indice_rect; 
     rect.dataset.property = datos.property;  
@@ -4002,11 +4102,12 @@ rect.appendChild(labelBottom);
         posicion: posicion,
 	posicion_y: ALTURA_REGLA * index_row,
         ancho: ancho,
+        bg_id: datos.bg_id,
 	item_name: datos.item_name,
         index_item: datos.index_item,
         property: datos.property,
         filetype: datos.filetype,
-        index_global_row : index_global_row,
+        index_global_row: index_global_row,
         index_row : index_row,
         color: datos.color,
         start: datos.start,
@@ -4016,7 +4117,9 @@ rect.appendChild(labelBottom);
 	video_audio_value: datos.video_audio_value,
 	color_rgb: datos.color_rgb,
 	glow_color: datos.glow_color,
-	anchor_point: datos.anchor_point
+	anchor_point: datos.anchor_point,
+	instruction_name: datos.instruction_name, 
+	description: datos.description,
     });
     //rectangulos sera una sublist de rectangulos_current_view
     //rectangulos_current_view NO tiene la misma estructura que unica_regla.rectangulos
@@ -4060,6 +4163,7 @@ rect.addEventListener('mousedown', (e) => {
 
 
 /*
+//NO MOVIA EL SEGMENTO
 // Además, para móviles, hacemos lo mismo que el mousedown pero con touchstart
 rect.addEventListener('touchstart', (e) => {
     if (e.cancelable) {
@@ -4074,11 +4178,10 @@ rect.addEventListener('touchstart', (e) => {
     let arrastrando = false;
 
     function onMove(ev) {
-        const evento = ev.touches ? ev.touches[0] : ev;
-
+        const evento = ev.touches ? ev.touches[0] : ev; 
         if (!arrastrando) {
-            arrastrando = true;
-            console.log("Inicio arrastre Touch"); 
+	    console.log("Inicio arrastre Touch");
+            arrastrando = true; 
             iniciarArrastreTouch(e, rect);   
         }  
  
@@ -4097,13 +4200,18 @@ rect.addEventListener('touchstart', (e) => {
     //window.addEventListener('mouseup', onUp);
 
     //comentar si uso el hold touch
-    window.addEventListener('touchstart', onMove);
+    window.addEventListener('touchstart', onMove); 
+
+
+
     //descomentar si uso "iniciarArrastreTouch_simple"	
     //window.addEventListener('touchmove', onMove, { passive: false });
     window.addEventListener('touchend', onUp);
 }, { passive: false });
+ 
 */
-	
+
+
 rect.addEventListener('touchstart', (e) => {
     if (e.cancelable) e.preventDefault();
 
@@ -4112,11 +4220,9 @@ rect.addEventListener('touchstart', (e) => {
         show_rect_extrems(rect);
     }
 
-    iniciarArrastreTouch(e, rect); 
+    iniciarArrastreTouch(e, rect); // 👈 LLAMAR AQUÍ DIRECTO
 
 }, { passive: false });
-	
-
 
 
  
@@ -4177,15 +4283,21 @@ function crear_bounce_rectangle() {
 
     let segundosInicio = (posicionBoton - PADDING) / SEGMENTO * VALOR_SEGMENTO;
     let segundosFin = segundosInicio + VALOR_SEGMENTO; 
+    const valor_extra = 3;
+    segundosFin = segundosInicio + valor_extra * VALOR_SEGMENTO;
+    /*
     segundosInicio  = Math.round(segundosInicio  * 10) / 10;
     segundosFin  = Math.round(segundosFin  * 10) / 10;
+    */
+    //segundosInicio = redondearAPaso(segundosInicio);
+    //segundosFin = redondearAPaso(segundosFin);
     const nuevoRect = {
 	item_name: selected_rect.dataset.item_name,
 	index_item: selected_rect.dataset.index_item,
-	property: selected_rect.dataset.property,
+	property: selected_rect.dataset.property,//selected_rect.dataset.property
 	filetype: selected_rect.dataset.filetype,
-        index_global_row : selected_rect.dataset.index_global_row,
-        index_row : selected_rect.dataset.index_row,
+        index_global_row: selected_rect.dataset.index_global_row,
+        index_row: selected_rect.dataset.index_row,
         color: selected_rect.dataset.color,//"rgb(255, 249, 105)" 
         start: formatearTiempoDecimal(segundosInicio),
         end: formatearTiempoDecimal(segundosFin),
@@ -4205,7 +4317,7 @@ function crear_bounce_rectangle() {
         if (Math.abs(finSeleccionado - inicioDerecha) < 1) {
             // Desplazar el de la derecha y todos los siguientes un SEGMENTO
             for (let i = indiceSeleccionado + 1; i < filaRectangulos.length; i++) {
-                filaRectangulos[i].posicion = parseFloat(filaRectangulos[i].posicion) + SEGMENTO;
+                filaRectangulos[i].posicion = parseFloat(filaRectangulos[i].posicion) + SEGMENTO * valor_extra;
                 filaRectangulos[i].elemento.dataset.xReal = filaRectangulos[i].posicion;
             }
 
@@ -4213,16 +4325,22 @@ function crear_bounce_rectangle() {
             filaUnica.splice(0, filaUnica.length, ...filaRectangulos.map(rect => {
                 let segundosInicio = (parseFloat(rect.posicion) - PADDING) / SEGMENTO * VALOR_SEGMENTO; 
                 let segundosFin = segundosInicio + (parseFloat(rect.ancho) / SEGMENTO * VALOR_SEGMENTO);
+		/*	
 		segundosInicio  = Math.round(segundosInicio  * 10) / 10;
 		segundosFin  = Math.round(segundosFin  * 10) / 10;
+		*/
+		/*
+		segundosInicio = redondearAPaso(segundosInicio);
+    		segundosFin = redondearAPaso(segundosFin);
+		*/
                 console.log("MAL segundosFin: ", segundosFin);
                 return {
 		    item_name: rect.item_name,
  		    index_item:	rect.index_item,
  		    property: rect.property,
  		    filetype: rect.filetype,
-		    index_global_row : selected_rect.dataset.index_global_row,
-        	    index_row : selected_rect.dataset.index_row,
+		    index_global_row: selected_rect.dataset.index_global_row,
+        	    index_row: selected_rect.dataset.index_row,
 		    color: selected_rect.dataset.color,//"rgb(255, 249, 105)" 
                     start: formatearTiempoDecimal(segundosInicio),
                     end: formatearTiempoDecimal(segundosFin),
@@ -4538,11 +4656,29 @@ function add_box_0(){
  
 }
 
+ 
 
 function add_box() {
 
     const index_row = selected_rect.dataset.index_row;
     const index_global_row = selected_rect.dataset.index_global_row;
+    const file_type = selected_rect.dataset.filetype; 
+    let bg_id = parseInt(selected_rect.dataset.bg_id);
+    console.log("bg_id error:",bg_id); 
+
+    let rect_color = "rgb(189,32,41)";
+	if (file_type=="image"){
+		rect_color = "rgb(195,136,35)";
+	}
+	if (file_type=="video"){ 
+		rect_color = "rgb(1, 140, 96)";
+	}
+	if (file_type=="audio"){ 
+		rect_color = "rgb(7, 74, 145)";
+	}
+	if (file_type=="text"){ 
+		rect_color = "#7c55e6";
+	}
 
     if (!rectanguloSeleccionado) return; 
 
@@ -4559,16 +4695,30 @@ function add_box() {
 
     let segundosInicio = (posicionBoton - PADDING) / SEGMENTO * VALOR_SEGMENTO;
     let segundosFin = segundosInicio + VALOR_SEGMENTO; 
+    const valor_extra = 5;
+    if (current_view == "filename"){
+	bg_id_total = bg_id_total + 1;	
+        bg_id = bg_id_total;
+    	segundosFin = segundosInicio + valor_extra * VALOR_SEGMENTO;
+    }
+    console.log("segundosInicio error:",segundosInicio);
+    /*
     segundosInicio  = Math.round(segundosInicio  * 10) / 10;
     segundosFin  = Math.round(segundosFin  * 10) / 10;
+    */
     /*
-    const nuevoRect = {
+    segundosInicio = redondearAPaso(segundosInicio);
+    segundosFin = redondearAPaso(segundosFin);
+    */
+
+    /*
+    const nuevoRect = { 
 	item_name: selected_rect.dataset.item_name,
 	index_item: selected_rect.dataset.index_item,
 	property: selected_rect.dataset.property,
 	filetype: selected_rect.dataset.filetype,
-        index_global_row : selected_rect.dataset.index_global_row,
-        index_row : selected_rect.dataset.index_row,
+        index_global_row: selected_rect.dataset.index_global_row,
+        index_row: selected_rect.dataset.index_row,
 	color: selected_rect.dataset.color,
         start: formatearTiempoDecimal(segundosInicio),
         end: formatearTiempoDecimal(segundosFin),
@@ -4596,15 +4746,19 @@ function add_box() {
         	new_end_value = selected_rect.dataset.end_value;
 	}
     } 	
+     
+ 
 
     const nuevoRect = {
+	bg_id: bg_id,
 	item_name: selected_rect.dataset.item_name,
 	index_item: selected_rect.dataset.index_item,
 	property: selected_rect.dataset.property,
 	filetype: selected_rect.dataset.filetype,
-        index_global_row : selected_rect.dataset.index_global_row,
-        index_row : selected_rect.dataset.index_row,
-	color: selected_rect.dataset.color,
+        index_global_row: selected_rect.dataset.index_global_row,
+        index_row: selected_rect.dataset.index_row,
+	//color: selected_rect.dataset.color,
+	color: rect_color,
         start: formatearTiempoDecimal(segundosInicio),
         end: formatearTiempoDecimal(segundosFin),
         start_value: new_start_value,
@@ -4612,7 +4766,9 @@ function add_box() {
         video_audio_value: "",
 	color_rgb: "0,0,0",
 	glow_color: "255,255,255",
-	anchor_point: "0.5,0.5"
+	anchor_point: "0.5,0.5",
+	instruction_name: "", 
+	description: "",
     };
 
  
@@ -4626,7 +4782,11 @@ function add_box() {
         if (Math.abs(finSeleccionado - inicioDerecha) < 1) {
             // Desplazar el de la derecha y todos los siguientes un SEGMENTO
             for (let i = indiceSeleccionado + 1; i < filaRectangulos.length; i++) {
-                filaRectangulos[i].posicion = parseFloat(filaRectangulos[i].posicion) + SEGMENTO;
+		if (current_view == "filename"){
+                	filaRectangulos[i].posicion = parseFloat(filaRectangulos[i].posicion) + SEGMENTO * valor_extra;
+		}else{
+			filaRectangulos[i].posicion = parseFloat(filaRectangulos[i].posicion) + SEGMENTO;
+		}	
                 filaRectangulos[i].elemento.dataset.xReal = filaRectangulos[i].posicion;
             }
 
@@ -4634,16 +4794,23 @@ function add_box() {
             filaUnica.splice(0, filaUnica.length, ...filaRectangulos.map(rect => {
                 let segundosInicio = (parseFloat(rect.posicion) - PADDING) / SEGMENTO * VALOR_SEGMENTO; 
                 let segundosFin = segundosInicio + (parseFloat(rect.ancho) / SEGMENTO * VALOR_SEGMENTO);
+		/*
 		segundosInicio  = Math.round(segundosInicio  * 10) / 10;
 		segundosFin  = Math.round(segundosFin  * 10) / 10;
+		*/
+		/*
+		segundosInicio = redondearAPaso(segundosInicio);
+    		segundosFin = redondearAPaso(segundosFin);
+		*/
                 console.log("MAL segundosFin: ", segundosFin);
                 return {
+		    bg_id: rect.bg_id,
 		    item_name: rect.item_name,
  		    index_item:	rect.index_item,
  		    property: rect.property,
  		    filetype: rect.filetype,
-		    index_global_row : selected_rect.dataset.index_global_row,
-        	    index_row : selected_rect.dataset.index_row,
+		    index_global_row: selected_rect.dataset.index_global_row,
+        	    index_row: selected_rect.dataset.index_row,
 		    color: rect.color,
                     start: formatearTiempoDecimal(segundosInicio),
                     end: formatearTiempoDecimal(segundosFin),
@@ -4652,7 +4819,9 @@ function add_box() {
                     video_audio_value: rect.video_audio_value,
 		    color_rgb: rect.color_rgb,
 		    glow_color: rect.glow_color,
-		    anchor_point: rect.anchor_point
+		    anchor_point: rect.anchor_point,
+		    instruction_name: rect.instruction_name, 
+		    description: rect.description,
                 };
             }));
         }
@@ -4665,18 +4834,25 @@ function add_box() {
     filaRectangulos.forEach(r => r.elemento.remove());
     filaRectangulos.length = 0;
 
+     
       
     filaUnica.forEach((rectData, index) => { 
         crearRectangulo(rectData, index, index_row,index_global_row);
-        console.log("new rectangle");
-        actualizarEstadoGlobal();
-    });
+        console.log("new rectangle"); 
+        actualizarEstadoGlobal();//lo comente porque daba error en getStartDifferences 
+    }); 
+     
 
     // Seleccionar el nuevo
     const nuevoElemento = filaRectangulos[indiceSeleccionado + 1].elemento;
     seleccionarRectangulo(nuevoElemento); 
 
     renderizarElementosVisibles();
+    if (current_view == "filename"){
+    	addPropertyInTheSameRow(nuevoRect,index_global_row);
+	actualizarEstadoGlobal();
+    }	
+    //actualizarEstadoGlobal();
 }
 
 
@@ -4786,7 +4962,7 @@ boton.addEventListener('click', (e) => {
 
 
 function actualizarPosicionesVisuales() {
-     
+ 
     rectangulos.forEach(row => {
         //console.log("ERROR: ",rectangulos.length, row);
         row.forEach(rect => { 
@@ -4795,6 +4971,850 @@ function actualizarPosicionesVisuales() {
     	});
     }); 
 }
+
+
+
+function aplicarDesplazamiento(last_regla, index_global_row) {
+  const rectangulosFilename = unica_regla.rectangulos[index_global_row];
+
+  for (const dicViejo of last_regla) {
+    if (dicViejo.property !== "filename") continue;
+console.log("desplazamiento:",unica_regla.rectangulos);
+    const bgId = dicViejo.bg_id;
+    const startViejo = timeToSeconds(dicViejo.start);
+
+    const dicNuevo = rectangulosFilename.find(r => r.bg_id === bgId);
+    if (!dicNuevo) continue;
+
+    const desplazamiento = timeToSeconds(dicNuevo.start) - startViejo;
+ 
+
+    if (desplazamiento === 0) continue;
+
+    // Buscar afectados en TODAS las sublistas (excepto index_global_row)
+    const afectados = unica_regla.rectangulos
+      .flatMap((sublista, i) => i === index_global_row ? [] : sublista)
+      .filter(r => r.bg_id === bgId)
+      .sort((a, b) =>
+        desplazamiento > 0
+          ? timeToSeconds(b.start) - timeToSeconds(a.start)
+          : timeToSeconds(a.start) - timeToSeconds(b.start)
+      );
+console.log("afectados:",afectados);
+
+    for (const rect of afectados) {
+      const startActual = timeToSeconds(rect.start);
+      const duracion = timeToSeconds(rect.end) - startActual;
+      let nuevoStart = startActual + desplazamiento;
+
+      const obstaculos = afectados.filter(r => r !== rect);
+ 
+      if (desplazamiento > 0) {
+        for (const obs of obstaculos) {
+          const obsStart = timeToSeconds(obs.start);
+          if (obsStart > startActual && obsStart < nuevoStart) {
+            nuevoStart = obsStart - duracion;
+            if (nuevoStart < startActual) nuevoStart = startActual;
+          }
+        }
+      } else {
+        for (const obs of obstaculos) {
+          const obsEnd = timeToSeconds(obs.end);
+          if (obsEnd < startActual && obsEnd > nuevoStart) {
+            nuevoStart = obsEnd;
+            if (nuevoStart > startActual) nuevoStart = startActual;
+          }
+        }
+      }
+
+      rect.start = formatearTiempoDecimal(nuevoStart);
+      rect.end = formatearTiempoDecimal(nuevoStart + duracion);
+    }
+  }
+}
+
+
+/*
+function getStartDifferences_0(last_regla, index_global_row) {
+     
+
+    const current_regla = unica_regla.rectangulos[index_global_row];
+
+    // Indexar last_regla por bg_id para búsqueda rápida
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+        if (bg_id in lastByBg) {
+            const current_start = timeToSeconds(currentDic.start);
+            const last_start = timeToSeconds(lastByBg[bg_id].start);
+            const diff = current_start - last_start;
+            result.push({ bg_id, diff_start: diff });
+        }
+    }
+console.log("diff list:",result);
+
+    return result;
+} 
+
+function getStartDifferences_1(last_regla, index_global_row) { 
+
+    const current_regla = unica_regla.rectangulos[index_global_row];
+
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+        if (bg_id in lastByBg) {
+            const current_start = timeToSeconds(currentDic.start);
+            const last_start = timeToSeconds(lastByBg[bg_id].start);
+            const current_end = timeToSeconds(currentDic.end);
+            const last_end = timeToSeconds(lastByBg[bg_id].end);
+            result.push({
+                bg_id,
+                diff_start: current_start - last_start,
+                diff_end: current_end - last_end,
+            });
+        }
+    }
+
+    return result;
+} 
+*/
+
+
+function getStartDifferences_2(last_regla, index_global_row) { 
+
+    const current_regla = unica_regla.rectangulos[index_global_row];
+
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+        if (bg_id in lastByBg) {
+            const current_start = timeToSeconds(currentDic.start);
+            const last_start    = timeToSeconds(lastByBg[bg_id].start);
+            const current_end   = timeToSeconds(currentDic.end);
+            const last_end      = timeToSeconds(lastByBg[bg_id].end);
+
+            const longitud_actual  = current_end - current_start;
+            const longitud_anterior = last_end - last_start;
+
+            result.push({
+                bg_id,
+                diff_start:    current_start - last_start,
+                diff_end:      current_end   - last_end,
+                diff_longitud: longitud_actual - longitud_anterior,
+            });
+        }
+    } 
+
+    return result;
+}
+ 
+
+function getStartDifferences_bien(last_regla, index_global_row) { 
+
+    const current_regla = unica_regla.rectangulos[index_global_row];
+
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+
+        const current_start = timeToSeconds(currentDic.start);
+        const current_end   = timeToSeconds(currentDic.end);
+        const longitud_actual = current_end - current_start;
+
+        let last_start, last_end, longitud_anterior;
+
+        if (bg_id in lastByBg) {
+            last_start        = timeToSeconds(lastByBg[bg_id].start);
+            last_end          = timeToSeconds(lastByBg[bg_id].end);
+            longitud_anterior = last_end - last_start;
+        } else {
+            // Nuevo dic que no existía en last_regla: asumir last = 0
+            last_start        = 0;
+            last_end          = 0;
+            longitud_anterior = 0;
+        }
+
+        result.push({
+            bg_id,
+            diff_start:    current_start - last_start,
+            diff_end:      current_end   - last_end,
+            diff_longitud: longitud_actual - longitud_anterior,
+        });
+    }
+
+    console.log("desplazamiento2:",result,last_regla,current_regla);
+    return result;
+}
+ 
+
+function getStartDifferences_bien_2(last_regla, index_global_row) { 
+
+    const current_regla = unica_regla.rectangulos[index_global_row];
+
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+
+        const current_start = timeToSeconds(currentDic.start);
+        const current_end   = timeToSeconds(currentDic.end);
+        const longitud_actual = current_end - current_start;
+
+        let last_start, last_end, longitud_anterior;
+
+        if (bg_id in lastByBg) {
+            last_start        = timeToSeconds(lastByBg[bg_id].start);
+            last_end          = timeToSeconds(lastByBg[bg_id].end);
+            longitud_anterior = last_end - last_start;
+
+	    result.push({
+                bg_id,
+                diff_start:    current_start - last_start,
+                diff_end:      current_end   - last_end,
+                diff_longitud: longitud_actual - longitud_anterior,
+            });
+        } else {
+	    console.log("error nuevo dic");
+            // Nuevo dic que no existía en last_regla: asumir last = 0
+            last_start        = 0;
+            last_end          = 0;
+            longitud_anterior = 0;
+
+	    result.push({
+                bg_id,
+                diff_start:    current_start,
+                diff_end:      0,
+                diff_longitud: 0,
+            });
+
+	     
+        }
+
+         
+    }
+
+    console.log("desplazamiento error:",JSON.stringify(result),"last_regla:",JSON.stringify(last_regla),"current_regla:",JSON.stringify(current_regla));
+    return result;
+}
+
+function getStartDifferences_7(last_regla, index_global_row) {
+    const current_regla = unica_regla.rectangulos[index_global_row];
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+        const current_start   = timeToSeconds(currentDic.start);
+        const current_end     = timeToSeconds(currentDic.end);
+        const longitud_actual = current_end - current_start;
+
+        if (bg_id in lastByBg) {
+            const last_start        = timeToSeconds(lastByBg[bg_id].start);
+            const last_end          = timeToSeconds(lastByBg[bg_id].end);
+            const longitud_anterior = last_end - last_start;
+            result.push({
+                bg_id,
+                diff_start:    current_start - last_start,
+                diff_end:      current_end   - last_end,
+                diff_longitud: longitud_actual - longitud_anterior,
+            });
+        } else {
+            result.push({
+                bg_id,
+                diff_start:    0,
+                diff_end:      0,
+                diff_longitud: 0,
+            });
+        }
+    }
+    console.log("desplazamiento error:",JSON.stringify(result),"last_regla:",JSON.stringify(last_regla),"current_regla:",JSON.stringify(current_regla));
+    return result;
+}
+
+function getStartDifferences_8(last_regla, index_global_row) {
+    const current_regla = unica_regla.rectangulos[index_global_row];
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+        const current_start   = timeToSeconds(currentDic.start);
+        const current_end     = timeToSeconds(currentDic.end);
+        const longitud_actual = current_end - current_start;
+
+        if (bg_id in lastByBg) {
+            const last_start        = timeToSeconds(lastByBg[bg_id].start);
+            const last_end          = timeToSeconds(lastByBg[bg_id].end);
+            const longitud_anterior = last_end - last_start;
+            result.push({
+                bg_id,
+                diff_start:    current_start - last_start,
+                diff_end:      current_end   - last_end,
+                diff_longitud: longitud_actual - longitud_anterior,
+            });
+        } else {
+            // bg_id nuevo: buscar en otras sublistas dónde están sus segmentos actualmente
+            let current_pos = 0;
+            for (const sublist of unica_regla.rectangulos) {
+                const existing = sublist.find(d => d.bg_id === bg_id);
+                if (existing && existing.start) {
+                    current_pos = timeToSeconds(existing.start);
+                    break;
+                }
+            }
+            // diff_start = dónde debe ir - dónde está ahora
+            result.push({
+                bg_id,
+                diff_start:    current_start - current_pos,
+                diff_end:      0,
+                diff_longitud: 0,
+            });
+        }
+    }
+    console.log("desplazamiento error:",JSON.stringify(result),"last_regla:",JSON.stringify(last_regla),"current_regla:",JSON.stringify(current_regla));
+    return result;
+}
+
+
+function getStartDifferences(last_regla, index_global_row) {
+    const current_regla = unica_regla.rectangulos[index_global_row];
+    const lastByBg = {};
+    for (const d of last_regla) {
+        lastByBg[d.bg_id] = d;
+    }
+    const result = [];
+    for (const currentDic of current_regla) {
+        const bg_id = currentDic.bg_id;
+        const current_start   = timeToSeconds(currentDic.start);
+        const current_end     = timeToSeconds(currentDic.end);
+        const longitud_actual = current_end - current_start;
+
+        if (bg_id in lastByBg) {
+            // Caso normal: bg_id existía antes
+            const last_start        = timeToSeconds(lastByBg[bg_id].start);
+            const last_end          = timeToSeconds(lastByBg[bg_id].end);
+            const longitud_anterior = last_end - last_start;
+            result.push({
+                bg_id,
+                diff_start:    current_start - last_start,
+                diff_end:      current_end   - last_end,
+                diff_longitud: longitud_actual - longitud_anterior,
+            });
+        } else {
+            // bg_id nuevo: buscar en sublists que NO sean la actual
+            // para evitar leer una posición ya modificada
+            let current_pos = null;
+            for (let si = 0; si < unica_regla.rectangulos.length; si++) {
+                if (si === index_global_row) continue;
+                const existing = unica_regla.rectangulos[si].find(
+                    d => d.bg_id === bg_id && d.property !== 'filename'
+                );
+                if (existing && existing.start) {
+                    current_pos = timeToSeconds(existing.start);
+                    break;
+                }
+            }
+
+            if (current_pos === null) {
+                // Segmento completamente nuevo, sin sombras todavía
+                result.push({ bg_id, diff_start: 0, diff_end: 0, diff_longitud: 0 });
+            } else {
+                result.push({
+                    bg_id,
+                    diff_start:    current_start - current_pos,
+                    diff_end:      0,
+                    diff_longitud: 0,
+                });
+            }
+        }
+    } 
+
+    return result;
+}
+
+
+function applyStartDifferences_0(differences) { 
+
+    for (const { bg_id, diff_start } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+            for (const dic of sublist) {
+                if (dic.bg_id === bg_id && dic.property !== 'filename') {
+                    dic.start = formatearTiempoDecimal(timeToSeconds(dic.start) + diff_start);
+                    dic.end = formatearTiempoDecimal(timeToSeconds(dic.end) + diff_start); 
+                }
+            }
+        }
+    }
+} 
+
+function applyStartDifferences_1(differences) {
+    function timeToSeconds(timeStr) {
+        const [h, m, s] = timeStr.split(':');
+        return parseInt(h) * 3600 + parseInt(m) * 60 + parseFloat(s);
+    }
+
+    for (const { bg_id, diff_start, diff_end } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+            for (const dic of sublist) {
+                if (dic.bg_id === bg_id && dic.property !== 'filename') {
+                    dic.start = formatearTiempoDecimal(timeToSeconds(dic.start) + diff_start);
+                    dic.end = formatearTiempoDecimal(timeToSeconds(dic.end) + diff_end);
+                }
+            }
+        }
+    }
+}
+
+function applyStartDifferences_2(differences) { 
+
+    for (const { bg_id, diff_start, diff_end } of differences) {
+
+        // Recoger todos los dics afectables de este bg_id en todas las sublistas
+        const segments = [];
+        for (const sublist of unica_regla.rectangulos) {
+            for (const dic of sublist) {
+                if (dic.bg_id === bg_id && dic.property !== 'filename') {
+                    segments.push(dic);
+                }
+            }
+        }
+
+        // Ordenar por start
+        segments.sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+        // Guardar gaps originales entre segmentos consecutivos
+        // gaps[i] = gap entre segments[i] y segments[i+1] (puede ser 0 si están pegados)
+        const gaps = [];
+        for (let i = 0; i < segments.length - 1; i++) {
+            const endI   = timeToSeconds(segments[i].end);
+            const startNext = timeToSeconds(segments[i + 1].start);
+            gaps.push(startNext - endI); // puede ser 0 o positivo
+        }
+
+        // Guardar duraciones originales de cada segmento
+        const durations = segments.map(dic => 
+            timeToSeconds(dic.end) - timeToSeconds(dic.start)
+        );
+
+        // --- Aplicar diff_start al primer segmento y propagar hacia adelante en cascada ---
+        if (diff_start !== 0) {
+            // Mover start del segmento 0
+            const newStart0 = timeToSeconds(segments[0].start) + diff_start;
+            segments[0].start = formatearTiempoDecimal(newStart0);
+            // Conservar su duración
+            segments[0].end = formatearTiempoDecimal(newStart0 + durations[0]);
+
+            // Propagar en cascada: cada siguiente debe mantener el gap original
+            for (let i = 1; i < segments.length; i++) {
+                const prevEnd = timeToSeconds(segments[i - 1].end);
+                const newStartI = prevEnd + gaps[i - 1];
+                segments[i].start = formatearTiempoDecimal(newStartI);
+                segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+            }
+        }
+
+        // --- Aplicar diff_end al último segmento y propagar hacia atrás en cascada ---
+        if (diff_end !== 0) {
+            const last = segments.length - 1;
+            // Mover end del último segmento
+            const newEndLast = timeToSeconds(segments[last].end) + diff_end;
+            segments[last].end = formatearTiempoDecimal(newEndLast);
+            // Conservar su duración
+            segments[last].start = formatearTiempoDecimal(newEndLast - durations[last]);
+
+            // Propagar en cascada hacia atrás
+            for (let i = last - 1; i >= 0; i--) {
+                const nextStart = timeToSeconds(segments[i + 1].start);
+                const newEndI = nextStart - gaps[i];
+                segments[i].end   = formatearTiempoDecimal(newEndI);
+                segments[i].start = formatearTiempoDecimal(newEndI - durations[i]);
+            }
+        }
+    }
+}
+
+
+function applyStartDifferences_4(differences) { 
+
+    for (const { bg_id, diff_start, diff_longitud } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+
+            // Recoger solo los dics de ESTA sublista que aplican
+            const segments = sublist.filter(dic =>
+                dic.bg_id === bg_id && dic.property !== 'filename'
+            );
+            if (segments.length === 0) continue;
+
+            segments.sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            // Guardar gaps y duraciones ANTES de cualquier modificación
+            const gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            const durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 1) diff_start: desplaza primer segmento y propaga en cascada
+            if (diff_start !== 0) {
+                const newStart0 = timeToSeconds(segments[0].start) + diff_start;
+                segments[0].start = formatearTiempoDecimal(newStart0);
+                segments[0].end   = formatearTiempoDecimal(newStart0 + durations[0]);
+
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // 2) diff_longitud: estira primer segmento y propaga en cascada
+            if (diff_longitud !== 0) {
+                segments[0].end = formatearTiempoDecimal(timeToSeconds(segments[0].end) + diff_longitud);
+
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+        }
+    }
+}
+
+ 
+
+
+
+
+function applyStartDifferences_5(differences) { 
+
+    for (const { bg_id, diff_start, diff_longitud } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+
+            const segments = sublist.filter(dic =>
+                dic.bg_id === bg_id && dic.property !== 'filename'
+            );
+            if (segments.length === 0) continue;
+
+            segments.sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            // Guardar gaps y duraciones ANTES de modificar
+            const gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            const durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 1) diff_start: desplaza primer segmento y propaga en cascada
+            if (diff_start !== 0) {
+                const newStart0 = timeToSeconds(segments[0].start) + diff_start;
+                segments[0].start = formatearTiempoDecimal(newStart0);
+                segments[0].end   = formatearTiempoDecimal(newStart0 + durations[0]);
+
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // 2) diff_longitud: estira primer segmento y propaga en cascada
+            if (diff_longitud !== 0) {
+                segments[0].end = formatearTiempoDecimal(timeToSeconds(segments[0].end) + diff_longitud);
+
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // 3) Resolver solapamientos con segmentos de otros bg_id en la misma sublista
+            // Ordenar TODOS los segmentos de la sublista por start
+            const allSegments = sublist
+                .filter(dic => dic.property !== 'filename')
+                .sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            for (let i = 1; i < allSegments.length; i++) {
+                const prev = allSegments[i - 1];
+                const curr = allSegments[i];
+                const prevEnd    = timeToSeconds(prev.end);
+                const currStart  = timeToSeconds(curr.start);
+
+                if (currStart < prevEnd) {
+                    // Hay solapamiento: empujar curr manteniendo su duración
+                    const currDuration = timeToSeconds(curr.end) - currStart;
+                    curr.start = formatearTiempoDecimal(prevEnd);
+                    curr.end   = formatearTiempoDecimal(prevEnd + currDuration);
+                }
+            }
+        }
+    }
+}
+
+
+
+//funciona bien pero los segmentos no se alargan o encojen proporcionalmente
+function applyStartDifferences_6(differences) { 
+
+    for (const { bg_id, diff_start, diff_longitud } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+
+            const segments = sublist.filter(dic =>
+                dic.bg_id === bg_id && dic.property !== 'filename'
+            );
+            if (segments.length === 0) continue;
+
+            segments.sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            // Guardar gaps y duraciones ANTES de modificar
+            const gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            const durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 1) diff_start: desplaza primer segmento y propaga en cascada
+            if (diff_start !== 0) {
+                const newStart0 = timeToSeconds(segments[0].start) + diff_start;
+                segments[0].start = formatearTiempoDecimal(newStart0);
+                segments[0].end   = formatearTiempoDecimal(newStart0 + durations[0]);
+
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // 2) diff_longitud: estira primer segmento y propaga en cascada
+            if (diff_longitud !== 0) {
+                segments[0].end = formatearTiempoDecimal(timeToSeconds(segments[0].end) + diff_longitud);
+
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // 3) Resolver solapamientos con segmentos de otros bg_id en la misma sublista
+            // Solo se mueven los segmentos del bg_id activo, nunca los de otros bg_id
+            const allSegments = sublist
+                .filter(dic => dic.property !== 'filename')
+                .sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            for (let i = 1; i < allSegments.length; i++) {
+                const prev = allSegments[i - 1];
+                const curr = allSegments[i];
+
+                if (curr.bg_id !== bg_id) continue;
+
+                const prevEnd   = timeToSeconds(prev.end);
+                const currStart = timeToSeconds(curr.start);
+
+                if (currStart < prevEnd) {
+                    const currDuration = timeToSeconds(curr.end) - currStart;
+                    curr.start = formatearTiempoDecimal(prevEnd);
+                    curr.end   = formatearTiempoDecimal(prevEnd + currDuration);
+                }
+            }
+        }
+    }
+}
+
+function applyStartDifferences_7(differences) {
+    for (const { bg_id, diff_start, diff_longitud } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+            const segments = sublist.filter(dic =>
+                dic.bg_id === bg_id && dic.property !== 'filename'
+            );
+            if (segments.length === 0) continue;
+            segments.sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            // Guardar gaps y duraciones ANTES de modificar
+            const gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            const durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 1) diff_start: desplaza primer segmento y propaga en cascada
+            if (diff_start !== 0) {
+                const newStart0 = timeToSeconds(segments[0].start) + diff_start;
+                segments[0].start = formatearTiempoDecimal(newStart0);
+                segments[0].end   = formatearTiempoDecimal(newStart0 + durations[0]);
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // 2) diff_longitud: estira todos los segmentos proporcionalmente y propaga
+if (diff_longitud !== 0) {
+    const totalOriginal = durations.reduce((a, b) => a + b, 0);
+    const totalNuevo = totalOriginal + diff_longitud;
+    const factor = totalNuevo / totalOriginal;
+
+    // Escalar todas las duraciones
+    for (let i = 0; i < durations.length; i++) {
+        durations[i] = durations[i] * factor;
+    }
+
+    // Reconstruir todos los segmentos en cascada
+    segments[0].end = formatearTiempoDecimal(timeToSeconds(segments[0].start) + durations[0]);
+    for (let i = 1; i < segments.length; i++) {
+        const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+        segments[i].start = formatearTiempoDecimal(newStartI);
+        segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+    }
+}
+
+            // 3) Resolver solapamientos con segmentos de otros bg_id en la misma sublista
+            const allSegments = sublist
+                .filter(dic => dic.property !== 'filename')
+                .sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+            for (let i = 1; i < allSegments.length; i++) {
+                const prev = allSegments[i - 1];
+                const curr = allSegments[i];
+                if (curr.bg_id !== bg_id) continue;
+                const prevEnd   = timeToSeconds(prev.end);
+                const currStart = timeToSeconds(curr.start);
+                if (currStart < prevEnd) {
+                    const currDuration = timeToSeconds(curr.end) - currStart;
+                    curr.start = formatearTiempoDecimal(prevEnd);
+                    curr.end   = formatearTiempoDecimal(prevEnd + currDuration);
+                }
+            }
+        }
+    }
+}
+
+function applyStartDifferences(differences) { 
+    let all_json = []; 
+    for (const { bg_id, diff_start, diff_longitud } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+            const segments = sublist.filter(dic =>
+                dic.bg_id === bg_id && dic.property !== 'filename'
+            );
+            if (segments.length === 0) continue;
+            segments.sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            let gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            let durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 1) diff_start
+            if (diff_start !== 0) {
+                const newStart0 = timeToSeconds(segments[0].start) + diff_start;
+                segments[0].start = formatearTiempoDecimal(newStart0);
+                segments[0].end   = formatearTiempoDecimal(newStart0 + durations[0]);
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // Recalcular tras paso 1
+            gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 2) diff_longitud
+            if (diff_longitud !== 0) {
+                const totalOriginal = durations.reduce((a, b) => a + b, 0);
+                const factor = (totalOriginal + diff_longitud) / totalOriginal;
+                for (let i = 0; i < durations.length; i++) {
+                    durations[i] = durations[i] * factor;
+                }
+                segments[0].end = formatearTiempoDecimal(timeToSeconds(segments[0].start) + durations[0]);
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // 3) Solapamientos: SOLO entre segmentos del mismo bg_id
+            for (let i = 1; i < segments.length; i++) {
+                const prev = segments[i - 1];
+                const curr = segments[i];
+                const prevEnd   = timeToSeconds(prev.end);
+                const currStart = timeToSeconds(curr.start);
+                if (currStart < prevEnd) {
+                    const currDuration = timeToSeconds(curr.end) - currStart;
+                    curr.start = formatearTiempoDecimal(prevEnd);
+                    curr.end   = formatearTiempoDecimal(prevEnd + currDuration);
+                }
+            }
+	    console.log(`[bg_id=${bg_id}] segmentos finales:`, JSON.stringify(segments, null, 2));
+	    const index_global_row = segments[0].index_global_row;
+	    const item_name = segments[0].item_name;
+	    const property = segments[0].property;
+
+	    const json_data_2 =  {"service":"save_item_data","itemName":item_name,"property":property,"params":"empty", "rectangulos":sublist,"extra":"actualizarEstadoGlobal"}; 
+	    if (unica_regla.rectangulos[index_global_row]){
+	    	all_json.push(json_data_2);	
+	    }else{
+		console.log("empty rect");
+	    }	
+        }
+    }
+    console.log("all_json error:",all_json);
+    send_rectangles_by_ai_lista("actualizarEstadoGlobal",all_json);
+    console.log("desplazamiento error 2:", JSON.stringify(unica_regla.rectangulos)); 
+    console.log("desplazamiento error 4:", JSON.stringify(rectangulos));
+     
+}
+ 
+
 
 function actualizarEstadoGlobal() {
   //lo puse cuando quite la restriccion de eliminar el utimo segmento filename
@@ -4812,6 +5832,9 @@ function actualizarEstadoGlobal() {
     unica_regla.rectangulos[index_global_row] = [];
   }
 
+  const last_regla = unica_regla.rectangulos[index_global_row];
+  //const last_regla = JSON.parse(JSON.stringify(unica_regla.rectangulos[index_global_row]));
+ 
 //console.log("unica_regla CURRENT:",JSON.stringify(unica_regla) );
   unica_regla.rectangulos[index_global_row] = grupo.map(rect => {
 
@@ -4823,9 +5846,15 @@ function actualizarEstadoGlobal() {
 
     let segundosFin =
       segundosInicio + (ancho / SEGMENTO * VALOR_SEGMENTO);
-
+    
+    /*
     segundosInicio  = Math.round(segundosInicio  * 10) / 10;
     segundosFin  = Math.round(segundosFin  * 10) / 10;
+    */
+    /*
+    segundosInicio = redondearAPaso(segundosInicio);
+    segundosFin = redondearAPaso(segundosFin);
+    */
 
     console.log(
       "segundosFin:",
@@ -4834,6 +5863,7 @@ function actualizarEstadoGlobal() {
     );
 
     return {
+      bg_id: rect.bg_id,
       item_name: rect.item_name,
       index_item : rect.index_item,
       property : rect.property,
@@ -4848,12 +5878,21 @@ function actualizarEstadoGlobal() {
       video_audio_value: rect.video_audio_value,
       color_rgb: rect.color_rgb,
       glow_color: rect.glow_color,	
-      anchor_point: rect.anchor_point	
+      anchor_point: rect.anchor_point,
+      instruction_name: rect.instruction_name,
+      description: rect.description		
     };
   });
- 
+
+    console.log("diferencia reglas:", unica_regla.rectangulos[index_global_row]);
+    if (current_view == "filename"){
+    	const list_desplazamientos = getStartDifferences(last_regla,index_global_row);
+    	applyStartDifferences(list_desplazamientos); 
+    }
+
     send_rectangles("actualizarEstadoGlobal"); 
-    //update_state();//va lento 	
+    //update_state();//va lento 
+     	
  
 }
 
@@ -5002,9 +6041,18 @@ function ajustarScrollWrapper() {
     contenedor.appendChild(scrollContent);
 }
 
-function cmToPx(cm) {
-  const pasos = Math.round(cm / VALOR_SEGMENTO); //0.2
-  return pasos * SEGMENTO;//40
+/*
+function cmToPx_0(cm) {
+  const sigma = 2/CALIBRACION;
+  const pasos = Math.round(cm / (VALOR_SEGMENTO*sigma)); //0.2
+  return pasos * (SEGMENTO*sigma);//40
+}
+*/
+
+function cmToPx(cm) { 
+  const sigma = 2/CALIBRACION;
+  const pasos = redondearAPaso(cm / (VALOR_SEGMENTO*sigma)); //0.2
+  return pasos * (SEGMENTO*sigma);//40 
 }
 
 function setRulerPosition(cm) {
@@ -5018,7 +6066,8 @@ console.log("time_inicial: ",time_inicial);
 
  
 
-function inicializar() {
+function inicializar() { 
+ 
 console.log("aveces sale error crearPseudoRegla is not defined");
 /* 
     //descomentar
@@ -5030,24 +6079,35 @@ console.log("aveces sale error crearPseudoRegla is not defined");
 
     //descomentar 
     //renderizarElementosVisibles(); 
-
+ 
     let initial_scroll_x = current_scroll_x;
-    initial_scroll_x = unica_regla.scroll_x[current_view];	
-     
+    //initial_scroll_x = unica_regla.scroll_x[current_view];	
+    console.log("initial_scroll_x MAL:",initial_scroll_x); 
     setRulerPosition(initial_scroll_x);
  	
     scrollWrapper.addEventListener('scroll', () => {
 
         const posicion = scrollWrapper.scrollLeft;  
+
+	/*
         const pasos = Math.floor(posicion / SEGMENTO);//40  
 	const split_position_0 = Math.round(posicion / SEGMENTO);//40
 	split_position_global = parseFloat((split_position_0 * VALOR_SEGMENTO).toFixed(1));//0.2
         const cmExacto = parseFloat((pasos * VALOR_SEGMENTO).toFixed(1));//0.2
+	*/
+	const sigma = 2/CALIBRACION;
+        const pasos = Math.floor(posicion / (SEGMENTO*sigma));  
+	const split_position_0 = Math.round(posicion / (SEGMENTO*sigma)); 
+	split_position_global = parseFloat((split_position_0 * (VALOR_SEGMENTO*sigma))); 
+        let cmExacto = parseFloat((pasos * (VALOR_SEGMENTO*sigma))); 
+	cmExacto = split_position_global;
+
+
         current_scroll_x = cmExacto;
         const time = formatearTiempoDecimal(parseFloat(cmExacto));
   
  
-        //console.log("cinta position: ",time, ", ",cmExacto,", ",current_scroll_x,split_position_global);
+        console.log("cinta position: ",time, ", ",cmExacto,", ", split_position_global);
         setTimeout(renderizarElementosVisibles, 20);
 
     }, { passive: true });
@@ -5102,9 +6162,16 @@ console.log("aveces sale error crearPseudoRegla is not defined");
 */
  
     });
+ 
+/* 
+if (rectangulos.length!=0){
+	sincronizarOrdenRectangulos();
+        actualizarPosicionesVisuales();
+} 
+*/
 
-
-
+ 
+ 
 }
 
  
@@ -5198,47 +6265,125 @@ function resetear() {
     unica_regla.rectangulos.forEach((rectData, index) => {
         crearRectangulo(rectData, index, 0);  
     });*/
- 
+     
     console.log("unica_regla.rectangulos NUEVO:",JSON.stringify(unica_regla.rectangulos));
-    if (current_view != "group"){
-    let index_visible = 0; 
-    unica_regla.rectangulos.forEach((rect_list, index_regla) => { 
-        //console.log("index_regla: ",index_regla); 
-        if (rect_list[0].property == current_view){ 
-		for (let i=0; i < rect_list.length; i++){ 
-			console.log("i: ",i, index_visible);
-			crearRectangulo(rect_list[i],i, index_visible,index_regla);  
-		} 
-		index_visible = index_visible + 1;
-	} 
-    });
-    }else{  	
-    const current_index_item = selected_rect.dataset.index_item;
-    let index_visible = 0; 
-    /* 
-    //esto solo hacia aparecer el primer dic
-    unica_regla.rectangulos.forEach((rect_list, index_regla) => {  
-	console.log("MAL4:",rect_list[0].index_item,rect_list[0],"\n\n",index_visible,index_regla);
-        if (rect_list[0].index_item == current_index_item && rect_list[0].property!="filename"){  
-		rectangulos.push([]);
-		crearRectangulo(rect_list[0],0, index_visible,index_regla);   
-		index_visible = index_visible + 1;   
-	} 
-    });
-    */
-    unica_regla.rectangulos.forEach((rect_list, index_regla) => {  
-        // Verificar si este sublist pertenece al grupo del filename actual
-        if (rect_list[0].index_item == current_index_item && rect_list[0].property != "filename") {  
-            rectangulos.push([]);
-        
-            // Recorrer TODOS los diccionarios del sublist, no solo el primero
-            rect_list.forEach((dic, index_en_lista) => {
-                crearRectangulo(dic, index_en_lista, index_visible, index_regla);   
-            });
-        
-            index_visible = index_visible + 1;   
+    if (current_view != "group" && current_view != "view_filter" && current_view != "view_mask"){
+        if (true){
+    	    let index_visible = 0; 
+    	    unica_regla.rectangulos.forEach((rect_list, index_regla) => {
+			rect_list[0].index_global_row = String(index_regla);//nuevo 
+        	    //console.log("index_regla: ",index_regla); 
+        	    if (rect_list[0].property == current_view){ 
+			    for (let i=0; i < rect_list.length; i++){ 
+				    console.log("i: ",i, index_visible);
+				    crearRectangulo(rect_list[i],i, index_visible,index_regla);  
+			    } 
+			    index_visible = index_visible + 1;
+		    } 
+    	    });
         } 
-    }); 
+    }
+
+    if (current_view == "group"){  
+	const current_index_item = selected_rect.dataset.index_item; 
+        let index_visible = 0;  
+        let bg_list = [];
+        unica_regla.rectangulos.forEach((rect_list, index_regla) => { 
+	    const property_rect = rect_list[0].property;
+            if (property_rect == "ai_filter" || property_rect == "ai_mask") return; 
+
+            // Verificar si este sublist pertenece al grupo del filename actual
+	 
+	    if (rect_list[0].index_item == current_index_item && rect_list[0].property == "filename") {
+		    console.log("dic orden:",JSON.stringify(rect_list));
+		    bg_list = extraerBgIds(rect_list);
+		    console.log("bg_list:",bg_list);
+	    } 
+            if (rect_list[0].index_item == current_index_item && rect_list[0].property != "filename") {  
+	        ordenarRectList(rect_list, bg_list);	
+                rectangulos.push([]);
+        
+                // Recorrer TODOS los diccionarios del sublist, no solo el primero
+	        console.log("rect_list error:",JSON.stringify(rect_list),JSON.stringify(bg_list));	
+                rect_list.forEach((dic, index_en_lista) => {
+		    console.log("error dic:",dic.bg_id);
+		    const orden_real = bg_list[index_en_lista];
+		    console.log("orden_real:",orden_real);
+                    crearRectangulo(dic, index_en_lista, index_visible, index_regla);   
+                });
+        
+                index_visible = index_visible + 1;   
+            } 
+        }); 
+    }
+
+
+    if (current_view == "view_filter"){   
+ 
+	const current_index_item = selected_rect.dataset.index_item; 
+        let index_visible = 0;  
+        let bg_list = [];
+        unica_regla.rectangulos.forEach((rect_list, index_regla) => { 
+	    const property_rect = rect_list[0].property;
+            if (property_rect != "ai_filter") return; 
+
+            // Verificar si este sublist pertenece al grupo del filename actual
+	 
+	    if (rect_list[0].index_item == current_index_item && rect_list[0].property == "filename") {
+		    console.log("dic orden:",JSON.stringify(rect_list));
+		    bg_list = extraerBgIds(rect_list);
+		    console.log("bg_list:",bg_list);
+	    } 
+            if (rect_list[0].index_item == current_index_item && rect_list[0].property != "filename") {  
+	        ordenarRectList(rect_list, bg_list);	
+                rectangulos.push([]);
+        
+                // Recorrer TODOS los diccionarios del sublist, no solo el primero
+	        console.log("rect_list error:",JSON.stringify(rect_list),JSON.stringify(bg_list));	
+                rect_list.forEach((dic, index_en_lista) => {
+		    console.log("error dic:",dic.bg_id);
+		    const orden_real = bg_list[index_en_lista];
+		    console.log("orden_real:",orden_real);
+                    crearRectangulo(dic, index_en_lista, index_visible, index_regla);   
+                });
+        
+                index_visible = index_visible + 1;   
+            } 
+        });   
+    } 
+
+    if (current_view == "view_mask"){   
+ 
+	const current_index_item = selected_rect.dataset.index_item; 
+        let index_visible = 0;  
+        let bg_list = [];
+        unica_regla.rectangulos.forEach((rect_list, index_regla) => { 
+	    const property_rect = rect_list[0].property;
+            if (property_rect != "ai_mask") return; 
+
+            // Verificar si este sublist pertenece al grupo del filename actual
+	 
+	    if (rect_list[0].index_item == current_index_item && rect_list[0].property == "filename") {
+		    console.log("dic orden:",JSON.stringify(rect_list));
+		    bg_list = extraerBgIds(rect_list);
+		    console.log("bg_list:",bg_list);
+	    } 
+            if (rect_list[0].index_item == current_index_item && rect_list[0].property != "filename") {  
+	        ordenarRectList(rect_list, bg_list);	
+                rectangulos.push([]);
+        
+                // Recorrer TODOS los diccionarios del sublist, no solo el primero
+	        console.log("rect_list error:",JSON.stringify(rect_list),JSON.stringify(bg_list));	
+                rect_list.forEach((dic, index_en_lista) => {
+		    console.log("error dic:",dic.bg_id);
+		    const orden_real = bg_list[index_en_lista];
+		    console.log("orden_real:",orden_real);
+                    crearRectangulo(dic, index_en_lista, index_visible, index_regla);   
+                });
+        
+                index_visible = index_visible + 1;   
+            } 
+        });   
     }
  
     console.log("lista0:",JSON.stringify(rectangulos));  
@@ -5253,10 +6398,33 @@ function resetear() {
 	crearRectangulo(rectData, 1, ALTURA_REGLA);
     });	
 */ 
+
+
+console.log("input xd1:", JSON.stringify(unica_regla.rectangulos));
+console.log("output xd2:", JSON.stringify(rectangulos));
      
     // 5️⃣ Re-render
     renderizarElementosVisibles();
 }
+
+
+function ordenarRectList(rect_list, bg_id_orden) {
+
+    const posicion = {};
+    bg_id_orden.forEach((id, i) => {
+        posicion[id] = i;
+    });
+
+    rect_list.sort((a, b) => {
+        return posicion[a.bg_id] - posicion[b.bg_id];
+    });
+
+}
+
+function extraerBgIds(lista) {
+    return lista.map(obj => Number(obj.bg_id));
+}
+
 
 
 function reemplazarGuionesEnLista(lista) {
@@ -5370,6 +6538,8 @@ function crear_loading_tab(){
             if (item_loader) {
 		console.log("exists");
                 item_loader.style.display = "flex";
+		item_loader.style.justifyContent = "center";
+		item_loader.style.alignItems = "center";
             }
  
 }
@@ -5389,7 +6559,8 @@ function obtenerInputsYSelects(htmlString) {//solo funciona si hay 1 solo div pr
     if (!rootDiv) return [];
 
     // Buscar inputs y selects
-    const elementos = rootDiv.querySelectorAll("input, select"); 
+    //quitar textarea (nuevo)
+    const elementos = rootDiv.querySelectorAll("input, select, textarea"); 
 
     const resultado = [];
 
@@ -5414,7 +6585,7 @@ function obtenerInputsYSelects_2(html) {
     if (!rootDiv) return [];
 
     // Buscar inputs y selects
-    const elementos = rootDiv.querySelectorAll("input, select");
+    const elementos = rootDiv.querySelectorAll("input, select, textarea");
 
     const resultado = [];
 
@@ -5785,7 +6956,12 @@ function abrirModalDinamico(htmlString,boton_id) {
   } 
   if (boton_id=="Anchor_point"){
 	current_property_value = detalle.anchor_point; 
-  } 
+  }
+  if (boton_id=="Instruction" || boton_id=="Select_instruction"){
+	console.log("textarea ai 0:",detalle); 
+	current_property_value = detalle.description; 
+  }  
+   
 
   const firstDiv = box.querySelector("div");
   console.log("firstDiv.className: ",firstDiv.className);	
@@ -5806,8 +6982,16 @@ function abrirModalDinamico(htmlString,boton_id) {
     if (elem) {
 	console.log("htmlString: ",htmlString); 
         console.log("input value: ",list_values[i]); 
-	if (list_values[i]!=""){ 
-	   if (tipo=="input"){	
+console.log("textarea ai");
+	if (list_values[i]!=""){
+ 
+           if (tipo=="textarea"){
+ 
+        	elem.value = list_values[i];
+		if (current_property_value==""){
+			elem.value = "";
+		} 
+	   }else if (tipo=="input"){	
         	elem.value = list_values[i];
 		if (current_property_value==""){
 			elem.value = "";
@@ -6266,12 +7450,42 @@ document.addEventListener("click", function (e) {
 
 		actualizarEstadoGlobal();
 	}
+	if (divPrincipal.className == "start_end_type_ai_instruction"){  
+		console.log("COMBINED =", inputs_combined); 
+		if (inputs_combined==","){
+			inputs_combined = "";
+		} 
+		 
+        	let valor = inputs_combined;
+		valor = reemplazarCoincidencia(valor, ",", ";");
+		const indice = parseInt(selected_rect.dataset.indice);
+
+		if (unica_regla.rectangulos[index_global_row][indice].description != valor){
+			//enviar instruction
+			if (selected_rect.dataset.property == "ai_filter" || selected_rect.dataset.property == "ai_mask"){
+				//send_filter_mask_instruction(valor,index_global_row,index);
+			}else{
+				console.log("valor enviado:",valor);
+				borrarSecundarios(index_global_row);	
+				send_instruction(valor);
+			} 
+			console.log("DIFERENTE INSTRUCTION");
+		}
+		 
+		unica_regla.rectangulos[index_global_row][indice].description = valor;
+        	rectangulos[index_row][indice].description = valor;
+
+		actualizarEstadoGlobal();
+	}
 	 
         resetear();//esto actualiza inmediatamente el texto del rectangulo
 	 
     }
 });
 
+function reemplazarCoincidencia(texto, buscar, reemplazo) {
+  return texto.split(buscar).join(reemplazo);
+}
 
  
 
@@ -6351,15 +7565,25 @@ grupo.addEventListener("click", (e) => {
 */
 	return;
     }
+    if (nombre_id === "ai_filter_btn"){
+	view_ai_segments("view_filter");
+	return;
+    }
+    if (nombre_id === "ai_mask_btn"){
+	view_ai_segments("view_mask");
+	return;
+    }		
 
     const current_filetype = selected_rect.dataset.filetype;
     const current_property_id = selected_rect.dataset.property;
+//console.log("current_property_id 0:",current_property_id,nombre_id); 
      
 
     if (nombre_id === "Delete_box" || nombre_id === "Delete_file") { 
 
         resetOverlay();
         const indice = parseInt(selected_rect.dataset.indice);
+        const index_bg = selected_rect.dataset.bg_id;  
 
         if (filaUnica.length <= 1) {
             //showErrorModal('The last rectangle cannot be deleted.');
@@ -6369,12 +7593,14 @@ grupo.addEventListener("click", (e) => {
 		showErrorModal('The last rectangle cannot be deleted.');
 		return;
 	    }
+	    	
 	    showErrorModal('The last rectangle cannot be deleted.');
-		return;
+		//return;//descomentar
 	
-	    eliminarRectangulosPorItem(item_name);
-	    console.log("unica_regla.rectangulos TIMELINE ELIMINADO:",JSON.stringify(unica_regla.rectangulos));
-	    eliminarTimelinePorNombre(item_name);	
+	    eliminarRectangulosPorItem(item_name); 
+	    eliminarTimelinePorNombre(item_name);
+	    resetear(); 	
+	    console.log("unica_regla.rectangulos TIMELINE ELIMINADO:",JSON.stringify(unica_regla.rectangulos));	
             //return;
         } else {
             if (filaUnica.length == 2 && indice < filaUnica.length - 1) {
@@ -6399,6 +7625,8 @@ grupo.addEventListener("click", (e) => {
             r.elemento.dataset.indice = i;
         });
 
+	eliminarPorBgId(index_bg);
+
         // 🔁 LÓGICA EXTRA (DESPUÉS, SIN TOCAR NADA ARRIBA)
         if (
             filaRectangulos[indice] &&
@@ -6422,10 +7650,13 @@ grupo.addEventListener("click", (e) => {
         renderizarElementosVisibles();
 
         actualizarEstadoGlobal(index_row); // ⬅️ si ahora recibe fila
+
+	console.log("unica_regla.rectangulos SEGMENTO ELIMINADO:",JSON.stringify(unica_regla.rectangulos));
          
     } else {
         console.log("nombre_id: ", nombre_id);
         if (dic_dynamic_options?.[current_filetype]?.[current_property_id]?.[nombre_id]) {
+ 
             let current_modal_html = dic_dynamic_options[current_filetype][current_property_id][nombre_id];
             if (current_filetype != "text" && current_property_id == "filename") {
                 const current_files = file_types[current_filetype]; 
@@ -6442,7 +7673,7 @@ grupo.addEventListener("click", (e) => {
             } else {
                 const current_modal_html = dic_dynamic_options["general"];
 		console.log("abrirModalDinamico MAL 2",current_filetype, current_property_id, nombre_id);
-		if (nombre_id=="Add_keyframes"){
+		if (nombre_id=="Add_keyframes"){ 
 			current_full_keyframes(); 
 			return;
 		} 	
@@ -6452,6 +7683,20 @@ grupo.addEventListener("click", (e) => {
     }
 
 });
+
+// Función reutilizable — elimina in-place los dicts con bg_id === bg_id_target
+// de TODAS las sublistas de unica_regla.rectangulos
+function eliminarPorBgId(bg_id_target) {
+    unica_regla.rectangulos.forEach(fila => {
+        let i = fila.length - 1;
+        while (i >= 0) {
+            if (String(fila[i].bg_id) === String(bg_id_target)) {
+                fila.splice(i, 1);
+            }
+            i--;
+        }
+    });
+}
 
  
 function hide_vertical_line(){
@@ -6890,7 +8135,130 @@ function generarBotones(listaOpciones) {
   </g>
 
 </svg>
-		     <span class="label">Prompt</span> 
+		     <span class="label">Keyframes</span> 
+		  </span>
+		`;
+	}
+
+	if (nombreVisible === "ai filter btn") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
+
+  <!-- Escalado 30% desde el centro -->
+  <g transform="translate(12 12) scale(1.3) translate(-12 -12)">
+
+    <!-- Letra A -->
+    <path d="M6.5 16 L9.5 8 L12.5 16 M8 13 H11"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+    <!-- Letra I vertical -->
+    <line x1="17" y1="8" x2="17" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea superior -->
+    <line x1="15.5" y1="8" x2="18.5" y2="8"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea inferior -->
+    <line x1="15.5" y1="16" x2="18.5" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+  </g>
+
+</svg>
+		     <span class="label">Frame filter</span> 
+		  </span>
+		`;
+	}
+
+	if (nombreVisible === "ai mask btn") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
+
+  <!-- Escalado 30% desde el centro -->
+  <g transform="translate(12 12) scale(1.3) translate(-12 -12)">
+
+    <!-- Letra A -->
+    <path d="M6.5 16 L9.5 8 L12.5 16 M8 13 H11"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+    <!-- Letra I vertical -->
+    <line x1="17" y1="8" x2="17" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea superior -->
+    <line x1="15.5" y1="8" x2="18.5" y2="8"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea inferior -->
+    <line x1="15.5" y1="16" x2="18.5" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+  </g>
+
+</svg>
+		     <span class="label">Mask filter</span> 
+		  </span>
+		`;
+	}
+
+	if (nombreVisible === "Select instruction") {
+		btn.innerHTML = `
+		  <span class="icon">
+		    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none">
+
+  <!-- Escalado 30% desde el centro -->
+  <g transform="translate(12 12) scale(1.3) translate(-12 -12)">
+
+    <!-- Letra A -->
+    <path d="M6.5 16 L9.5 8 L12.5 16 M8 13 H11"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+
+    <!-- Letra I vertical -->
+    <line x1="17" y1="8" x2="17" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea superior -->
+    <line x1="15.5" y1="8" x2="18.5" y2="8"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+    <!-- Línea inferior -->
+    <line x1="15.5" y1="16" x2="18.5" y2="16"
+          stroke="rgb(240,240,240)"
+          stroke-width="1.6"
+          stroke-linecap="round"/>
+
+  </g>
+
+</svg>
+		     <span class="label">Instruction</span> 
 		  </span>
 		`;
 	}
@@ -7066,9 +8434,26 @@ function connect(type_connection) {
 
   websocketClient.addEventListener("message", (event) => {
     let message_result = event.data;
-
+    //console.log("message_result:",message_result); 
     if (typeof message_result === "string") {
- 
+      /*	
+      if (message_result.includes("time=") && message_result.includes("object=")){
+	  //message_result = functionsToKeyframes(message_result);
+	  let json_ai_response = JSON.parse(message_result);
+	  json_ai_response = json_ai_response.replace(/\\n/g, "\n");
+	  console.log("json_ai_response:",json_ai_response);
+	  apply_ai_changes(json_ai_response);
+      } 
+      */
+      if (message_result.includes("x(t)") && message_result.includes("y(t)")){
+	   
+	  console.log("message_result unctionsToKeyframes:",message_result);
+	  let json_ai_response = JSON.parse(message_result);
+	  json_ai_response = json_ai_response.replace(/\\n/g, "\n");
+ 	  json_ai_response = functionsToKeyframes(json_ai_response); 
+	  console.log("json_ai_response:",json_ai_response);
+	  apply_ai_changes(json_ai_response);
+      } 
       if (event.data.includes("Timeline")){
 	//proviene de currentrectangles, change_item_view
 	if (event.data.includes("-|") && !loaded_project){
@@ -8016,23 +9401,20 @@ verificarSoporteCodec().then(soportado => {
     });
 </script> 
   
-<script src="../design9/general.js?v=2.5.7"> </script>
-<script src="../design9/send_files.js?v=2.5.7"> </script> 
-<script src="../design9/clipcontainer.js?v=2.5.7"> </script>  
-<script src="../design9/htmlstring.js?v=2.5.7"> </script>  
-<script src="../design9/menu_options.js?v=2.5.7"> </script>   
-<script src="../design9/panel_tabs.js?v=2.5.7"> </script>  
-<script src="../design9/reglas.js?v=2.5.7"> </script>  
-<script src="../design9/simplemenus.js?v=2.5.8"> </script> 
-<script src="../design9/interaccion_rectangulos_full.js?v=2.5.7"> </script> 
-<script src="../design9/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=2.5.7"> </script>  
-<script src="../design9/repintar4.js?v=2.5.7"> </script>  
-<script src="../design9/anchor_point.js?v=2.5.8"> </script>   
-<script src="../design9/script_login.js?v=2.5.7"> </script> 
-<script src="../design9/undo_redo.js?v=2.5.7"> </script> 
+<script src="../design10/general.js"> </script>
+<script src="../design10/send_files.js"> </script> 
+<script src="../design10/clipcontainer.js"> </script>  
+<script src="../design10/htmlstring.js"> </script>  
+<script src="../design10/menu_options.js"> </script>   
+<script src="../design10/panel_tabs.js"> </script>  
+<script src="../design10/reglas.js"> </script>  
+<script src="../design10/simplemenus.js"> </script> 
+<script src="../design10/interaccion_rectangulos_full.js"> </script> 
+<script src="../design10/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js"> </script>  
+<script src="../design10/repintar4.js"> </script>  
+<script src="../design10/anchor_point.js"> </script>   
+<script src="../design10/script_login.js"> </script> 
+<script src="../design10/undo_redo.js"> </script> 
  
 </body>
 </html>  
-
-
-
