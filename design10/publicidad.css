@@ -1,0 +1,112 @@
+.comments-content {
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #fff;
+    background-color: rgb(65,65,65);
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.upload-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.upload-title {
+    font-size: 1.5em;
+    color: #7c55e6;
+    margin: 0;
+}
+
+.upload-description {
+    font-size: 0.95em;
+    color: #ccc;
+}
+
+.video-preview-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.video-thumbnail {
+    width: 200px;
+    height: 120px;
+    background-color: #4a4a4a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #7c55e6;
+    border-radius: 8px;
+    color: #aaa;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.select-video-btn {
+    padding: 10px 20px;
+    background-color: #7c55e6;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.select-video-btn:hover {
+    background-color: #9657ff;
+}
+
+.video-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.video-label {
+    font-size: 0.85em;
+    color: #aaa;
+}
+
+.video-info {
+    background-color: #3d3d3d;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: #fff;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.publish-btn {
+    padding: 10px 20px;
+    background-color: #7c55e6;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.publish-btn:hover {
+    background-color: #9657ff;
+}
+
+.cancel-btn {
+    padding: 10px 20px;
+    background-color: #555;
+    border: none;
+    border-radius: 6px;
+    color: #ccc;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+    background-color: #777;
+}

@@ -1,0 +1,401 @@
+/* Contenedor principal del perfil */
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Opciones del perfil (botones) */
+.profile-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.profile-option-btn {
+  padding: 8px 16px;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: 2px solid #4a4a4a;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.profile-option-btn:hover {
+  background-color: #4a4a4a;
+  border-color: #8b5cf6;
+}
+
+.profile-option-btn.active-profile-btn {
+  background-color: #8b5cf6;
+  border-color: #8b5cf6;
+  color: #ffffff;
+}
+
+/* Wrapper del contenido con scroll */
+.profile-content-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
+}
+
+/* Contenido del perfil */
+.profile-content {
+  min-height: 100%;
+display: flex;
+    align-items: center; /*centrado vertical*/
+    justify-content: center;
+}
+
+/* Grid con flex wrap para ajuste automático */
+.profile-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  justify-content: flex-start; /* AGREGAR ESTA LÍNEA */
+}
+
+/* Items del grid con tamaño fijo de icono */
+.grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 0 5px 10px 5px; 
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.grid-item:hover {
+  background-color: rgba(139, 92, 246, 0.1);
+  transform: translateY(-2px);
+}
+
+.grid-icon {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5px;
+  flex-shrink: 0;
+}
+
+.grid-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.grid-label {
+  color: #ffffff;
+  font-size: 13px;
+  text-align: center;
+  word-break: break-word;
+  max-width: 100px;
+}
+
+
+
+
+
+
+/* Contenedor de login */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 30px 20px;
+  background-color: transparent;/*#2a2a2a*/
+  border-radius: 12px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.login-title {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0 0 10px 0;
+}
+
+.login-btn {
+  width: 100%;
+  max-width: 210px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #8b5cf6;
+  color: #ffffff;
+}
+
+.login-email {
+  background-color: #8b5cf6;
+  color: #ffffff;
+}
+
+.login-email:hover {
+  background-color: #7c3aed;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+}
+
+.login-google {
+  background-color: rgba(224, 224, 224);/*#ffffff;*/
+  color: #2a2a2a;
+  border: 2px solid #e0e0e0;
+}
+
+.login-google:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+ 
+
+
+
+
+
+
+
+
+/* Para navegadores Chromium (Chrome, Edge, Opera) y Safari */
+.profile-content-wrapper::-webkit-scrollbar {
+    background-color: rgb(48, 48, 48); 
+}
+.profile-content-wrapper::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 10px; 
+}
+.profile-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(224, 224, 224, 0.7); 
+}
+/* Para Firefox */
+.profile-content-wrapper {
+    scrollbar-color: rgba(255, 255, 255, 0.5) rgb(48, 48, 48);
+}
+
+
+
+
+
+
+
+
+
+/* Modal de tutorial */
+.tutorial-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 5px;
+}
+
+.tutorial-modal-content {
+  position: relative;
+  width: 60%;
+  max-width: 100%;
+  padding: 10px;
+  background-color: #2a2a2a;
+  border-radius: 12px;
+}
+
+@media (max-width: 540px) {
+  .tutorial-modal-content {
+    width: calc(100% - 10px);
+  }
+}
+
+.tutorial-btn-close {
+  position: absolute;
+  top: -15px;
+  right: -15px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  z-index: 10;
+  transition: transform 0.2s ease;
+}
+
+.tutorial-btn-close:hover {
+  transform: scale(1.1);
+}
+
+.tutorial-video-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* Ratio 16:9 */
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.tutorial-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: black;
+}
+
+
+
+
+
+/*export*/
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgba(168, 85, 247, 0.4);
+    background: linear-gradient(
+        135deg,
+        rgba(168, 85, 247, 0.8) 0%,
+        rgba(147, 51, 234, 0.9) 100%
+    );
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+}
+
+.btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+    background: linear-gradient(
+        135deg,
+        rgba(168, 85, 247, 0.9) 0%,
+        rgba(147, 51, 234, 1) 100%
+    );
+}
+
+.btn-download:active {
+    transform: translateY(0);
+}
+
+.video-preview-placeholder.has-video {
+    border-style: solid;
+    border-color: rgba(168, 85, 247, 0.3);
+    background: rgba(168, 85, 247, 0.05);
+}
+
+
+
+
+
+/*export progress*/
+.export-progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(124, 85, 230, 0.3);
+    background: rgba(124, 85, 230, 0.08);
+    backdrop-filter: blur(8px);
+}
+
+.progress-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.progress-text {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.progress-percentage {
+    font-size: 16px;
+    font-weight: 700;
+    color: rgb(255,255,255);
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(124, 85, 230, 0.8) 0%,
+        rgba(109, 70, 210, 1) 100%
+    );
+    border-radius: 4px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(124, 85, 230, 0.5);
+}
+
+.progress-details {
+    display: flex;
+    justify-content: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.video-preview-placeholder.has-video {
+    border-style: solid;
+    border-color: rgba(124, 85, 230, 0.3);
+    background: rgba(124, 85, 230, 0.05);
+}
