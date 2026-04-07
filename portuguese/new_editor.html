@@ -5729,6 +5729,7 @@ if (diff_longitud !== 0) {
 }
 
 function applyStartDifferences(differences) { 
+console.log("unica_regla.rectangulos input:",JSON.stringify(unica_regla.rectangulos));
     let all_json = []; 
     for (const { bg_id, diff_start, diff_longitud } of differences) {
         for (const sublist of unica_regla.rectangulos) {
@@ -6268,10 +6269,16 @@ function resetear() {
      
     console.log("unica_regla.rectangulos NUEVO:",JSON.stringify(unica_regla.rectangulos));
     if (current_view != "group" && current_view != "view_filter" && current_view != "view_mask"){
-        if (true){
+        if (true){ 
     	    let index_visible = 0; 
     	    unica_regla.rectangulos.forEach((rect_list, index_regla) => {
+ 
+		    if (!rect_list[0]){ 
+			console.log("current_view error:",current_view,rect_list);
+			return;	
+		    }
 			rect_list[0].index_global_row = String(index_regla);//nuevo 
+		     
         	    //console.log("index_regla: ",index_regla); 
         	    if (rect_list[0].property == current_view){ 
 			    for (let i=0; i < rect_list.length; i++){ 
@@ -7625,7 +7632,7 @@ grupo.addEventListener("click", (e) => {
             r.elemento.dataset.indice = i;
         });
 
-	eliminarPorBgId(index_bg);
+	//eliminarPorBgId(index_bg);
 
         // 🔁 LÓGICA EXTRA (DESPUÉS, SIN TOCAR NADA ARRIBA)
         if (
@@ -7684,6 +7691,8 @@ grupo.addEventListener("click", (e) => {
 
 });
 
+/*
+//solucionar
 // Función reutilizable — elimina in-place los dicts con bg_id === bg_id_target
 // de TODAS las sublistas de unica_regla.rectangulos
 function eliminarPorBgId(bg_id_target) {
@@ -7691,6 +7700,18 @@ function eliminarPorBgId(bg_id_target) {
         let i = fila.length - 1;
         while (i >= 0) {
             if (String(fila[i].bg_id) === String(bg_id_target)) {
+                fila.splice(i, 1);
+            }
+            i--;
+        }
+    });
+}
+*/
+function eliminarPorBgId(bg_id_target) {
+    unica_regla.rectangulos.forEach(fila => {
+        let i = fila.length - 1;
+        while (i >= 0) {
+            if (String(fila[i].bg_id) === String(bg_id_target) && fila[i].property !== "filename") {
                 fila.splice(i, 1);
             }
             i--;
