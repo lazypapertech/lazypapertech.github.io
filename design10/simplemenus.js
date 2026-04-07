@@ -402,6 +402,9 @@ function split_segment_no_duration() {
   secondDict.end = dic.end;
   secondDict.start_value = dic.start_value;//no end
   secondDict.end_value = dic.end_value;
+
+  bg_id_total = bg_id_total + 1;
+  secondDict.bg_id = bg_id_total;	
  
   const result = [firstDict, secondDict];
   console.log("NEW SEGMENTS:",result);
