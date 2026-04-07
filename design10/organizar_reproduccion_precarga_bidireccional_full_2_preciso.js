@@ -828,8 +828,12 @@ if (trozos_guardados[segundo]) {
   reproductorTrozos.dibujarLoadingAnimado(frameIndex, "Loading");
   return;
 }
+//console.log("✅ frameIndex !== ultimoFrameDibujado"); 
  
- 
+  }else{
+	//IMPORTANTE, esto dibuja el ultimo frame valido al final de la animacion, en lugar de mostrar un frame transparente
+	reproductorTrozos.drawLastFrame();
+	console.log("✅ ERROR frameIndex !== ultimoFrameDibujado"); 
   }
  
   
@@ -1811,7 +1815,7 @@ async function decodificarConSaltoInteligente_preciso() {
     // Decodificar solo el segundo actual + siguiente
     try {
       await precargarDosSegundos(globalTime);
-      console.log(`✅ Decodificado segundo ${segundoActual}`);
+      console.log(`✅ Decodificado nuevo segundo con salto ${segundoActual}`);
       
       // ✅ Renderizar después de decodificar
       renderFrames(true);
@@ -1830,7 +1834,7 @@ async function decodificarConSaltoInteligente_preciso() {
     
     try {
       await precargarDosSegundos(globalTime);
-      console.log(`✅ Decodificado segundo ${segundoActual}`);
+      console.log(`✅ Decodificado nuevo segundo ${segundoActual}`);
       
       // ✅ Renderizar después de decodificar
       renderFrames(true);
@@ -2245,6 +2249,16 @@ this.ctx.drawImage(
 
    
 
+  drawLastFrame() {
+  if (!this.ultimoFrameValido) return;
+  this.ctx.drawImage(
+    this.ultimoFrameValido,
+    0, 0,
+    this.canvas.width,
+    this.canvas.height
+  );
+}
+ 
   dibujarWatermark() {
   // Guardar el estado actual del contexto
   this.ctx.save();
@@ -2799,4 +2813,4 @@ function limpiarMediaPoolsConChunks() {
       mediaPools.splice(i, 1);
     }
   }
-}
+} 
