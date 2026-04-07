@@ -5728,7 +5728,7 @@ if (diff_longitud !== 0) {
     }
 }
 
-function applyStartDifferences(differences) { 
+function applyStartDifferences_8(differences) { 
 console.log("unica_regla.rectangulos input:",JSON.stringify(unica_regla.rectangulos));
     let all_json = []; 
     for (const { bg_id, diff_start, diff_longitud } of differences) {
@@ -5814,7 +5814,116 @@ console.log("unica_regla.rectangulos input:",JSON.stringify(unica_regla.rectangu
     console.log("desplazamiento error 4:", JSON.stringify(rectangulos));
      
 }
- 
+
+	
+function applyStartDifferences(differences) { 
+//console.log("unica_regla.rectangulos input:",JSON.stringify(unica_regla.rectangulos));
+    let all_json = []; 
+    for (const { bg_id, diff_start, diff_longitud } of differences) {
+        for (const sublist of unica_regla.rectangulos) {
+            const segments = sublist.filter(dic =>
+                dic.bg_id === bg_id && dic.property !== 'filename'
+            );
+            if (segments.length === 0) continue;
+            segments.sort((a, b) => timeToSeconds(a.start) - timeToSeconds(b.start));
+
+            let gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            let durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 1) diff_start
+            if (diff_start !== 0) {
+                const newStart0 = timeToSeconds(segments[0].start) + diff_start;
+                segments[0].start = formatearTiempoDecimal(newStart0);
+                segments[0].end   = formatearTiempoDecimal(newStart0 + durations[0]);
+                for (let i = 1; i < segments.length; i++) {
+                    const newStartI = timeToSeconds(segments[i - 1].end) + gaps[i - 1];
+                    segments[i].start = formatearTiempoDecimal(newStartI);
+                    segments[i].end   = formatearTiempoDecimal(newStartI + durations[i]);
+                }
+            }
+
+            // Recalcular tras paso 1
+            gaps = [];
+            for (let i = 0; i < segments.length - 1; i++) {
+                gaps.push(timeToSeconds(segments[i + 1].start) - timeToSeconds(segments[i].end));
+            }
+            durations = segments.map(dic =>
+                timeToSeconds(dic.end) - timeToSeconds(dic.start)
+            );
+
+            // 2) diff_longitud
+if (diff_longitud !== 0) {
+    const totalOriginal = durations.reduce((a, b) => a + b, 0);
+    const newTotal = totalOriginal + diff_longitud;
+    const anchorStart = timeToSeconds(segments[0].start);
+    const STEP = 0.1;
+
+    // Total de pasos discretos a repartir
+    const totalSteps = Math.round(newTotal / STEP);
+
+    // Asignar pasos proporcionales con largest remainder (Bresenham)
+    const exact = durations.map(d => (d / totalOriginal) * totalSteps);
+    const floors = exact.map(e => Math.floor(e));
+    const remainders = exact.map((e, i) => e - floors[i]);
+    let stepsLeft = totalSteps - floors.reduce((a, b) => a + b, 0);
+
+    // Dar el paso extra a los de mayor remainder
+    const order = remainders
+        .map((r, i) => ({ r, i }))
+        .sort((a, b) => b.r - a.r);
+    for (let k = 0; k < stepsLeft; k++) {
+        floors[order[k].i]++;
+    }
+
+    // Reconstruir segmentos desde anchorStart
+    let cursor = anchorStart;
+    for (let i = 0; i < segments.length; i++) {
+        const newDuration = floors[i] * STEP;
+        segments[i].start = formatearTiempoDecimal(Math.round(cursor * 10) / 10);
+        segments[i].end   = formatearTiempoDecimal(Math.round((cursor + newDuration) * 10) / 10);
+        const newGap = gaps[i] ?? 0; // gaps también podrías escalar si los tienes
+        cursor = timeToSeconds(segments[i].end) + newGap;
+    }
+}
+
+            // 3) Solapamientos: SOLO entre segmentos del mismo bg_id
+            for (let i = 1; i < segments.length; i++) {
+                const prev = segments[i - 1];
+                const curr = segments[i];
+                const prevEnd   = timeToSeconds(prev.end);
+                const currStart = timeToSeconds(curr.start);
+                if (currStart < prevEnd) {
+                    const currDuration = timeToSeconds(curr.end) - currStart;
+                    curr.start = formatearTiempoDecimal(prevEnd);
+                    curr.end   = formatearTiempoDecimal(prevEnd + currDuration);
+                }
+            }
+	    console.log(`[bg_id=${bg_id}] segmentos finales:`, JSON.stringify(segments, null, 2));
+	    const index_global_row = segments[0].index_global_row;
+	    const item_name = segments[0].item_name;
+	    const property = segments[0].property;
+
+	    const json_data_2 =  {"service":"save_item_data","itemName":item_name,"property":property,"params":"empty", "rectangulos":sublist,"extra":"actualizarEstadoGlobal"}; 
+	    if (unica_regla.rectangulos[index_global_row]){
+	    	all_json.push(json_data_2);	
+	    }else{
+		console.log("empty rect");
+	    }	
+        }
+    }
+    console.log("all_json error:",all_json);
+    send_rectangles_by_ai_lista("actualizarEstadoGlobal",all_json);
+    console.log("desplazamiento error 2:", JSON.stringify(unica_regla.rectangulos)); 
+    console.log("desplazamiento error 4:", JSON.stringify(rectangulos));
+     
+}
+
+	
 
 
 function actualizarEstadoGlobal() {
