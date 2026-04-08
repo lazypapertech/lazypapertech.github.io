@@ -402,9 +402,9 @@ function split_segment_no_duration() {
   secondDict.end = dic.end;
   secondDict.start_value = dic.start_value;//no end
   secondDict.end_value = dic.end_value;
-
+ 
   bg_id_total = bg_id_total + 1;
-  secondDict.bg_id = bg_id_total;	
+  secondDict.bg_id = bg_id_total;
  
   const result = [firstDict, secondDict];
   console.log("NEW SEGMENTS:",result);
@@ -911,7 +911,7 @@ crearReglaIndividual(parseInt(index_item));
 			if (!loaded_project && !timeline_creado && unica_regla.rectangulos.length>=0){
 				//forzarFondoTransparente();
 				console.log("SOLICITANDO NUEVO PROYECTO");
-				request_new_project();
+				//request_new_project();//no es necesario
 			}
 			timeline_creado = true;
 			 
@@ -1228,10 +1228,13 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
             			//createTab(customName);
             			console.log('Tab creado con nombre:', customName); 
 
+				let full_json = [];
+				let new_project_required = false;
 				if (!loaded_project && !timeline_creado && unica_regla.rectangulos.length>=0){
 					//forzarFondoTransparente();
 					console.log("SOLICITANDO NUEVO PROYECTO");
-					request_new_project();
+					//request_new_project();
+					new_project_required = true;
 				}
 				timeline_creado = true;
 		
@@ -1281,12 +1284,12 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
 				let current_params = "filetype="+selectedOption_item; 
 
 				const json_data = {"service":"change_item_view","itemName":customName,"property":"empty","params":current_params,"file_type":selectedOption_item,"resolution":resolution_scene,"extra0":"0","extra":"0"}; 
-				safeSend(JSON.stringify(json_data));
+				//safeSend(JSON.stringify(json_data));
 
 				if (true){
 				 
 				const json_data_2 =  {"service":"save_item_data","itemName":customName,"property":"filename","params":"empty", "rectangulos":[first_rect],"extra":"clip"}; 
-        			safeSend(JSON.stringify(json_data_2)); 
+        			//safeSend(JSON.stringify(json_data_2)); 
 				console.log("ENVIADO4");
 				}
 
@@ -1295,6 +1298,10 @@ if (e.target.matches("#forward") || e.target.closest("#forward")){
 					item_types[selectedOption_item].push(customName);	
 				    }
 				}
+
+				full_json = {"service":"full_creation","itemName":customName,"property":"empty","params":current_params,"file_type":"text","resolution":resolution_scene,"rectangulos":[first_rect],"new_project":new_project_required,"extra0":"0","extra":"0"};
+				 safeSend(JSON.stringify(full_json)); 
+				 
 
 				undoRedoManager.saveState(unica_regla.rectangulos);
 				 
@@ -1338,10 +1345,14 @@ crearReglaIndividual(parseInt(index_item));
 			resetear(); 
 			closeModalDinamico();
 
+			 
+			let full_json = []; 
+			let new_project_required = false;
 			if (!loaded_project && !timeline_creado && unica_regla.rectangulos.length>=0){
 				//forzarFondoTransparente();
 				console.log("SOLICITANDO NUEVO PROYECTO");
-				request_new_project();
+				request_new_project();  
+				new_project_required = true;
 			}
 			timeline_creado = true;
 			 
@@ -1365,10 +1376,19 @@ crearReglaIndividual(parseInt(index_item));
 			 
 			let current_params = "filetype="+selectedOption_item; 
 			const json_data = {"service":"change_item_view","itemName":customName,"property":"empty","params":current_params,"file_type":"text","resolution":resolution_scene,"extra0":"0","extra":"0"}; 
-			//websocketClient.send(JSON.stringify(json_data));
-			safeSend(JSON.stringify(json_data));
+			//safeSend(JSON.stringify(json_data)); 
+
+
+ 
+			 
 			const json_data_2 =  {"service":"save_item_data","itemName":customName,"property":"filename","params":"empty", "rectangulos":[first_rect],"extra":"text"}; 
-        		safeSend(JSON.stringify(json_data_2));
+			//safeSend(JSON.stringify(json_data_2)); 
+
+  
+			full_json = {"service":"full_creation","itemName":customName,"property":"empty","params":current_params,"file_type":"text","resolution":resolution_scene,"rectangulos":[first_rect],"new_project":new_project_required,"extra0":"0","extra":"0"};
+			safeSend(JSON.stringify(full_json));
+
+
 
 			undoRedoManager.saveState(unica_regla.rectangulos); 
 			 
@@ -1418,8 +1438,9 @@ crearReglaIndividual(parseInt(index_item));
 
   
 function send_rectangles_by_ai(extra,item_name,property,sublist){   
+ 
 	const json_data_2 =  {"service":"save_item_data","itemName":item_name,"property":property,"params":"empty", "rectangulos":sublist,"extra":extra};  
-	safeSend(JSON.stringify(json_data_2));   
+	//safeSend(JSON.stringify(json_data_2));   
 }
  
 function sub_json_to_send(extra,item_name,property,sublist){   
@@ -1437,11 +1458,34 @@ function send_change_item_view_lista(extra,lista_json){
 	safeSend(JSON.stringify(json_data_2));  
 }
 
+
+   
+
+ 
+			 
+			 
+
+
+ 
+function send_view_save_no_update(lista_json){  
+        //envia 1 bloque "view_save", y solo ejecuta update_video al final, pero no se envia ningun service:update_video 
+	const json_data_2 =  {"service":"view_save_update_automatico","itemName":"empty","property":"empty","params":"empty", "lista_propiedades":lista_json,"extra":"extra"};  
+	safeSend(JSON.stringify(json_data_2));  
+}
+function send_view_save_list_no_update(lista_json){ 
+	//envia lista de bloques "view_save", y solo ejecuta update_video al final, pero no se envia ningun service:update_video
+	const json_data_2 =  {"service":"view_save_list_update_automatico","itemName":"empty","property":"empty","params":"empty", "lista_propiedades":lista_json,"extra":"extra"};  
+	safeSend(JSON.stringify(json_data_2));  
+}
+
+
+//esto esta bien no es necesario optimizarlo
 function send_rectangles(extra){ 
+ 
 	const index_global_row = selected_rect.dataset.index_global_row;
 	const item_name = selected_rect.dataset.item_name;
 	const property = selected_rect.dataset.property;
-
+//console.log("ERROR BUCLE",JSON.stringify(unica_regla.rectangulos[index_global_row]));
 	const json_data_2 =  {"service":"save_item_data","itemName":item_name,"property":property,"params":"empty", "rectangulos":unica_regla.rectangulos[index_global_row],"extra":extra}; 
         //websocketClient.send(JSON.stringify(json_data_2));
 	safeSend(JSON.stringify(json_data_2));  
@@ -1917,4 +1961,4 @@ function check_file_type(file) {
     
     return null; // No es ninguno de los tres
 }
-*/
+*/ 
