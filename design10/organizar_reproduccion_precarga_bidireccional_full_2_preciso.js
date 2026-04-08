@@ -1144,13 +1144,19 @@ function update_state(){
  
   console.log("pendiente_renderizar:",pendiente_renderizar);
   if (pendiente_renderizar){
-	if (Object.keys(progress_visible_names).length === uploaded_names.length){
+	//console.log("error pendiente_renderizar:",pendiente_renderizar);
+	if (Object.keys(progress_visible_names).length === uploaded_names.length){ 
 		request_render(valores_pendientes);
 		pendiente_renderizar = false;
 	}
+  }else{ 
+	//request_render(["0"]);
   }
-  if (nuevos_valores.length > 0){
+	
+  if (nuevos_valores.length > 0){ 
+	//console.log("error nuevos_valores.length > 0:",progress_visible_names,Object.keys(progress_visible_names).length,uploaded_names,uploaded_names.length);
 	if (Object.keys(progress_visible_names).length === uploaded_names.length){
+		console.log("correcto request_render"); 
   		request_render(valores_pendientes);
 		pendiente_renderizar = false;
 	}else{
@@ -1361,7 +1367,7 @@ exportBtn.onclick = () => {
 function update_timeline_render() { 
   update_state();
 } 
-setInterval(update_timeline_render, 10000);
+ setInterval(update_timeline_render, 10*1000);
 
 
 
