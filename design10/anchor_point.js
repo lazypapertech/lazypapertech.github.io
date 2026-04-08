@@ -1611,7 +1611,17 @@ console.log("input functionsToKeyframes:",input);
     }
   }
 
-  return results.join("\n");
+  //return results.join("\n");
+  for (let i = 0; i < results.length - 1; i++) {
+    const curr = results[i];
+    const next = results[i + 1];
+    if (!next.includes("keyframe_type=L1")) continue;
+    const key = l => l.match(/time=\S+ object=\S+ property=\S+/)[0];
+    if (key(curr) !== key(next)) continue;
+    results[i - 1] = results[i - 1].replace("keyframe_type=L", "keyframe_type=L2");
+    results[i] = null;
+  }
+  return results.filter(Boolean).join("\n");
 }
 
 
@@ -1841,4 +1851,5 @@ function duplicarGrupo(itemName) {
 }
 
 
+ 
  
