@@ -3440,8 +3440,7 @@ function formatearTiempoDecimal(totalSegundos, paso = 0.05) {
     ].join(':');
 
     if (decRecortado.length > 0 && parseInt(decRecortado) > 0)
-        resultado += '.' + decRecortado;
-console.log("resultado error:",totalSegundos,", ",resultado);
+        resultado += '.' + decRecortado; 
     return resultado;
 }
 
@@ -4363,7 +4362,8 @@ function crear_bounce_rectangle() {
     filaUnica.forEach((rectData, index) => { 
         crearRectangulo(rectData, index, index_row,index_global_row);
         console.log("new rectangle");
-        actualizarEstadoGlobal();
+	//esto hace super lento el proceso, multiplica las solicitudes enviadas
+        //actualizarEstadoGlobal();
     });
 
     // Seleccionar el nuevo
@@ -4371,290 +4371,14 @@ function crear_bounce_rectangle() {
     seleccionarRectangulo(nuevoElemento); 
 
     renderizarElementosVisibles();
+    actualizarEstadoGlobal();
 }
 
-
-function crear_bounce_rectangle_00() {
-
-    const index_row = selected_rect.dataset.index_row;
-    const index_global_row = selected_rect.dataset.index_global_row;
-
-    // listas locales (fila concreta)
-    let filaLocal = rectangulos[index_row];
-    let filaGlobal = unica_regla.rectangulos[index_global_row];
-
-    const botonAnterior = document.querySelector('.boton-mas');
-    if (botonAnterior) botonAnterior.remove();
-
-    if (!rectanguloSeleccionado) return;
-
-    const indiceSeleccionado = parseInt(rectanguloSeleccionado.dataset.indice);
-    const rectSeleccionado = filaLocal[indiceSeleccionado];
-
-    // Validar bounce consecutivos (solo dentro de la fila local)
-    if (indiceSeleccionado < filaLocal.length - 1){
-        const rectDerechaTest = filaLocal[indiceSeleccionado + 1];
-        if (rectDerechaTest.start_value.includes("/%(bounce)%/")){
-            showErrorModal("There cannot be two bounce segments stuck together.");
-            return;
-        }
-    }
-
-    const posicionBoton = parseFloat(rectSeleccionado.posicion) + parseFloat(rectSeleccionado.ancho);
-    const offsetY = ALTURA_REGLA * 0.5;
-    const yRegla = offsetY + ALTURA_REGLA / 2;
-
-    const segundosInicio = (posicionBoton - PADDING) / SEGMENTO * VALOR_SEGMENTO;
-    const segundosFin = segundosInicio + VALOR_SEGMENTO;
-
-    const nuevoRect = {
-	index_item: selected_rect.dataset.index_item,
-	property: selected_rect.dataset.property,
-	filetype: selected_rect.dataset.filetype,
-        index_global_row : selected_rect.dataset.index_global_row,
-        index_row : selected_rect.dataset.index_row,
-        start: formatearTiempoDecimal(segundosInicio),
-        end: formatearTiempoDecimal(segundosFin),
-        start_value: "3,0.4,/%(bounce)%/",
-        end_value: "3,0.4,/%(bounce)%/",
-        video_audio_value: ""
-    };
-
-    // --- si hay rectángulo a la derecha en ESTA FILA ---
-    if (indiceSeleccionado < filaLocal.length - 1) {
-
-        const rectDerecha = filaLocal[indiceSeleccionado + 1];
-        const finSel = parseFloat(rectSeleccionado.posicion) + parseFloat(rectSeleccionado.ancho);
-        const inicioDer = parseFloat(rectDerecha.posicion);
-
-        // pegados
-        if (Math.abs(finSel - inicioDer) < 1) {
-
-            // desplazar derecha + siguientes SOLO EN ESTA FILA
-            for (let i = indiceSeleccionado + 1; i < filaLocal.length; i++) {
-                filaLocal[i].posicion =
-                    parseFloat(filaLocal[i].posicion) + SEGMENTO;
-
-                filaLocal[i].elemento.dataset.xReal = filaLocal[i].posicion;
-            }
-
-            // actualizar fila global correspondiente
-            filaGlobal = filaLocal.map(rect => {
-                const sIni =
-                    (parseFloat(rect.posicion) - PADDING) / SEGMENTO * VALOR_SEGMENTO;
-                const sFin =
-                    sIni + (parseFloat(rect.ancho) / SEGMENTO * VALOR_SEGMENTO);
-
-                return {
-		    index_item:	rect.index_item,
- 		    property: rect.property,
- 		    filetype: rect.filetype,
-		    index_global_row : selected_rect.dataset.index_global_row,
-        	    index_row : selected_rect.dataset.index_row,
-                    start: formatearTiempoDecimal(sIni),
-                    end: formatearTiempoDecimal(sFin),
-                    start_value: rect.start_value,
-                    end_value: rect.end_value,
-                    video_audio_value: rect.video_audio_value
-                };
-            });
-
-            // guardar la fila actualizada
-            unica_regla.rectangulos[index_global_row] = filaGlobal;
-        }
-    }
-
-    // insertar nuevo rectángulo en AMBAS listas de la fila
-    filaGlobal.splice(indiceSeleccionado + 1, 0, nuevoRect);
-
-    // sincronizar estructura
-    unica_regla.rectangulos[index_global_row] = filaGlobal;
-
-    // --- recrear SOLO la fila local ---
-    filaLocal.forEach(r => r.elemento.remove());
-    filaLocal = [];
-
-    filaGlobal.forEach((rectData, index) => {
-	crearRectangulo(rectData, index, index_row,index_global_row); 
-        actualizarEstadoGlobal();
-    });
-
-    // seleccionar el nuevo
-    const nuevoElemento = rectangulos[index_row][indiceSeleccionado + 1].elemento;
-    seleccionarRectangulo(nuevoElemento);
-
-    renderizarElementosVisibles();
-}
-
-
-
-function crear_bounce_rectangle_0() {
-
-    const index_row = selected_rect.dataset.index_row;
-    const index_global_row = selected_rect.dataset.index_global_row;
- 
-    const botonAnterior = document.querySelector('.boton-mas');
-    if (botonAnterior) { 
-	botonAnterior.remove();
-    } 
-
-    // Solo crear el botón si hay un rectángulo seleccionado
-    if (!rectanguloSeleccionado) return;
  
 
-    const indiceSeleccionado = parseInt(rectanguloSeleccionado.dataset.indice);
-    const rectSeleccionado = rectangulos[indiceSeleccionado];
-
-    if (indiceSeleccionado<rectangulos.length-1){
-    	const rectSeleccionadoAnterior = rectangulos[indiceSeleccionado+1];
-    	if (rectSeleccionadoAnterior.start_value.includes("/%(bounce)%/")){
-		//alert("There cannot be two bounce segments stuck together.");
-		showErrorModal("There cannot be two bounce segments stuck together.");
-		return;
-	} 
-    }	
-
- 
- 
-    
-    const posicionBoton = parseFloat(rectSeleccionado.posicion) + parseFloat(rectSeleccionado.ancho);
-    const offsetY = ALTURA_REGLA * 0.5;
-    const yRegla = offsetY + ALTURA_REGLA / 2;
  
 
-  
-  
-    const segundosInicio = (posicionBoton - PADDING) / SEGMENTO * VALOR_SEGMENTO;
-    const segundosFin = segundosInicio + VALOR_SEGMENTO;
-    const nuevoRect = {
-        start: formatearTiempoDecimal(segundosInicio),
-        end: formatearTiempoDecimal(segundosFin),
-        start_value: "3,0.4,/%(bounce)%/",
-        end_value: "3,0.4,/%(bounce)%/",
-	video_audio_value: ""
-    };
-    
-    // Verificar si hay un rectángulo pegado a la derecha
-    if (indiceSeleccionado < rectangulos.length - 1) {
-        const rectDerecha = rectangulos[indiceSeleccionado + 1];
-        const finSeleccionado = parseFloat(rectSeleccionado.posicion) + parseFloat(rectSeleccionado.ancho);
-        const inicioDerecha = parseFloat(rectDerecha.posicion);
-        
-        // Si están pegados (sin hueco)
-        if (Math.abs(finSeleccionado - inicioDerecha) < 1) {
-            // Desplazar el de la derecha y todos los siguientes un SEGMENTO
-            for (let i = indiceSeleccionado + 1; i < rectangulos.length; i++) {
-                rectangulos[i].posicion = parseFloat(rectangulos[i].posicion) + SEGMENTO;
-                rectangulos[i].elemento.dataset.xReal = rectangulos[i].posicion;
-            }
-            
-            // Actualizar el estado global con las nuevas posiciones
-            unica_regla.rectangulos = rectangulos.map(rect => {
-                const segundosInicio = (parseFloat(rect.posicion) - PADDING) / SEGMENTO * VALOR_SEGMENTO;
-                const segundosFin = segundosInicio + (parseFloat(rect.ancho) / SEGMENTO * VALOR_SEGMENTO);
-		console.log("MAL segundosFin: ",segundosFin);
-                return {
-                    start: formatearTiempoDecimal(segundosInicio),
-                    end: formatearTiempoDecimal(segundosFin),
-                    start_value: rect.start_value,
-                    end_value: rect.end_value,
-		    video_audio_value: rect.video_audio_value
-                };
-            });
-        }
-    }
-    
-    // Insertar después del seleccionado
-    unica_regla.rectangulos.splice(indiceSeleccionado + 1, 0, nuevoRect);
-    
-    // Recrear todos los rectángulos
-    rectangulos.forEach(r => r.elemento.remove());
-    rectangulos = [];
-    
-    unica_regla.rectangulos.forEach((rectData, index) => {
-        crearRectangulo(rectData, index,0,0);
-	console.log("new rectangle");
-	actualizarEstadoGlobal();
-    });
-    
-    // Seleccionar el nuevo
-    const nuevoElemento = rectangulos[indiceSeleccionado + 1].elemento;
-    seleccionarRectangulo(nuevoElemento); 
-    
-    renderizarElementosVisibles();
-  
  
-}
-
-
-function add_box_0(){
-    if (!rectanguloSeleccionado) return; 
-
-    const indiceSeleccionado = parseInt(rectanguloSeleccionado.dataset.indice);
-    const rectSeleccionado = rectangulos[indiceSeleccionado]; 
-    
-    const posicionBoton = parseFloat(rectSeleccionado.posicion) + parseFloat(rectSeleccionado.ancho);
- 
-    const segundosInicio = (posicionBoton - PADDING) / SEGMENTO * VALOR_SEGMENTO;
-    const segundosFin = segundosInicio + VALOR_SEGMENTO; 
-    const nuevoRect = {
-        start: formatearTiempoDecimal(segundosInicio),
-        end: formatearTiempoDecimal(segundosFin),
-        start_value: "",
-        end_value: "",
-	video_audio_value: ""
-    };
-    
-    // Verificar si hay un rectángulo pegado a la derecha
-    if (indiceSeleccionado < rectangulos.length - 1) {
-        const rectDerecha = rectangulos[indiceSeleccionado + 1];
-        const finSeleccionado = parseFloat(rectSeleccionado.posicion) + parseFloat(rectSeleccionado.ancho);
-        const inicioDerecha = parseFloat(rectDerecha.posicion);
-        
-        // Si están pegados (sin hueco)
-        if (Math.abs(finSeleccionado - inicioDerecha) < 1) {
-            // Desplazar el de la derecha y todos los siguientes un SEGMENTO
-            for (let i = indiceSeleccionado + 1; i < rectangulos.length; i++) {
-                rectangulos[i].posicion = parseFloat(rectangulos[i].posicion) + SEGMENTO;
-                rectangulos[i].elemento.dataset.xReal = rectangulos[i].posicion;
-            }
-            
-            // Actualizar el estado global con las nuevas posiciones
-            unica_regla.rectangulos = rectangulos.map(rect => {
-                const segundosInicio = (parseFloat(rect.posicion) - PADDING) / SEGMENTO * VALOR_SEGMENTO; 
-                const segundosFin = segundosInicio + (parseFloat(rect.ancho) / SEGMENTO * VALOR_SEGMENTO);
-	console.log("MAL segundosFin: ",segundosFin);
-                return {
-                    start: formatearTiempoDecimal(segundosInicio),
-                    end: formatearTiempoDecimal(segundosFin),
-                    start_value: rect.start_value,
-                    end_value: rect.end_value,
-		    video_audio_value: rect.video_audio_value
-                };
-            });
-        }
-    }
-    
-    // Insertar después del seleccionado
-    unica_regla.rectangulos.splice(indiceSeleccionado + 1, 0, nuevoRect);
-    
-    // Recrear todos los rectángulos
-    rectangulos.forEach(r => r.elemento.remove());
-    rectangulos = [];
-    
-    unica_regla.rectangulos.forEach((rectData, index) => {
-        crearRectangulo(rectData, index,0,0);
-	console.log("new rectangle");
-	actualizarEstadoGlobal();
-    });
-    
-    // Seleccionar el nuevo
-    const nuevoElemento = rectangulos[indiceSeleccionado + 1].elemento;
-    seleccionarRectangulo(nuevoElemento); 
-    
-    renderizarElementosVisibles();
- 
-}
 
  
 
@@ -4839,7 +4563,8 @@ function add_box() {
     filaUnica.forEach((rectData, index) => { 
         crearRectangulo(rectData, index, index_row,index_global_row);
         console.log("new rectangle"); 
-        actualizarEstadoGlobal();//lo comente porque daba error en getStartDifferences 
+	//esto hace super lento el proceso, multiplica las solicitudes enviadas
+        //actualizarEstadoGlobal();//lo comente porque daba error en getStartDifferences 
     }); 
      
 
@@ -5814,10 +5539,11 @@ console.log("unica_regla.rectangulos input:",JSON.stringify(unica_regla.rectangu
     console.log("desplazamiento error 4:", JSON.stringify(rectangulos));
      
 }
+ 
 
-	
 function applyStartDifferences(differences) { 
-//console.log("unica_regla.rectangulos input:",JSON.stringify(unica_regla.rectangulos));
+ 
+console.log("unica_regla.rectangulos input:",JSON.stringify(unica_regla.rectangulos));
     let all_json = []; 
     for (const { bg_id, diff_start, diff_longitud } of differences) {
         for (const sublist of unica_regla.rectangulos) {
@@ -5923,8 +5649,6 @@ if (diff_longitud !== 0) {
      
 }
 
-	
-
 
 function actualizarEstadoGlobal() {
   //lo puse cuando quite la restriccion de eliminar el utimo segmento filename
@@ -5965,12 +5689,13 @@ function actualizarEstadoGlobal() {
     segundosInicio = redondearAPaso(segundosInicio);
     segundosFin = redondearAPaso(segundosFin);
     */
-
+/*
     console.log(
       "segundosFin:",
       segundosFin,
       formatearTiempoDecimal(segundosFin)
     );
+*/
 
     return {
       bg_id: rect.bg_id,
@@ -6551,83 +6276,7 @@ function reemplazarGuionesPorEspacios(texto) {
 }
 
 
-/*
-function create_buttons_properties(id_buttons) {
-	document.getElementById('propiedades_regla').style.display = "flex";
-    const container = document.getElementById("propiedades_regla");
-
-    // Limpiar contenido previo
-    container.innerHTML = "";
-
-    // Crear los botones a partir del array id_buttons
-    id_buttons.forEach(id => {
-        const btn = document.createElement("button");
-        btn.classList.add("button_property");
-        btn.id = id;
-	if (id=="item_configuration"){
-		btn.textContent = "•••";
-		btn.style.color = "rgb(25, 25, 25)";
-		btn.style.backgroundColor = "rgb(196, 205, 208)";
-		btn.style.marginRight = "5px";
-	}else{
-        	btn.textContent = reemplazarGuionesPorEspacios(id); // texto visible del botón
-	}
-        container.appendChild(btn);
-    });
-}
  
-
- 
-
- 
-
-function activarBoton(idBoton) {
-    const botones = document.querySelectorAll("#propiedades_regla .button_property");
-    const botonActivo = document.getElementById(idBoton);
-
-    if (!botonActivo) return;
-
-    botones.forEach(boton => {
-        boton.classList.remove("simulado_activo");
-    });
-
-    botonActivo.classList.add("simulado_activo");
-}
-
-
-
-
-document.getElementById("propiedades_regla").addEventListener("click", (event) => {
-    if (event.target.classList.contains("button_property")) { 
-	if (event.target.id === current_property_id) {
-            return;
-        }
-	if (event.target.id == "item_configuration"){
-	    console.log("item_configuration");	
-	    abrirModalDinamicoSimple(html_item_configuration);	
-	    return;	
-	}
-	current_property_id = event.target.id; 
-        console.log("Botón presionado 2:", event.target.id); 
-
-//actualizar inicio de timeline
-let current_params = "time="+current_scroll_x;//time=true 
- 
-//unica_regla.selectedTab
-const json_data_0 =  {"service":"save_item_data","itemName":current_item,"property":unica_regla.selectedProperty,"params":current_params, "rectangulos":unica_regla.rectangulos,"extra":"time"}; 
-    //ajustarIntervalosBounce();//mantener comentado
-    websocketClient.send(JSON.stringify(json_data_0)); 
- 
-
-
-
-	const json_data = {"service":"change_item_view","itemName":current_item,"property":event.target.id,"params":"empty","file_type":selectedOption_item,"resolution":resolution_scene,"extra0":"","extra":""}; 
-	crear_loading_tab();
-	websocketClient.send(JSON.stringify(json_data)); 
-	finalizar();
-    }
-});
-*/
 
 
 function create_buttons_properties(id_buttons) { 
@@ -7076,6 +6725,7 @@ function abrirModalDinamico(htmlString,boton_id) {
   if (boton_id=="Instruction" || boton_id=="Select_instruction"){
 	console.log("textarea ai 0:",detalle); 
 	current_property_value = detalle.description; 
+        //initVoiceInput();
   }  
    
 
@@ -8715,17 +8365,19 @@ if (message_result === "all_chunks_received") {
     k.startsWith(baseName) && k.endsWith(extension)
   );
 
+  // Añade a la lista de subidos (visible_names sigue igual que antes)
+  const visibleKey = Object.keys(visible_names).find(k =>
+    k.includes(baseName) && k.endsWith(extension)
+  );
+  if (visibleKey) uploaded_names.push(visibleKey);
+
   if (currentKey) {
     progress_visible_names[currentKey] = currentKey; // value idéntico al key
     console.log("progress_visible_names:", progress_visible_names); 
     update_state(); 
   }
 
-  // Añade a la lista de subidos (visible_names sigue igual que antes)
-  const visibleKey = Object.keys(visible_names).find(k =>
-    k.includes(baseName) && k.endsWith(extension)
-  );
-  if (visibleKey) uploaded_names.push(visibleKey);
+   
 
   if (Object.keys(progress_visible_names).length === uploaded_names.length){
 	console.log("activar boton de renderizado"); 
@@ -9531,20 +9183,20 @@ verificarSoporteCodec().then(soportado => {
     });
 </script> 
   
-<script src="../design10/general.js"> </script>
-<script src="../design10/send_files.js"> </script> 
-<script src="../design10/clipcontainer.js"> </script>  
-<script src="../design10/htmlstring.js"> </script>  
-<script src="../design10/menu_options.js"> </script>   
-<script src="../design10/panel_tabs.js"> </script>  
-<script src="../design10/reglas.js"> </script>  
-<script src="../design10/simplemenus.js?v=1.0.2"> </script> 
-<script src="../design10/interaccion_rectangulos_full.js"> </script> 
-<script src="../design10/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=1.0.2"> </script>  
-<script src="../design10/repintar4.js"> </script>  
-<script src="../design10/anchor_point.js"> </script>   
-<script src="../design10/script_login.js"> </script> 
-<script src="../design10/undo_redo.js"> </script> 
+<script src="../design10/general.js?v=1.1.6"> </script>
+<script src="../design10/send_files.js?v=1.1.6"> </script> 
+<script src="../design10/clipcontainer.js?v=1.1.6"> </script>  
+<script src="../design10/htmlstring.js?v=1.1.6"> </script>  
+<script src="../design10/menu_options.js?v=1.1.6"> </script>   
+<script src="../design10/panel_tabs.js?v=1.1.6"> </script>  
+<script src="../design10/reglas.js?v=1.1.6"> </script>  
+<script src="../design10/simplemenus.js?v=1.1.6"> </script> 
+<script src="../design10/interaccion_rectangulos_full.js?v=1.1.6"> </script> 
+<script src="../design10/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=1.1.6"> </script>  
+<script src="../design10/repintar4.js?v=1.1.6"> </script>  
+<script src="../design10/anchor_point.js?v=1.1.6"> </script>   
+<script src="../design10/script_login.js?v=1.1.6"> </script> 
+<script src="../design10/undo_redo.js?v=1.1.6"> </script>  
  
 </body>
 </html>  
