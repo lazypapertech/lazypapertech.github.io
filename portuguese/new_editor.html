@@ -5942,7 +5942,7 @@ console.log("aveces sale error crearPseudoRegla is not defined");
         const time = formatearTiempoDecimal(parseFloat(cmExacto));
   
  
-        console.log("cinta position: ",time, ", ",cmExacto,", ", split_position_global);
+        //console.log("cinta position: ",time, ", ",cmExacto,", ", split_position_global);
         setTimeout(renderizarElementosVisibles, 20);
 
     }, { passive: true });
@@ -8225,12 +8225,15 @@ function connect(type_connection) {
 	  apply_ai_changes(json_ai_response);
       } 
       */
-      if (message_result.includes("x(t)") && message_result.includes("y(t)")){
+	message_result = reemplazarCoincidencia(message_result,"width(t)","x(t)");
+	message_result = reemplazarCoincidencia(message_result,"height(t)","y(t)");
+      if (message_result.includes("x(t)") || message_result.includes("y(t)") || message_result.includes("f(t)")){
 	   
 	  console.log("message_result unctionsToKeyframes:",message_result);
 	  let json_ai_response = JSON.parse(message_result);
 	  json_ai_response = json_ai_response.replace(/\\n/g, "\n");
  	  json_ai_response = functionsToKeyframes(json_ai_response); 
+	  json_ai_response = reemplazarCoincidencia(json_ai_response,"=size","=ratio");
 	  console.log("json_ai_response:",json_ai_response);
 	  apply_ai_changes(json_ai_response);
       } 
@@ -9194,9 +9197,9 @@ verificarSoporteCodec().then(soportado => {
 <script src="../design10/interaccion_rectangulos_full.js?v=1.1.6"> </script> 
 <script src="../design10/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=1.1.6"> </script>  
 <script src="../design10/repintar4.js?v=1.1.6"> </script>  
-<script src="../design10/anchor_point.js?v=1.1.6"> </script>   
+<script src="../design10/anchor_point.js?v=1.1.7"> </script>   
 <script src="../design10/script_login.js?v=1.1.6"> </script> 
-<script src="../design10/undo_redo.js?v=1.1.6"> </script>  
+<script src="../design10/undo_redo.js?v=1.1.6"> </script>
  
 </body>
 </html>  
