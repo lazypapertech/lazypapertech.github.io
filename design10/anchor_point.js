@@ -1531,7 +1531,7 @@ console.log("input functionsToKeyframes:",input);
     if (!vecMatch && !scaMatch) { console.warn("Línea ignorada:", line); continue; }
 
     if (vecMatch) {
-      const [, object, property, tStartStr, tEndStr, xExpr, yExpr] = vecMatch;
+      const [, object, property, tStartStr, tEndStr, xExpr, yExpr] = vecMatch; 
       const tStart = parseFloat(tStartStr);
       const tEnd   = parseFloat(tEndStr);
       if (!Number.isFinite(tStart) || !Number.isFinite(tEnd))
@@ -1540,7 +1540,7 @@ console.log("input functionsToKeyframes:",input);
         throw new Error(`t_start (${tStart}) >= t_end (${tEnd}) en object=${object}`);
       segments.push({ object, property, tStart, tEnd, type: "vector", xExpr, yExpr });
     } else {
-      const [, object, property, tStartStr, tEndStr, fExpr] = scaMatch;
+      const [, object, property, tStartStr, tEndStr, fExpr] = scaMatch; 
       const tStart = parseFloat(tStartStr);
       const tEnd   = parseFloat(tEndStr);
       if (!Number.isFinite(tStart) || !Number.isFinite(tEnd))
@@ -1559,6 +1559,7 @@ console.log("input functionsToKeyframes:",input);
       return new Function("t", `"use strict";
         const {sin,cos,tan,asin,acos,atan,atan2,exp,log,log2,log10,sqrt,cbrt,
                pow,abs,sign,ceil,floor,round,min,max,hypot,PI,E,LN2,LN10,SQRT2} = Math;
+	const rand = Math.random;//esto es nuevo
         return (${expr});
       `);
     } catch (e) {
