@@ -1127,8 +1127,8 @@ function update_state(){
    
 
 
-  console.log("estado_anterior:",JSON.stringify(estado_actual));
-  console.log("nuevo_estado:",JSON.stringify(nuevo_estado));
+  //console.log("estado_anterior:",JSON.stringify(estado_actual));
+  //console.log("nuevo_estado:",JSON.stringify(nuevo_estado));
   console.log("nuevos_valores:",JSON.stringify(nuevos_valores));	
     
   add_valores_pendientes(nuevos_valores); 
@@ -1150,19 +1150,24 @@ function update_state(){
 		pendiente_renderizar = false;
 	}
   }else{ 
+	//setLoadingBar(0.95/parseFloat(valores_pendientes.length));
 	//request_render(["0"]);
   }
 	
   if (nuevos_valores.length > 0){ 
+setLoadingBar(0.95/parseFloat(valores_pendientes.length));
 	//console.log("error nuevos_valores.length > 0:",progress_visible_names,Object.keys(progress_visible_names).length,uploaded_names,uploaded_names.length);
 	if (Object.keys(progress_visible_names).length === uploaded_names.length){
 		console.log("correcto request_render"); 
   		request_render(valores_pendientes);
+		 
 		pendiente_renderizar = false;
 	}else{
 		pendiente_renderizar = true;
 	}
 
+  }else{
+	setLoadingBar(-1);
   } 
 }
   
@@ -1367,7 +1372,7 @@ exportBtn.onclick = () => {
 function update_timeline_render() { 
   update_state();
 } 
- setInterval(update_timeline_render, 10*1000);
+ setInterval(update_timeline_render, 7*1000);
 
 
 
@@ -2319,7 +2324,7 @@ dibujarIndicador() {
   if (visible_text.includes("Updating frame")){
 	this.dibujarIndicador();
 	return;
-  }else{
+  }else{ 
  	return;
   }
   this.ctx.save();
