@@ -2054,6 +2054,7 @@ display:none;
                 <button class="tabs-add-button" id="update" style="display:none;" translate="no">Update frames</button> 
 		<button class="tabs-add-button" id="plus-btn" translate="no">Shortcuts</button>
                 <div class="tabs-scroll-container" id="tabs-scroll-container">
+			 
 			<button class="tab-export-button" id="export-btn" translate="no">
 		  <svg xmlns="http://www.w3.org/2000/svg"
      width="30"
@@ -2088,6 +2089,7 @@ display:none;
                 </svg>
             </button>
         </div>
+<div  class="tab-export-button" id="loading-update"></div>
                 </div>
             </div>
             <div id="tab-contents">
@@ -5726,7 +5728,7 @@ function actualizarEstadoGlobal() {
     }
 
     send_rectangles("actualizarEstadoGlobal"); 
-    //update_state();//va lento 
+    update_state();//va lento 
      	
  
 }
@@ -8139,8 +8141,17 @@ function agregarSublistas(cantidad) {
 const array_real = [10,20,30];
 
  
- 
-
+function insertarSaltoLineaObject(input) {
+  let primerOcurrencia = true;
+  
+  return input.replace(/object=/g, (match) => {
+    if (primerOcurrencia) {
+      primerOcurrencia = false;
+      return match;
+    }
+    return '\\n' + match;  // Doble backslash para escapar
+  });
+}
  
  
 
@@ -8228,6 +8239,8 @@ function connect(type_connection) {
 	message_result = reemplazarCoincidencia(message_result,"width(t)","x(t)");
 	message_result = reemplazarCoincidencia(message_result,"height(t)","y(t)");
       if (message_result.includes("x(t)") || message_result.includes("y(t)") || message_result.includes("f(t)")){
+
+	  message_result = insertarSaltoLineaObject(message_result);
 	   
 	  console.log("message_result unctionsToKeyframes:",message_result);
 	  let json_ai_response = JSON.parse(message_result);
@@ -8856,26 +8869,32 @@ if (posicion_en_segundos < 0) {
      
     // ✅ GUARDAR DIRECTAMENTE SIN DECODIFICAR
     //eliminar_valor_pendiente(String(posicion_en_segundos));
+    console.log("valores_pendientes2:",JSON.stringify(valores_pendientes));
+    setLoadingBar(0.95/parseFloat(valores_pendientes.length)); 
     if (valores_pendientes.includes(String(posicion_en_segundos))){
     	if (posicion_en_segundos!=trozo_excepcion){
 		console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`); 
     		trozos_guardados[posicion_en_segundos] = chunk_data; 
+	        //setLoadingBar(0.95/parseFloat(valores_pendientes.length));
     	}else{
 		console.log("trozo_excepcion:",trozo_excepcion);
-		trozo_excepcion = -1;     
+		trozo_excepcion = -1;  
+	        //setLoadingBar(-1);   
 	}
     }else{
 	if (valores_pendientes.length==0){
 		console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`); 
     		trozos_guardados[posicion_en_segundos] = chunk_data;
+	        //setLoadingBar(-1); 
 	}
     } 
 /*
     console.log(`📦 Trozo ${posicion_en_segundos} guardado (${chunk_data.length} bytes)`); 
     trozos_guardados[posicion_en_segundos] = chunk_data; 
 */
+ 
 
-    eliminar_valor_pendiente(String(posicion_en_segundos));
+    eliminar_valor_pendiente(String(posicion_en_segundos)); 
  
     
      
@@ -9195,8 +9214,8 @@ verificarSoporteCodec().then(soportado => {
 <script src="../design10/reglas.js?v=1.1.6"> </script>  
 <script src="../design10/simplemenus.js?v=1.1.6"> </script> 
 <script src="../design10/interaccion_rectangulos_full.js?v=1.1.6"> </script> 
-<script src="../design10/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=1.1.6"> </script>  
-<script src="../design10/repintar4.js?v=1.1.6"> </script>  
+<script src="../design10/organizar_reproduccion_precarga_bidireccional_full_2_preciso.js?v=1.1.8"> </script>  
+<script src="../design10/repintar4.js?v=1.1.8"> </script>  
 <script src="../design10/anchor_point.js?v=1.1.8"> </script>   
 <script src="../design10/script_login.js?v=1.1.6"> </script> 
 <script src="../design10/undo_redo.js?v=1.1.6"> </script>
