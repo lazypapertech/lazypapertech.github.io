@@ -189,16 +189,110 @@ function eliminar_valor_pendiente(valor) {
     valores_pendientes = valores_pendientes.filter(
         v => v !== String(valor)
     );
+    if (valores_pendientes.length==0){
+	console.log("actualizacion terminada");
+	setLoadingBar(-1);
+    }
 }
  
 
 
 
 
+ 
 
+function compensateProgress(input, strength = 2) {
+  // Clamp input entre 0 y 1
+  const x = Math.max(0, Math.min(1, input));
+   
+  return Math.pow(x, 1 / strength);
+}
 
+function setLoadingBar(value) {
+  if (value>0){
+  	value = compensateProgress(value);
+  	if (value==1){
+		value = -1;
+  	}
+  } 
+  const container = document.getElementById('loading-update');
 
+  let fill = container.querySelector('.lb-fill');
+  if (!fill) {
+    container.style.position = 'relative';
+    container.style.overflow = 'hidden';
+    container.style.width = '100%';
+    container.style.minWidth = '0';
+    container.style.flex = '1';
 
+    fill = document.createElement('div');
+    fill.className = 'lb-fill';
+    fill.style.cssText = `
+      position:absolute;inset:0;right:auto;width:0%;
+      background:linear-gradient(90deg,#4a2fa3 0%,#7c55e6 60%,#9e7df0 100%);
+      transition:width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,0.12),inset 0 -1px 0 rgba(0,0,0,0.25);
+    `;
+
+    const shimmer = document.createElement('div');
+    shimmer.className = 'lb-shimmer';
+    shimmer.style.cssText = `
+      position:absolute;top:0;left:-60%;width:50%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);
+      animation:lb-shimmer 1.8s infinite;
+    `;
+
+    if (!document.getElementById('lb-keyframes')) {
+      const style = document.createElement('style');
+      style.id = 'lb-keyframes';
+      style.textContent = `@keyframes lb-shimmer{0%{left:-60%}100%{left:130%}}`;
+      document.head.appendChild(style);
+    }
+
+    fill.appendChild(shimmer);
+
+    const label = document.createElement('span');
+    label.className = 'lb-label';
+    label.style.cssText = `
+      position:absolute;top:0;left:0;width:0%;height:100%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:16px;font-weight:500;letter-spacing:0.5px;
+      color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.9);
+      pointer-events:none;opacity:0;overflow:hidden;
+      transition:opacity 0.2s,width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+      font-variant-numeric:tabular-nums;
+    `;
+
+    container.appendChild(fill);
+    container.appendChild(label);
+  }
+
+  const fillEl = container.querySelector('.lb-fill');
+  const shimmerEl = container.querySelector('.lb-shimmer');
+  const labelEl = container.querySelector('.lb-label');
+
+  if (value < 0) {
+    fillEl.style.width = '0%';
+    labelEl.style.width = '0%';
+    labelEl.style.opacity = '0';
+    if (shimmerEl) shimmerEl.style.animationPlayState = 'paused';
+    return;
+  }
+
+  const clamped = Math.min(value, 1);
+  const pct = Math.round(clamped * 100);
+
+  fillEl.style.width = pct + '%';
+  labelEl.style.width = pct + '%';
+  labelEl.textContent = pct + '%';
+  labelEl.style.opacity = '1';
+
+  if (pct >= 100) {
+    if (shimmerEl) shimmerEl.style.animationPlayState = 'paused';
+  } else {
+    if (shimmerEl) shimmerEl.style.animationPlayState = 'running';
+  }
+}
 
 
 
@@ -323,4 +417,4 @@ estadoActual = [
 
 const segundosARepintar = obtenerValoresPendientesDePintar(estadoAnterior, estadoActual);
 
-console.log("Segundos a repintar:", segundosARepintar); 
+console.log("Segundos a repintar:", segundosARepintar);  
