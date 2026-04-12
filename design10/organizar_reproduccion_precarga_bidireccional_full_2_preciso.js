@@ -720,7 +720,7 @@ function loop(timestamp) {
   lastFrameTime = timestamp;
   globalTime += delta; // ← Mantener sin cuantizar aquí
   //globalTime - delta
-  if (globalTime - delta >= globalDuration) {
+  if (globalTime - delta >= globalDuration) { 
     globalTime = globalDuration;
     pausar_video_global(); 
     pauseBtn.style.display = 'none';
@@ -729,7 +729,7 @@ function loop(timestamp) {
     return;
   }  
 
-  renderFrames();
+  renderFrames(); 
   actualizarTimeline();
   //actualizarScroll();//lento renderFrames
   requestAnimationFrame(loop);
@@ -832,7 +832,11 @@ if (trozos_guardados[segundo]) {
  
   }else{
 	//IMPORTANTE, esto dibuja el ultimo frame valido al final de la animacion, en lugar de mostrar un frame transparente
-	reproductorTrozos.drawLastFrame();
+	 
+	if (globalTime >= globalDuration-0.2) {
+ 		console.log("drawLastFrame");
+  		reproductorTrozos.drawLastFrame();
+  	}	
 	console.log("✅ ERROR frameIndex !== ultimoFrameDibujado"); 
   }
  
@@ -2261,6 +2265,7 @@ this.ctx.drawImage(
    
 
   drawLastFrame() {
+//return;
   if (!this.ultimoFrameValido) return;
   this.ctx.drawImage(
     this.ultimoFrameValido,
