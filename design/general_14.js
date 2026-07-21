@@ -4226,7 +4226,7 @@ function reparacion() {
   }
 }
 
-reparacion();
+//reparacion();
 
 
    
