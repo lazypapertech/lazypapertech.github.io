@@ -716,7 +716,7 @@ function isNotUser() {
       id: "settings-openModalBtn",
       content: `<i class="fas fa-cog"></i> Customize`,
     },
-    { id: "createVideo", content: `<i class="fas fa-film"></i> Render video` },
+    { id: "createVideo", content: `<i class="fas fa-film"></i> Add captions` },
   
     { selector: ".error-creation", content: "Connection lost. Try again" },
     { selector: ".error-creation-2", content: "Connection restored" },
@@ -2970,11 +2970,11 @@ return;
     const limitMessage = document.getElementById("limit_size_message");
   
     //limitMessage.innerText =
-      "Press render video before exporting.\n\nIMPORTANT:\nEach text entry represents 0.5 seconds, do not write too long text in a single box. Recommended maximum 15 characters in each entry.";
+      "Press Add captions before exporting.\n\nIMPORTANT:\nEach text entry represents 0.5 seconds, do not write too long text in a single box. Recommended maximum 15 characters in each entry.";
     limitMessage.innerHTML = `
   <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;">
-	Press render video before exporting.
-    <button id="createVideo-2" class="btn">Render video</button>
+	Press Add captions before exporting.
+    <button id="createVideo-2" class="btn">Add captions</button>
     <a id="tutorial_button" href="https://www.youtube.com/watch?v=duhp1fln2gQ" target="_blank"
            style="background-color:rgb(230,230,230); 
                   color:#7c55e6; 
@@ -3425,7 +3425,7 @@ function procesarRespuestaPrompt(estado) {
       font-size: 13px;
       text-align: center;
     `;
-    mensajeExito.textContent = 'Instruction saved, press "render video" to continue';
+    mensajeExito.textContent = 'Instruction saved, press "Add captions" to continue';
     
     // Insertar después del prompt actual
     const chatPanel = document.getElementById('ai_chat_panel');
