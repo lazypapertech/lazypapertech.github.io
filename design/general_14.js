@@ -4221,12 +4221,12 @@ function reparacion() {
   const div = document.querySelector(".max-size");
 
   if (div) {
-    div.textContent = "Under Maintenance. Back on July 21.";
+    div.textContent = "Under Maintenance. Back on August 17.";
 	  div.style.color = "red";
   }
 }
 
-//reparacion();
+reparacion();
 
 
    
