@@ -4221,8 +4221,8 @@ function reparacion() {
   const div = document.querySelector(".max-size");
 
   if (div) {
-    div.textContent = "Under Maintenance. Back on October 10.";
-	  div.style.color = "red";
+    div.textContent = "Active during daylight hours";
+	  div.style.color = "rgb(40, 168, 75)";
   }
 }
 
