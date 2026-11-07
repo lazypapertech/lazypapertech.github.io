@@ -3,7 +3,7 @@
 /* ═════════════ Config ═════════════ */
 const WS_HOST = "rndomg84pbrg.onrender.com";
 const LINKS = {
-  menu: [["Home", "/"], ["Features", "./es/subtitulos-automaticos#description-container"], ["How to use", "./generador-de-subtitulos#clip-container"], ["FAQ", "./generador-de-subtitulos#descr"]],
+  menu: [["Home", "/"], ["Features", "./es/subtitulos-automaticos#description-container"], ["How to use", "./generador-de-subtitulos#description-container-questions"], ["FAQ", "./generador-de-subtitulos#description-container-questions"]],
   advanced: "https://www.youtube.com",
 };
 const LANGUAGES = ["English (beta)", "Español", "Portuguese", "German", "Italian"];
