@@ -98,6 +98,8 @@ function build() {
   window.addEventListener("beforeunload", () => { if (st.ws) { st.ws.onclose = null; st.ws.close(1000, "Page unloading"); } });
 }
 
+// Carpeta donde vive este script (/design/), sea cual sea la página que lo cargue
+const BASE = new URL(".", document.currentScript.src);
 function buildHeader() {
   const nav = h("nav", { class: "nav" }, LINKS.menu.map(([t, u], i) => h("a", i ? { href: u, "data-track": "" } : { href: u }, t)));
   const burger = h("button", {
@@ -105,7 +107,7 @@ function buildHeader() {
     onclick: () => burger.setAttribute("aria-expanded", nav.classList.toggle("open")),
   }, "☰");
   return h("header", { class: "top" },
-    h("a", { class: "brand", href: "/", translate: "no" }, h("img", { src: "./design/images/title.jpg", alt: "Logo" }), h("span", {}, "Manycaptions")),
+    h("a", { class: "brand", href: "/", translate: "no" }, h("img", { src: new URL("images/title.jpg", BASE).href, alt: "Logo" }), h("span", {}, "Manycaptions")),
     nav, burger);
 }
 
